@@ -1,0 +1,13 @@
+// run this script to create user to login the application
+
+
+INSERT INTO users(
+            id,  email, name, password, phone, role, version)
+    VALUES (9999999999,'admin@domain.com', 'Admin User','$2a$10$xR6y2eJ1LgzvB9N2CRlEYOiIcRsi.LRe4X/qIRubcvhrvA2h.WG/G','09876543211', 'ROLE_ADMIN',0);
+
+
+
+//then enter below info and login to the system
+
+Email-admin@domain.com
+password-baBU1234

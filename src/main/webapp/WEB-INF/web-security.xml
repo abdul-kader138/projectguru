@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+	<bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+
+
+	<security:authentication-manager>
+		<security:authentication-provider user-service-ref="userDetailsService">
+		<security:password-encoder ref="encoder" />
+		</security:authentication-provider>
+	</security:authentication-manager>
+
+
+	<security:http auto-config="true" use-expressions="true">
+ 		<security:form-login login-page="/login"  default-target-url="/home" authentication-failure-url="/login?error=1"
+							 always-use-default-target="true" />
+		<security:logout logout-success-url="/login" delete-cookies="JSESSIONID" logout-url="/j_spring_security_logout" invalidate-session="true"/>
+ 		<security:intercept-url pattern="/secret/*"  access="hasRole('ROLE_USER')"  />
+ 		<security:intercept-url pattern="/home" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
+ 		<security:intercept-url pattern="/user" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
+ 		<!--<security:intercept-url pattern="/customer" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />-->
+
+		<!--multiple session invalid-->
+		<security:session-management session-fixation-protection="newSession">
+			<security:concurrency-control max-sessions="1"  expired-url="/login?expire=1" error-if-maximum-exceeded="true" />
+		</security:session-management>
+
+	</security:http>
+
+
+
+</beans>

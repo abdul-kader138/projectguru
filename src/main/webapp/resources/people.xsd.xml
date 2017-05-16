@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<!--<people xmlns:xsi="http://www.w3.org/2001/10/XMLSchema-instance"-->
+ <!--xsi:SchemaLocation="http://localhost:8080/resources/people.xsd">-->
+<people>
+  <Husbend>
+    <name>Salahuddin Mollah</name>
+    <age>65</age>
+    <profession>police Officer</profession>
+    <wife>
+      <name>Rajia</name>
+      <age>48</age>
+    </wife>
+  </Husbend>
+</people>

@@ -1,0 +1,68 @@
+<hr>
+<div class="container-fluid">
+    <div class="col-xs-6 col-xs-offset-3">
+
+        <div class="panel panel-default">
+            <div data-ng-show="successMsg" class="alert alert-info alert-dismissable">
+                <button type="button" class="close" data-ng-click="successMsg = null"
+                        aria-hidden="true">&times;</button>
+                <strong>{{successMsg}}</strong>
+            </div>
+            <div data-ng-show="validationErrorMsg" class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-ng-click="validationErrorMsg = null"
+                        aria-hidden="true">&times;</button>
+                <strong>!Error </strong>{{validationErrorMsg}}
+            </div>
+            <div class="alert alert-danger alert-dismissable" ng-show="internalError">
+                <button type="button" class="close" data-ng-click="internalError = null"
+                        aria-hidden="true">&times;</button>
+                <strong>!Error </strong>{{internalError}}
+            </div>
+            <div class="panel-heading">
+                <h5><span class="glyphicon glyphicon-info-sign"></span> <strong>Customer Information</strong></h5>
+            </div>
+            <div class="panel-body">
+                <form action="#" method="POST" role="form" name="CustomerForm">
+                    <div class="form-group">
+                        <label for="">Name</label>
+                        <input ng-model="customer.name" type="text" class="form-control" id="name" maxlength="50"
+                               required="required">
+                        <span style="color:red" ng-show="validationError.name">{{validationError.name}}</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Address</label>
+                        <textarea cols="5" rows="5" ng-model="customer.address" class="form-control" id="address"/>
+                        <span style="color:red" ng-show="validationError.address">{{validationError.address}}</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="">NID</label>
+                        <input type="text" ng-model="customer.nid" class="form-control" id="nid">
+                        <span style="color:red" ng-show="validationError.nid">{{validationError.nid}}</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Email</label>
+                        <input type="text" ng-model="customer.email" class="form-control" id="email">
+                        <span style="color:red" ng-show="validationError.email">{{validationError.email}}</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Phone</label>
+                        <input type="text" ng-model="customer.phone" class="form-control" id="phone">
+                        <span style="color:red" ng-show="validationError.phone">{{validationError.phone}}</span>
+                    </div>
+                </form>
+            </div>
+            <div class="panel-footer">
+                <input ng-show="!finderloader" class="btn btn-primary btn-sm" ng-click="submitCustomer()" value="Save"/>
+
+                <div ng-show="finderloader">
+                    <button class="btn btn-warning btn-sm" style="cursor: wait"><span
+                            class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Saving Customer
+                        Information...
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
