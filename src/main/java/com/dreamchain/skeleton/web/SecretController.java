@@ -14,38 +14,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/secret")
+
 public class SecretController {
 
-	@Autowired
-	UserService userService;
+	
 
-	@RequestMapping(value = "/info", method = RequestMethod.GET, headers="Accept=application/json")
-	public @ResponseBody
-	List<String> listAllUsers() {
-		BeforeAop boa=new BeforeAop();
-		ProxyFactoryBean pfb=new ProxyFactoryBean();
-		pfb.setTarget(userService);
-		pfb.addAdvice(boa);
+    @RequestMapping("/tables")
+    public ModelAndView main(HttpServletRequest request, HttpServletResponse response) throws FileNotFoundException, TransformerException, ParserConfigurationException {
+        ModelAndView model = new ModelAndView();
+        String pageName = "tables";
+        model.setViewName(pageName);
+        return model;
 
-		UserService userService1=(UserService)pfb.getObject();
-//		User user=userService1.get(301l);
-//		System.out.println(user.getName());
-
-
-		List<String> lst=new ArrayList<String>();
-//		User s=new User();
-//		s.setName("Babu");
-//		s.setEmail("BD");
-//
-//		User s1=new User();
-//		s1.setName("Babu1");
-//		s1.setEmail("BD1");
-
-		lst.add("ggg");
-//		lst.add(s1);
-
-		return lst;
-	}
-
+    }
 }
