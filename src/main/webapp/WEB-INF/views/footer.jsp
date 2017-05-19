@@ -1,6 +1,6 @@
 
 <!-- Jquery Core Js -->
-<script src="resources/node_modules/adminbsb/jquery/jquery.min.js"></script>
+<%--<script src="resources/node_modules/adminbsb/jquery/jquery.min.js"></script>--%>
 
 <!-- Bootstrap Core Js -->
 <script src="resources/node_modules/adminbsb/bootstrap/js/bootstrap.js"></script>
@@ -24,7 +24,7 @@
 <!-- ChartJs -->
 <script src="resources/node_modules/adminbsb/chartjs/Chart.bundle.js"></script>
 
-<!-- Flot Charts Plugin Js -->
+<%--<!-- Flot Charts Plugin Js -->--%>
 <script src="resources/node_modules/adminbsb/flot-charts/jquery.flot.js"></script>
 <script src="resources/node_modules/adminbsb/flot-charts/jquery.flot.resize.js"></script>
 <script src="resources/node_modules/adminbsb/flot-charts/jquery.flot.pie.js"></script>

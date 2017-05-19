@@ -21,7 +21,8 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
 
     <!-- Bootstrap Core Css -->
-    <link href="resources/node_modules/adminbsb/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <%--<link href="resources/node_modules/adminbsb/bootstrap/css/bootstrap.css" rel="stylesheet">--%>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
     <!-- Waves Effect Css -->
     <link href="resources/node_modules/adminbsb/node-waves/waves.css" rel="stylesheet" />
@@ -47,9 +48,25 @@
     <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2017.2.504/styles/kendo.material.mobile.min.css" />
 
 
-    <script src="resources/node_modules/adminbsb/jquery/jquery.min.js"></script>
-    <script src="https://kendo.cdn.telerik.com/2017.2.504/js/jquery.min.js"></script>
-    <script src="https://kendo.cdn.telerik.com/2017.2.504/js/kendo.all.min.js"></script>
+    <%--<script src="resources/node_modules/adminbsb/jquery/jquery.min.js"></script>--%>
+    <%--<script src="https://kendo.cdn.telerik.com/2017.2.504/js/jquery.min.js"></script>--%>
+    <%--<script src="https://kendo.cdn.telerik.com/2017.2.504/js/kendo.all.min.js"></script>--%>
+
+
+
+    <script type="text/ecmascript" src="resources/node_modules/jqGrid/js/jquery.min.js"></script>
+    <!-- We support more than 40 localizations -->
+    <script type="text/ecmascript" src="resources/node_modules/jqGrid/js/trirand/i18n/grid.locale-en.js"></script>
+    <!-- This is the Javascript file of jqGrid -->
+    <script type="text/ecmascript" src="resources/node_modules/jqGrid/js/trirand/jquery.jqGrid.min.js"></script>
+    <!-- A link to a Boostrap  and jqGrid Bootstrap CSS siles-->
+    <%--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">--%>
+    <link rel="stylesheet" type="text/css" media="screen" href="resources/node_modules/jqGrid/css/trirand/ui.jqgrid-bootstrap.css" />
+    <script>
+        $.jgrid.defaults.width = 780;
+        $.jgrid.defaults.responsive = true;
+        $.jgrid.defaults.styleUI = 'Bootstrap';
+    </script>
 
 
 </head>
@@ -503,7 +520,7 @@
                             <a href="resources/pages/tables/jquery-datatable.html">Jquery Datatables</a>
                         </li>
                         <li>
-                            <a href="tables">Editable Tables</a>
+                            <a href="company">Editable Tables</a>
                         </li>
                     </ul>
                 </li>

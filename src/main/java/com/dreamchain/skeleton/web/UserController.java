@@ -1,10 +1,8 @@
 package com.dreamchain.skeleton.web;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 import com.dreamchain.skeleton.model.User;
-import com.dreamchain.skeleton.permission.CheckLoggedInUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +11,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.dreamchain.skeleton.service.UserService;
@@ -33,6 +29,7 @@ public class UserController {
 
 
     static final String URL = "/user";
+
 
     @Autowired
     UserService userService;

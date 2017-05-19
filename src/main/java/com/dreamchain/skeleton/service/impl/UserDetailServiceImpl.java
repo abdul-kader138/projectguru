@@ -23,6 +23,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
 	@Autowired
 	private UserDao userDao;
 
+	static long userId;
+
 	@Override
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -36,6 +38,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 			GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(userName);
 			grantedAuthorities.add(grantedAuthority);
 		}
+		userId=user.getId();
 		return new User(user.getName(),user.getPassword(),true,true,true,true,grantedAuthorities,user.getName(),user.getEmail(),user.getRole(),user.getPhone(),user.getCreatedBy(),user.getUpdatedBy(),user.getCreatedOn(),user.getUpdatedOn());
 	}
 	
