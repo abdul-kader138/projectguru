@@ -14,6 +14,11 @@
 <!-- Waves Effect Plugin Js -->
 <script src="resources/node_modules/adminbsb/node-waves/waves.js"></script>
 
+<script src="resources/node_modules/adminbsb/autosize/autosize.js"></script>
+
+<!-- Moment Plugin Js -->
+<script src="resources/node_modules/adminbsb/momentjs/moment.js"></script>
+
 <!-- Jquery CountTo Plugin Js -->
 <script src="resources/node_modules/adminbsb/jquery-countto/jquery.countTo.js"></script>
 
@@ -23,6 +28,9 @@
 
 <!-- ChartJs -->
 <script src="resources/node_modules/adminbsb/chartjs/Chart.bundle.js"></script>
+
+
+<script src="resources/node_modules/adminbsb/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
 
 <%--<!-- Flot Charts Plugin Js -->--%>
 <script src="resources/node_modules/adminbsb/flot-charts/jquery.flot.js"></script>
@@ -38,8 +46,13 @@
 <script src="resources/node_modules/adminbsb/js/admin.js"></script>
 <script src="resources/node_modules/adminbsb/js/pages/index.js"></script>
 
+<script src="resources/node_modules/js/pages/forms/basic-form-elements.js"></script>
+
 <!-- Demo Js -->
 <script src="resources/node_modules/adminbsb/js/demo.js"></script>
+
+<%--<script src="resources/node_modules/materialize/js/materialize.min.js"></script>--%>
+
 </body>
 
 </html>

@@ -2,57 +2,84 @@
 <section class="content">
     <div class="container-fluid">
 
-            <div style="margin-left:20px" class="row clearfix">
-                <table id="jqGrid"></table>
-                <div id="jqGridPager"></div>
+        <div class="row clearfix">
 
+            <table id="example" class="display" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Name</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>id</th>
+                    <th>Name</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
 
-                <br/><br/>
-
-                <input class="btn btn-default" type="button" value="Select row  with ID 1014" onclick="selectRow()" />&nbsp;
-                <input class="btn btn-default" type="button" value="Get Selected Row" onclick="getSelectedRow()" />
-
-                <br/><br/>
+            <div class="row clearfix">
+                <%--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">--%>
+                <div class="col-xs-6 col-xs-offset-3">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Company Setup</h2>
+                        </div>
+                        <div class="body">
+                            <form id="form_validation" method="POST">
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="text" class="form-control" name="name" required>
+                                        <label class="form-label">Name</label>
+                                    </div>
+                                </div>
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <textarea name="description" cols="30" rows="5" class="form-control no-resize"
+                                                  required></textarea>
+                                        <label class="form-label">Address</label>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary waves-effect" type="submit">SUBMIT</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+
 
 
         <script type="text/javascript">
 
+
             $(document).ready(function () {
-                $("#jqGrid").jqGrid({
-                    url: 'http://localhost:8080/companyList',
-                    datatype: "json",
-                    colModel: [
-                        { label: 'ID', name: 'id', width: 45, key: true },
-                        { label: 'Company Name', name: 'name', width: 75 },
+
+                var data;
+                $('#example').DataTable({
+                    "sAjaxSource": "http://localhost:8080/companyList",
+                    "sAjaxDataProp": "",
+                    "order": [[0, "asc"]],
+                    "aoColumns": [
+                        {"mData": "id"},
+                        {"mData": "name"}
                     ],
-                    loadonce: true,
-                    viewrecords: true,
-                    width: 780,
-                    height: 200,
-                    rowNum: 20,
-                    rowList : [20,30,50],
-                    pager: "#jqGridPager"
+                    "cache": false,
+                    "bPaginate": true,
+                    "bLengthChange": true,
+                    "bFilter": true,
+                    "bInfo": true,
+                    "bAutoWidth": true,
+                    "bScrollY": true
+
                 });
             });
 
-            function getSelectedRow() {
-                var grid = $("#jqGrid");
-                var rowKey = grid.jqGrid('getGridParam',"selrow");
-
-                if (rowKey)
-                    alert("Selected row primary key is: " + rowKey);
-                else
-                    alert("No rows are selected");
-            }
-
-
-            function selectRow() {
-                jQuery('#jqGrid').jqGrid('setSelection','1014');
-            }
 
         </script>
-        </div>
+    </div>
 
 
 </section>
