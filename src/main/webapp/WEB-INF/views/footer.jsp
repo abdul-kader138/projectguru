@@ -11,8 +11,14 @@
 <!-- Slimscroll Plugin Js -->
 <script src="resources/node_modules/adminbsb/jquery-slimscroll/jquery.slimscroll.js"></script>
 
+
+<script src="resources/node_modules/adminbsb/bootstrap-notify/bootstrap-notify.js"></script>
+
 <!-- Waves Effect Plugin Js -->
 <script src="resources/node_modules/adminbsb/node-waves/waves.js"></script>
+
+
+<script src="resources/node_modules/adminbsb/sweetalert/sweetalert.min.js"></script>
 
 <script src="resources/node_modules/adminbsb/autosize/autosize.js"></script>
 
@@ -46,13 +52,14 @@
 <script src="resources/node_modules/adminbsb/js/admin.js"></script>
 <script src="resources/node_modules/adminbsb/js/pages/index.js"></script>
 
-<script src="resources/node_modules/js/pages/forms/basic-form-elements.js"></script>
+<script src="resources/node_modules/adminbsb/js/pages/forms/basic-form-elements.js"></script>
+
+<script src="resources/node_modules/adminbsb/js/pages/ui/dialogs.js"></script>
 
 <!-- Demo Js -->
 <script src="resources/node_modules/adminbsb/js/demo.js"></script>
 
 <%--<script src="resources/node_modules/materialize/js/materialize.min.js"></script>--%>
-
 </body>
 
 </html>

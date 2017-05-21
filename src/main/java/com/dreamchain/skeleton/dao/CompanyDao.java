@@ -10,9 +10,9 @@ import java.util.List;
 public interface CompanyDao   {
 
     Company get(Long id);
-    void save(Company user);
-    void update(Company user);
-    void delete(long companyId);
+    Long save(Company company);
+    void update(Company company);
+    void delete(Company company);
     List<Company> findAll();
     Company findByCompanyName(String companyName);
 

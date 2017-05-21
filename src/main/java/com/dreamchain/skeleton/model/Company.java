@@ -19,6 +19,10 @@ public class Company {
 
     private String name;
 
+    private String address;
+
+
+
     @Column
     private long createdBy;
 
@@ -52,6 +56,14 @@ public class Company {
         this.name = name;
     }
 
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public long getVersion() {
         return version;

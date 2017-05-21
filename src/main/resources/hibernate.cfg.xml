@@ -7,5 +7,6 @@
 		<mapping class="com.dreamchain.skeleton.model.User"></mapping>
 		<mapping class="com.dreamchain.skeleton.model.Customer"></mapping>
 		<mapping class="com.dreamchain.skeleton.model.Order"></mapping>
+		<mapping class="com.dreamchain.skeleton.model.Company"></mapping>
 	</session-factory>
 </hibernate-configuration>

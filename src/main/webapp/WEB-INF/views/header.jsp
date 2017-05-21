@@ -12,12 +12,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>Welcome To | Bootstrap Based Admin Template - Material Design</title>
+    <title>Welcome To | Paragon Solutions</title>
     <!-- Favicon-->
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet"
+          type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
 
     <!-- Bootstrap Core Css -->
@@ -26,32 +27,34 @@
     <link rel="stylesheet" type="text/css" href="resources/node_modules/datatable/jquery.dataTables.min.css">
 
     <!-- Waves Effect Css -->
-    <link href="resources/node_modules/adminbsb/node-waves/waves.css" rel="stylesheet" />
+    <link href="resources/node_modules/adminbsb/node-waves/waves.css" rel="stylesheet"/>
 
     <!-- Animation Css -->
-    <link href="resources/node_modules/adminbsb/animate-css/animate.css" rel="stylesheet" />
+    <link href="resources/node_modules/adminbsb/animate-css/animate.css" rel="stylesheet"/>
 
-    <link href="resources/node_modules/adminbsb/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <link href="resources/node_modules/adminbsb/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
+          rel="stylesheet"/>
+
+    <link href="resources/node_modules/adminbsb/sweetalert/sweetalert.css" rel="stylesheet" />
 
     <!-- Morris Chart Css-->
-    <link href="resources/node_modules/adminbsb/morrisjs/morris.css" rel="stylesheet" />
+    <link href="resources/node_modules/adminbsb/morrisjs/morris.css" rel="stylesheet"/>
 
-    <link href="resources/node_modules/adminbsb/waitme/waitMe.css" rel="stylesheet" />
+    <link href="resources/node_modules/adminbsb/waitme/waitMe.css" rel="stylesheet"/>
 
-    <link href="resources/node_modules/adminbsb/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    <link href="resources/node_modules/adminbsb/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
 
     <!-- Custom Css -->
     <link href="resources/node_modules/adminbsb/css/style.css" rel="stylesheet">
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
-    <link href="resources/node_modules/adminbsb/css/themes/all-themes.css" rel="stylesheet" />
+    <link href="resources/node_modules/adminbsb/css/themes/all-themes.css" rel="stylesheet"/>
 
 
     <script src="resources/node_modules/datatable/jquery.js"></script>
 
 
     <script type="text/ecmascript" src="resources/node_modules/datatable/jquery.dataTables.min.js"></script>
-
 
 
 </head>
@@ -83,6 +86,7 @@
         <i class="material-icons">search</i>
     </div>
     <input type="text" placeholder="START TYPING...">
+
     <div class="close-search">
         <i class="material-icons">close</i>
     </div>
@@ -92,14 +96,16 @@
 <nav class="navbar">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
+            <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse"
+               data-target="#navbar-collapse" aria-expanded="false"></a>
             <a href="javascript:void(0);" class="bars"></a>
-            <a class="navbar-brand" href="index.html">ADMINBSB - MATERIAL DESIGN</a>
+            <a class="navbar-brand" href="index.html">Paragon Solutions - Issue Tracker</a>
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
                 <!-- Call Search -->
-                <li><a href="javascript:void(0);" class="js-search" data-close="true"><i class="material-icons">search</i></a></li>
+                <li><a href="javascript:void(0);" class="js-search" data-close="true"><i
+                        class="material-icons">search</i></a></li>
                 <!-- #END# Call Search -->
                 <!-- Notifications -->
                 <li class="dropdown">
@@ -118,6 +124,7 @@
                                         </div>
                                         <div class="menu-info">
                                             <h4>12 new members joined</h4>
+
                                             <p>
                                                 <i class="material-icons">access_time</i> 14 mins ago
                                             </p>
@@ -131,6 +138,7 @@
                                         </div>
                                         <div class="menu-info">
                                             <h4>4 sales made</h4>
+
                                             <p>
                                                 <i class="material-icons">access_time</i> 22 mins ago
                                             </p>
@@ -144,6 +152,7 @@
                                         </div>
                                         <div class="menu-info">
                                             <h4><b>Nancy Doe</b> deleted account</h4>
+
                                             <p>
                                                 <i class="material-icons">access_time</i> 3 hours ago
                                             </p>
@@ -157,6 +166,7 @@
                                         </div>
                                         <div class="menu-info">
                                             <h4><b>Nancy</b> changed name</h4>
+
                                             <p>
                                                 <i class="material-icons">access_time</i> 2 hours ago
                                             </p>
@@ -170,6 +180,7 @@
                                         </div>
                                         <div class="menu-info">
                                             <h4><b>John</b> commented your post</h4>
+
                                             <p>
                                                 <i class="material-icons">access_time</i> 4 hours ago
                                             </p>
@@ -183,6 +194,7 @@
                                         </div>
                                         <div class="menu-info">
                                             <h4><b>John</b> updated status</h4>
+
                                             <p>
                                                 <i class="material-icons">access_time</i> 3 hours ago
                                             </p>
@@ -196,6 +208,7 @@
                                         </div>
                                         <div class="menu-info">
                                             <h4>Settings updated</h4>
+
                                             <p>
                                                 <i class="material-icons">access_time</i> Yesterday
                                             </p>
@@ -227,7 +240,8 @@
                                             <small>32%</small>
                                         </h4>
                                         <div class="progress">
-                                            <div class="progress-bar bg-pink" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width: 32%">
+                                            <div class="progress-bar bg-pink" role="progressbar" aria-valuenow="85"
+                                                 aria-valuemin="0" aria-valuemax="100" style="width: 32%">
                                             </div>
                                         </div>
                                     </a>
@@ -239,7 +253,8 @@
                                             <small>45%</small>
                                         </h4>
                                         <div class="progress">
-                                            <div class="progress-bar bg-cyan" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+                                            <div class="progress-bar bg-cyan" role="progressbar" aria-valuenow="85"
+                                                 aria-valuemin="0" aria-valuemax="100" style="width: 45%">
                                             </div>
                                         </div>
                                     </a>
@@ -251,7 +266,8 @@
                                             <small>54%</small>
                                         </h4>
                                         <div class="progress">
-                                            <div class="progress-bar bg-teal" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width: 54%">
+                                            <div class="progress-bar bg-teal" role="progressbar" aria-valuenow="85"
+                                                 aria-valuemin="0" aria-valuemax="100" style="width: 54%">
                                             </div>
                                         </div>
                                     </a>
@@ -263,7 +279,8 @@
                                             <small>65%</small>
                                         </h4>
                                         <div class="progress">
-                                            <div class="progress-bar bg-orange" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width: 65%">
+                                            <div class="progress-bar bg-orange" role="progressbar" aria-valuenow="85"
+                                                 aria-valuemin="0" aria-valuemax="100" style="width: 65%">
                                             </div>
                                         </div>
                                     </a>
@@ -275,7 +292,8 @@
                                             <small>92%</small>
                                         </h4>
                                         <div class="progress">
-                                            <div class="progress-bar bg-purple" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width: 92%">
+                                            <div class="progress-bar bg-purple" role="progressbar" aria-valuenow="85"
+                                                 aria-valuemin="0" aria-valuemax="100" style="width: 92%">
                                             </div>
                                         </div>
                                     </a>
@@ -288,7 +306,8 @@
                     </ul>
                 </li>
                 <!-- #END# Tasks -->
-                <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">more_vert</i></a></li>
+                <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i
+                        class="material-icons">more_vert</i></a></li>
             </ul>
         </div>
     </div>
@@ -300,11 +319,11 @@
         <!-- User Info -->
         <div class="user-info">
             <div class="image">
-                <img src="resources/images/user.png" width="48" height="48" alt="User" />
+                <img src="resources/images/user.png" width="48" height="48" alt="User"/>
             </div>
             <div class="info-container">
                 <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Abdul Kader</div>
-                <div class="email">john.doe@example.com</div>
+                <div class="email">admin@domain.com</div>
                 <div class="btn-group user-helper-dropdown">
                     <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                     <ul class="dropdown-menu pull-right">
@@ -662,7 +681,7 @@
         <!-- Footer -->
         <div class="legal">
             <div class="copyright">
-                &copy; 2016 <a href="javascript:void(0);">AdminBSB - Material Design</a>.
+                &copy; 2017 <a href="javascript:void(0);">Paragon Solutions</a>.
             </div>
             <div class="version">
                 <b>Version: </b> 1.0.4
@@ -768,12 +787,14 @@
                     <ul class="setting-list">
                         <li>
                             <span>Report Panel Usage</span>
+
                             <div class="switch">
                                 <label><input type="checkbox" checked><span class="lever"></span></label>
                             </div>
                         </li>
                         <li>
                             <span>Email Redirect</span>
+
                             <div class="switch">
                                 <label><input type="checkbox"><span class="lever"></span></label>
                             </div>
@@ -783,12 +804,14 @@
                     <ul class="setting-list">
                         <li>
                             <span>Notifications</span>
+
                             <div class="switch">
                                 <label><input type="checkbox" checked><span class="lever"></span></label>
                             </div>
                         </li>
                         <li>
                             <span>Auto Updates</span>
+
                             <div class="switch">
                                 <label><input type="checkbox" checked><span class="lever"></span></label>
                             </div>
@@ -798,12 +821,14 @@
                     <ul class="setting-list">
                         <li>
                             <span>Offline</span>
+
                             <div class="switch">
                                 <label><input type="checkbox"><span class="lever"></span></label>
                             </div>
                         </li>
                         <li>
                             <span>Location Permission</span>
+
                             <div class="switch">
                                 <label><input type="checkbox" checked><span class="lever"></span></label>
                             </div>

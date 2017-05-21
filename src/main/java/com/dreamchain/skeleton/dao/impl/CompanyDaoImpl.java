@@ -24,23 +24,23 @@ public class CompanyDaoImpl implements CompanyDao {
     }
 
     @Override
-    public void save(Company company) {
-      hibernateTemplate.save(company);
+    public Long save(Company company) {
+        return (Long)  hibernateTemplate.save(company);
     }
 
     @Override
     public void update(Company company) {
-
+        hibernateTemplate.merge(company);
     }
 
     @Override
-    public void delete(long companyId) {
-
+    public void delete(Company company) {
+       hibernateTemplate.delete(company);
     }
 
     @Override
     public List<Company> findAll() {
-        return null;
+        return hibernateTemplate.loadAll(Company.class);
     }
 
     @Override
