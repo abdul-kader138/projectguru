@@ -2,7 +2,6 @@ package com.dreamchain.skeleton.dao.impl;
 
 import com.dreamchain.skeleton.dao.CompanyDao;
 import com.dreamchain.skeleton.model.Company;
-import com.dreamchain.skeleton.model.User;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;

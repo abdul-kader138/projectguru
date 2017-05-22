@@ -1,11 +1,10 @@
 package com.dreamchain.skeleton.model;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
 import java.util.Date;
-
-/**
- * Created by LAPTOP DREAM on 5/19/2017.
- */
 
 @Entity
 public class Company {
@@ -17,8 +16,13 @@ public class Company {
     @Version
     private long version;
 
+
+    @NotEmpty
+    @Length(max = 60)
     private String name;
 
+    @NotEmpty
+    @Length(max = 150)
     private String address;
 
 

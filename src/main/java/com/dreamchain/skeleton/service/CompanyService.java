@@ -13,9 +13,8 @@ public interface CompanyService {
 
     Company get(Long id);
     Map<String,Object> save(String companyName,String address) throws Exception;
-    Map<String,Object> update(Company company) throws ParseException;
+    Map<String,Object> update(Map<String, String>  companyObj) throws ParseException;
     String delete(Long companyId);
-    Company findByCompanyName(String companyName);
     List<Company> findAll();
 
 }

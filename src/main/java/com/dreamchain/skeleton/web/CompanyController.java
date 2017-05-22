@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-//@RequestMapping(CompanyController.URL)
 @PropertySource("classpath:config.properties")
 public class CompanyController {
 
@@ -63,142 +62,59 @@ public class CompanyController {
     }
 
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST, consumes = "application/json", headers = "content-type=application/x-www-form-urlencoded")
+    @RequestMapping(value = "company/save", method = RequestMethod.POST, consumes = "application/json", headers = "content-type=application/x-www-form-urlencoded")
     public
     @ResponseBody
     Map saveCompany(@RequestBody Map<String, String> companyInfo, HttpSession httpSession) throws Exception {
         Map<String, Object> objList = new HashMap<>();
         String successMsg = "";
         String validationError = "";
-        String invalidUserError = "";
-        Company company = new Company();
         logger.info("creating new company: >>");
         objList = companyService.save(companyInfo.get("name"), companyInfo.get("address"));
-        validationError = (String) objList.get("validationMsg");
+        validationError = (String) objList.get("validationError");
         if (validationError.length() == 0) {
-            company = (Company) objList.get("company");
+            objList.put("successMsg", environment.getProperty("company.save.success.msg"));
             successMsg = environment.getProperty("company.save.success.msg");
         }
-        logger.info("creating new company: << " + successMsg + invalidUserError + invalidUserError);
-        return createServerResponse(successMsg, validationError, invalidUserError, company);
+        logger.info("creating new company: << " + successMsg + validationError);
+        return objList;
     }
 
 
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "company/delete", method = RequestMethod.POST)
     public
     @ResponseBody
-    Map deleteCompany(@RequestBody String id, HttpSession httpSession) throws ParseException {
+    Map deleteCompany(@RequestBody Map<String, String> companyInfo, HttpSession httpSession) throws ParseException {
+        HashMap serverResponse = new HashMap();
         String successMsg = "";
         String validationError = "";
-        String invalidUserError = "";
         logger.info("Delete Company:  >> ");
-        validationError = companyService.delete(Long.parseLong(id));
+        validationError = companyService.delete(Long.parseLong(companyInfo.get("id")));
         if (validationError.length() == 0) successMsg = environment.getProperty("company.delete.success.msg");
         logger.info("Delete Company:  << " + successMsg + validationError);
-        return createServerResponse(successMsg, validationError, invalidUserError, null);
-    }
-
-
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    Map updateCompany(@RequestBody Company companyObj, HttpSession httpSession) throws ParseException {
-        String successMsg = "";
-        String validationError = "";
-        String invalidUserError = "";
-        Map<String, Object> objList = new HashMap<>();
-        Company company = new Company();
-        logger.info("Updating Company: >>");
-        objList = companyService.update(companyObj);
-        validationError = (String) objList.get("validationMsg");
-        if (validationError.length() == 0) successMsg = environment.getProperty("company.update.success.msg");
-        company = (Company) objList.get("company");
-        logger.info("Updating Company:  << " + successMsg + validationError + invalidUserError);
-        return createServerResponse(successMsg, validationError, invalidUserError, company);
-    }
-
-
-    private Map createServerResponse(String successMsg, String validationError, String invalidUserError, Company company) {
-        HashMap serverResponse = new HashMap();
         serverResponse.put("successMsg", successMsg);
         serverResponse.put("validationError", validationError);
-        serverResponse.put("invalidUserError", invalidUserError);
-        serverResponse.put("company", company);
         return serverResponse;
-
     }
 
-    @RequestMapping(value = "/companyList1", method = RequestMethod.GET)
+
+    @RequestMapping(value = "company/update", method = RequestMethod.POST)
     public
     @ResponseBody
-    List<Company> loadCompanyList1(HttpSession httpSession) {
-
-        logger.info("Loading all company info: >> ");
-
-        List companyList = new ArrayList();
-
-        Company company = new Company();
-        company.setId(1);
-        company.setName("Paragon Poultry Limited");
-
-
-        Company company1 = new Company();
-        company1.setId(2);
-        company1.setName("Paragon Poultry-1 Limited");
-
-
-        Company company2 = new Company();
-        company2.setId(3);
-        company2.setName("Paragon Poultry-2 Limited");
-
-        Company company3 = new Company();
-        company3.setId(4);
-        company3.setName("Paragon Poultry-3 Limited");
-
-        Company company4 = new Company();
-        company4.setId(4);
-        company4.setName("Paragon Poultry-4 Limited");
-
-        Company company5 = new Company();
-        company5.setId(4);
-        company5.setName("Paragon Poultry-5 Limited");
-
-        Company company6 = new Company();
-        company6.setId(4);
-        company6.setName("Paragon Poultry-6 Limited");
-
-        Company company7 = new Company();
-        company7.setId(4);
-        company7.setName("Paragon Poultry-7 Limited");
-
-        Company company8 = new Company();
-        company8.setId(4);
-        company8.setName("Paragon Poultry-8 Limited");
-
-        Company company9 = new Company();
-        company9.setId(4);
-        company9.setName("Paragon Poultry-9 Limited");
-
-        Company company10 = new Company();
-        company10.setId(4);
-        company10.setName("Paragon Poultry-3 Limited");
-
-        companyList.add(company);
-        companyList.add(company1);
-        companyList.add(company2);
-        companyList.add(company4);
-        companyList.add(company5);
-        companyList.add(company6);
-        companyList.add(company7);
-        companyList.add(company8);
-        companyList.add(company9);
-        companyList.add(company10);
-
-
-//        boolean isLoggedUserInvalid = checkLoggedInUserExistence(httpSession);
-//        if (!isLoggedUserInvalid)
-//            userList = userService.findAll(email);
-        logger.info("Loading all company info: << total " + companyList.size());
-        return companyList;
+    Map updateCompany(@RequestBody Map<String, String> companyObj, HttpSession httpSession) throws ParseException {
+        Map<String, Object> objList = new HashMap<>();
+        String successMsg = "";
+        String validationError = "";
+        logger.info("Updating Company: >>");
+        objList = companyService.update(companyObj);
+        validationError = (String) objList.get("validationError");
+        if (validationError.length() == 0) {
+            objList.put("successMsg", environment.getProperty("company.update.success.msg"));
+            successMsg = environment.getProperty("company.update.success.msg");
+        }
+        logger.info("Updating Company:  << " + successMsg + validationError);
+        return objList;
     }
+
+
 }

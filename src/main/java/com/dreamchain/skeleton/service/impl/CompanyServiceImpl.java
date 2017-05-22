@@ -2,14 +2,10 @@ package com.dreamchain.skeleton.service.impl;
 
 import com.dreamchain.skeleton.dao.CompanyDao;
 import com.dreamchain.skeleton.model.Company;
-import com.dreamchain.skeleton.model.User;
 import com.dreamchain.skeleton.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,35 +51,44 @@ public class CompanyServiceImpl implements CompanyService {
             newCompany=companyDao.get(companyId);
         }
         obj.put("company",newCompany);
-        obj.put("validationMsg",validationMsg);
+        obj.put("validationError",validationMsg);
         return obj;
 
 
     }
 
-    @Override
-    public Map<String,Object>  update(Company company) throws ParseException {
+    @Transactional
+    public Map<String,Object>  update(Map<String, String>  companyObj) throws ParseException {
         Map<String,Object> obj=new HashMap<>();
         String validationMsg = "";
+        Company company=new Company();
+        Company newObj=new Company();
+        company.setId(Long.parseLong(companyObj.get("id")));
+        company.setVersion(Long.parseLong(companyObj.get("version")));
+        company.setName(companyObj.get("name"));
+        company.setAddress(companyObj.get("address"));
         validationMsg = checkInput(company);
         Company existingCompany = companyDao.get(company.getId());
+        if (company.getId() == 0l && validationMsg == "") validationMsg = INVALID_INPUT;
         if (existingCompany.getName() == null && validationMsg == "") validationMsg = INVALID_COMPANY;
         if (company.getVersion() != existingCompany.getVersion() && validationMsg == "") validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg)) {
-            Company newObj=setUpdateCompanyValue(company, existingCompany);
+            newObj=setUpdateCompanyValue(company, existingCompany);
             companyDao.update(newObj);
         }
+        obj.put("company",newObj);
+        obj.put("validationError",validationMsg);
         return obj;
     }
 
 
 
-    @Override
+    @Transactional
     public String delete(Long companyId) {
         String validationMsg = "";
         if (companyId == 0l) validationMsg = INVALID_INPUT;
         Company company = companyDao.get(companyId);
-        if (company == null && validationMsg == "") validationMsg = INVALID_INPUT;
+        if (company == null && validationMsg == "") validationMsg = INVALID_COMPANY;
         if ("".equals(validationMsg)) {
             companyDao.delete(company);
         }
@@ -91,11 +96,6 @@ public class CompanyServiceImpl implements CompanyService {
 
     }
 
-
-    @Override
-    public Company findByCompanyName(String companyName) {
-        return  companyDao.findByCompanyName(companyName);
-    }
 
     @Override
     public List<Company> findAll() {
@@ -148,8 +148,8 @@ public class CompanyServiceImpl implements CompanyService {
         companyObj.setVersion(objFromUI.getVersion());
         companyObj.setName(objFromUI.getName());
         companyObj.setAddress(objFromUI.getAddress());
-        companyObj.setCreatedBy(companyObj.getCreatedBy());
-        companyObj.setCreatedOn(companyObj.getCreatedOn());
+        companyObj.setCreatedBy(existingCompany.getCreatedBy());
+        companyObj.setCreatedOn(existingCompany.getCreatedOn());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
         companyObj.setUpdatedBy(UserDetailServiceImpl.userId);

@@ -55,6 +55,8 @@
 
 
     <script type="text/ecmascript" src="resources/node_modules/datatable/jquery.dataTables.min.js"></script>
+    <link href="resources/node_modules/adminbsb/dialog/css/jquery.dialogbox.css" rel="stylesheet"/>
+    <script src="resources/node_modules/adminbsb/dialog/js/jquery.dialogBox.js"></script>
 
 
 </head>

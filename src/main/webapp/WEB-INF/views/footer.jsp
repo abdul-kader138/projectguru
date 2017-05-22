@@ -18,7 +18,7 @@
 <script src="resources/node_modules/adminbsb/node-waves/waves.js"></script>
 
 
-<script src="resources/node_modules/adminbsb/sweetalert/sweetalert.min.js"></script>
+<%--<script src="resources/node_modules/adminbsb/sweetalert/sweetalert.min.js"></script>--%>
 
 <script src="resources/node_modules/adminbsb/autosize/autosize.js"></script>
 
@@ -54,10 +54,18 @@
 
 <script src="resources/node_modules/adminbsb/js/pages/forms/basic-form-elements.js"></script>
 
-<script src="resources/node_modules/adminbsb/js/pages/ui/dialogs.js"></script>
+<%--<script src="resources/node_modules/adminbsb/js/pages/ui/dialogs.js"></script>--%>
+
+<%--<script src="resources/node_modules/adminbsb/dialog/js/jquery.dialogBox.js"></script>--%>
+
 
 <!-- Demo Js -->
 <script src="resources/node_modules/adminbsb/js/demo.js"></script>
+
+<script src="resources/node_modules/custom-js/custom.js"></script>
+
+<%--<script src="resources/node_modules/custom-js/app.js"></script>--%>
+<%--<script src="resources/node_modules/custom-js/controller.js"></script>--%>
 
 <%--<script src="resources/node_modules/materialize/js/materialize.min.js"></script>--%>
 </body>
