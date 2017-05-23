@@ -2,6 +2,15 @@
 <!-- Jquery Core Js -->
 <%--<script src="resources/node_modules/adminbsb/jquery/jquery.min.js"></script>--%>
 
+
+
+
+
+<script type="text/ecmascript" src="resources/node_modules/datatable/jquery.dataTables.min.js"></script>
+<script src="resources/node_modules/adminbsb/dialog/js/dialogbox.js"></script>
+<script src="resources/node_modules/adminbsb/dialog/ajax-loading.js"></script>
+
+
 <!-- Bootstrap Core Js -->
 <script src="resources/node_modules/adminbsb/bootstrap/js/bootstrap.js"></script>
 
@@ -52,7 +61,7 @@
 <script src="resources/node_modules/adminbsb/js/admin.js"></script>
 <script src="resources/node_modules/adminbsb/js/pages/index.js"></script>
 
-<script src="resources/node_modules/adminbsb/js/pages/forms/basic-form-elements.js"></script>
+<%--<script src="resources/node_modules/adminbsb/js/pages/forms/basic-form-elements.js"></script>--%>
 
 <%--<script src="resources/node_modules/adminbsb/js/pages/ui/dialogs.js"></script>--%>
 
@@ -69,6 +78,7 @@
 <%--<script src="resources/node_modules/custom-js/controller.js"></script>--%>
 
 <%--<script src="resources/node_modules/materialize/js/materialize.min.js"></script>--%>
+<script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.6/js/dataTables.checkboxes.min.js"></script>
 </body>
 
 </html>

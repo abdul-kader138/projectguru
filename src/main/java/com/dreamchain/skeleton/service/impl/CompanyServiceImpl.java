@@ -118,16 +118,6 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
 
-    // @check for duplicate name
-
-    private String checkForDuplicateName(String name) {
-        String msg = "";
-        Company duplicateObj = companyDao.findByCompanyName(name);
-        if (duplicateObj != null) msg = COMPANY_EXISTS;
-        return msg;
-    }
-
-
     // create company object for saving
 
     private Company createObjForSave(String name,String address) throws Exception {
