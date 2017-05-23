@@ -24,7 +24,7 @@
  		<security:intercept-url pattern="/secret/*"  access="hasRole('ROLE_USER')"  />
  		<security:intercept-url pattern="/home" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
  		<security:intercept-url pattern="/user" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
- 		<security:intercept-url pattern="/company/*" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
+ 		<security:intercept-url pattern="/company" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
 		<!--<security:intercept-url pattern="/customer" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />-->
 
 		

@@ -14,6 +14,13 @@
         color: yellow;
     }
 
+    #ajaxSpinnerContainer {
+        height: 11px;
+    }
+
+    #ajaxSpinnerImage {
+        display: none;
+    }
 </style>
 <section class="content">
     <div class="container-fluid">
@@ -35,23 +42,25 @@
                 </table>
                 <br/>
 
-                <button type="button" class="btn bg-grey waves-war" id="editCompany" value="1" title="Edit"> Edit<img
-                        src="resources/images/edit.gif" width="16" height="16" border="0">
+                <button type="button" class="btn bg-grey waves-war" id="editCompany" value="1" title="Edit"><img
+                        src="resources/images/edit.gif" width="16" height="16" border="0">&nbsp;Edit
                 </button>
                 &nbsp;
                 &nbsp;
-                <button type="button" class="btn bg-grey waves-war" id="deleteCompany" value="1" title="Delete">
-                    Delete<img
-                        src="resources/images/delete.gif" width="16" height="16" border="0">
+                <button type="button" class="btn bg-grey waves-war" id="deleteCompany" value="1" title="Delete"><img
+                        src="resources/images/delete.gif" width="16" height="16" border="0">&nbsp;Delete
+
                 </button>
                 &nbsp;
                 &nbsp;
-                <button type="button" class="btn bg-grey waves-war" id="refreshCompany" value="1" title="Refresh">
-                    Refresh<img
-                        src="resources/images/download.png" width="16" height="16" border="0">
+                <button type="button" class="btn bg-grey waves-war" id="delete1Company" value="1" title="Delete">
+                    <img
+                            src="resources/images/delete.gif" width="16" height="16" border="0">&nbsp;Refresh
                 </button>
                 &nbsp;<br/><br/>
             </div>
+
+
             <br/>
         </div>
 
@@ -64,41 +73,71 @@
         <%--start of save/update modal--%>
 
 
+        <div id="ajaxSpinnerContainer">
+            <img src="resources/images/loading-small.gif" id="ajaxSpinnerImage" title="working...">
+        </div>
+
         <div class="row clearfix" id="companyForm">
-            <div class="col-xs-6 col-xs-offset-3">
+            <div class="col-xs-8 col-xs-offset-2">
                 <div class="card">
                     <div class="header" style="background-color:#a5a5a5">
-                        <h2><strong>Company Setup</strong></h2>
+                        <h2><strong>&nbsp;</strong></h2>
                     </div>
                     <div class="body" style="border:solid; border-width: 1px; border-color:#a5a5a5;">
-                        <form id="form_validation" method="POST">
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                    <input type="hidden" class="form-control" id="id" name="id" required>
-                                    <input type="hidden" class="form-control" id="version" name="version" required>
-                                    <label class="form-label">Name</label>
-                                    <input type="text" class="form-control" id="name" name="name" required>
-                                    <span>error</span>
+                        <form class="form-horizontal">
+                            <fieldset>
 
+                                <!-- Form Name -->
+                                <legend><strong>Company Setting</strong></legend>
+
+                                <!-- Text input-->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="name">Name :</label>
+
+                                    <div class="col-md-6">
+                                        <input type="hidden" class="form-control" id="id" name="id" required>
+                                        <input type="hidden" class="form-control" id="version" name="version" required>
+                                        <input id="name" name="name" type="text" placeholder=""
+                                               class="form-control input-md"
+                                               style="border-color:#808080; border-width:1px; border-style:solid;"
+                                               required="">
+                                        <label id="nameValidation"  style="color:red; font-size: 11px;" class="form-control"></label>
+
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                    <label class="form-label">Address</label>
-                                        <textarea name="description" cols="20" rows="10" id="address"
-                                                  class="form-control no-resize"
-                                                  required></textarea>
 
+                                <!-- Textarea -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="address">Address :</label>
+
+                                    <div class="col-md-6">
+                                        <textarea id="address" class="form-control input-md"
+                                                  style="border-color:#808080; border-width:1px; border-style:solid;"
+                                                  name="address" rows="6" cols="20"></textarea>
+                                        <label id="addressValidation" style="color:red; font-size: 11px;" class="form-control"></label>
+                                    </div>
                                 </div>
-                            </div>
-                            <button class="btn btn-primary waves-effect" data-type="autoclose-timer" id="saveCompany"
-                                    type="button">Save
-                            </button>
-                            <button class="btn btn-primary waves-effect" data-type="autoclose-timer" id="updateCompany"
-                                    type="button">Update
-                            </button>
 
+                                <!-- Button -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="saveCompany"></label>
+
+                                    <div class="col-md-4">
+                                        <button id="saveCompany" name="saveCompany" class="btn btn-primary"
+                                                type="button">Save
+                                        </button>
+                                        <button id="updateCompany" name="saveCompany" class="btn btn-primary"
+                                                type="button">Update
+                                        </button>
+                                        <button id="resetCompany" name="resetCompany" class="btn bg-grey"
+                                                type="button">Reset
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </fieldset>
                         </form>
+
                     </div>
                 </div>
 
@@ -109,8 +148,11 @@
 
         <script type="text/javascript">
             $(document).ready(function () {
+                var loading = $.loading();
 
+                initFormValidationMsg();
                 initializeCompanyForm();
+                $("saveCompany").hide();
                 $("#updateCompany").hide();
                 var company;
 
@@ -145,42 +187,36 @@
                 });
 
 
-
                 // company Save
                 $("#saveCompany").click(function (event) {
+
+                    initFormValidationMsg();
+                    var part1 = "";
+                    var part2 = "";
+                    var icn = 0;
+                    var msg = "";
                     var company = new Object();
                     company.name = $("#name").val();
                     company.address = $("#address").val();
-                    $.ajax({
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        },
-                        'type': 'POST',
-                        'url': "http://localhost:8080/company/save",
-                        'data': JSON.stringify(company),
-                        'dataType': 'json',
-                        'success': function (d) {
-                            setMessage(d);
-                            initializeCompanyForm();
-                            window.location.href = "#viewTableData";
-                        }, 'error': function (error) {
-                            alert(getErrorMessage(error));
-                        }
-                    });
+                    console.log(formValidation());
+                    if (formValidation()) callAjaxForAddOperation(part1, part2, icn, msg, company,loading);
                 });
 
 
                 var table = $('#companyTable').DataTable();
 
+
+//
                 //company update
                 $('#editCompany').click(function () {
                     initializeCompanyForm();
+                    initFormValidationMsg();
                     var newCompany = new Object();
                     var newCompany = company;
 
                     if (newCompany == null) {
-                        alert('please select a record for corresponding operation');
+                        var data = 'please select a record to perform edit operation';
+                        showServerSideMessage(data, "", 0, "Message");
                     } else {
                         $("#updateCompany").show();
                         $("#saveCompany").hide();
@@ -193,37 +229,21 @@
                         window.location.href = "#companyForm";
                     }
 
+
                 });
 
 
                 $("#updateCompany").click(function (event) {
+                    var part1 = "";
+                    var part2 = "";
+                    var icn = 0;
+                    var msg = "Message";
                     var company = new Object();
                     company.id = $("#id").val();
                     company.version = $("#version").val();
                     company.name = $("#name").val();
                     company.address = $("#address").val();
-                    $.ajax({
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        },
-                        'type': 'POST',
-                        'url': "http://localhost:8080/company/update",
-                        'data': JSON.stringify(company),
-                        'dataType': 'json',
-                        'success': function (d) {
-                            initializeCompanyForm();
-                            setMessage(d);
-                            window.location.href = "#viewTableData";
-
-                        }, 'error': function (error) {
-                            initializeCompanyForm();
-                            alert(getErrorMessage(error));
-                            window.location.href = "#viewTableData";
-                        }
-                    });
-                    $("#updateCompany").hide();
-                    $("#saveCompany").show();
+                    if (formValidation()) callAjaxForEditOperation(part1, part2, icn, msg, company,loading);
 
                 });
 
@@ -235,42 +255,50 @@
                 $("#deleteCompany").click(function (event) {
                     var newCompany = new Object();
                     newCompany = company;
+                    var part1 = "";
+                    var part2 = "";
+                    var icn = 0;
+                    var msg = "Message";
                     if (newCompany == null) {
-                        alert('please select a record for corresponding operation');
+                        var data = 'please select a record to perform delete operation';
+                        showServerSideMessage(data, "", 0, "Message");
                     } else {
-                        $.ajax({
-                            headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json'
-                            },
-                            'type': 'POST',
-                            'url': "http://localhost:8080/company/delete",
-                            'data': JSON.stringify(newCompany),
-                            'dataType': 'json',
-                            'success': function (d) {
-                                initializeCompanyForm();
-                                setMessage(d);
-                                window.location.href = "#viewTableData";
-                            },
-                            'error': function (error) {
-                                alert(getErrorMessage(error));
-                            }
+                        $.dialogbox({
+                            type: 'msg',
+                            title: 'Confirm Title',
+                            content: 'Are You Sure,want to delete the record?',
+                            closeBtn: true,
+                            btn: ['Confirm', 'Cancel'],
+                            call: [
+                                function () {
+                                    $.dialogbox.close();
+                                    callAjaxForDeleteOperation(part1, part2, icn, msg, newCompany,loading);
+
+                                },
+                                function () {
+                                    $.dialogbox.close();
+                                }
+                            ]
                         });
+
+
+                        window.location.href = "#viewTableData";
                     }
+
                 });
+
+
+                function deleteDataRow(x) {
+                    var oData = $('#companyTable').dataTable();
+                    $("#companyTable").find("td:contains(" + x + ")").closest('tr').each(function () {
+                        oData.fnDeleteRow(this);
+                    });
+                };
 
                 ////
 
 
                 // Refresh Company
-
-                $("#refreshCompany").click(function (event) {
-                    $('#simple-dialogBox').dialogBox({
-                        content: 'dialog content text,image,html file'
-                    });
-
-                    alert("test");
-                });
 
 
                 // clicking on table row, save data to global var company
@@ -283,19 +311,191 @@
                 ////
 
 
-                // initialize form value
+                // Ajax call for delete operation
 
-                function initializeCompanyForm() {
-                    $("#name").val("");
-                    $("#address").val("");
+
+                function callAjaxForDeleteOperation(part1, part2, icn, msg, newCompany) {
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        'type': 'POST',
+                        'url': "http://localhost:8080/company/delete",
+                        'data': JSON.stringify(newCompany),
+                        'dataType': 'json',
+                        'success': function (d) {
+                            if (d.successMsg) {
+                                icn = 1;
+                                msg = "";
+                                part1 = d.successMsg;
+                                deleteDataRow(newCompany.id);
+                                showServerSideMessage(part1, part2, icn, msg);
+                            }
+                            if (d.validationError) {
+                                icn = 0;
+                                msg = '<strong style="color: red">Error</strong>';
+                                part2 = d.validationError;
+                                showServerSideMessage(part1, part2, icn, msg);
+                            }
+                        },
+                        'error': function (error) {
+                            icn = 0;
+                            msg = '<strong style="color: red">Error</strong>';
+                            showServerSideMessage(part1, getErrorMessage(error), icn, msg);
+                        }
+                    });
                 }
-
-                ////
-
 
 
             });
 
+
+            // Ajax call for edit operation
+
+
+            function callAjaxForEditOperation(part1, part2, icn, msg, company,obj) {
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    'type': 'POST',
+                    'url': "http://localhost:8080/company/update",
+                    'data': JSON.stringify(company),
+                    'dataType': 'json',
+                    'success': function (d) {
+                        if (d.successMsg) {
+                            icn = 1;
+                            part1 = d.successMsg;
+                            initializeCompanyForm();
+                            //  deleteDataRow(newCompany.id);
+                            window.location.href = "#viewTableData";
+                            $("#updateCompany").hide();
+                            $("#saveCompany").show();
+                            showServerSideMessage(part1, part2, icn, msg);
+                        }
+                        if (d.validationError) {
+                            icn = 0;
+                            msg = "";
+                            msg = '<strong style="color: red">Error</strong>';
+                            part2 = d.validationError;
+                            showServerSideMessage(part1, part2, icn, msg);
+                        }
+                    },
+                    'error': function (error) {
+                        icn = 0;
+                        msg = '<strong style="color: red">Error</strong>';
+                        showServerSideMessage(part1, getErrorMessage(error), icn, msg);
+                    }
+                });
+
+            }
+
+
+            // Ajax call for Add operation
+
+
+            function callAjaxForAddOperation(part1, part2, icn, msg, company,obj) {
+                obj.open();
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    'type': 'POST',
+                    'url': "http://localhost:8080/company/save",
+                    'data': JSON.stringify(company),
+                    'dataType': 'json',
+                    'success': function (d) {
+                        if (d.successMsg) {
+                            obj.close();
+                            icn = 1;
+                            msg = "";
+                            part1 = d.successMsg;
+                            initializeCompanyForm();
+                            window.location.href = "#viewTableData";
+                            showServerSideMessage(part1, part2, icn, msg);
+                        }
+                        if (d.validationError) {
+                            obj.close();
+                            icn = 0;
+                            msg = '<strong style="color: red">Error</strong>';
+                            part2 = d.validationError;
+                            showServerSideMessage(part1, part2, icn, msg);
+                        }
+                    },
+                    'error': function (error) {
+                        obj.close();
+                        icn = 0;
+                        msg = '<strong style="color: red">Error</strong>';
+                        showServerSideMessage(part1, getErrorMessage(error), icn, msg);
+                    }
+                });
+
+            }
+
+
+            // initialize form value
+
+            function initializeCompanyForm() {
+                $("#id").val("");
+                $("#version").val("");
+                $("#name").val("");
+                $("#address").val("");
+            }
+
+            ////
+
+
+            $('#resetCompany').on('click', function () {
+                initializeCompanyForm();
+                initFormValidationMsg();
+                $('#saveCompany').show();
+                $('#updateCompany').hide();
+
+            });
+
+            function showServerSideMessage(part1, part2, icn, msg) {
+                var messageData = part1 + part2;
+                $.dialogbox({
+                    type: 'msg',
+                    title: msg,
+                    icon: icn,
+                    content: messageData,
+                    btn: ['Ok'],
+                    call: [
+                        function () {
+                            $.dialogbox.close();
+                        }
+                    ]
+                });
+            }
+
+
+            function formValidation() {
+                var isValid = true;
+                var name = $("#name").val();
+                var address = $("#address").val();
+                console.log(name);
+                console.log(address);
+                console.log(address.length);
+                if (name == null || name.trim().length == 0) {
+                    $("#nameValidation").text("Name is required");
+                    isValid = false;
+                }
+                if ((address == null) || (address.trim().length) == 0) {
+                    $("#addressValidation").text("Address is required");
+                    isValid = false;
+                }
+                return isValid;
+            }
+
+
+            function initFormValidationMsg() {
+                $("#nameValidation").text("");
+                $("#addressValidation").text("");
+            }
 
         </script>
     </div>

@@ -64,6 +64,7 @@
 
 <script src="resources/node_modules/custom-js/custom.js"></script>
 
+
 <%--<script src="resources/node_modules/custom-js/app.js"></script>--%>
 <%--<script src="resources/node_modules/custom-js/controller.js"></script>--%>
 
