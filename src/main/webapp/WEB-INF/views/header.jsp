@@ -52,13 +52,13 @@
     <link href="resources/node_modules/adminbsb/css/themes/all-themes.css" rel="stylesheet"/>
 
 
+    <link href="resources/node_modules/adminbsb/dialog/css/dialogbox.css" rel="stylesheet"/>
+
+    <link href="resources/node_modules/custom-css/app.css" rel="stylesheet"/>
+    <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.6/css/dataTables.checkboxes.css" rel="stylesheet" />
+
     <script src="resources/node_modules/datatable/jquery.js"></script>
 
-
-    <script type="text/ecmascript" src="resources/node_modules/datatable/jquery.dataTables.min.js"></script>
-    <link href="resources/node_modules/adminbsb/dialog/css/dialogbox.css" rel="stylesheet"/>
-    <script src="resources/node_modules/adminbsb/dialog/js/dialogbox.js"></script>
-    <script src="resources/node_modules/adminbsb/dialog/ajax-loading.js"></script>
 
 
 </head>
