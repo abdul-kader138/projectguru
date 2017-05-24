@@ -15,7 +15,7 @@
 <script src="resources/node_modules/adminbsb/bootstrap/js/bootstrap.js"></script>
 
 <!-- Select Plugin Js -->
-<script src="resources/node_modules/adminbsb/bootstrap-select/js/bootstrap-select.js"></script>
+<%--<script src="resources/node_modules/adminbsb/bootstrap-select/js/bootstrap-select.js"></script>--%>
 
 <!-- Slimscroll Plugin Js -->
 <script src="resources/node_modules/adminbsb/jquery-slimscroll/jquery.slimscroll.js"></script>
@@ -78,7 +78,10 @@
 <%--<script src="resources/node_modules/custom-js/controller.js"></script>--%>
 
 <%--<script src="resources/node_modules/materialize/js/materialize.min.js"></script>--%>
-<script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.6/js/dataTables.checkboxes.min.js"></script>
+
+<script type="text/javascript" src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
+
+
 </body>
 
 </html>

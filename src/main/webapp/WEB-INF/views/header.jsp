@@ -43,7 +43,7 @@
 
     <link href="resources/node_modules/adminbsb/waitme/waitMe.css" rel="stylesheet"/>
 
-    <link href="resources/node_modules/adminbsb/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
+    <%--<link href="resources/node_modules/adminbsb/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>--%>
 
     <!-- Custom Css -->
     <link href="resources/node_modules/adminbsb/css/style.css" rel="stylesheet">
@@ -55,7 +55,7 @@
     <link href="resources/node_modules/adminbsb/dialog/css/dialogbox.css" rel="stylesheet"/>
 
     <link href="resources/node_modules/custom-css/app.css" rel="stylesheet"/>
-    <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.6/css/dataTables.checkboxes.css" rel="stylesheet" />
+    <link type="text/css" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css" rel="stylesheet" />
 
     <script src="resources/node_modules/datatable/jquery.js"></script>
 
@@ -382,7 +382,7 @@
                             </a>
                             <ul class="ml-menu">
                                 <li>
-                                    <a href="company">User Settings</a>
+                                    <a href="project">User Settings</a>
                                 </li>
                                 <%--<li>--%>
                                 <%--<a href="resources/pages/widgets/infobox/infobox-2.html">Infobox-2</a>--%>

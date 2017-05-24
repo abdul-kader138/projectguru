@@ -14,12 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +36,7 @@ public class CompanyController {
             LoggerFactory.getLogger(CompanyController.class.getName());
 
     @RequestMapping("/company")
-    public ModelAndView main(HttpServletRequest request, HttpServletResponse response) throws FileNotFoundException, TransformerException, ParserConfigurationException {
+    public ModelAndView main()  {
         ModelAndView model = new ModelAndView();
         String pageName = "company_test";
         model.setViewName(pageName);
@@ -52,7 +47,7 @@ public class CompanyController {
     @RequestMapping(value = "/companyList", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<Company> loadCompanyList(HttpSession httpSession) {
+    List<Company> loadCompanyList() {
 
         List<Company> companyList = new ArrayList();
         logger.info("Loading all company info: >> ");
@@ -65,7 +60,7 @@ public class CompanyController {
     @RequestMapping(value = "company/save", method = RequestMethod.POST, consumes = "application/json", headers = "content-type=application/x-www-form-urlencoded")
     public
     @ResponseBody
-    Map saveCompany(@RequestBody Map<String, String> companyInfo, HttpSession httpSession) throws Exception {
+    Map saveCompany(@RequestBody Map<String, String> companyInfo) throws Exception {
         Map<String, Object> objList = new HashMap<>();
         String successMsg = "";
         String validationError = "";
@@ -84,7 +79,7 @@ public class CompanyController {
     @RequestMapping(value = "company/delete", method = RequestMethod.POST)
     public
     @ResponseBody
-    Map deleteCompany(@RequestBody Map<String, String> companyInfo, HttpSession httpSession) throws ParseException {
+    Map deleteCompany(@RequestBody Map<String, String> companyInfo) throws ParseException {
         HashMap serverResponse = new HashMap();
         String successMsg = "";
         String validationError = "";
@@ -101,7 +96,7 @@ public class CompanyController {
     @RequestMapping(value = "company/update", method = RequestMethod.POST)
     public
     @ResponseBody
-    Map updateCompany(@RequestBody Map<String, String> companyObj, HttpSession httpSession) throws ParseException {
+    Map updateCompany(@RequestBody Map<String, String> companyObj) throws ParseException {
         Map<String, Object> objList = new HashMap<>();
         String successMsg = "";
         String validationError = "";

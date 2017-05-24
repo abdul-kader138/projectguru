@@ -19,6 +19,11 @@
                     </thead>
                 </table>
                 <br/>
+                <button type="button" class="btn bg-grey waves-war" id="moveToAdd" value="1" title="Edit"><img
+                        src="resources/images/add.png" width="16" height="16" border="0">&nbsp;Add New
+                </button>
+                &nbsp;
+                &nbsp;
 
                 <button type="button" class="btn bg-grey waves-war" id="editCompany" value="1" title="Edit"><img
                         src="resources/images/edit.gif" width="16" height="16" border="0">&nbsp;Edit
@@ -31,13 +36,11 @@
                 </button>
                 &nbsp;
                 &nbsp;
-                <button type="button" class="btn bg-grey waves-war" id="refreshCompany" value="1" title="Delete">
-                    <img
-                            src="resources/images/loading_small.gif" width="16" height="16" border="0">&nbsp;Refresh
-                </button>
+                <button type="button" class="btn bg-grey waves-war" id="refreshCompany" value="1" title="Delete"><img
+                        src="resources/images/refresh.png" width="16" height="16" border="0">&nbsp;Refresh</button>
+                &nbsp;<br/><br/>
                 &nbsp;<br/><br/>
             </div>
-
 
             <br/>
         </div>
@@ -128,7 +131,7 @@
                 initializeCompanyForm();
                 $("saveCompany").show();
                 $("#updateCompany").hide();
-                var company;
+                var companyGb;
 
 
                 /* populate Company list when page load */
@@ -173,7 +176,6 @@
                     var company = new Object();
                     company.name = $("#name").val();
                     company.address = $("#address").val();
-                    console.log(formValidation());
                     if (formValidation()) callAjaxForAddOperation(part1, part2, icn, msg, company);
                 });
 
@@ -184,7 +186,8 @@
                     initializeCompanyForm();
                     initFormValidationMsg();
                     var newCompany = new Object();
-                    var newCompany = company;
+                    var newCompany = companyGb;
+                    companyGb=null;
 
                     if (newCompany == null) {
                         var data = 'please select a record to perform edit operation';
@@ -222,7 +225,8 @@
 
                 $("#deleteCompany").click(function (event) {
                     var newCompany = new Object();
-                    newCompany = company;
+                    newCompany = companyGb;
+                    companyGb=null;
                     var part1 = "";
                     var part2 = "";
                     var icn = 0;
@@ -234,7 +238,7 @@
                         $.dialogbox({
                             type: 'msg',
                             title: 'Confirm Title',
-                            content: 'Are You Sure,want to delete the record?',
+                            content: 'Are You Sure,want to delete this record?',
                             closeBtn: true,
                             btn: ['Confirm', 'Cancel'],
                             call: [
@@ -259,13 +263,14 @@
                 /* DataTable select value send to global var */
 
                 $('#companyTable tbody').on('click', 'tr', function () {
-                    company = table.row(this).data();
+                    companyGb = table.row(this).data();
                 });
 
 
                 /* Initialize html form value  based on reset button*/
 
                 $('#resetCompany').on('click', function () {
+                    companyGb=null;
                     initializeCompanyForm();
                     initFormValidationMsg();
                     $('#saveCompany').show();
@@ -276,6 +281,7 @@
                 /* load table data on click refresh button*/
 
                 $('#refreshCompany').on('click', function () {
+                    companyGb=null;
                     table.ajax.url( 'http://localhost:8080/companyList' ).load();
                 });
 
@@ -355,6 +361,7 @@
                             showServerSideMessage(part1, getErrorMessage(error), icn, msg);
                         }
                     });
+                    company=null;
 
                 }
 
@@ -434,6 +441,33 @@
                     $("#addressValidation").text("");
                 }
 
+
+                /* move to add new company div*/
+
+                $('#moveToAdd').on('click', function () {
+                    companyGb=null;
+                    $("#updateCompany").hide();
+                    $("#saveCompany").show();
+                    window.location.href = "#companyForm";
+                });
+
+
+
+                /* Set new created company value to DataTable*/
+
+                function setNewDataTableValue(company,table) {
+                    table.row.add({
+                        "id": company.id,
+                        "name": company.name,
+                        "version": company.version,
+                        "address": company.address,
+                        "createdBy": company.createdBy,
+                        "createdOn": company.createdOn,
+                        "updatedBy": company.updatedBy,
+                        "updatedOn": company.updatedOn
+                    }).draw();
+
+                };
 
 
 
