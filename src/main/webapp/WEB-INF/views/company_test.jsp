@@ -37,7 +37,8 @@
                 &nbsp;
                 &nbsp;
                 <button type="button" class="btn bg-grey waves-war" id="refreshCompany" value="1" title="Delete"><img
-                        src="resources/images/refresh.png" width="16" height="16" border="0">&nbsp;Refresh</button>
+                        src="resources/images/refresh.png" width="16" height="16" border="0">&nbsp;Refresh
+                </button>
                 &nbsp;<br/><br/>
                 &nbsp;<br/><br/>
             </div>
@@ -108,7 +109,8 @@
                                         <button id="updateCompany" name="saveCompany" class="btn btn-primary"
                                                 type="button">Update
                                         </button>
-                                        <button id="resetCompany" name="resetCompany" class="btn bg-grey"
+                                        <button style="position: static" id="resetCompany" name="resetCompany"
+                                                class="btn bg-grey"
                                                 type="button">Reset
                                         </button>
                                     </div>
@@ -140,11 +142,21 @@
                     "sAjaxSource": "http://localhost:8080/companyList",
                     "sAjaxDataProp": "",
                     "order": [[0, "asc"]],
-                    "aoColumns": [
-                        {"mData": "id"},
-                        {"mData": "name"},
+                    'aoColumns': [
+                        {
+                            'sTitle': '',
+                            "sClass": "checkbox-column",
+                            'mData': 'id',
+                            'mRender': function (id) {
+                                return '<input class="getVal" style="position: static;"  type="checkbox" name="' + id + '" id="' + id + '">';
+                            },
+                            'sWidth': '15px',
+                            'bSortable': false
+                        },
+                        {"mData": "name",'sWidth': '200px'},
                         {"mData": "address"}
                     ],
+                    'aaSorting': [[0, 'asc']],
                     "columnDefs": [
                         {
 //                            "targets": [0],
@@ -158,7 +170,7 @@
                     "bFilter": true,
                     "bInfo": false,
                     "bAutoWidth": true,
-//                    "scrollY": 400,
+                    "scrollY": "400",
                     "scrollX": true
 
                 });
@@ -167,7 +179,6 @@
                 /* Save company data using ajax */
 
                 $("#saveCompany").click(function (event) {
-
                     initFormValidationMsg();
                     var part1 = "";
                     var part2 = "";
@@ -187,12 +198,12 @@
                     initFormValidationMsg();
                     var newCompany = new Object();
                     var newCompany = companyGb;
-                    companyGb=null;
+                    companyGb = null;
+                    var data = 'please select one record to perform edit operation.';
 
-                    if (newCompany == null) {
-                        var data = 'please select a record to perform edit operation';
-                        showServerSideMessage(data, "", 0, "Message");
-                    } else {
+                    if (checkForMultipleRowSelect()) showServerSideMessage(data, "", 0, "Message");
+                    else if (newCompany == null)showServerSideMessage(data, "", 0, "Message");
+                    else {
                         $("#updateCompany").show();
                         $("#saveCompany").hide();
                         $("#id").val(newCompany.id);
@@ -201,9 +212,8 @@
                         $("#address").val(newCompany.address);
                         window.location.href = "#companyForm";
                     }
-
-
                 });
+
                 var table = $('#companyTable').DataTable();
 
                 $("#updateCompany").click(function (event) {
@@ -226,15 +236,16 @@
                 $("#deleteCompany").click(function (event) {
                     var newCompany = new Object();
                     newCompany = companyGb;
-                    companyGb=null;
+                    companyGb = null;
                     var part1 = "";
                     var part2 = "";
                     var icn = 0;
                     var msg = "Message";
-                    if (newCompany == null) {
-                        var data = 'please select a record to perform delete operation';
-                        showServerSideMessage(data, "", 0, "Message");
-                    } else {
+                    var data = 'please select one record to perform delete operation.';
+
+                    if (checkForMultipleRowSelect()) showServerSideMessage(data, "", 0, "Message");
+                    else if (newCompany == null)showServerSideMessage(data, "", 0, "Message");
+                    else {
                         $.dialogbox({
                             type: 'msg',
                             title: 'Confirm Title',
@@ -249,10 +260,10 @@
                                 },
                                 function () {
                                     $.dialogbox.close();
+                                    uncheckedAllCheckBox();
                                 }
                             ]
                         });
-
 
                         window.location.href = "#viewTableData";
                     }
@@ -260,32 +271,37 @@
                 });
 
 
+
                 /* DataTable select value send to global var */
 
                 $('#companyTable tbody').on('click', 'tr', function () {
                     companyGb = table.row(this).data();
+                    var isChecked = $('#' + companyGb.id).is(":checked");
+                    if (isChecked == false) companyGb = null;
                 });
 
 
                 /* Initialize html form value  based on reset button*/
 
                 $('#resetCompany').on('click', function () {
-                    companyGb=null;
+                    companyGb = null;
                     initializeCompanyForm();
                     initFormValidationMsg();
                     $('#saveCompany').show();
                     $('#updateCompany').hide();
+                    uncheckedAllCheckBox();
                 });
+
 
 
                 /* load table data on click refresh button*/
 
                 $('#refreshCompany').on('click', function () {
-                    companyGb=null;
-                    table.ajax.url( 'http://localhost:8080/companyList' ).load();
+                    initializeCompanyForm();
+                    initFormValidationMsg();
+                    companyGb = null;
+                    table.ajax.url('http://localhost:8080/companyList').load();
                 });
-
-
 
 
                 /*  Ajax call for delete operation */
@@ -306,12 +322,13 @@
                                 msg = "";
                                 part1 = d.successMsg;
                                 showServerSideMessage(part1, part2, icn, msg);
-                                deleteDataRow(newCompany.id,"companyTable");
+                                table.ajax.url('http://localhost:8080/companyList').load();
                             }
                             if (d.validationError) {
                                 icn = 0;
                                 msg = '<strong style="color: red">Error</strong>';
                                 part2 = d.validationError;
+                                uncheckedAllCheckBox();
                                 showServerSideMessage(part1, part2, icn, msg);
                             }
                         },
@@ -341,17 +358,18 @@
                                 icn = 1;
                                 part1 = d.successMsg;
                                 initializeCompanyForm();
-                                //  deleteDataRow(newCompany.id);
                                 window.location.href = "#viewTableData";
                                 $("#updateCompany").hide();
                                 $("#saveCompany").show();
                                 showServerSideMessage(part1, part2, icn, msg);
+                                table.ajax.url('http://localhost:8080/companyList').load();
                             }
                             if (d.validationError) {
                                 icn = 0;
                                 msg = "";
                                 msg = '<strong style="color: red">Error</strong>';
                                 part2 = d.validationError;
+                                uncheckedAllCheckBox();
                                 showServerSideMessage(part1, part2, icn, msg);
                             }
                         },
@@ -361,7 +379,7 @@
                             showServerSideMessage(part1, getErrorMessage(error), icn, msg);
                         }
                     });
-                    company=null;
+                    company = null;
 
                 }
 
@@ -384,7 +402,7 @@
                                 msg = "";
                                 part1 = d.successMsg;
                                 initializeCompanyForm();
-                                setNewDataTableValue(d.company,table);
+                                setNewDataTableValue(d.company, table);
                                 window.location.href = "#viewTableData";
                                 showServerSideMessage(part1, part2, icn, msg);
                             }
@@ -415,7 +433,6 @@
                 }
 
 
-
                 /* html form Validation */
 
                 function formValidation() {
@@ -439,23 +456,24 @@
                 function initFormValidationMsg() {
                     $("#nameValidation").text("");
                     $("#addressValidation").text("");
+
                 }
 
 
                 /* move to add new company div*/
 
                 $('#moveToAdd').on('click', function () {
-                    companyGb=null;
+                    companyGb = null;
                     $("#updateCompany").hide();
                     $("#saveCompany").show();
+                    uncheckedAllCheckBox();
                     window.location.href = "#companyForm";
                 });
 
 
-
                 /* Set new created company value to DataTable*/
 
-                function setNewDataTableValue(company,table) {
+                function setNewDataTableValue(company, table) {
                     table.row.add({
                         "id": company.id,
                         "name": company.name,
@@ -468,7 +486,6 @@
                     }).draw();
 
                 };
-
 
 
             });

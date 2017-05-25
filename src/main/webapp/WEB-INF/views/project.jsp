@@ -12,7 +12,7 @@
                 <table id="projectTable" class="display nowrap" cellspacing="0" width="100%">
                     <thead>
                     <tr>
-                        <th>id</th>
+                        <th></th>
                         <th>Division Name</th>
                         <th>Company Name</th>
                     </tr>
@@ -140,11 +140,21 @@
                     "sAjaxSource": "http://localhost:8080/projectList",
                     "sAjaxDataProp": "",
                     "order": [[1, "asc"]],
-                    "aoColumns": [
-                        {"mData": "id"},
-                        {"mData": "name"},
+                    'aoColumns': [
+                        {
+                            'sTitle': '',
+                            "sClass": "checkbox-column",
+                            'mData': 'id',
+                            'mRender': function (id) {
+                                return '<input class="getVal" style="position: static;"  type="checkbox" name="' + id + '" id="' + id + '">';
+                            },
+                            'sWidth': '15px',
+                            'bSortable': false
+                        },
+                        {"mData": "name",'sWidth': '200px'},
                         {"mData": "company.name"}
                     ],
+                    'aaSorting': [[0, 'asc']],
                     "columnDefs": [
                         {
 //                            "targets": [0],
@@ -158,7 +168,7 @@
                     "bFilter": true,
                     "bInfo": false,
                     "bAutoWidth": true,
-//                    "scrollY": 400,
+                    "scrollY": "400",
                     "scrollX": true
 
                 });
@@ -211,13 +221,11 @@
                     initFormValidationMsg();
                     var project = new Object();
                     project = companyGb;
-                    companyGb = null;
-                    console.log(project);
+                    companyGb = null;var data = 'please select one record to perform edit operation.';
 
-                    if (project == null) {
-                        var data = 'please select a record to perform edit operation';
-                        showServerSideMessage(data, "", 0, "Message");
-                    } else {
+                    if (checkForMultipleRowSelect()) showServerSideMessage(data, "", 0, "Message");
+                    else if (project == null)showServerSideMessage(data, "", 0, "Message");
+                    else {
                         $("#updateProject").show();
                         $("#saveProject").hide();
                         $("#id").val(project.id);
@@ -226,8 +234,6 @@
                         $('#listOfCompany option:contains("' + project.company.name + '")').prop('selected', 'selected');
                         window.location.href = "#projectForm";
                     }
-
-
                 });
                 var table = $('#projectTable').DataTable();
 
@@ -242,8 +248,7 @@
                     project.name = $("#name").val();
                     project.companyId = $("#listOfCompany option:selected").val();
                     if (formValidation()) callAjaxForEditOperation(part1, part2, icn, msg, project);
-
-                });
+                    });
 
 
                 /* Delete project data using ajax */
@@ -256,10 +261,11 @@
                     var part2 = "";
                     var icn = 0;
                     var msg = "Message";
-                    if (project == null) {
-                        var data = 'please select a record to perform delete operation';
-                        showServerSideMessage(data, "", 0, "Message");
-                    } else {
+                    var data = 'please select one record to perform delete operation.';
+
+                    if (checkForMultipleRowSelect()) showServerSideMessage(data, "", 0, "Message");
+                    else if (project == null)showServerSideMessage(data, "", 0, "Message");
+                    else {
                         $.dialogbox({
                             type: 'msg',
                             title: 'Confirm Title',
@@ -270,18 +276,15 @@
                                 function () {
                                     $.dialogbox.close();
                                     callAjaxForDeleteOperation(part1, part2, icn, msg, project);
-
                                 },
                                 function () {
                                     $.dialogbox.close();
+                                    uncheckedAllCheckBox();
                                 }
                             ]
                         });
-
-
                         window.location.href = "#viewTableData";
                     }
-
                 });
 
 
@@ -289,6 +292,8 @@
 
                 $('#projectTable tbody').on('click', 'tr', function () {
                     companyGb = table.row(this).data();
+                    var isChecked = $('#' + companyGb.id).is(":checked");
+                    if (isChecked == false) companyGb = null;
                 });
 
 
@@ -300,12 +305,15 @@
                     initFormValidationMsg();
                     $('#saveProject').show();
                     $('#updateProject').hide();
+                    uncheckedAllCheckBox();
                 });
 
 
                 /* load table data on click refresh button*/
 
                 $('#refreshProject').on('click', function () {
+                    initializeProjectForm();
+                    initFormValidationMsg();
                     companyGb = null;
                     table.ajax.url('http://localhost:8080/projectList').load();
                 });
@@ -328,14 +336,14 @@
                                 icn = 1;
                                 msg = "";
                                 part1 = d.successMsg;
-                                console.log(project.id);
                                 showServerSideMessage(part1, part2, icn, msg);
-                                deleteDataRow(project.id, "projectTable");
+                                table.ajax.url('http://localhost:8080/projectList').load();
                             }
                             if (d.validationError) {
                                 icn = 0;
                                 msg = '<strong style="color: red">Error</strong>';
                                 part2 = d.validationError;
+                                uncheckedAllCheckBox();
                                 showServerSideMessage(part1, part2, icn, msg);
                             }
                         },
@@ -369,12 +377,14 @@
                                 $("#updateProject").hide();
                                 $("#saveProject").show();
                                 showServerSideMessage(part1, part2, icn, msg);
+                                table.ajax.url('http://localhost:8080/projectList').load();
                             }
                             if (d.validationError) {
                                 icn = 0;
                                 msg = "";
                                 msg = '<strong style="color: red">Error</strong>';
                                 part2 = d.validationError;
+                                uncheckedAllCheckBox();
                                 showServerSideMessage(part1, part2, icn, msg);
                             }
                         },
@@ -403,7 +413,6 @@
                         'dataType': 'json',
                         'success': function (d) {
                             if (d.successMsg) {
-                                console.log(d);
                                 icn = 1;
                                 msg = "";
                                 part1 = d.successMsg;
@@ -474,6 +483,7 @@
                     companyGb = null;
                     $("#updateProject").hide();
                     $("#saveProject").show();
+                    uncheckedAllCheckBox();
                     window.location.href = "#projectForm";
                 });
 
