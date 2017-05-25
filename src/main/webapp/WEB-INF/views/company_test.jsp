@@ -305,8 +305,8 @@
                                 icn = 1;
                                 msg = "";
                                 part1 = d.successMsg;
-                                deleteDataRow(newCompany.id,"companyTable");
                                 showServerSideMessage(part1, part2, icn, msg);
+                                deleteDataRow(newCompany.id,"companyTable");
                             }
                             if (d.validationError) {
                                 icn = 0;

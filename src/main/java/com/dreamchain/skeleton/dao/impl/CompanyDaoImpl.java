@@ -2,6 +2,7 @@ package com.dreamchain.skeleton.dao.impl;
 
 import com.dreamchain.skeleton.dao.CompanyDao;
 import com.dreamchain.skeleton.model.Company;
+import com.dreamchain.skeleton.model.Project;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -50,5 +52,16 @@ public class CompanyDaoImpl implements CompanyDao {
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         if(lst.size()==0)return new Company();
         return (Company)lst.get(0);
+    }
+
+    @Override
+    public List<Object> countOfCompany(long companyID) {
+        DetachedCriteria dcr= DetachedCriteria.forClass(Project.class);
+        Criterion cr = Restrictions.eq("company.id", companyID);
+        dcr.add(cr);
+        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
+        if(lst.size()==0)return new ArrayList<Object>();
+        return lst;
+
     }
 }

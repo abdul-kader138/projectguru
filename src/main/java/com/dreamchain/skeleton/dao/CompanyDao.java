@@ -13,6 +13,7 @@ public interface CompanyDao   {
     void delete(Company company);
     List<Company> findAll();
     Company findByCompanyName(String companyName);
+    List<Object> countOfCompany(long companyID);
 
 
 

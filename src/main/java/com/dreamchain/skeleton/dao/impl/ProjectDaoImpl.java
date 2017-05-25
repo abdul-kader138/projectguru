@@ -1,6 +1,7 @@
 package com.dreamchain.skeleton.dao.impl;
 
 import com.dreamchain.skeleton.dao.ProjectDao;
+import com.dreamchain.skeleton.model.Company;
 import com.dreamchain.skeleton.model.Project;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
@@ -9,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class ProjectDaoImpl implements ProjectDao {
@@ -51,4 +55,6 @@ public class ProjectDaoImpl implements ProjectDao {
         if(lst.size()==0)return new Project();
         return (Project)lst.get(0);
     }
+
+
 }

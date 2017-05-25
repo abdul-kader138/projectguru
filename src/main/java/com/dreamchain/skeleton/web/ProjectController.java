@@ -77,12 +77,13 @@ public class ProjectController {
     @RequestMapping(value = "project/delete", method = RequestMethod.POST)
     public
     @ResponseBody
-    Map deleteCompany(@RequestBody Map<String, String> projectInfo) throws ParseException {
+    Map deleteCompany(@RequestBody Map<String, Object> projectInfo) throws ParseException {
         HashMap serverResponse = new HashMap();
         String successMsg = "";
         String validationError = "";
         logger.info("Delete project:  >> ");
-        validationError = projectService.delete(Long.parseLong(projectInfo.get("id")));
+        Integer id=(Integer)projectInfo.get("id");
+        validationError = projectService.delete(id.longValue());
         if (validationError.length() == 0) successMsg = environment.getProperty("project.delete.success.msg");
         logger.info("Delete project:  << " + successMsg + validationError);
         serverResponse.put("successMsg", successMsg);

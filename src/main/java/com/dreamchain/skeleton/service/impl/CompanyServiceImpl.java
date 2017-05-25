@@ -1,6 +1,7 @@
 package com.dreamchain.skeleton.service.impl;
 
 import com.dreamchain.skeleton.dao.CompanyDao;
+import com.dreamchain.skeleton.dao.ProjectDao;
 import com.dreamchain.skeleton.model.Company;
 import com.dreamchain.skeleton.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class CompanyServiceImpl implements CompanyService {
     private static String INVALID_INPUT = "Invalid input";
     private static String INVALID_COMPANY = "Company not exists";
     private static String BACK_DATED_DATA = "Company data is old.Please try again with updated data";
+    private static String ASSOCIATED_COMPANY = "Company is tagged with projects.First remove tagging and try again";
 
 
     @Transactional(readOnly = true)
@@ -89,6 +91,8 @@ public class CompanyServiceImpl implements CompanyService {
         if (companyId == 0l) validationMsg = INVALID_INPUT;
         Company company = companyDao.get(companyId);
         if (company == null && validationMsg == "") validationMsg = INVALID_COMPANY;
+        List<Object> obj=companyDao.countOfCompany(companyId);
+        if (obj.size() > 0 && validationMsg == "") validationMsg = ASSOCIATED_COMPANY;
         if ("".equals(validationMsg)) {
             companyDao.delete(company);
         }

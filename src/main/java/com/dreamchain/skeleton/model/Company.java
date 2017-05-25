@@ -4,10 +4,15 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class Company {
+public class Company implements Serializable
+{
+
+
+    private static final long serialVersionUID = 8633415090390966715L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO )
