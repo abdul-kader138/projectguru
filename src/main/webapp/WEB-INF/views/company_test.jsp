@@ -106,7 +106,7 @@
                                         <button id="saveCompany" name="saveCompany" class="btn btn-primary"
                                                 type="button">Save
                                         </button>
-                                        <button id="updateCompany" name="saveCompany" class="btn btn-primary"
+                                        <button id="updateCompany" name="updateCompany" class="btn btn-primary"
                                                 type="button">Update
                                         </button>
                                         <button style="position: static" id="resetCompany" name="resetCompany"
@@ -139,7 +139,8 @@
                 /* populate Company list when page load */
 
                 $('#companyTable').DataTable({
-                    "sAjaxSource": "http://localhost:8080/companyList",
+                    "sAjaxSource": "http://localhost:8080/company/companyList",
+//                    "sAjaxSource": messageResource.get('company.list.load.url', 'configMessageForUI'),
                     "sAjaxDataProp": "",
                     "order": [[0, "asc"]],
                     'aoColumns': [
@@ -199,7 +200,7 @@
                     var newCompany = new Object();
                     var newCompany = companyGb;
                     companyGb = null;
-                    var data = 'please select one record to perform edit operation.';
+                    var data=messageResource.get('company.edit.validation.msg', 'configMessageForUI');
 
                     if (checkForMultipleRowSelect()) showServerSideMessage(data, "", 0, "Message");
                     else if (newCompany == null)showServerSideMessage(data, "", 0, "Message");
@@ -241,7 +242,7 @@
                     var part2 = "";
                     var icn = 0;
                     var msg = "Message";
-                    var data = 'please select one record to perform delete operation.';
+                    var data = messageResource.get('company.delete.validation.msg', 'configMessageForUI');
 
                     if (checkForMultipleRowSelect()) showServerSideMessage(data, "", 0, "Message");
                     else if (newCompany == null)showServerSideMessage(data, "", 0, "Message");
@@ -249,7 +250,7 @@
                         $.dialogbox({
                             type: 'msg',
                             title: 'Confirm Title',
-                            content: 'Are You Sure,want to delete this record?',
+                            content: messageResource.get('company.delete.confirm.msg', 'configMessageForUI'),
                             closeBtn: true,
                             btn: ['Confirm', 'Cancel'],
                             call: [
@@ -300,7 +301,7 @@
                     initializeCompanyForm();
                     initFormValidationMsg();
                     companyGb = null;
-                    table.ajax.url('http://localhost:8080/companyList').load();
+                    table.ajax.url(messageResource.get('company.list.load.url', 'configMessageForUI')).load();
                 });
 
 
@@ -313,7 +314,7 @@
                             'Content-Type': 'application/json'
                         },
                         'type': 'POST',
-                        'url': "http://localhost:8080/company/delete",
+                        'url': messageResource.get('company.delete.url', 'configMessageForUI'),
                         'data': JSON.stringify(newCompany),
                         'dataType': 'json',
                         'success': function (d) {
@@ -322,7 +323,7 @@
                                 msg = "";
                                 part1 = d.successMsg;
                                 showServerSideMessage(part1, part2, icn, msg);
-                                table.ajax.url('http://localhost:8080/companyList').load();
+                                table.ajax.url(messageResource.get('company.list.load.url', 'configMessageForUI')).load();
                             }
                             if (d.validationError) {
                                 icn = 0;
@@ -350,7 +351,7 @@
                             'Content-Type': 'application/json'
                         },
                         'type': 'POST',
-                        'url': "http://localhost:8080/company/update",
+                        'url': messageResource.get('company.edit.url', 'configMessageForUI'),
                         'data': JSON.stringify(company),
                         'dataType': 'json',
                         'success': function (d) {
@@ -362,7 +363,7 @@
                                 $("#updateCompany").hide();
                                 $("#saveCompany").show();
                                 showServerSideMessage(part1, part2, icn, msg);
-                                table.ajax.url('http://localhost:8080/companyList').load();
+                                table.ajax.url(messageResource.get('company.list.load.url', 'configMessageForUI')).load();
                             }
                             if (d.validationError) {
                                 icn = 0;
@@ -393,7 +394,7 @@
                             'Content-Type': 'application/json'
                         },
                         'type': 'POST',
-                        'url': "http://localhost:8080/company/save",
+                        'url': messageResource.get('company.save.url', 'configMessageForUI'),
                         'data': JSON.stringify(company),
                         'dataType': 'json',
                         'success': function (d) {
