@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +25,6 @@ import java.util.Map;
 public class CompanyController {
 
 
-    static final String URL = "/company";
     @Autowired
     CompanyService companyService;
     @Autowired
@@ -44,7 +42,7 @@ public class CompanyController {
 
     }
 
-    @RequestMapping(value = "/companyList", method = RequestMethod.GET)
+    @RequestMapping(value = "company/companyList", method = RequestMethod.GET)
     public
     @ResponseBody
     List<Company> loadCompanyList() {

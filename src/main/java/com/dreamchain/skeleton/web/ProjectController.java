@@ -42,7 +42,7 @@ public class ProjectController {
 
     }
 
-    @RequestMapping(value = "/projectList", method = RequestMethod.GET)
+    @RequestMapping(value = "project/projectList", method = RequestMethod.GET)
     public
     @ResponseBody
     List<Project> loadCompanyList() {

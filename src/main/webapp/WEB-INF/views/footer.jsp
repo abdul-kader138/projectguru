@@ -5,7 +5,7 @@
 
 
 
-
+<script type="text/javascript" src="resources/node_modules/message/messageResource.js"></script>
 <script type="text/ecmascript" src="resources/node_modules/datatable/jquery.dataTables.min.js"></script>
 <script src="resources/node_modules/adminbsb/dialog/js/dialogbox.js"></script>
 <script src="resources/node_modules/adminbsb/dialog/ajax-loading.js"></script>
@@ -69,6 +69,7 @@
 
 
 <!-- Demo Js -->
+<%--<script type="text/javascript" src="resources/node_modules/message/messageResource.js"></script>--%>
 <script src="resources/node_modules/adminbsb/js/demo.js"></script>
 
 <script src="resources/node_modules/custom-js/custom.js"></script>
@@ -79,7 +80,10 @@
 
 <%--<script src="resources/node_modules/materialize/js/materialize.min.js"></script>--%>
 
+
 <script type="text/javascript" src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
+<%--<script type="text/javascript" src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>--%>
+
 
 
 </body>

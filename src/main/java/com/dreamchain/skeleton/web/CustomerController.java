@@ -2,7 +2,6 @@ package com.dreamchain.skeleton.web;
 
 import com.dreamchain.skeleton.model.Customer;
 import com.dreamchain.skeleton.model.User;
-import com.dreamchain.skeleton.permission.CheckLoggedInUser;
 import com.dreamchain.skeleton.service.CustomerService;
 import com.dreamchain.skeleton.service.UserService;
 import org.slf4j.Logger;

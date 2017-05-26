@@ -6,9 +6,7 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by LAPTOP DREAM on 5/19/2017.
- */
+
 public interface CompanyService {
 
     Company get(Long id);

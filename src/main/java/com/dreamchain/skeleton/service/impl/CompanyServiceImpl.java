@@ -1,7 +1,6 @@
 package com.dreamchain.skeleton.service.impl;
 
 import com.dreamchain.skeleton.dao.CompanyDao;
-import com.dreamchain.skeleton.dao.ProjectDao;
 import com.dreamchain.skeleton.model.Company;
 import com.dreamchain.skeleton.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -5,18 +5,15 @@
 
         <%--start of table div--%>
 
-        <div id="viewTableData" >
-
-        </div>
+        <div id="viewTableData"></div>
         <div class="row clearfix">
             <div class="col-xs-10 col-xs-offset-1 card">
                 <br/><br/>
-                <table id="projectTable" class="display nowrap" cellspacing="0" width="100%">
+                <table id="departmentTable" class="display nowrap" cellspacing="0" width="100%">
                     <thead>
                     <tr>
-                        <th></th>
-                        <th>Division Name</th>
-                        <th>Company Name</th>
+                        <th width="15px">id</th>
+                        <th width="200px">Name</th>
                     </tr>
                     </thead>
                 </table>
@@ -27,18 +24,18 @@
                 &nbsp;
                 &nbsp;
 
-                <button type="button" class="btn bg-grey waves-war" id="editProject" value="1" title="Edit"><img
+                <button type="button" class="btn bg-grey waves-war" id="editDepartment" value="1" title="Edit"><img
                         src="resources/images/edit.gif" width="16" height="16" border="0">&nbsp;Edit
                 </button>
                 &nbsp;
                 &nbsp;
-                <button type="button" class="btn bg-grey waves-war" id="deleteProject" value="1" title="Delete"><img
+                <button type="button" class="btn bg-grey waves-war" id="deleteDepartment" value="1" title="Delete"><img
                         src="resources/images/delete.gif" width="16" height="16" border="0">&nbsp;Delete
 
                 </button>
                 &nbsp;
                 &nbsp;
-                <button type="button" class="btn bg-grey waves-war" id="refreshProject" value="1" title="Delete"><img
+                <button type="button" class="btn bg-grey waves-war" id="refreshDepartment" value="1" title="Delete"><img
                         src="resources/images/refresh.png" width="16" height="16" border="0">&nbsp;Refresh
                 </button>
                 &nbsp;<br/><br/>
@@ -57,7 +54,7 @@
         <%--start of save/update modal--%>
 
 
-        <div class="row clearfix" id="projectForm">
+        <div class="row clearfix" id="departmentForm">
             <div class="col-xs-8 col-xs-offset-2">
                 <div class="card">
                     <div class="header" style="background-color:#a5a5a5">
@@ -68,7 +65,7 @@
                             <fieldset>
 
                                 <!-- Form Name -->
-                                <legend><strong>Division Setting</strong></legend>
+                                <legend><strong>Department Setting</strong></legend>
 
                                 <!-- Text input-->
                                 <div class="form-group">
@@ -88,29 +85,19 @@
                                 </div>
 
 
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label" for="listOfCompany">Company Name</label>
-
-                                    <div class="col-md-4">
-                                        <select id="listOfCompany" class="form-control"
-                                                style="border-color:#808080; border-width:1px; border-style:solid;"></select>
-                                        <label id="companyNameValidation" style="color:red; font-size: 11px;"
-                                               class="form-control"></label>
-                                    </div>
-                                </div>
-
                                 <!-- Button -->
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="saveProject"></label>
+                                    <label class="col-md-4 control-label" for="saveDepartment"></label>
 
                                     <div class="col-md-4">
-                                        <button id="saveProject" name="saveProject" class="btn btn-primary"
+                                        <button id="saveDepartment" name="saveDepartment" class="btn btn-primary"
                                                 type="button">Save
                                         </button>
-                                        <button id="updateProject" name="updateProject" class="btn btn-primary"
+                                        <button id="updateDepartment" name="updateDepartment" class="btn btn-primary"
                                                 type="button">Update
                                         </button>
-                                        <button id="resetProject" name="resetProject" class="btn bg-grey"
+                                        <button style="position: static" id="resetDepartment" name="resetDepartment"
+                                                class="btn bg-grey"
                                                 type="button">Reset
                                         </button>
                                     </div>
@@ -128,20 +115,22 @@
 
         <script type="text/javascript">
             $(document).ready(function () {
+
                 var loading = $.loading();
                 initFormValidationMsg();
-                initializeProjectForm();
-                $("saveProject").show();
-                $("#updateProject").hide();
+                initializeDepartmentForm();
+                $("saveDepartment").show();
+                $("#updateDepartment").hide();
                 var companyGb;
 
 
-                /* Load project data to select box data using ajax */
+                /* populate Department list when page load */
 
-                $('#projectTable').DataTable({
-                    "sAjaxSource": "http://localhost:8080/project/projectList",
+                $('#departmentTable').DataTable({
+                    "sAjaxSource": "http://localhost:8080/department/departmentList",
+//                    "sAjaxSource": messageResource.get('company.list.load.url', 'configMessageForUI'),
                     "sAjaxDataProp": "",
-                    "order": [[1, "asc"]],
+                    "order": [[0, "asc"]],
                     'aoColumns': [
                         {
                             'sTitle': '',
@@ -153,8 +142,7 @@
                             'sWidth': '15px',
                             'bSortable': false
                         },
-                        {"mData": "name",'sWidth': '200px'},
-                        {"mData": "company.name"}
+                        {"mData": "name", 'sWidth': '200px'}
                     ],
                     'aaSorting': [[0, 'asc']],
                     "columnDefs": [
@@ -176,109 +164,84 @@
                 });
 
 
-                /* populate Company list when page load */
+                /* Save Department data using ajax */
 
-                function getAllCompany() {
-                    $('#getAllCompany').empty();
-                    $.ajax({
-                        type: "GET",
-                        url: "http://localhost:8080/company/companyList",
-                        success: function (data) {
-                            var collaboration;
-                            collaboration += '<option id="defaultOpt" value="0">Select Company</option>';
-                            $.each(data, function (i, d) {
-                                collaboration += "<option value=" + d.id + ">" + d.name + "</option>";
-                            });
-
-                            $('#listOfCompany').append(collaboration);
-                        },
-                        error: function (e) {
-                            console.log(e);
-                        }
-                    });
-                }
-
-                getAllCompany();
-
-                /* Save project data using ajax */
-
-                $("#saveProject").click(function (event) {
-
+                $("#saveDepartment").click(function (event) {
                     initFormValidationMsg();
                     var part1 = "";
                     var part2 = "";
                     var icn = 0;
                     var msg = "";
-                    var project = new Object();
-                    project.name = $("#name").val();
-                    project.companyId = $("#listOfCompany option:selected").val();
-                    if (formValidation()) callAjaxForAddOperation(part1, part2, icn, msg, project);
+                    var department = new Object();
+                    department.name = $("#name").val();
+                    if (formValidation()) callAjaxForAddOperation(part1, part2, icn, msg, department);
                 });
 
 
-                /* Update project data using ajax */
+                /* Update Department data using ajax */
 
-                $('#editProject').click(function () {
-                    initializeProjectForm();
+                $('#editDepartment').click(function () {
+                    initializeDepartmentForm();
                     initFormValidationMsg();
-                    var project = new Object();
-                    project = companyGb;
+                    var newDepartment = new Object();
+                    var newDepartment = companyGb;
                     companyGb = null;
-                    var data = messageResource.get('project.edit.validation.msg', 'configMessageForUI');
+                    var data = messageResource.get('department.edit.validation.msg', 'configMessageForUI');
 
                     if (checkForMultipleRowSelect()) showServerSideMessage(data, "", 0, "Message");
-                    else if (project == null)showServerSideMessage(data, "", 0, "Message");
+                    else if (newDepartment == null)showServerSideMessage(data, "", 0, "Message");
                     else {
-                        $("#updateProject").show();
-                        $("#saveProject").hide();
-                        $("#id").val(project.id);
-                        $("#name").val(project.name);
-                        $("#version").val(project.version);
-                        $('#listOfCompany option:contains("' + project.company.name + '")').prop('selected', 'selected');
-                        window.location.href = "#projectForm";
+                        $("#updateDepartment").show();
+                        $("#saveDepartment").hide();
+                        $("#id").val(newDepartment.id);
+                        $("#name").val(newDepartment.name);
+                        $("#version").val(newDepartment.version);
+                        window.location.href = "#departmentForm";
                     }
                 });
-                var table = $('#projectTable').DataTable();
 
-                $("#updateProject").click(function (event) {
+                var table = $('#departmentTable').DataTable();
+
+                $("#updateDepartment").click(function (event) {
                     var part1 = "";
                     var part2 = "";
                     var icn = 0;
                     var msg = "Message";
-                    var project = new Object();
-                    project.id = $("#id").val();
-                    project.version = $("#version").val();
-                    project.name = $("#name").val();
-                    project.companyId = $("#listOfCompany option:selected").val();
-                    if (formValidation()) callAjaxForEditOperation(part1, part2, icn, msg, project);
-                    });
+                    var department = new Object();
+                    department.id = $("#id").val();
+                    department.version = $("#version").val();
+                    department.name = $("#name").val();
+                    if (formValidation()) callAjaxForEditOperation(part1, part2, icn, msg, department);
+
+                });
 
 
-                /* Delete project data using ajax */
+                /* Delete Department data using ajax */
 
-                $("#deleteProject").click(function (event) {
-                    var project = new Object();
-                    project = companyGb;
+                $("#deleteDepartment").click(function (event) {
+                    var newDepartment = new Object();
+                    newDepartment = companyGb;
                     companyGb = null;
                     var part1 = "";
                     var part2 = "";
                     var icn = 0;
                     var msg = "Message";
-                    var data =  messageResource.get('project.delete.validation.msg', 'configMessageForUI');
+                    var data = messageResource.get('department.delete.validation.msg', 'configMessageForUI');
 
                     if (checkForMultipleRowSelect()) showServerSideMessage(data, "", 0, "Message");
-                    else if (project == null)showServerSideMessage(data, "", 0, "Message");
+                    else if (newDepartment == null)showServerSideMessage(data, "", 0, "Message");
                     else {
                         $.dialogbox({
                             type: 'msg',
                             title: 'Confirm Title',
-                            content: 'Are You Sure,want to delete this record?',
+                            content: messageResource.get('department.delete.confirm.msg', 'configMessageForUI'),
                             closeBtn: true,
                             btn: ['Confirm', 'Cancel'],
                             call: [
                                 function () {
                                     $.dialogbox.close();
-                                    callAjaxForDeleteOperation(part1, part2, icn, msg, project);
+                                    callAjaxForDeleteOperation(part1, part2, icn, msg, newDepartment);
+
                                 },
                                 function () {
                                     $.dialogbox.close();
@@ -286,14 +249,16 @@
                                 }
                             ]
                         });
+
                         window.location.href = "#viewTableData";
                     }
+
                 });
 
 
                 /* DataTable select value send to global var */
 
-                $('#projectTable tbody').on('click', 'tr', function () {
+                $('#departmentTable tbody').on('click', 'tr', function () {
                     companyGb = table.row(this).data();
                     var isChecked = $('#' + companyGb.id).is(":checked");
                     if (isChecked == false) companyGb = null;
@@ -302,37 +267,37 @@
 
                 /* Initialize html form value  based on reset button*/
 
-                $('#resetProject').on('click', function () {
+                $('#resetDepartment').on('click', function () {
                     companyGb = null;
-                    initializeProjectForm();
+                    initializeDepartmentForm();
                     initFormValidationMsg();
-                    $('#saveProject').show();
-                    $('#updateProject').hide();
+                    $('#saveDepartment').show();
+                    $('#updateDepartment').hide();
                     uncheckedAllCheckBox();
                 });
 
 
                 /* load table data on click refresh button*/
 
-                $('#refreshProject').on('click', function () {
-                    initializeProjectForm();
+                $('#refreshDepartment').on('click', function () {
+                    initializeDepartmentForm();
                     initFormValidationMsg();
                     companyGb = null;
-                    table.ajax.url( messageResource.get('project.list.load.url', 'configMessageForUI')).load();
+                    table.ajax.url(messageResource.get('department.list.load.url', 'configMessageForUI')).load();
                 });
 
 
                 /*  Ajax call for delete operation */
 
-                function callAjaxForDeleteOperation(part1, part2, icn, msg, project) {
+                function callAjaxForDeleteOperation(part1, part2, icn, msg, newDepartment) {
                     $.ajax({
                         headers: {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json'
                         },
                         'type': 'POST',
-                        'url': messageResource.get('project.delete.url', 'configMessageForUI'),
-                        'data': JSON.stringify(project),
+                        'url': messageResource.get('department.delete.url', 'configMessageForUI'),
+                        'data': JSON.stringify(newDepartment),
                         'dataType': 'json',
                         'success': function (d) {
                             if (d.successMsg) {
@@ -340,7 +305,7 @@
                                 msg = "";
                                 part1 = d.successMsg;
                                 showServerSideMessage(part1, part2, icn, msg);
-                                table.ajax.url(messageResource.get('project.list.load.url', 'configMessageForUI')).load();
+                                table.ajax.url(messageResource.get('department.list.load.url', 'configMessageForUI')).load();
                             }
                             if (d.validationError) {
                                 icn = 0;
@@ -361,26 +326,26 @@
 
                 /*  Ajax call for edit operation */
 
-                function callAjaxForEditOperation(part1, part2, icn, msg, project) {
+                function callAjaxForEditOperation(part1, part2, icn, msg, department) {
                     $.ajax({
                         headers: {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json'
                         },
                         'type': 'POST',
-                        'url': messageResource.get('project.edit.url', 'configMessageForUI'),
-                        'data': JSON.stringify(project),
+                        'url': messageResource.get('department.edit.url', 'configMessageForUI'),
+                        'data': JSON.stringify(department),
                         'dataType': 'json',
                         'success': function (d) {
                             if (d.successMsg) {
                                 icn = 1;
                                 part1 = d.successMsg;
-                                initializeProjectForm();
+                                initializeDepartmentForm();
                                 window.location.href = "#viewTableData";
-                                $("#updateProject").hide();
-                                $("#saveProject").show();
+                                $("#updateDepartment").hide();
+                                $("#saveDepartment").show();
                                 showServerSideMessage(part1, part2, icn, msg);
-                                table.ajax.url(messageResource.get('project.list.load.url', 'configMessageForUI')).load();
+                                table.ajax.url(messageResource.get('department.list.load.url', 'configMessageForUI')).load();
                             }
                             if (d.validationError) {
                                 icn = 0;
@@ -404,23 +369,23 @@
 
                 /*  Ajax call for save operation */
 
-                function callAjaxForAddOperation(part1, part2, icn, msg, project) {
+                function callAjaxForAddOperation(part1, part2, icn, msg, department) {
                     $.ajax({
                         headers: {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json'
                         },
                         'type': 'POST',
-                        'url': messageResource.get('project.save.url', 'configMessageForUI'),
-                        'data': JSON.stringify(project),
+                        'url': messageResource.get('department.save.url', 'configMessageForUI'),
+                        'data': JSON.stringify(department),
                         'dataType': 'json',
                         'success': function (d) {
                             if (d.successMsg) {
                                 icn = 1;
                                 msg = "";
                                 part1 = d.successMsg;
-                                initializeProjectForm();
-                                setNewDataTableValue(d.project, table);
+                                initializeDepartmentForm();
+                                setNewDataTableValue(d.department, table);
                                 window.location.href = "#viewTableData";
                                 showServerSideMessage(part1, part2, icn, msg);
                             }
@@ -443,11 +408,10 @@
 
                 /* Initialize html form value */
 
-                function initializeProjectForm() {
+                function initializeDepartmentForm() {
                     $("#id").val("");
                     $("#version").val("");
                     $("#name").val("");
-                    $('#defaultOpt').val('0').prop('selected', true);
                 }
 
 
@@ -456,13 +420,8 @@
                 function formValidation() {
                     var isValid = true;
                     var name = $("#name").val();
-                    var companyId = $("#listOfCompany option:selected").val();
                     if (name == null || name.trim().length == 0) {
                         $("#nameValidation").text("Name is required");
-                        isValid = false;
-                    }
-                    if ((companyId == null) || (companyId == "0")) {
-                        $("#companyNameValidation").text("Company name is required");
                         isValid = false;
                     }
                     return isValid;
@@ -473,33 +432,32 @@
 
                 function initFormValidationMsg() {
                     $("#nameValidation").text("");
-                    $("#companyNameValidation").text("");
+
                 }
 
 
-                /* move to add new project div*/
+                /* move to add new department div*/
 
                 $('#moveToAdd').on('click', function () {
                     companyGb = null;
-                    $("#updateProject").hide();
-                    $("#saveProject").show();
+                    $("#updateDepartment").hide();
+                    $("#saveDepartment").show();
                     uncheckedAllCheckBox();
-                    window.location.href = "#projectForm";
+                    window.location.href = "#departmentForm";
                 });
 
 
-                /* Set new created project value to DataTable*/
+                /* Set new created department value to DataTable*/
 
-                function setNewDataTableValue(project, table) {
+                function setNewDataTableValue(department, table) {
                     table.row.add({
-                        "id": project.id,
-                        "name": project.name,
-                        "version": project.version,
-                        "company": project.company,
-                        "createdBy": project.createdBy,
-                        "createdOn": project.createdOn,
-                        "updatedBy": project.updatedBy,
-                        "updatedOn": project.updatedOn
+                        "id": department.id,
+                        "name": department.name,
+                        "version": department.version,
+                        "createdBy": department.createdBy,
+                        "createdOn": department.createdOn,
+                        "updatedBy": department.updatedBy,
+                        "updatedOn": department.updatedOn
                     }).draw();
 
                 };

@@ -9,5 +9,8 @@
 		<!--<mapping class="com.dreamchain.skeleton.model.Order"></mapping>-->
 		<mapping class="com.dreamchain.skeleton.model.Company"></mapping>
 		<mapping class="com.dreamchain.skeleton.model.Project"></mapping>
+		<mapping class="com.dreamchain.skeleton.model.Department"></mapping>
+		<mapping class="com.dreamchain.skeleton.model.Designation"></mapping>
+		<mapping class="com.dreamchain.skeleton.model.ProductCategory"></mapping>
 	</session-factory>
 </hibernate-configuration>

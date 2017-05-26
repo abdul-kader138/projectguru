@@ -378,48 +378,43 @@
                         <%--</li>--%>
                         <li>
                             <a href="javascript:void(0);" class="menu-toggle">
-                                <span>User</span>
+                                <span>Product Settings</span>
                             </a>
                             <ul class="ml-menu">
                                 <li>
-                                    <a href="project">User Settings</a>
+                                    <a href="category">Category</a>
                                 </li>
-                                <%--<li>--%>
-                                <%--<a href="resources/pages/widgets/infobox/infobox-2.html">Infobox-2</a>--%>
-                                <%--</li>--%>
-                                <%--<li>--%>
-                                <%--<a href="resources/pages/widgets/infobox/infobox-3.html">Infobox-3</a>--%>
-                                <%--</li>--%>
-                                <%--<li>--%>
-                                <%--<a href="resources/pages/widgets/infobox/infobox-4.html">Infobox-4</a>--%>
-                                <%--</li>--%>
-                                <%--<li>--%>
-                                <%--<a href="resources/pages/widgets/infobox/infobox-5.html">Infobox-5</a>--%>
-                                <%--</li>--%>
+                                <li>
+                                    <a href="#">Sub-Category</a>
+                                </li>
                             </ul>
                         </li>
                         <li>
                             <a href="javascript:void(0);" class="menu-toggle">
-                                <span>Company</span>
+                                <span>Company Settings</span>
                             </a>
                             <ul class="ml-menu">
                                 <li>
-                                    <a href="company">Company Settings</a>
+                                    <a href="company">Company</a>
                                 </li>
-                                <%--<li>--%>
-                                <%--<a href="resources/pages/widgets/infobox/infobox-2.html">Infobox-2</a>--%>
-                                <%--</li>--%>
-                                <%--<li>--%>
-                                <%--<a href="resources/pages/widgets/infobox/infobox-3.html">Infobox-3</a>--%>
-                                <%--</li>--%>
-                                <%--<li>--%>
-                                <%--<a href="resources/pages/widgets/infobox/infobox-4.html">Infobox-4</a>--%>
-                                <%--</li>--%>
-                                <%--<li>--%>
-                                <%--<a href="resources/pages/widgets/infobox/infobox-5.html">Infobox-5</a>--%>
-                                <%--</li>--%>
+                                <li>
+                                <a href="project">Division </a>
+                                </li>
                             </ul>
                         </li>
+                            <li>
+                                <a href="javascript:void(0);" class="menu-toggle">
+                                    <span>User Settings</span>
+                                </a>
+                                <ul class="ml-menu">
+                                    <li>
+                                        <a href="department">Department</a>
+                                    </li>
+                                    <li>
+                                        <a href="designation">Designation</a>
+                                    </li>
+                                </ul>
+                            </li>
                     </ul>
                 </li>
                 <br/>
