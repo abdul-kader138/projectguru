@@ -72,6 +72,7 @@ public class ProductSubCategoryServiceImpl implements ProductSubCategoryService{
         productSubCategory.setName(productSubCategoryObj.get("name"));
         productSubCategory.setDescription(productSubCategoryObj.get("description"));
         productSubCategory.setProductCategory(productCategoryDao.get(Long.parseLong(productSubCategoryObj.get("categoryId"))));
+        productSubCategory.setProductCategoryId(Long.parseLong(productSubCategoryObj.get("categoryId")));
         validationMsg = checkInput(productSubCategory);
         ProductSubCategory existingProductSubCategory = productSubCategoryDao.get(productSubCategory.getId());
         if (productSubCategory.getId() == 0l && validationMsg == "") validationMsg = INVALID_INPUT;
@@ -129,6 +130,7 @@ public class ProductSubCategoryServiceImpl implements ProductSubCategoryService{
         productSubCategory.setName(name);
         productSubCategory.setDescription(description);
         productSubCategory.setProductCategory(productCategory);
+        productSubCategory.setProductCategoryId(productCategory.getId());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
         productSubCategory.setCreatedBy(UserDetailServiceImpl.userId);
@@ -144,6 +146,7 @@ public class ProductSubCategoryServiceImpl implements ProductSubCategoryService{
         productSubCategory.setName(objFromUI.getName());
         productSubCategory.setProductCategory(objFromUI.getProductCategory());
         productSubCategory.setDescription(objFromUI.getDescription());
+        productSubCategory.setProductCategoryId(objFromUI.getProductCategoryId());
         productSubCategory.setCreatedBy(existingProductSubCategory.getCreatedBy());
         productSubCategory.setCreatedOn(existingProductSubCategory.getCreatedOn());
         SimpleDateFormat dateFormat = new SimpleDateFormat();

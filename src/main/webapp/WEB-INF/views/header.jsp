@@ -393,7 +393,10 @@
                                 </a>
                                 <ul class="ml-menu">
                                     <li>
-                                       <a href="department">Department</a>
+                                       <a href="role">Role</a>
+                                    </li>
+                                    <li>
+                                        <a href="department">Department</a>
                                     </li>
                                     <li>
                                         <a href="designation">Designation</a>

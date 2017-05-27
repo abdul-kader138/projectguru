@@ -72,6 +72,7 @@ public class ProjectServiceImpl implements ProjectService {
         project.setVersion(Long.parseLong(projectObj.get("version")));
         project.setName(projectObj.get("name"));
         project.setCompany(companyDao.get(Long.parseLong(projectObj.get("companyId"))));
+        project.setCompanyId(Long.parseLong(projectObj.get("companyId")));
         validationMsg = checkInput(project);
         Project existingProject = projectDao.get(project.getId());
         if (project.getId() == 0l && validationMsg == "") validationMsg = INVALID_INPUT;
@@ -127,6 +128,7 @@ public class ProjectServiceImpl implements ProjectService {
         Company company = companyDao.get(companyId);;
         project.setName(name);
         project.setCompany(company);
+        project.setCompanyId(company.getId());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
         project.setCreatedBy(UserDetailServiceImpl.userId);
@@ -140,6 +142,7 @@ public class ProjectServiceImpl implements ProjectService {
         projectObj.setId(objFromUI.getId());
         projectObj.setVersion(objFromUI.getVersion());
         projectObj.setName(objFromUI.getName());
+        projectObj.setCompanyId(objFromUI.getCompanyId());
         projectObj.setCompany(objFromUI.getCompany());
         projectObj.setCreatedBy(existingProject.getCreatedBy());
         projectObj.setCreatedOn(existingProject.getCreatedOn());

@@ -1,5 +1,6 @@
 package com.dreamchain.skeleton.model;
 
+
 import com.sun.istack.NotNull;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -7,15 +8,20 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 
 @Entity
-public class Project implements Serializable{
+public class Role implements Serializable
+{
 
 
-    private static final long serialVersionUID = 8633415090390966616L;
+    private static final long serialVersionUID = 8633415090980966715L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO )
     private long id;
 
     @Version
@@ -27,9 +33,15 @@ public class Project implements Serializable{
     @Column(unique = true)
     private String name;
 
+    @NotEmpty
+    @Length(max = 150)
+    private String description;
+
+
     @NotNull
-    @OneToOne
-    private Company company;
+    @ElementCollection
+    @CollectionTable(name = "rights")
+    private Set<String> rights = new HashSet<>();
 
 
     @Column
@@ -40,10 +52,6 @@ public class Project implements Serializable{
 
 
     @Column
-    @NotNull
-    private long companyId;
-
-    @Column
     private Date createdOn;
 
 
@@ -51,12 +59,19 @@ public class Project implements Serializable{
     private Date updatedOn;
 
 
-    public long getId() {
-        return id;
+    public Role() {
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public Set<String> getRights() {
+        return rights;
+    }
+
+    public void setRights(Set<String> rights) {
+        this.rights = rights;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
     public Date getUpdatedOn() {
@@ -93,6 +108,14 @@ public class Project implements Serializable{
 
 
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getName() {
         return name;
     }
@@ -109,23 +132,11 @@ public class Project implements Serializable{
         this.version = version;
     }
 
-    public Company getCompany() {
-        return company;
+    public long getId() {
+        return id;
     }
 
-    public void setCompany(Company company) {
-        this.company = company;
-    }
-
-    public long getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(long companyId) {
-        this.companyId = companyId;
-    }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
+    public void setId(long id) {
+        this.id = id;
     }
 }

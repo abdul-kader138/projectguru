@@ -36,6 +36,9 @@ public class ProductSubCategory implements Serializable {
     private ProductCategory productCategory;
 
 
+    @NotNull
+    private long productCategoryId;
+
     @Column
     private long createdBy;
 
@@ -49,6 +52,14 @@ public class ProductSubCategory implements Serializable {
 
     @Column
     private Date updatedOn;
+
+    public long getProductCategoryId() {
+        return productCategoryId;
+    }
+
+    public void setProductCategoryId(long productCategoryId) {
+        this.productCategoryId = productCategoryId;
+    }
 
     public ProductSubCategory() {
     }

@@ -13,5 +13,6 @@
 		<mapping class="com.dreamchain.skeleton.model.Designation"></mapping>
 		<mapping class="com.dreamchain.skeleton.model.ProductCategory"></mapping>
 		<mapping class="com.dreamchain.skeleton.model.ProductSubCategory"></mapping>
+		<mapping class="com.dreamchain.skeleton.model.Role"></mapping>
 	</session-factory>
 </hibernate-configuration>

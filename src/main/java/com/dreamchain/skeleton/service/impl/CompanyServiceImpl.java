@@ -96,7 +96,6 @@ public class CompanyServiceImpl implements CompanyService {
             companyDao.delete(company);
         }
         return validationMsg;
-
     }
 
 
@@ -119,6 +118,10 @@ public class CompanyServiceImpl implements CompanyService {
 
         return msg;
     }
+
+
+
+
 
 
     // create company object for saving
