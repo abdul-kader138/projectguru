@@ -257,6 +257,8 @@
                 /* Delete project data using ajax */
 
                 $("#deleteProject").click(function (event) {
+                    initializeProjectForm();
+                    initFormValidationMsg();
                     var project = new Object();
                     project = companyGb;
                     companyGb = null;
@@ -484,6 +486,8 @@
                     $("#updateProject").hide();
                     $("#saveProject").show();
                     uncheckedAllCheckBox();
+                    initializeProjectForm();
+                    initFormValidationMsg();
                     window.location.href = "#projectForm";
                 });
 

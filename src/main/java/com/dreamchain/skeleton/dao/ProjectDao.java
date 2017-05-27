@@ -4,9 +4,6 @@ import com.dreamchain.skeleton.model.Project;
 
 import java.util.List;
 
-/**
- * Created by LAPTOP DREAM on 5/24/2017.
- */
 public interface ProjectDao {
 
     Project get(Long id);

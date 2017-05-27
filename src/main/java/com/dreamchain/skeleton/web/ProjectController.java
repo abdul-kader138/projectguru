@@ -69,7 +69,7 @@ public class ProjectController {
             objList.put("successMsg", environment.getProperty("project.save.success.msg"));
             successMsg = environment.getProperty("project.save.success.msg");
         }
-        logger.info("creating new company: << " + successMsg + validationError);
+        logger.info("creating new project: << " + successMsg + validationError);
         return objList;
     }
 

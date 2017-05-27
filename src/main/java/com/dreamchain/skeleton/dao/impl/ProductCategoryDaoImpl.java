@@ -3,6 +3,7 @@ package com.dreamchain.skeleton.dao.impl;
 import com.dreamchain.skeleton.dao.ProductCategoryDao;
 import com.dreamchain.skeleton.model.Company;
 import com.dreamchain.skeleton.model.ProductCategory;
+import com.dreamchain.skeleton.model.ProductSubCategory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -57,8 +58,8 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 
     @Override
     public List<Object> countOfProductCategory(long ProductCategoryID) {
-        DetachedCriteria dcr= DetachedCriteria.forClass(ProductCategory.class);// sub category
-        Criterion cr = Restrictions.eq("id", ProductCategoryID);
+        DetachedCriteria dcr= DetachedCriteria.forClass(ProductSubCategory.class);// sub category
+        Criterion cr = Restrictions.eq("product_category_id", ProductCategoryID);
         dcr.add(cr);
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         if(lst.size()==0)return new ArrayList<Object>();

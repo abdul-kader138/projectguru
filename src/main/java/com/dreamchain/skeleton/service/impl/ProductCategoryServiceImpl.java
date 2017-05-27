@@ -86,9 +86,8 @@ public class ProductCategoryServiceImpl implements ProductCategoryService{
         if (productCategoryId == 0l) validationMsg = INVALID_INPUT;
         ProductCategory productCategory = productCategoryDao.get(productCategoryId);
         if (productCategory == null && validationMsg == "") validationMsg = INVALID_CATEGORY;
-        //@todo need implement after sub-category implementation
-//        List<Object> obj=productCategoryDao.countOfProductCategory(productCategoryId);
-//        if (obj.size() > 0 && validationMsg == "") validationMsg = ASSOCIATED_CATEGORY;
+        List<Object> obj=productCategoryDao.countOfProductCategory(productCategoryId);
+        if (obj.size() > 0 && validationMsg == "") validationMsg = ASSOCIATED_CATEGORY;
         if ("".equals(validationMsg)) {
             productCategoryDao.delete(productCategory);
         }

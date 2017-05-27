@@ -219,6 +219,8 @@
                 /* Delete Department data using ajax */
 
                 $("#deleteDepartment").click(function (event) {
+                    initializeDepartmentForm();
+                    initFormValidationMsg();
                     var newDepartment = new Object();
                     newDepartment = companyGb;
                     companyGb = null;
@@ -442,6 +444,8 @@
                     companyGb = null;
                     $("#updateDepartment").hide();
                     $("#saveDepartment").show();
+                    initializeDepartmentForm();
+                    initFormValidationMsg();
                     uncheckedAllCheckBox();
                     window.location.href = "#departmentForm";
                 });

@@ -235,6 +235,8 @@
                 /* Delete company data using ajax */
 
                 $("#deleteCompany").click(function (event) {
+                    initializeCompanyForm();
+                    initFormValidationMsg();
                     var newCompany = new Object();
                     newCompany = companyGb;
                     companyGb = null;
@@ -468,6 +470,8 @@
                     $("#updateCompany").hide();
                     $("#saveCompany").show();
                     uncheckedAllCheckBox();
+                    initializeCompanyForm();
+                    initFormValidationMsg();
                     window.location.href = "#companyForm";
                 });
 

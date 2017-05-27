@@ -332,10 +332,10 @@
                     <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                     <ul class="dropdown-menu pull-right">
                         <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
-                        <li role="seperator" class="divider"></li>
-                        <li><a href="javascript:void(0);"><i class="material-icons">group</i>Followers</a></li>
-                        <li><a href="javascript:void(0);"><i class="material-icons">shopping_cart</i>Sales</a></li>
-                        <li><a href="javascript:void(0);"><i class="material-icons">favorite</i>Likes</a></li>
+                        <%--<li role="seperator" class="divider"></li>--%>
+                        <%--<li><a href="javascript:void(0);"><i class="material-icons">group</i>Followers</a></li>--%>
+                        <%--<li><a href="javascript:void(0);"><i class="material-icons">shopping_cart</i>Sales</a></li>--%>
+                        <%--<li><a href="javascript:void(0);"><i class="material-icons">favorite</i>Likes</a></li>--%>
                         <li role="seperator" class="divider"></li>
                         <li><a href="<c:url value="j_spring_security_logout" />"><i class="material-icons">input</i>Sign Out</a></li>
                     </ul>
@@ -346,7 +346,7 @@
         <!-- Menu -->
         <div class="menu">
             <ul class="list">
-                <li class="header">MAIN NAVIGATION</li>
+                <li class="header">&nbsp;</li>
                 <li class="active">
                     <a href="home">
                         <i class="material-icons">home</i>
@@ -360,22 +360,7 @@
                         <span>All Settings</span>
                     </a>
                     <ul class="ml-menu">
-                        <%--<li>--%>
-                        <%--<a href="javascript:void(0);" class="menu-toggle">--%>
-                        <%--<span>Cards</span>--%>
-                        <%--</a>--%>
-                        <%--<ul class="ml-menu">--%>
-                        <%--<li>--%>
-                        <%--<a href="resources/pages/widgets/cards/basic.html">Basic</a>--%>
-                        <%--</li>--%>
-                        <%--<li>--%>
-                        <%--<a href="resources/pages/widgets/cards/colored.html">Colored</a>--%>
-                        <%--</li>--%>
-                        <%--<li>--%>
-                        <%--<a href="resources/pages/widgets/cards/no-header.html">No Header</a>--%>
-                        <%--</li>--%>
-                        <%--</ul>--%>
-                        <%--</li>--%>
+
                         <li>
                             <a href="javascript:void(0);" class="menu-toggle">
                                 <span>Product Settings</span>
@@ -385,7 +370,7 @@
                                     <a href="category">Category</a>
                                 </li>
                                 <li>
-                                    <a href="#">Sub-Category</a>
+                                    <a href="subcategory">Sub-Category</a>
                                 </li>
                             </ul>
                         </li>
@@ -408,7 +393,7 @@
                                 </a>
                                 <ul class="ml-menu">
                                     <li>
-                                        <a href="department">Department</a>
+                                       <a href="department">Department</a>
                                     </li>
                                     <li>
                                         <a href="designation">Designation</a>
