@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,5 +73,42 @@ public class RoleController {
         logger.info("creating new role: << " + successMsg + validationError);
         return objList;
 
+    }
+
+
+    @RequestMapping(value = "role/delete", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    Map deleteCompany(@RequestBody Map<String, Object> RoleInfo) throws ParseException {
+        HashMap serverResponse = new HashMap();
+        String successMsg = "";
+        String validationError = "";
+        logger.info("Delete role:  >> ");
+        Integer id=(Integer)RoleInfo.get("id");
+        validationError = roleService.delete(id.longValue());
+        if (validationError.length() == 0) successMsg = environment.getProperty("role.delete.success.msg");
+        logger.info("Delete role:  << " + successMsg + validationError);
+        serverResponse.put("successMsg", successMsg);
+        serverResponse.put("validationError", validationError);
+        return serverResponse;
+    }
+
+
+    @RequestMapping(value = "role/update", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    Map updateCompany(@RequestBody Map<String, String> roleObj) throws ParseException {
+        Map<String, Object> objList = new HashMap<>();
+        String successMsg = "";
+        String validationError = "";
+        logger.info("Updating role: >>");
+        objList = roleService.update(roleObj);
+        validationError = (String) objList.get("validationError");
+        if (validationError.length() == 0) {
+            objList.put("successMsg", environment.getProperty("role.update.success.msg"));
+            successMsg = environment.getProperty("role.update.success.msg");
+        }
+        logger.info("Updating role:  << " + successMsg + validationError);
+        return objList;
     }
 }
