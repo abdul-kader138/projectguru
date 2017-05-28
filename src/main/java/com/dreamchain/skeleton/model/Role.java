@@ -39,7 +39,7 @@ public class Role implements Serializable
 
 
     @NotNull
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "rights")
     private Set<String> rights = new HashSet<>();
 

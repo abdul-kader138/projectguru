@@ -1,6 +1,7 @@
 package com.dreamchain.skeleton.web;
 
 import com.dreamchain.skeleton.model.ProductSubCategory;
+import com.dreamchain.skeleton.model.Role;
 import com.dreamchain.skeleton.service.ProductSubCategoryService;
 import com.dreamchain.skeleton.service.RoleService;
 import org.slf4j.Logger;
@@ -41,17 +42,17 @@ public class RoleController {
 
     }
 
-//    @RequestMapping(value = "subcategory/subcategoryList", method = RequestMethod.GET)
-//    public
-//    @ResponseBody
-//    List<ProductSubCategory> loadProductSubCategoryList() {
-//
-//        List<ProductSubCategory> productSubCategoryList = new ArrayList();
-//        logger.info("Loading all subcategory info: >> ");
-//        productSubCategoryList = productSubCategoryService.findAll();
-//        logger.info("Loading all subcategory info: << total " + productSubCategoryList.size());
-//        return productSubCategoryList;
-//    }
+    @RequestMapping(value = "role/roleList", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<Role> loadRoleList() {
+
+        List<Role> roleList = new ArrayList();
+        logger.info("Loading all subcategory info: >> ");
+        roleList = roleService.findAll();
+        logger.info("Loading all subcategory info: << total " + roleList.size());
+        return roleList;
+    }
 
 
     @RequestMapping(value = "role/save", method = RequestMethod.POST, consumes = "application/json", headers = "content-type=application/x-www-form-urlencoded")

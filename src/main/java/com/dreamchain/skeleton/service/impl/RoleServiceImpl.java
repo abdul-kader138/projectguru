@@ -66,7 +66,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<Role> findAll() {
-        return null;
+        return roleDao.findAll();
     }
 
 
@@ -92,14 +92,20 @@ public class RoleServiceImpl implements RoleService {
         Set<String> rights = new HashSet<>();
         role.setName(roleObj.get("name"));
         role.setDescription(roleObj.get("description"));
-        if ((roleObj.get("READ_PREVILEGE") != null & roleObj.get("READ_PREVILEGE").isEmpty() != false))
-            rights.add(roleObj.get("READ"));
-        if ((roleObj.get("WRITE_PREVILEGE") != null & roleObj.get("WRITE_PREVILEGE").isEmpty() != false))
-            rights.add(roleObj.get("WRITE"));
-        if ((roleObj.get("EDIT_PREVILEGE") != null & roleObj.get("EDIT_PREVILEGE").isEmpty() != false))
-            rights.add(roleObj.get("EDIT"));
-        if ((roleObj.get("DELETE_PREVILEGE") != null & roleObj.get("DELETE_PREVILEGE").isEmpty() != false))
-            rights.add(roleObj.get("DELETE"));
+        if (roleObj.get("READ_PREVILEGE") != ""){
+            rights.add(roleObj.get("READ_PREVILEGE"));
+        }
+
+        if (roleObj.get("WRITE_PREVILEGE") != ""){
+            rights.add(roleObj.get("WRITE_PREVILEGE"));
+        }
+
+        if (roleObj.get("EDIT_PREVILEGE") != ""){
+            rights.add(roleObj.get("EDIT_PREVILEGE"));
+        }
+
+        if (roleObj.get("DELETE_PREVILEGE") != "")
+            rights.add(roleObj.get("DELETE_PREVILEGE"));
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
         role.setCreatedBy(UserDetailServiceImpl.userId);

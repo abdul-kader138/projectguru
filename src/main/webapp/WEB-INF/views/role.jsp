@@ -107,19 +107,19 @@
                   <label class="col-md-4 control-label" for="rights">Rights</label>
                   <div class="col-md-4">
                     <label class="checkbox-inline" for="readRights">
-                      <input type="checkbox" name="rights" id="readRights" value="READ_PREVILEGE">
+                      <input type="checkbox" name="rights" id="readRights" value="Read">
                       Read
                     </label>
                     <label class="checkbox-inline" for="writeRights">
-                      <input type="checkbox" name="rights" id="writeRights" value="WRITE_PREVILEGE">
+                      <input type="checkbox" name="rights" id="writeRights" value="Write">
                       Write
                     </label>
                     <label class="checkbox-inline" for="editRights">
-                      <input type="checkbox" name="rights" id="editRights" value="EDIT_PREVILEGE">
+                      <input type="checkbox" name="rights" id="editRights" value="Edit">
                       Edit
                     </label>
                     <label class="checkbox-inline" for="deleteRights">
-                      <input type="checkbox" name="rights" id="deleteRights" value="DELETE_PREVILEGE">
+                      <input type="checkbox" name="rights" id="deleteRights" value="Delete">
                       Delete
                     </label>
                   </div>
@@ -151,6 +151,7 @@
 
       </div>
     </div>
+
 
 
     <script type="text/javascript">
@@ -239,10 +240,10 @@
           var role = new Object();
           role.name = $("#name").val();
           role.description = $("#description").val();
-          role.READ_PREVILEGE = ($("#readRights").is(":checked")) ? $("#readRights").val() : "";
-          role.WRITE_PREVILEGE = ($("#writeRights").is(":checked")) ? $("#writeRights").val() : "";
-          role.EDIT_PREVILEGE = ($("#editRights").is(":checked")) ? $("#editRights").val() : "";
-          role.DELETE_PREVILEGE = ($("#deleteRights").is(":checked")) ? $("#deleteRights").val() : "";
+          role.READ_PREVILEGE = ($("#readRights").is(":checked")) ? "Read" : "";
+          role.WRITE_PREVILEGE = ($("#writeRights").is(":checked")) ? "Write" : "";
+          role.EDIT_PREVILEGE = ($("#editRights").is(":checked")) ? "Edit" : "";
+          role.DELETE_PREVILEGE = ($("#deleteRights").is(":checked")) ? "Delete" : "";
 //          if (formValidation()) callAjaxForAddOperation(part1, part2, icn, msg, role);
           callAjaxForAddOperation(part1, part2, icn, msg, role)
         });

@@ -1,582 +1,542 @@
+<%@ include file="header.jsp" %>
 
-<%@ include file = "header.jsp" %>
+<section class="content">
+    <div class="container-fluid">
 
+        <%--start of table div--%>
 
+        <div id="viewTableData"></div>
+        <div class="row clearfix">
+            <div class="col-xs-10 col-xs-offset-1 card">
+                <br/><br/>
+                <table id="companyTable" class="display nowrap" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                    </tr>
+                    </thead>
+                </table>
+                <br/>
+                <button type="button" class="btn bg-grey waves-war"  id="moveToAdd" value="1" title="Edit"><img
+                        src="resources/images/add.png" width="16" height="16" border="0">&nbsp;Add New
+                </button>
+                &nbsp;
+                &nbsp;
 
-<%--<section class="content">--%>
-    <%--<div class="container-fluid">--%>
-        <%--<div class="block-header">--%>
-            <%--<h2>NORMAL TABLES</h2>--%>
-        <%--</div>--%>
-        <%--<!-- Basic Table -->--%>
-        <%--<div class="row clearfix">--%>
-            <%--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">--%>
-                <%--<div class="card">--%>
-                    <%--<div class="header">--%>
-                        <%--<h2>--%>
-                            <%--BASIC TABLES--%>
-                            <%--<small>Basic example without any additional modification classes</small>--%>
-                        <%--</h2>--%>
-                        <%--<ul class="header-dropdown m-r--5">--%>
-                            <%--<li class="dropdown">--%>
-                                <%--<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">--%>
-                                    <%--<i class="material-icons">more_vert</i>--%>
-                                <%--</a>--%>
-                                <%--<ul class="dropdown-menu pull-right">--%>
-                                    <%--<li><a href="javascript:void(0);">Action</a></li>--%>
-                                    <%--<li><a href="javascript:void(0);">Another action</a></li>--%>
-                                    <%--<li><a href="javascript:void(0);">Something else here</a></li>--%>
-                                <%--</ul>--%>
-                            <%--</li>--%>
-                        <%--</ul>--%>
-                    <%--</div>--%>
-                    <%--<div class="body table-responsive">--%>
-                        <%--<table class="table">--%>
-                            <%--<thead>--%>
-                            <%--<tr>--%>
-                                <%--<th>#</th>--%>
-                                <%--<th>FIRST NAME</th>--%>
-                                <%--<th>LAST NAME</th>--%>
-                                <%--<th>USERNAME</th>--%>
-                            <%--</tr>--%>
-                            <%--</thead>--%>
-                            <%--<tbody>--%>
-                            <%--<tr>--%>
-                                <%--<th scope="row">1</th>--%>
-                                <%--<td>Mark</td>--%>
-                                <%--<td>Otto</td>--%>
-                                <%--<td>@mdo</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr>--%>
-                                <%--<th scope="row">2</th>--%>
-                                <%--<td>Jacob</td>--%>
-                                <%--<td>Thornton</td>--%>
-                                <%--<td>@fat</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr>--%>
-                                <%--<th scope="row">3</th>--%>
-                                <%--<td>Larry</td>--%>
-                                <%--<td>the Bird</td>--%>
-                                <%--<td>@twitter</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr>--%>
-                                <%--<th scope="row">4</th>--%>
-                                <%--<td>Larry</td>--%>
-                                <%--<td>Jellybean</td>--%>
-                                <%--<td>@lajelly</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr>--%>
-                                <%--<th scope="row">5</th>--%>
-                                <%--<td>Larry</td>--%>
-                                <%--<td>Kikat</td>--%>
-                                <%--<td>@lakitkat</td>--%>
-                            <%--</tr>--%>
-                            <%--</tbody>--%>
-                        <%--</table>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-        <%--<!-- #END# Basic Table -->--%>
-        <%--<!-- Striped Rows -->--%>
-        <%--<div class="row clearfix">--%>
-            <%--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">--%>
-                <%--<div class="card">--%>
-                    <%--<div class="header">--%>
-                        <%--<h2>--%>
-                            <%--STRIPED ROWS--%>
-                            <%--<small>Use <code>.table-striped</code> to add zebra-striping to any table row within the <code>&lt;tbody&gt;</code></small>--%>
-                        <%--</h2>--%>
-                        <%--<ul class="header-dropdown m-r--5">--%>
-                            <%--<li class="dropdown">--%>
-                                <%--<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">--%>
-                                    <%--<i class="material-icons">more_vert</i>--%>
-                                <%--</a>--%>
-                                <%--<ul class="dropdown-menu pull-right">--%>
-                                    <%--<li><a href="javascript:void(0);">Action</a></li>--%>
-                                    <%--<li><a href="javascript:void(0);">Another action</a></li>--%>
-                                    <%--<li><a href="javascript:void(0);">Something else here</a></li>--%>
-                                <%--</ul>--%>
-                            <%--</li>--%>
-                        <%--</ul>--%>
-                    <%--</div>--%>
-                    <%--<div class="body table-responsive">--%>
-                        <%--<table class="table table-striped">--%>
-                            <%--<thead>--%>
-                            <%--<tr>--%>
-                                <%--<th>#</th>--%>
-                                <%--<th>FIRST NAME</th>--%>
-                                <%--<th>LAST NAME</th>--%>
-                                <%--<th>USERNAME</th>--%>
-                            <%--</tr>--%>
-                            <%--</thead>--%>
-                            <%--<tbody>--%>
-                            <%--<tr>--%>
-                                <%--<th scope="row">1</th>--%>
-                                <%--<td>Mark</td>--%>
-                                <%--<td>Otto</td>--%>
-                                <%--<td>@mdo</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr>--%>
-                                <%--<th scope="row">2</th>--%>
-                                <%--<td>Jacob</td>--%>
-                                <%--<td>Thornton</td>--%>
-                                <%--<td>@fat</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr>--%>
-                                <%--<th scope="row">3</th>--%>
-                                <%--<td>Larry</td>--%>
-                                <%--<td>the Bird</td>--%>
-                                <%--<td>@twitter</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr>--%>
-                                <%--<th scope="row">4</th>--%>
-                                <%--<td>Larry</td>--%>
-                                <%--<td>Jellybean</td>--%>
-                                <%--<td>@lajelly</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr>--%>
-                                <%--<th scope="row">5</th>--%>
-                                <%--<td>Larry</td>--%>
-                                <%--<td>Kikat</td>--%>
-                                <%--<td>@lakitkat</td>--%>
-                            <%--</tr>--%>
-                            <%--</tbody>--%>
-                        <%--</table>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-        <%--<!-- #END# Striped Rows -->--%>
-        <%--<!-- Bordered Table -->--%>
-        <%--<div class="row clearfix">--%>
-            <%--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">--%>
-                <%--<div class="card">--%>
-                    <%--<div class="header">--%>
-                        <%--<h2>--%>
-                            <%--BORDERED TABLE--%>
-                            <%--<small>Add <code>.table-bordered</code> for borders on all sides of the table and cells.</small>--%>
-                        <%--</h2>--%>
-                        <%--<ul class="header-dropdown m-r--5">--%>
-                            <%--<li class="dropdown">--%>
-                                <%--<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">--%>
-                                    <%--<i class="material-icons">more_vert</i>--%>
-                                <%--</a>--%>
-                                <%--<ul class="dropdown-menu pull-right">--%>
-                                    <%--<li><a href="javascript:void(0);">Action</a></li>--%>
-                                    <%--<li><a href="javascript:void(0);">Another action</a></li>--%>
-                                    <%--<li><a href="javascript:void(0);">Something else here</a></li>--%>
-                                <%--</ul>--%>
-                            <%--</li>--%>
-                        <%--</ul>--%>
-                    <%--</div>--%>
-                    <%--<div class="body table-responsive">--%>
-                        <%--<table class="table table-bordered">--%>
-                            <%--<thead>--%>
-                            <%--<tr>--%>
-                                <%--<th>#</th>--%>
-                                <%--<th>FIRST NAME</th>--%>
-                                <%--<th>LAST NAME</th>--%>
-                                <%--<th>USERNAME</th>--%>
-                            <%--</tr>--%>
-                            <%--</thead>--%>
-                            <%--<tbody>--%>
-                            <%--<tr>--%>
-                                <%--<th scope="row">1</th>--%>
-                                <%--<td>Mark</td>--%>
-                                <%--<td>Otto</td>--%>
-                                <%--<td>@mdo</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr>--%>
-                                <%--<th scope="row">2</th>--%>
-                                <%--<td>Jacob</td>--%>
-                                <%--<td>Thornton</td>--%>
-                                <%--<td>@fat</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr>--%>
-                                <%--<th scope="row">3</th>--%>
-                                <%--<td>Larry</td>--%>
-                                <%--<td>the Bird</td>--%>
-                                <%--<td>@twitter</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr>--%>
-                                <%--<th scope="row">4</th>--%>
-                                <%--<td>Larry</td>--%>
-                                <%--<td>Jellybean</td>--%>
-                                <%--<td>@lajelly</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr>--%>
-                                <%--<th scope="row">5</th>--%>
-                                <%--<td>Larry</td>--%>
-                                <%--<td>Kikat</td>--%>
-                                <%--<td>@lakitkat</td>--%>
-                            <%--</tr>--%>
-                            <%--</tbody>--%>
-                        <%--</table>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-        <%--<!-- #END# Bordered Table -->--%>
-        <%--<!-- Hover Rows -->--%>
-        <%--<div class="row clearfix">--%>
-            <%--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">--%>
-                <%--<div class="card">--%>
-                    <%--<div class="header">--%>
-                        <%--<h2>--%>
-                            <%--HOVER ROWS--%>
-                            <%--<small>Add <code>.table-hover</code> to enable a hover state on table rows within a <code>&lt;tbody&gt;</code>.</small>--%>
-                        <%--</h2>--%>
-                        <%--<ul class="header-dropdown m-r--5">--%>
-                            <%--<li class="dropdown">--%>
-                                <%--<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">--%>
-                                    <%--<i class="material-icons">more_vert</i>--%>
-                                <%--</a>--%>
-                                <%--<ul class="dropdown-menu pull-right">--%>
-                                    <%--<li><a href="javascript:void(0);">Action</a></li>--%>
-                                    <%--<li><a href="javascript:void(0);">Another action</a></li>--%>
-                                    <%--<li><a href="javascript:void(0);">Something else here</a></li>--%>
-                                <%--</ul>--%>
-                            <%--</li>--%>
-                        <%--</ul>--%>
-                    <%--</div>--%>
-                    <%--<div class="body table-responsive">--%>
-                        <%--<table class="table table-hover">--%>
-                            <%--<thead>--%>
-                            <%--<tr>--%>
-                                <%--<th>#</th>--%>
-                                <%--<th>FIRST NAME</th>--%>
-                                <%--<th>LAST NAME</th>--%>
-                                <%--<th>USERNAME</th>--%>
-                            <%--</tr>--%>
-                            <%--</thead>--%>
-                            <%--<tbody>--%>
-                            <%--<tr>--%>
-                                <%--<th scope="row">1</th>--%>
-                                <%--<td>Mark</td>--%>
-                                <%--<td>Otto</td>--%>
-                                <%--<td>@mdo</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr>--%>
-                                <%--<th scope="row">2</th>--%>
-                                <%--<td>Jacob</td>--%>
-                                <%--<td>Thornton</td>--%>
-                                <%--<td>@fat</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr>--%>
-                                <%--<th scope="row">3</th>--%>
-                                <%--<td>Larry</td>--%>
-                                <%--<td>the Bird</td>--%>
-                                <%--<td>@twitter</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr>--%>
-                                <%--<th scope="row">4</th>--%>
-                                <%--<td>Larry</td>--%>
-                                <%--<td>Jellybean</td>--%>
-                                <%--<td>@lajelly</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr>--%>
-                                <%--<th scope="row">5</th>--%>
-                                <%--<td>Larry</td>--%>
-                                <%--<td>Kikat</td>--%>
-                                <%--<td>@lakitkat</td>--%>
-                            <%--</tr>--%>
-                            <%--</tbody>--%>
-                        <%--</table>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-        <%--<!-- #END# Hover Rows -->--%>
-        <%--<!-- Condensed Table -->--%>
-        <%--<div class="row clearfix">--%>
-            <%--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">--%>
-                <%--<div class="card">--%>
-                    <%--<div class="header">--%>
-                        <%--<h2>--%>
-                            <%--CONDENSED TABLE--%>
-                            <%--<small>Add <code>.table-condensed</code> to make tables more compact by cutting cell padding in half.</small>--%>
-                        <%--</h2>--%>
-                        <%--<ul class="header-dropdown m-r--5">--%>
-                            <%--<li class="dropdown">--%>
-                                <%--<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">--%>
-                                    <%--<i class="material-icons">more_vert</i>--%>
-                                <%--</a>--%>
-                                <%--<ul class="dropdown-menu pull-right">--%>
-                                    <%--<li><a href="javascript:void(0);">Action</a></li>--%>
-                                    <%--<li><a href="javascript:void(0);">Another action</a></li>--%>
-                                    <%--<li><a href="javascript:void(0);">Something else here</a></li>--%>
-                                <%--</ul>--%>
-                            <%--</li>--%>
-                        <%--</ul>--%>
-                    <%--</div>--%>
-                    <%--<div class="body table-responsive">--%>
-                        <%--<table class="table table-condensed">--%>
-                            <%--<thead>--%>
-                            <%--<tr>--%>
-                                <%--<th>#</th>--%>
-                                <%--<th>FIRST NAME</th>--%>
-                                <%--<th>LAST NAME</th>--%>
-                                <%--<th>USERNAME</th>--%>
-                            <%--</tr>--%>
-                            <%--</thead>--%>
-                            <%--<tbody>--%>
-                            <%--<tr>--%>
-                                <%--<th scope="row">1</th>--%>
-                                <%--<td>Mark</td>--%>
-                                <%--<td>Otto</td>--%>
-                                <%--<td>@mdo</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr>--%>
-                                <%--<th scope="row">2</th>--%>
-                                <%--<td>Jacob</td>--%>
-                                <%--<td>Thornton</td>--%>
-                                <%--<td>@fat</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr>--%>
-                                <%--<th scope="row">3</th>--%>
-                                <%--<td>Larry</td>--%>
-                                <%--<td>the Bird</td>--%>
-                                <%--<td>@twitter</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr>--%>
-                                <%--<th scope="row">4</th>--%>
-                                <%--<td>Larry</td>--%>
-                                <%--<td>Jellybean</td>--%>
-                                <%--<td>@lajelly</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr>--%>
-                                <%--<th scope="row">5</th>--%>
-                                <%--<td>Larry</td>--%>
-                                <%--<td>Kikat</td>--%>
-                                <%--<td>@lakitkat</td>--%>
-                            <%--</tr>--%>
-                            <%--</tbody>--%>
-                        <%--</table>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-        <%--<!-- #END# Condensed Table -->--%>
-        <%--<!-- Contextual Classes -->--%>
-        <%--<div class="row clearfix">--%>
-            <%--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">--%>
-                <%--<div class="card">--%>
-                    <%--<div class="header">--%>
-                        <%--<h2>--%>
-                            <%--CONTEXTUAL CLASSES--%>
-                            <%--<small>Use contextual classes to color table rows or individual cells.</small>--%>
-                        <%--</h2>--%>
-                        <%--<ul class="header-dropdown m-r--5">--%>
-                            <%--<li class="dropdown">--%>
-                                <%--<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">--%>
-                                    <%--<i class="material-icons">more_vert</i>--%>
-                                <%--</a>--%>
-                                <%--<ul class="dropdown-menu pull-right">--%>
-                                    <%--<li><a href="javascript:void(0);">Action</a></li>--%>
-                                    <%--<li><a href="javascript:void(0);">Another action</a></li>--%>
-                                    <%--<li><a href="javascript:void(0);">Something else here</a></li>--%>
-                                <%--</ul>--%>
-                            <%--</li>--%>
-                        <%--</ul>--%>
-                    <%--</div>--%>
-                    <%--<div class="body table-responsive">--%>
-                        <%--<table class="table table-condensed">--%>
-                            <%--<thead>--%>
-                            <%--<tr>--%>
-                                <%--<th>#</th>--%>
-                                <%--<th>FIRST NAME</th>--%>
-                                <%--<th>LAST NAME</th>--%>
-                                <%--<th>USERNAME</th>--%>
-                            <%--</tr>--%>
-                            <%--</thead>--%>
-                            <%--<tbody>--%>
-                            <%--<tr class="active">--%>
-                                <%--<th scope="row">1</th>--%>
-                                <%--<td>Mark</td>--%>
-                                <%--<td>Otto</td>--%>
-                                <%--<td>@mdo</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr class="success">--%>
-                                <%--<th scope="row">2</th>--%>
-                                <%--<td>Jacob</td>--%>
-                                <%--<td>Thornton</td>--%>
-                                <%--<td>@fat</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr class="info">--%>
-                                <%--<th scope="row">3</th>--%>
-                                <%--<td>Larry</td>--%>
-                                <%--<td>the Bird</td>--%>
-                                <%--<td>@twitter</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr class="warning">--%>
-                                <%--<th scope="row">4</th>--%>
-                                <%--<td>Larry</td>--%>
-                                <%--<td>Jellybean</td>--%>
-                                <%--<td>@lajelly</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr class="danger">--%>
-                                <%--<th scope="row">5</th>--%>
-                                <%--<td>Larry</td>--%>
-                                <%--<td>Kikat</td>--%>
-                                <%--<td>@lakitkat</td>--%>
-                            <%--</tr>--%>
-                            <%--</tbody>--%>
-                        <%--</table>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-        <%--<!-- #END# Contextual Classes -->--%>
-        <%--<!-- With Material Design Colors -->--%>
-        <%--<div class="row clearfix">--%>
-            <%--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">--%>
-                <%--<div class="card">--%>
-                    <%--<div class="header">--%>
-                        <%--<h2>--%>
-                            <%--WITH MATERIAL DESIGN COLORS--%>
-                            <%--<small>You can use material design colors which examples are <code>.bg-pink</code></small>--%>
-                        <%--</h2>--%>
-                        <%--<ul class="header-dropdown m-r--5">--%>
-                            <%--<li class="dropdown">--%>
-                                <%--<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">--%>
-                                    <%--<i class="material-icons">more_vert</i>--%>
-                                <%--</a>--%>
-                                <%--<ul class="dropdown-menu pull-right">--%>
-                                    <%--<li><a href="javascript:void(0);">Action</a></li>--%>
-                                    <%--<li><a href="javascript:void(0);">Another action</a></li>--%>
-                                    <%--<li><a href="javascript:void(0);">Something else here</a></li>--%>
-                                <%--</ul>--%>
-                            <%--</li>--%>
-                        <%--</ul>--%>
-                    <%--</div>--%>
-                    <%--<div class="body table-responsive">--%>
-                        <%--<table class="table table-condensed">--%>
-                            <%--<thead>--%>
-                            <%--<tr>--%>
-                                <%--<th>#</th>--%>
-                                <%--<th>FIRST NAME</th>--%>
-                                <%--<th>LAST NAME</th>--%>
-                                <%--<th>USERNAME</th>--%>
-                            <%--</tr>--%>
-                            <%--</thead>--%>
-                            <%--<tbody>--%>
-                            <%--<tr class="bg-pink">--%>
-                                <%--<th scope="row">1</th>--%>
-                                <%--<td>Mark</td>--%>
-                                <%--<td>Otto</td>--%>
-                                <%--<td>@mdo</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr class="bg-cyan">--%>
-                                <%--<th scope="row">2</th>--%>
-                                <%--<td>Jacob</td>--%>
-                                <%--<td>Thornton</td>--%>
-                                <%--<td>@fat</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr class="bg-teal">--%>
-                                <%--<th scope="row">3</th>--%>
-                                <%--<td>Larry</td>--%>
-                                <%--<td>the Bird</td>--%>
-                                <%--<td>@twitter</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr class="bg-orange">--%>
-                                <%--<th scope="row">4</th>--%>
-                                <%--<td>Larry</td>--%>
-                                <%--<td>Jellybean</td>--%>
-                                <%--<td>@lajelly</td>--%>
-                            <%--</tr>--%>
-                            <%--<tr class="bg-purple">--%>
-                                <%--<th scope="row">5</th>--%>
-                                <%--<td>Larry</td>--%>
-                                <%--<td>Kikat</td>--%>
-                                <%--<td>@lakitkat</td>--%>
-                            <%--</tr>--%>
-                            <%--</tbody>--%>
-                        <%--</table>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-        <%--<!-- #END# With Material Design Colors -->--%>
-    <%--</div>--%>
-<%--</section>--%>
+                <button type="button" class="btn bg-grey waves-war" id="editCompany" value="1" title="Edit"><img
+                        src="resources/images/edit.gif" width="16" height="16" border="0">&nbsp;Edit
+                </button>
+                &nbsp;
+                &nbsp;
+                <button type="button" class="btn bg-grey waves-war" id="deleteCompany" value="1" title="Delete"><img
+                        src="resources/images/delete.gif" width="16" height="16" border="0">&nbsp;Delete
+
+                </button>
+                &nbsp;
+                &nbsp;
+                <button type="button" class="btn bg-grey waves-war" id="refreshCompany" value="1" title="Delete"><img
+                        src="resources/images/refresh.png" width="16" height="16" border="0">&nbsp;Refresh
+                </button>
+                &nbsp;<br/><br/>
+                &nbsp;<br/><br/>
+            </div>
+
+            <br/>
+        </div>
+
+        <%--end of table div--%>
 
 
+        <br/><br/><br/>
 
-    <section class="content">
-        <div class="container-fluid">
-<div id="example" class="row clearfix">
-    <div id="grid" style="clear: both"></div>
 
-    <script>
-        $(document).ready(function () {
-            var crudServiceBaseUrl = "http://localhost:8080/company",
-                    dataSource = new kendo.data.DataSource({
-                        transport: {
-                            read:  {
-                                url: crudServiceBaseUrl + "/companyList",
-                                dataType: "json",
-                                success: function (result) {
-                                    alert("success");
-                                    console.log(result);
-                                },
-                                error: function (e) {
-                                    alert('error');
-                                }
+        <%--start of save/update modal--%>
+
+
+        <div class="row clearfix" id="companyForm">
+            <div class="col-xs-8 col-xs-offset-2">
+                <div class="card">
+                    <div class="header" style="background-color:#a5a5a5">
+                        <h2><strong>&nbsp;</strong></h2>
+                    </div>
+                    <div class="body" style="border:solid; border-width: 1px; border-color:#a5a5a5;">
+                        <form class="form-horizontal">
+                            <fieldset>
+
+                                <!-- Form Name -->
+                                <legend><strong>Company Setting</strong></legend>
+
+                                <!-- Text input-->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="name">Name :</label>
+
+                                    <div class="col-md-6">
+                                        <input type="hidden" class="form-control" id="id" name="id" required>
+                                        <input type="hidden" class="form-control" id="version" name="version" required>
+                                        <input id="name" name="name" type="text" placeholder=""
+                                               class="form-control input-md"
+                                               style="border-color:#808080; border-width:1px; border-style:solid;"
+                                               required="">
+                                        <label id="nameValidation" style="color:red; font-size: 11px;"
+                                               class="form-control"></label>
+
+                                    </div>
+                                </div>
+
+                                <!-- Textarea -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="address">Address :</label>
+
+                                    <div class="col-md-6">
+                                        <textarea id="address" class="form-control input-md"
+                                                  style="border-color:#808080; border-width:1px; border-style:solid;"
+                                                  name="address" rows="6" cols="20"></textarea>
+                                        <label id="addressValidation" style="color:red; font-size: 11px;"
+                                               class="form-control"></label>
+                                    </div>
+                                </div>
+
+                                <!-- Button -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="saveCompany"></label>
+
+                                    <div class="col-md-4">
+                                        <button id="saveCompany" name="saveCompany" class="btn btn-primary"
+                                                type="button">Save
+                                        </button>
+                                        <button id="updateCompany" name="updateCompany" class="btn btn-primary"
+                                                type="button">Update
+                                        </button>
+                                        <button style="position: static" id="resetCompany" name="resetCompany"
+                                                class="btn bg-grey"
+                                                type="button">Reset
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="defaultModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="defaultModalLabel">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sodales orci ante, sed ornare eros vestibulum ut. Ut accumsan
+                        vitae eros sit amet tristique. Nullam scelerisque nunc enim, non dignissim nibh faucibus ullamcorper.
+                        Fusce pulvinar libero vel ligula iaculis ullamcorper. Integer dapibus, mi ac tempor varius, purus
+                        nibh mattis erat, vitae porta nunc nisi non tellus. Vivamus mollis ante non massa egestas fringilla.
+                        Vestibulum egestas consectetur nunc at ultricies. Morbi quis consectetur nunc.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link waves-effect" id="test">SAVE CHANGES</button>
+                        <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var loading = $.loading();
+                initFormValidationMsg();
+                initializeCompanyForm();
+                $("saveCompany").show();
+                $("#updateCompany").hide();
+                $("#defaultModal").modal('hide');
+                var companyGb;
+
+
+                /* populate Company list when page load */
+
+                $('#companyTable').DataTable({
+                    "sAjaxSource": "http://localhost:8080/company/companyList",
+//                    "sAjaxSource": messageResource.get('company.list.load.url', 'configMessageForUI'),
+                    "sAjaxDataProp": "",
+                    "order": [[0, "asc"]],
+                    'aoColumns': [
+                        {
+                            'sTitle': '',
+                            "sClass": "checkbox-column",
+                            'mData': 'id',
+                            'mRender': function (id) {
+                                return '<input class="getVal" style="position: static;"  type="checkbox" name="' + id + '" id="' + id + '">';
                             },
-//                            update: {
-//                                url: crudServiceBaseUrl + "/Products/Update",
-//                                dataType: "jsonp"
-//                            },
-//                            destroy: {
-//                                url: crudServiceBaseUrl + "/Products/Destroy",
-//                                dataType: "jsonp"
-//                            },
-//                            create: {
-//                                url: crudServiceBaseUrl + "/Products/Create",
-//                                dataType: "jsonp"
-//                            },
-                            parameterMap: function(options, operation) {
-                                if (operation !== "read" && options.models) {
-                                    return {models: kendo.stringify(options.models)};
+                            'sWidth': '15px',
+                            'bSortable': false
+                        },
+                        {"mData": "name",'sWidth': '200px'},
+                        {"mData": "address"}
+                    ],
+                    'aaSorting': [[0, 'asc']],
+                    "columnDefs": [
+                        {
+//                            "targets": [0],
+//                            "visible": false,
+//                            "searchable": false
+                        }
+                    ],
+                    "cache": false,
+                    "bPaginate": true,
+                    "bLengthChange": true,
+                    "bFilter": true,
+                    "bInfo": false,
+                    "bAutoWidth": true,
+                    "scrollY": "400",
+                    "scrollX": true
+
+                });
+
+
+                /* Save company data using ajax */
+
+                $("#saveCompany").click(function (event) {
+                    initFormValidationMsg();
+                    var part1 = "";
+                    var part2 = "";
+                    var icn = 0;
+                    var msg = "";
+                    var company = new Object();
+                    company.name = $("#name").val();
+                    company.address = $("#address").val();
+                    if (formValidation()) callAjaxForAddOperation(part1, part2, icn, msg, company);
+                });
+
+
+                /* Update company data using ajax */
+
+                $('#editCompany').click(function () {
+                    initializeCompanyForm();
+                    initFormValidationMsg();
+                    var newCompany = new Object();
+                    var newCompany = companyGb;
+                    companyGb = null;
+                    var data=messageResource.get('company.edit.validation.msg', 'configMessageForUI');
+
+                    if (checkForMultipleRowSelect()) showServerSideMessage(data, "", 0, "Message");
+                    else if (newCompany == null)showServerSideMessage(data, "", 0, "Message");
+                    else {
+                        $("#updateCompany").show();
+                        $("#saveCompany").hide();
+                        $("#id").val(newCompany.id);
+                        $("#name").val(newCompany.name);
+                        $("#version").val(newCompany.version);
+                        $("#address").val(newCompany.address);
+                        window.location.href = "#companyForm";
+                    }
+                });
+
+                var table = $('#companyTable').DataTable();
+
+                $("#updateCompany").click(function (event) {
+                    var part1 = "";
+                    var part2 = "";
+                    var icn = 0;
+                    var msg = "Message";
+                    var company = new Object();
+                    company.id = $("#id").val();
+                    company.version = $("#version").val();
+                    company.name = $("#name").val();
+                    company.address = $("#address").val();
+                    if (formValidation()) callAjaxForEditOperation(part1, part2, icn, msg, company);
+
+                });
+
+
+                /* Delete company data using ajax */
+
+                $("#deleteCompany").click(function (event) {
+                    initializeCompanyForm();
+                    initFormValidationMsg();
+                    var newCompany = new Object();
+                    newCompany = companyGb;
+                    companyGb = null;
+                    var part1 = "";
+                    var part2 = "";
+                    var icn = 0;
+                    var msg = "Message";
+                    var data = messageResource.get('company.delete.validation.msg', 'configMessageForUI');
+
+                    if (checkForMultipleRowSelect()) showServerSideMessage(data, "", 0, "Message");
+                    else if (newCompany == null)showServerSideMessage(data, "", 0, "Message");
+                    else {
+                        $.dialogbox({
+                            type: 'msg',
+                            title: 'Confirm Title',
+                            content: messageResource.get('company.delete.confirm.msg', 'configMessageForUI'),
+                            closeBtn: true,
+                            btn: ['Confirm', 'Cancel'],
+                            call: [
+                                function () {
+                                    $.dialogbox.close();
+                                    callAjaxForDeleteOperation(part1, part2, icn, msg, newCompany);
+
+                                },
+                                function () {
+                                    $.dialogbox.close();
+                                    uncheckedAllCheckBox();
                                 }
+                            ]
+                        });
+
+                        window.location.href = "#viewTableData";
+                    }
+
+                });
+
+
+
+                /* DataTable select value send to global var */
+
+                $('#companyTable tbody').on('click', 'tr', function () {
+                    companyGb = table.row(this).data();
+                    var isChecked = $('#' + companyGb.id).is(":checked");
+                    if (isChecked == false) companyGb = null;
+                });
+
+
+                /* Initialize html form value  based on reset button*/
+
+                $('#resetCompany').on('click', function () {
+                    companyGb = null;
+                    initializeCompanyForm();
+                    initFormValidationMsg();
+                    $('#saveCompany').show();
+                    $('#updateCompany').hide();
+                    uncheckedAllCheckBox();
+                });
+
+
+
+                /* load table data on click refresh button*/
+
+                $('#refreshCompany').on('click', function () {
+                    initializeCompanyForm();
+                    initFormValidationMsg();
+                    companyGb = null;
+                    table.ajax.url(messageResource.get('company.list.load.url', 'configMessageForUI')).load();
+                });
+
+
+                /*  Ajax call for delete operation */
+
+                function callAjaxForDeleteOperation(part1, part2, icn, msg, newCompany) {
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        'type': 'POST',
+                        'url': messageResource.get('company.delete.url', 'configMessageForUI'),
+                        'data': JSON.stringify(newCompany),
+                        'dataType': 'json',
+                        'success': function (d) {
+                            if (d.successMsg) {
+                                icn = 1;
+                                msg = "";
+                                part1 = d.successMsg;
+                                showServerSideMessage(part1, part2, icn, msg);
+                                table.ajax.url(messageResource.get('company.list.load.url', 'configMessageForUI')).load();
+                            }
+                            if (d.validationError) {
+                                icn = 0;
+                                msg = '<strong style="color: red">Error</strong>';
+                                part2 = d.validationError;
+                                uncheckedAllCheckBox();
+                                showServerSideMessage(part1, part2, icn, msg);
                             }
                         },
-                        batch: true,
-                        pageSize: 20,
-                        schema: {
-                            model: {
-                                id: "id",
-                                fields: {
-                                    id: { editable: false, nullable: true },
-                                    name: { validation: { required: true } }
-                                }
+                        'error': function (error) {
+                            icn = 0;
+                            msg = '<strong style="color: red">Error</strong>';
+                            showServerSideMessage(part1, getErrorMessage(error), icn, msg);
+                        }
+                    });
+                }
+
+
+                /*  Ajax call for edit operation */
+
+                function callAjaxForEditOperation(part1, part2, icn, msg, company, obj) {
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        'type': 'POST',
+                        'url': messageResource.get('company.edit.url', 'configMessageForUI'),
+                        'data': JSON.stringify(company),
+                        'dataType': 'json',
+                        'success': function (d) {
+                            if (d.successMsg) {
+                                icn = 1;
+                                part1 = d.successMsg;
+                                initializeCompanyForm();
+                                window.location.href = "#viewTableData";
+                                $("#updateCompany").hide();
+                                $("#saveCompany").show();
+                                showServerSideMessage(part1, part2, icn, msg);
+                                table.ajax.url(messageResource.get('company.list.load.url', 'configMessageForUI')).load();
                             }
+                            if (d.validationError) {
+                                icn = 0;
+                                msg = "";
+                                msg = '<strong style="color: red">Error</strong>';
+                                part2 = d.validationError;
+                                uncheckedAllCheckBox();
+                                showServerSideMessage(part1, part2, icn, msg);
+                            }
+                        },
+                        'error': function (error) {
+                            icn = 0;
+                            msg = '<strong style="color: red">Error</strong>';
+                            showServerSideMessage(part1, getErrorMessage(error), icn, msg);
+                        }
+                    });
+                    company = null;
+
+                }
+
+
+                /*  Ajax call for save operation */
+
+                function callAjaxForAddOperation(part1, part2, icn, msg, company) {
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        'type': 'POST',
+                        'url': messageResource.get('company.save.url', 'configMessageForUI'),
+                        'data': JSON.stringify(company),
+                        'dataType': 'json',
+                        'success': function (d) {
+                            if (d.successMsg) {
+                                icn = 1;
+                                msg = "";
+                                part1 = d.successMsg;
+                                initializeCompanyForm();
+                                setNewDataTableValue(d.company, table);
+                                window.location.href = "#viewTableData";
+                                showServerSideMessage(part1, part2, icn, msg);
+                            }
+                            if (d.validationError) {
+                                icn = 0;
+                                msg = '<strong style="color: red">Error</strong>';
+                                part2 = d.validationError;
+                                showServerSideMessage(part1, part2, icn, msg);
+                            }
+                        },
+                        'error': function (error) {
+                            icn = 0;
+                            msg = '<strong style="color: red">Error</strong>';
+                            showServerSideMessage(part1, getErrorMessage(error), icn, msg);
                         }
                     });
 
-            $("#grid").kendoGrid({
-                dataSource: dataSource,
-                pageable: true,
-                height: 550,
-                toolbar: ["create"],
-                columns: [
-                    { field:"id", title: "Company ID" },
-                    { field:"name", title: "Company Name" },
-                    { command: ["edit", "destroy"], title: "&nbsp;", width: "250px" }],
-                editable: "popup"
+                }
+
+
+                /* Initialize html form value */
+
+                function initializeCompanyForm() {
+                    $("#id").val("");
+                    $("#version").val("");
+                    $("#name").val("");
+                    $("#address").val("");
+                }
+
+
+                /* html form Validation */
+
+                function formValidation() {
+                    var isValid = true;
+                    var name = $("#name").val();
+                    var address = $("#address").val();
+                    if (name == null || name.trim().length == 0) {
+                        $("#nameValidation").text("Name is required");
+                        isValid = false;
+                    }
+                    if ((address == null) || (address.trim().length) == 0) {
+                        $("#addressValidation").text("Address is required");
+                        isValid = false;
+                    }
+                    return isValid;
+                }
+
+
+                /* Initialize html form validation error field*/
+
+                function initFormValidationMsg() {
+                    $("#nameValidation").text("");
+                    $("#addressValidation").text("");
+
+                }
+
+
+                /* move to add new company div*/
+
+                $('#moveToAdd').on('click', function () {
+                    $("#defaultModal").modal('show');
+                    companyGb = null;
+                    $("#updateCompany").hide();
+                    $("#saveCompany").show();
+                    uncheckedAllCheckBox();
+                    initializeCompanyForm();
+                    initFormValidationMsg();
+                    window.location.href = "#companyForm";
+                });
+
+
+                /* Set new created company value to DataTable*/
+
+                function setNewDataTableValue(company, table) {
+                    table.row.add({
+                        "id": company.id,
+                        "name": company.name,
+                        "version": company.version,
+                        "address": company.address,
+                        "createdBy": company.createdBy,
+                        "createdOn": company.createdOn,
+                        "updatedBy": company.updatedBy,
+                        "updatedOn": company.updatedOn
+                    }).draw();
+
+                };
+
+
             });
-        });
+            //
+            $('#test').on('click', function () {
+            $.dialogbox({
+                type: 'msg',
+                title: "Hello",
+                icon: 1,
+                content: "Test",
+                btn: ['Ok'],
+                call: [
+                    function () {
+                        $.dialogbox.close();
+                    }
+                ]
+            });
+            });
+        </script>
+    </div>
 
-        function customBoolEditor(container, options) {
-            $('<input class="k-checkbox" type="checkbox" name="Discontinued" data-type="boolean" data-bind="checked:Discontinued">').appendTo(container);
-            $('<label class="k-checkbox-label">&#8203;</label>').appendTo(container);
-        }
-    </script>
-</div>
 
-        </div>
-        </section>
+</section>
 
-
-<%@ include file = "footer.jsp" %>
+<%@ include file="footer.jsp" %>

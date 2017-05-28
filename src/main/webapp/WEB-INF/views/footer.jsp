@@ -63,7 +63,8 @@
 
 <%--<script src="resources/node_modules/adminbsb/js/pages/forms/basic-form-elements.js"></script>--%>
 
-<%--<script src="resources/node_modules/adminbsb/js/pages/ui/dialogs.js"></script>--%>
+<script src="resources/node_modules/adminbsb/js/pages/ui/dialogs.js"></script>
+<script src="resources/node_modules/adminbsb/js/pages/ui/modals.js"></script>
 
 <%--<script src="resources/node_modules/adminbsb/dialog/js/jquery.dialogBox.js"></script>--%>
 

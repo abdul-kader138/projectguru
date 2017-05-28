@@ -55,7 +55,7 @@
         <%--start of save/update modal--%>
 
 
-        <div class="row clearfix" id="companyForm">
+        <div class="row clearfix" id="companyForm" style="display: none">
             <div class="col-xs-8 col-xs-offset-2">
                 <div class="card">
                     <div class="header" style="background-color:#a5a5a5">
@@ -207,6 +207,7 @@
                     else {
                         $("#updateCompany").show();
                         $("#saveCompany").hide();
+                        document.getElementById('companyForm').style.display = "block";
                         $("#id").val(newCompany.id);
                         $("#name").val(newCompany.name);
                         $("#version").val(newCompany.version);
@@ -218,6 +219,7 @@
                 var table = $('#companyTable').DataTable();
 
                 $("#updateCompany").click(function (event) {
+
                     var part1 = "";
                     var part2 = "";
                     var icn = 0;
@@ -303,6 +305,7 @@
                     initializeCompanyForm();
                     initFormValidationMsg();
                     companyGb = null;
+                    document.getElementById('companyForm').style.display = "none";
                     table.ajax.url(messageResource.get('company.list.load.url', 'configMessageForUI')).load();
                 });
 
@@ -324,6 +327,7 @@
                                 icn = 1;
                                 msg = "";
                                 part1 = d.successMsg;
+                                document.getElementById('companyForm').style.display = "none";
                                 showServerSideMessage(part1, part2, icn, msg);
                                 table.ajax.url(messageResource.get('company.list.load.url', 'configMessageForUI')).load();
                             }
@@ -364,6 +368,7 @@
                                 window.location.href = "#viewTableData";
                                 $("#updateCompany").hide();
                                 $("#saveCompany").show();
+                                document.getElementById('companyForm').style.display = "none";
                                 showServerSideMessage(part1, part2, icn, msg);
                                 table.ajax.url(messageResource.get('company.list.load.url', 'configMessageForUI')).load();
                             }
@@ -407,6 +412,7 @@
                                 initializeCompanyForm();
                                 setNewDataTableValue(d.company, table);
                                 window.location.href = "#viewTableData";
+                                document.getElementById('companyForm').style.display = "none";
                                 showServerSideMessage(part1, part2, icn, msg);
                             }
                             if (d.validationError) {
@@ -466,6 +472,7 @@
                 /* move to add new company div*/
 
                 $('#moveToAdd').on('click', function () {
+                    document.getElementById('companyForm').style.display = "block";
                     companyGb = null;
                     $("#updateCompany").hide();
                     $("#saveCompany").show();
