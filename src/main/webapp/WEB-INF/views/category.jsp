@@ -55,7 +55,7 @@
         <%--start of save/update modal--%>
 
 
-        <div class="row clearfix" id="categoryForm">
+        <div class="row clearfix" id="categoryForm" style="display: none">
             <div class="col-xs-8 col-xs-offset-2">
                 <div class="card">
                     <div class="header" style="background-color:#a5a5a5">
@@ -111,7 +111,7 @@
                                         </button>
                                         <button style="position: static" id="resetCategory" name="resetCategory"
                                                 class="btn bg-grey"
-                                                type="button">Reset
+                                                type="button">Cancel
                                         </button>
                                     </div>
                                 </div>
@@ -206,6 +206,7 @@
                     if (checkForMultipleRowSelect()) showServerSideMessage(data, "", 0, "Message");
                     else if (newCategory == null)showServerSideMessage(data, "", 0, "Message");
                     else {
+                        document.getElementById('categoryForm').style.display = "block";
                         $("#updateCategory").show();
                         $("#saveCategory").hide();
                         $("#id").val(newCategory.id);
@@ -236,6 +237,7 @@
                 /* Delete category data using ajax */
 
                 $("#deleteCategory").click(function (event) {
+                    document.getElementById('categoryForm').style.display = "none";
                     initializeCategoryForm();
                     initFormValidationMsg();
                     var newCategory = new Object();
@@ -293,6 +295,8 @@
                     $('#saveCategory').show();
                     $('#updateCategory').hide();
                     uncheckedAllCheckBox();
+                    window.location.href = "#viewTableData";
+                    document.getElementById('categoryForm').style.display = "none";
                 });
 
 
@@ -303,6 +307,7 @@
                     initFormValidationMsg();
                     companyGb = null;
                     table.ajax.url(messageResource.get('category.list.load.url', 'configMessageForUI')).load();
+                    document.getElementById('categoryForm').style.display = "none";
                 });
 
 
@@ -363,6 +368,7 @@
                                 window.location.href = "#viewTableData";
                                 $("#updateCategory").hide();
                                 $("#saveCategory").show();
+                                document.getElementById('categoryForm').style.display = "none";
                                 showServerSideMessage(part1, part2, icn, msg);
                                 table.ajax.url(messageResource.get('category.list.load.url', 'configMessageForUI')).load();
                             }
@@ -404,6 +410,7 @@
                                 msg = "";
                                 part1 = d.successMsg;
                                 initializeCategoryForm();
+                                document.getElementById('categoryForm').style.display = "none";
                                 setNewDataTableValue(d.productCategory, table);
                                 window.location.href = "#viewTableData";
                                 showServerSideMessage(part1, part2, icn, msg);
@@ -465,6 +472,7 @@
                 /* move to add new category div*/
 
                 $('#moveToAdd').on('click', function () {
+                    document.getElementById('categoryForm').style.display = "block";
                     companyGb = null;
                     $("#updateCategory").hide();
                     $("#saveCategory").show();

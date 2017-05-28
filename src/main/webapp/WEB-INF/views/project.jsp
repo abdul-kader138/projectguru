@@ -57,7 +57,7 @@
         <%--start of save/update modal--%>
 
 
-        <div class="row clearfix" id="projectForm">
+        <div class="row clearfix" id="projectForm" style="display: none">
             <div class="col-xs-8 col-xs-offset-2">
                 <div class="card">
                     <div class="header" style="background-color:#a5a5a5">
@@ -111,7 +111,7 @@
                                                 type="button">Update
                                         </button>
                                         <button id="resetProject" name="resetProject" class="btn bg-grey"
-                                                type="button">Reset
+                                                type="button">Cancel
                                         </button>
                                     </div>
                                 </div>
@@ -136,7 +136,8 @@
                 var companyGb;
 
 
-                /* Load project data to select box data using ajax */
+
+                /* populate Company list when page load */
 
                 $('#projectTable').DataTable({
                     "sAjaxSource": "http://localhost:8080/project/projectList",
@@ -176,7 +177,7 @@
                 });
 
 
-                /* populate Company list when page load */
+                /* Load Company data to select box data using ajax */
 
                 function getAllCompany() {
                     $('#getAllCompany').empty();
@@ -193,7 +194,6 @@
                             $('#listOfCompany').append(collaboration);
                         },
                         error: function (e) {
-                            console.log(e);
                         }
                     });
                 }
@@ -203,7 +203,6 @@
                 /* Save project data using ajax */
 
                 $("#saveProject").click(function (event) {
-
                     initFormValidationMsg();
                     var part1 = "";
                     var part2 = "";
@@ -229,6 +228,7 @@
                     if (checkForMultipleRowSelect()) showServerSideMessage(data, "", 0, "Message");
                     else if (project == null)showServerSideMessage(data, "", 0, "Message");
                     else {
+                        document.getElementById('projectForm').style.display = "block";
                         $("#updateProject").show();
                         $("#saveProject").hide();
                         $("#id").val(project.id);
@@ -259,6 +259,7 @@
                 $("#deleteProject").click(function (event) {
                     initializeProjectForm();
                     initFormValidationMsg();
+                    document.getElementById('projectForm').style.display = "none";
                     var project = new Object();
                     project = companyGb;
                     companyGb = null;
@@ -311,6 +312,8 @@
                     $('#saveProject').show();
                     $('#updateProject').hide();
                     uncheckedAllCheckBox();
+                    window.location.href = "#viewTableData";
+                    document.getElementById('projectForm').style.display = "none";
                 });
 
 
@@ -321,6 +324,7 @@
                     initFormValidationMsg();
                     companyGb = null;
                     table.ajax.url( messageResource.get('project.list.load.url', 'configMessageForUI')).load();
+                    document.getElementById('projectForm').style.display = "none";
                 });
 
 
@@ -390,6 +394,7 @@
                                 msg = '<strong style="color: red">Error</strong>';
                                 part2 = d.validationError;
                                 uncheckedAllCheckBox();
+                                document.getElementById('projectForm').style.display = "none";
                                 showServerSideMessage(part1, part2, icn, msg);
                             }
                         },
@@ -424,6 +429,7 @@
                                 initializeProjectForm();
                                 setNewDataTableValue(d.project, table);
                                 window.location.href = "#viewTableData";
+                                document.getElementById('projectForm').style.display = "none";
                                 showServerSideMessage(part1, part2, icn, msg);
                             }
                             if (d.validationError) {
@@ -482,6 +488,7 @@
                 /* move to add new project div*/
 
                 $('#moveToAdd').on('click', function () {
+                    document.getElementById('projectForm').style.display = "block";
                     companyGb = null;
                     $("#updateProject").hide();
                     $("#saveProject").show();

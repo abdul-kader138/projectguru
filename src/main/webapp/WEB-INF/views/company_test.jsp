@@ -111,7 +111,7 @@
                                         </button>
                                         <button style="position: static" id="resetCompany" name="resetCompany"
                                                 class="btn bg-grey"
-                                                type="button">Reset
+                                                type="button">Cancel
                                         </button>
                                     </div>
                                 </div>
@@ -205,9 +205,9 @@
                     if (checkForMultipleRowSelect()) showServerSideMessage(data, "", 0, "Message");
                     else if (newCompany == null)showServerSideMessage(data, "", 0, "Message");
                     else {
+                        document.getElementById('companyForm').style.display = "block";
                         $("#updateCompany").show();
                         $("#saveCompany").hide();
-                        document.getElementById('companyForm').style.display = "block";
                         $("#id").val(newCompany.id);
                         $("#name").val(newCompany.name);
                         $("#version").val(newCompany.version);
@@ -239,6 +239,7 @@
                 $("#deleteCompany").click(function (event) {
                     initializeCompanyForm();
                     initFormValidationMsg();
+                    document.getElementById('companyForm').style.display = "none";
                     var newCompany = new Object();
                     newCompany = companyGb;
                     companyGb = null;
@@ -295,6 +296,8 @@
                     $('#saveCompany').show();
                     $('#updateCompany').hide();
                     uncheckedAllCheckBox();
+                    window.location.href = "#viewTableData";
+                    document.getElementById('companyForm').style.display = "none";
                 });
 
 
@@ -305,8 +308,8 @@
                     initializeCompanyForm();
                     initFormValidationMsg();
                     companyGb = null;
-                    document.getElementById('companyForm').style.display = "none";
                     table.ajax.url(messageResource.get('company.list.load.url', 'configMessageForUI')).load();
+                    document.getElementById('companyForm').style.display = "none";
                 });
 
 
@@ -327,7 +330,6 @@
                                 icn = 1;
                                 msg = "";
                                 part1 = d.successMsg;
-                                document.getElementById('companyForm').style.display = "none";
                                 showServerSideMessage(part1, part2, icn, msg);
                                 table.ajax.url(messageResource.get('company.list.load.url', 'configMessageForUI')).load();
                             }

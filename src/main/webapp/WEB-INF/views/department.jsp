@@ -54,7 +54,7 @@
         <%--start of save/update modal--%>
 
 
-        <div class="row clearfix" id="departmentForm">
+        <div class="row clearfix" id="departmentForm" style="display: none">
             <div class="col-xs-8 col-xs-offset-2">
                 <div class="card">
                     <div class="header" style="background-color:#a5a5a5">
@@ -98,7 +98,7 @@
                                         </button>
                                         <button style="position: static" id="resetDepartment" name="resetDepartment"
                                                 class="btn bg-grey"
-                                                type="button">Reset
+                                                type="button">Cancel
                                         </button>
                                     </div>
                                 </div>
@@ -191,6 +191,7 @@
                     if (checkForMultipleRowSelect()) showServerSideMessage(data, "", 0, "Message");
                     else if (newDepartment == null)showServerSideMessage(data, "", 0, "Message");
                     else {
+                        document.getElementById('departmentForm').style.display = "block";
                         $("#updateDepartment").show();
                         $("#saveDepartment").hide();
                         $("#id").val(newDepartment.id);
@@ -219,6 +220,7 @@
                 /* Delete Department data using ajax */
 
                 $("#deleteDepartment").click(function (event) {
+                    document.getElementById('departmentForm').style.display = "none";
                     initializeDepartmentForm();
                     initFormValidationMsg();
                     var newDepartment = new Object();
@@ -276,6 +278,8 @@
                     $('#saveDepartment').show();
                     $('#updateDepartment').hide();
                     uncheckedAllCheckBox();
+                    window.location.href = "#viewTableData";
+                    document.getElementById('departmentForm').style.display = "none";
                 });
 
 
@@ -286,6 +290,7 @@
                     initFormValidationMsg();
                     companyGb = null;
                     table.ajax.url(messageResource.get('department.list.load.url', 'configMessageForUI')).load();
+                    document.getElementById('departmentForm').style.display = "none";
                 });
 
 
@@ -346,6 +351,7 @@
                                 window.location.href = "#viewTableData";
                                 $("#updateDepartment").hide();
                                 $("#saveDepartment").show();
+                                document.getElementById('departmentForm').style.display = "none";
                                 showServerSideMessage(part1, part2, icn, msg);
                                 table.ajax.url(messageResource.get('department.list.load.url', 'configMessageForUI')).load();
                             }
@@ -390,6 +396,7 @@
                                 setNewDataTableValue(d.department, table);
                                 window.location.href = "#viewTableData";
                                 showServerSideMessage(part1, part2, icn, msg);
+                                document.getElementById('departmentForm').style.display = "none";
                             }
                             if (d.validationError) {
                                 icn = 0;
@@ -441,6 +448,7 @@
                 /* move to add new department div*/
 
                 $('#moveToAdd').on('click', function () {
+                    document.getElementById('departmentForm').style.display = "block";
                     companyGb = null;
                     $("#updateDepartment").hide();
                     $("#saveDepartment").show();

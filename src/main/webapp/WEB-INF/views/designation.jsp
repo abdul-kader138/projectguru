@@ -55,7 +55,7 @@
         <%--start of save/update modal--%>
 
 
-        <div class="row clearfix" id="designationForm">
+        <div class="row clearfix" id="designationForm" style="display: none">
             <div class="col-xs-8 col-xs-offset-2">
                 <div class="card">
                     <div class="header" style="background-color:#a5a5a5">
@@ -99,7 +99,7 @@
                                         </button>
                                         <button style="position: static" id="resetDesignation" name="resetDesignation"
                                                 class="btn bg-grey"
-                                                type="button">Reset
+                                                type="button">Cancel
                                         </button>
                                     </div>
                                 </div>
@@ -192,6 +192,7 @@
                     if (checkForMultipleRowSelect()) showServerSideMessage(data, "", 0, "Message");
                     else if (designation == null)showServerSideMessage(data, "", 0, "Message");
                     else {
+                        document.getElementById('designationForm').style.display = "block";
                         $("#updateDesignation").show();
                         $("#saveDesignation").hide();
                         $("#id").val(designation.id);
@@ -220,6 +221,7 @@
                 /* Delete Designation data using ajax */
 
                 $("#deleteDesignation").click(function (event) {
+                    document.getElementById('designationForm').style.display = "none";
                     initializeDesignationForm();
                     initFormValidationMsg();
                     var designation = new Object();
@@ -277,6 +279,8 @@
                     $('#saveDesignation').show();
                     $('#updateDesignation').hide();
                     uncheckedAllCheckBox();
+                    window.location.href = "#viewTableData";
+                    document.getElementById('designationForm').style.display = "none";
                 });
 
 
@@ -287,6 +291,7 @@
                     initFormValidationMsg();
                     companyGb = null;
                     table.ajax.url(messageResource.get('designation.list.load.url', 'configMessageForUI')).load();
+                    document.getElementById('designationForm').style.display = "none";
                 });
 
 
@@ -348,6 +353,7 @@
                                 $("#updateDesignation").hide();
                                 $("#saveDesignation").show();
                                 showServerSideMessage(part1, part2, icn, msg);
+                                document.getElementById('designationForm').style.display = "none";
                                 table.ajax.url(messageResource.get('designation.list.load.url', 'configMessageForUI')).load();
                             }
                             if (d.validationError) {
@@ -390,6 +396,7 @@
                                 initializeDesignationForm();
                                 setNewDataTableValue(d.designation, table);
                                 window.location.href = "#viewTableData";
+                                document.getElementById('designationForm').style.display = "none";
                                 showServerSideMessage(part1, part2, icn, msg);
                             }
                             if (d.validationError) {
@@ -442,6 +449,7 @@
                 /* move to add new designation div*/
 
                 $('#moveToAdd').on('click', function () {
+                    document.getElementById('designationForm').style.display = "block";
                     companyGb = null;
                     $("#updateDesignation").hide();
                     $("#saveDesignation").show();
