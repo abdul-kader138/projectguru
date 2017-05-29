@@ -103,7 +103,7 @@ public class RoleServiceImpl implements RoleService {
 
         int num=isRightSelected(roleObj);
         if (roleObj.get("name") == null || roleObj.get("description") == null ||
-                num < 1)
+                num < 0)
             msg = INVALID_INPUT;
 
         Role role =createRoleObj(roleObj);

@@ -76,8 +76,8 @@
                   <label class="col-md-4 control-label" for="name">Name :</label>
 
                   <div class="col-md-6">
-                    <input type="hidden" class="form-control" id="id" name="id" required>
-                    <input type="hidden" class="form-control" id="version" name="version" required>
+                    <input type="hidden" class="form-control" id="id" name="id" value="0" required>
+                    <input type="hidden" class="form-control" id="version" name="version" value="0" required>
                     <input id="name" name="name" type="text" placeholder=""
                            class="form-control input-md"
                            style="border-color:#808080; border-width:1px; border-style:solid;"
@@ -467,8 +467,8 @@
         /* Initialize html form value */
 
         function initializeSubCategoryForm() {
-          $("#id").val("");
-          $("#version").val("");
+          $("#id").val("0");
+          $("#version").val("0");
           $("#name").val("");
           $("#description").val("");
           $('#defaultOpt').val('0').prop('selected', true);
