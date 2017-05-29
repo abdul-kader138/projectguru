@@ -51,6 +51,15 @@
         <br/><br/><br/>
 
 
+        <div>
+            <form id="fileForm">
+                <input type="file" name="file"/>
+                <button id="btnUpload" type="button">Upload file</button>
+                <button id="btnClear" type="button">Clear</button>
+            </form>
+            <div id="imgContainer"></div>
+        </div>
+
         <%--start of save/update modal--%>
 
 
@@ -73,7 +82,8 @@
 
                                     <div class="col-md-6">
                                         <input type="hidden" class="form-control" id="id" name="id" value="0" required>
-                                        <input type="hidden" class="form-control" id="version" name="version" value="0" required>
+                                        <input type="hidden" class="form-control" id="version" name="version" value="0"
+                                               required>
                                         <input id="name" name="name" type="text" placeholder=""
                                                class="form-control input-md"
                                                style="border-color:#808080; border-width:1px; border-style:solid;"
@@ -475,9 +485,49 @@
                 };
 
 
+
+
+                $('#btnUpload').on('click', function() {
+                    var file = $('[name="file"]');
+                    var dname = $('name').val();
+                    var imgContainer = $('#imgContainer');
+                    var filename = $.trim(file.val());
+
+                    if (!(isJpg(filename) || isPng(filename))) {
+                        alert('Please browse a JPG/PNG file to upload ...');
+                        return;
+                    }
+
+                    $.ajax({
+                        url: 'http://localhost:8080/department/echofile',
+                        type: "POST",
+                        data: new FormData(document.getElementById("fileForm")),
+                        enctype: 'multipart/form-data',
+                        processData: false,
+                        contentType: false
+                    }).done(function(data) {
+                        imgContainer.html('');
+                        var img = '<img src="data:' + data.contenttype + ';base64,'
+                                + data.base64 + '"/>';
+
+                        imgContainer.append(img);
+                    }).fail(function(jqXHR, textStatus) {
+                        //alert(jqXHR.responseText);
+                        alert('File upload failed ...');
+                    });
+
+                });
+
+
             });
             //
+            var isJpg = function(name) {
+                return name.match(/jpg$/i)
+            };
 
+            var isPng = function(name) {
+                return name.match(/png$/i)
+            };
         </script>
     </div>
 

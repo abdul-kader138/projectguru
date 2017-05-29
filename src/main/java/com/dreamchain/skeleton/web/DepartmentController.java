@@ -2,6 +2,7 @@ package com.dreamchain.skeleton.web;
 
 import com.dreamchain.skeleton.model.Department;
 import com.dreamchain.skeleton.service.DepartmentService;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @PropertySource("classpath:config.properties")
@@ -108,5 +110,22 @@ public class DepartmentController {
         return objList;
     }
 
+    @RequestMapping(value = "department/echofile", method = RequestMethod.POST, produces = {"application/json"})
+    public @ResponseBody HashMap<String, Object> echoFile(MultipartHttpServletRequest request,
+                                                          HttpServletResponse response) throws Exception {
+
+        MultipartFile multipartFile = request.getFile("file");
+        Long size = multipartFile.getSize();
+        String contentType = multipartFile.getContentType();
+        InputStream stream = multipartFile.getInputStream();
+        byte[] bytes = IOUtils.toByteArray(stream);
+
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("fileoriginalsize", size);
+        map.put("contenttype", contentType);
+//        map.put("base64", new String(Base64Utils.encode(bytes)));
+
+        return map;
+    }
 
 }
