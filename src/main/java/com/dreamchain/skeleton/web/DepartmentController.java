@@ -17,8 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
+import java.io.*;
 import java.text.ParseException;
 import java.util.*;
 
@@ -111,21 +112,46 @@ public class DepartmentController {
     }
 
     @RequestMapping(value = "department/echofile", method = RequestMethod.POST, produces = {"application/json"})
-    public @ResponseBody HashMap<String, Object> echoFile(MultipartHttpServletRequest request,
+    public @ResponseBody HashMap<String, Object> echoFile(MultipartHttpServletRequest request,HttpServletRequest request1,
                                                           HttpServletResponse response) throws Exception {
 
-        MultipartFile multipartFile = request.getFile("file");
-        Long size = multipartFile.getSize();
-        String contentType = multipartFile.getContentType();
-        InputStream stream = multipartFile.getInputStream();
-        byte[] bytes = IOUtils.toByteArray(stream);
 
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+
+        MultipartFile multipartFile = request.getFile("file");
+        String fileName = multipartFile.getOriginalFilename();
+        Long size = multipartFile.getSize();
+
+
+
+        try {
+            String filepath = "/resources/" + "images/" +  "/babu/"
+                     + fileName;
+            String realPathFetch = request.getRealPath(
+                    "/");
+            inputStream = multipartFile.getInputStream();
+            File newFile = new File(realPathFetch+filepath);
+            if (!newFile.exists()) {
+                newFile.createNewFile();
+            }
+            outputStream = new FileOutputStream(newFile);
+            int read = 0;
+            byte[] bytes = new byte[1024];
+
+            while ((read = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, read);
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("fileoriginalsize", size);
-        map.put("contenttype", contentType);
-//        map.put("base64", new String(Base64Utils.encode(bytes)));
+        map.put("size", size);
+        map.put("name", fileName);
 
         return map;
+
     }
 
 }
