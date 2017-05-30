@@ -45,6 +45,11 @@ public class UserDaoImpl implements UserDao {
 		return userList;
 	}
 
+	@Override
+	public List<User> findAll() {
+		return hibernateTemplate.loadAll(User.class);
+	}
+
 
 	public void save(User user) {
 		hibernateTemplate.merge(user);

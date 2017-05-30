@@ -43,6 +43,7 @@
 
 <!-- ChartJs -->
 <script src="resources/node_modules/adminbsb/chartjs/Chart.bundle.js"></script>
+<script src="resources/node_modules/imageloader/loadimg.min.js"></script>
 
 
 <script src="resources/node_modules/adminbsb/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>

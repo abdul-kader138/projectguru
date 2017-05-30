@@ -53,6 +53,7 @@
 
 
     <link href="resources/node_modules/adminbsb/dialog/css/dialogbox.css" rel="stylesheet"/>
+    <link href="resources/node_modules/imageloader/loadimg.min.css" rel="stylesheet"/>
 
     <link href="resources/node_modules/custom-css/app.css" rel="stylesheet"/>
     <link type="text/css" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css" rel="stylesheet" />
@@ -400,6 +401,9 @@
                                     </li>
                                     <li>
                                         <a href="designation">Designation</a>
+                                    </li>
+                                    <li>
+                                        <a href="user">User</a>
                                     </li>
                                 </ul>
                             </li>

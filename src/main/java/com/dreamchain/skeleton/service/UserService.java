@@ -24,5 +24,6 @@ public interface UserService {
 //	List<String> findAllUserRole();
 
 	User findByUserName(String username);
+	List<User> findAll();
 
 }

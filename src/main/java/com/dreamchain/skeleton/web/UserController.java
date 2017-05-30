@@ -14,13 +14,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import com.dreamchain.skeleton.service.UserService;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.text.ParseException;
 import java.util.*;
 
-@Controller
-@RequestMapping(UserController.URL)
+//@RequestMapping(UserController.URL)
 @PropertySource("classpath:config.properties")
+@Controller
 
 public class UserController {
 
@@ -36,10 +37,19 @@ public class UserController {
     @Autowired
     Environment environment;
 
-    
+
+    @RequestMapping("/user")
+    public ModelAndView main()  {
+        ModelAndView model = new ModelAndView();
+        String pageName = "user";
+        model.setViewName(pageName);
+        return model;
+
+    }
 
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
+
+    @RequestMapping(value = "/user/save", method = RequestMethod.POST)
     public
     @ResponseBody
     Map saveUser(@RequestBody User user,HttpSession httpSession) throws ParseException {
@@ -74,7 +84,7 @@ public class UserController {
 
 
 
-    @RequestMapping(value = "/changePassword", method = RequestMethod.POST, headers = {"Content-type=application/json"})
+    @RequestMapping(value = "/user/changePassword", method = RequestMethod.POST, headers = {"Content-type=application/json"})
     public
     @ResponseBody
     Map ChangePassword(@RequestBody Map<String, String> userInfo, HttpSession httpSession) throws Exception {
@@ -97,7 +107,7 @@ public class UserController {
 
 
 
-    @RequestMapping(value = "/userList", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/userList", method = RequestMethod.GET)
     public
     @ResponseBody
     List<User> loadUserList(@RequestBody String email,HttpSession httpSession) {
@@ -106,6 +116,17 @@ public class UserController {
         boolean isLoggedUserInvalid=checkLoggedInUserExistence(httpSession);
         if(!isLoggedUserInvalid)
         userList = userService.findAll(email);
+        logger.info("Loading all user info: << total "+userList.size());
+        return userList;
+    }
+
+    @RequestMapping(value = "/user/userList1", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<User> loadUserList1() {
+        List userList=new ArrayList();
+        logger.info("Loading all user info: >> ");
+            userList = userService.findAll();
         logger.info("Loading all user info: << total "+userList.size());
         return userList;
     }

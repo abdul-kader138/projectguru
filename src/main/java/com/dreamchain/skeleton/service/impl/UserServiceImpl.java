@@ -134,6 +134,11 @@ public class UserServiceImpl implements UserService {
         return userDao.findByUserName(username);
     }
 
+    @Override
+    public List<User> findAll() {
+        return userDao.findAll();
+    }
+
     private String checkInput(User user) {
         String msg = "";
         if (user.getName() == null || user.getEmail() == null

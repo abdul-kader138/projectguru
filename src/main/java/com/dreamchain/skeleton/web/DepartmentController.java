@@ -126,7 +126,7 @@ public class DepartmentController {
 
 
         try {
-            String filepath = "/resources/" + "images/" +  "/babu/"
+            String filepath = "/resources/" + "images/" +  "/user_picture/"
                      + fileName;
             String realPathFetch = request.getRealPath(
                     "/");
