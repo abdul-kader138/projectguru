@@ -168,7 +168,7 @@ public class UserServiceImpl implements UserService {
 
     private User setUserRole(User oldUser) {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-        User newUser = new User(oldUser.getName(), oldUser.getPassword(), true, true, true, true, grantedAuthorities, oldUser.getName(), oldUser.getEmail(), oldUser.getRole(), oldUser.getPhone(), oldUser.getCreatedBy(), oldUser.getUpdatedBy(), oldUser.getCreatedOn(), oldUser.getUpdatedOn());
+        User newUser = new User(oldUser.getName(), oldUser.getPassword(), true, true, true, true, grantedAuthorities, oldUser.getName(), oldUser.getEmail(), oldUser.getRole(), oldUser.getPhone(), oldUser.getRights(), oldUser.getCreatedBy(), oldUser.getUpdatedBy(), oldUser.getCreatedOn(), oldUser.getUpdatedOn());
         if (environment.getProperty("role.admin").equals(oldUser.getRole())) newUser.setRole(Role.ROLE_ADMIN.name());
         if (environment.getProperty("role.super.admin").equals(oldUser.getRole()))
             newUser.setRole(Role.ROLE_SUPER_ADMIN.name());

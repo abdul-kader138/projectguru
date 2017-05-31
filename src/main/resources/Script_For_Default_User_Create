@@ -7,6 +7,23 @@ INSERT INTO users(
 
 
 
+
+
+// user_rights table configuration
+
+CREATE TABLE user_rights
+(
+  "user" bigint,
+  rights character varying,
+  CONSTRAINT users_rights_users_fkey FOREIGN KEY ("user")
+      REFERENCES users (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+
+INSERT INTO user_rights(
+            users, rights)
+    VALUES (9999999999,'View');
+
 //then enter below info and login to the system
 
 Email-admin@domain.com

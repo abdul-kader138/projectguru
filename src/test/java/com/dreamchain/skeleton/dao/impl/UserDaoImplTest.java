@@ -19,7 +19,7 @@ public class UserDaoImplTest extends DaoTest {
 	@Test
 	public void all_fields_are_persisted() {
 		List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-		User user = new User("Name1", "babu1234", true, true, true, true, grantedAuthorities, "Name1", "Babu@do.com", "ROLE_USER", "99876543211", "", null, null, null);
+		User user = new User("Name1", "babu1234", true, true, true, true, grantedAuthorities, "Name1", "Babu@do.com", "ROLE_USER", "99876543211", null,"", null, null, null);
 
 		userDaoImpl.save(user);
 		User newUser=userDaoImpl.findByUserName("Babu@do.com");
@@ -46,7 +46,7 @@ public class UserDaoImplTest extends DaoTest {
 	@Test
 	public void loadUserLIst(){
 		List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-		User user = new User("Name1", "babu1234", true, true, true, true, grantedAuthorities, "Name1", "Babu@do.com", "ROLE_USER", "99876543211", "", null, null, null);
+		User user = new User("Name1", "babu1234", true, true, true, true, grantedAuthorities, "Name1", "Babu@do.com", "ROLE_USER", "99876543211",null, "", null, null, null);
 		userDaoImpl.save(user);
 		List<User> lstUser=userDaoImpl.findAll("tt");
 		Assert.assertNotNull(lstUser);

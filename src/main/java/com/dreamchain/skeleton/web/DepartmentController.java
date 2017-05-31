@@ -8,6 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,10 +39,16 @@ public class DepartmentController {
             LoggerFactory.getLogger(DepartmentController.class.getName());
 
     @RequestMapping("/department")
-    public ModelAndView main()  {
+    public ModelAndView main(HttpServletRequest request)  {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Object obj=auth.getDetails();
+        Object obj1=auth.getPrincipal();
         ModelAndView model = new ModelAndView();
         String pageName = "department";
         model.setViewName(pageName);
+
+        request.setAttribute("info","babu");
         return model;
 
     }

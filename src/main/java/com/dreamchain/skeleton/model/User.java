@@ -2,10 +2,7 @@ package com.dreamchain.skeleton.model;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -76,7 +73,7 @@ public class User extends org.springframework.security.core.userdetails.User imp
 				boolean accountNonLocked,
 					Collection authorities,
 					String name,String email, String role,
-					String phone,String createdBy,String updatedBy,Date createdOn,Date updatedOn) {
+					String phone,Set<String> rights, String createdBy,String updatedBy,Date createdOn,Date updatedOn) {
 		super(username, password, enabled, accountNonExpired,
 				credentialsNonExpired, accountNonLocked, authorities);
 
@@ -85,11 +82,25 @@ public class User extends org.springframework.security.core.userdetails.User imp
 		this.email = email;
 		this.role = role;
 		this.phone = phone;
+		this.rights=rights;
 		this.createdBy = createdBy;
 		this.updatedBy=updatedBy;
 		this.createdOn=createdOn;
 		this.updatedOn=updatedOn;
 
+	}
+
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "user_rights")
+	private Set<String> rights = new HashSet<>();
+
+	public Set<String> getRights() {
+		return rights;
+	}
+
+	public void setRights(Set<String> rights) {
+		this.rights = rights;
 	}
 
 	public Long getId() {
