@@ -8,10 +8,13 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -30,6 +33,7 @@ public class CompanyServiceImpl implements CompanyService {
     private static String INVALID_COMPANY = "Company not exists";
     private static String BACK_DATED_DATA = "Company data is old.Please try again with updated data";
     private static String ASSOCIATED_COMPANY = "Company is tagged with projects.First remove tagging and try again";
+    private static String LOGO_PATH = "/resources/images/company_logo/";
 
 
     @Transactional(readOnly = true)
@@ -39,14 +43,16 @@ public class CompanyServiceImpl implements CompanyService {
 
 
     @Transactional
-    public Map<String,Object> save(String companyName,String address) throws Exception{
+    public Map<String,Object> save(MultipartHttpServletRequest request) throws Exception{
         Map<String,Object> obj=new HashMap<>();
         String validationMsg = "";
         Company newCompany=new Company();
-        Company company=createObjForSave(companyName,address);
+        Company company=createObjForSave(request.getParameter("name"), request.getParameter("address"),request.getFile("logo").getOriginalFilename());
         validationMsg = checkInput(company);
         Company existingCompany = companyDao.findByCompanyName(company.getName());
         if (existingCompany.getName() != null && validationMsg == "") validationMsg = COMPANY_EXISTS;
+        Map msg=fileSave(request);
+        if(msg.get("validationMsg") == "") company.setImagePath((String)msg.get("path"));
         if ("".equals(validationMsg)) {
            long companyId= companyDao.save(company);
             newCompany=companyDao.get(companyId);
@@ -126,10 +132,11 @@ public class CompanyServiceImpl implements CompanyService {
 
     // create company object for saving
 
-    private Company createObjForSave(String name,String address) throws Exception {
+    private Company createObjForSave(String name,String address,String fileName) throws Exception {
         Company company = new Company();
         company.setName(name);
         company.setAddress(address);
+        company.setImagePath(fileName);
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
         company.setCreatedBy(UserDetailServiceImpl.userId);
@@ -151,5 +158,44 @@ public class CompanyServiceImpl implements CompanyService {
         companyObj.setUpdatedBy(UserDetailServiceImpl.userId);
         companyObj.setUpdatedOn(date);
         return companyObj;
+    }
+
+
+    private Map fileSave(MultipartHttpServletRequest request){
+        Map<String,String> msg=new HashMap<>();
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        MultipartFile multipartFile=request.getFile("logo");
+        String fileName = multipartFile.getOriginalFilename();
+        Random rand = new Random();
+        int  n = rand.nextInt(50) + 1;
+        System.out.println(n);
+        fileName=n+"_"+fileName;
+        System.out.println(fileName);
+        try {
+            String filePath =LOGO_PATH+ fileName;
+            String realPathFetch = request.getRealPath(
+                    "/");
+            inputStream = multipartFile.getInputStream();
+            File newFile = new File(realPathFetch+filePath);
+//            if (!newFile.exists()) {
+//                newFile.createNewFile();
+//            }
+            outputStream = new FileOutputStream(newFile);
+            int read = 0;
+            byte[] bytes = new byte[1024];
+
+            while ((read = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, read);
+            }
+
+            msg.put("validationMsg","");
+            msg.put("path",filePath);
+        } catch (IOException e) {
+            msg.put("validationMsg",e.getMessage());
+            msg.put("path", "");
+        }
+        return msg;
+
     }
 }

@@ -31,6 +31,9 @@ public class Company implements Serializable
     @Length(max = 150)
     private String address;
 
+    @NotEmpty
+    @Length(max = 150)
+    private String imagePath;
 
 
     @Column
@@ -48,6 +51,15 @@ public class Company implements Serializable
     private Date updatedOn;
 
     public Company() {
+    }
+
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public long getId() {

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.ParseException;
@@ -55,15 +56,13 @@ public class CompanyController {
     }
 
 
-    @RequestMapping(value = "company/save", method = RequestMethod.POST, consumes = "application/json", headers = "content-type=application/x-www-form-urlencoded")
-    public
-    @ResponseBody
-    Map saveCompany(@RequestBody Map<String, String> companyInfo) throws Exception {
+    @RequestMapping(value = "company/save", method = RequestMethod.POST, produces = {"application/json"})
+    public @ResponseBody Map saveCompany(MultipartHttpServletRequest request) throws Exception {
         Map<String, Object> objList = new HashMap<>();
         String successMsg = "";
         String validationError = "";
         logger.info("creating new company: >>");
-        objList = companyService.save(companyInfo.get("name"), companyInfo.get("address"));
+        objList = companyService.save(request);
         validationError = (String) objList.get("validationError");
         if (validationError.length() == 0) {
             objList.put("successMsg", environment.getProperty("company.save.success.msg"));
@@ -108,6 +107,5 @@ public class CompanyController {
         logger.info("Updating Company:  << " + successMsg + validationError);
         return objList;
     }
-
 
 }
