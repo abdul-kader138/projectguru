@@ -45,10 +45,10 @@ public class Role implements Serializable
 
 
     @Column
-    private long createdBy;
+    private String createdBy;
 
     @Column
-    private long updatedBy;
+    private String updatedBy;
 
 
     @Column
@@ -90,23 +90,21 @@ public class Role implements Serializable
         this.createdOn = createdOn;
     }
 
-    public long getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(long updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-    public long getCreatedBy() {
+    public String getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(long createdBy) {
+    public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
 
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
 
     public String getDescription() {
         return description;

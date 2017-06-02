@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,12 +77,12 @@ public class CompanyController {
     @RequestMapping(value = "company/delete", method = RequestMethod.POST)
     public
     @ResponseBody
-    Map deleteCompany(@RequestBody Map<String, String> companyInfo) throws ParseException {
+    Map deleteCompany(@RequestBody Map<String, String> companyInfo,HttpServletRequest request) throws ParseException {
         HashMap serverResponse = new HashMap();
         String successMsg = "";
         String validationError = "";
         logger.info("Delete Company:  >> ");
-        validationError = companyService.delete(Long.parseLong(companyInfo.get("id")));
+        validationError = companyService.delete(Long.parseLong(companyInfo.get("id")), request);
         if (validationError.length() == 0) successMsg = environment.getProperty("company.delete.success.msg");
         logger.info("Delete Company:  << " + successMsg + validationError);
         serverResponse.put("successMsg", successMsg);
@@ -91,21 +92,21 @@ public class CompanyController {
 
 
     @RequestMapping(value = "company/update", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    Map updateCompany(@RequestBody Map<String, String> companyObj) throws ParseException {
+    public @ResponseBody Map updateCompany(MultipartHttpServletRequest request) throws Exception {
         Map<String, Object> objList = new HashMap<>();
         String successMsg = "";
         String validationError = "";
         logger.info("Updating Company: >>");
-        objList = companyService.update(companyObj);
+        objList = companyService.update(request);
         validationError = (String) objList.get("validationError");
         if (validationError.length() == 0) {
             objList.put("successMsg", environment.getProperty("company.update.success.msg"));
             successMsg = environment.getProperty("company.update.success.msg");
         }
-        logger.info("Updating Company:  << " + successMsg + validationError);
+        logger.info("Updating Company:: << " + successMsg + validationError);
         return objList;
     }
+
+
 
 }

@@ -37,10 +37,10 @@ public class Company implements Serializable
 
 
     @Column
-    private long createdBy;
+    private String createdBy;
 
     @Column
-    private long updatedBy;
+    private String updatedBy;
 
 
     @Column
@@ -95,20 +95,24 @@ public class Company implements Serializable
         this.version = version;
     }
 
-    public long getCreatedBy() {
-        return createdBy;
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
-    public void setCreatedBy(long createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public long getUpdatedBy() {
+    public String getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(long updatedBy) {
+    public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
     public Date getCreatedOn() {

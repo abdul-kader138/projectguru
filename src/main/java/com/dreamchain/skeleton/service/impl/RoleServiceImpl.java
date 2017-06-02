@@ -2,10 +2,13 @@ package com.dreamchain.skeleton.service.impl;
 
 import com.dreamchain.skeleton.dao.RoleDao;
 import com.dreamchain.skeleton.model.Role;
+import com.dreamchain.skeleton.model.User;
 import com.dreamchain.skeleton.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -148,7 +151,7 @@ public class RoleServiceImpl implements RoleService {
             rights.add(roleObj.get("DELETE_PRIVILEGE"));
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        role.setCreatedBy(UserDetailServiceImpl.userId);
+        role.setCreatedBy(getUserId());
         role.setCreatedOn(date);
         role.setRights(rights);
         return role;
@@ -165,8 +168,15 @@ public class RoleServiceImpl implements RoleService {
         roleObj.setCreatedOn(existingRole.getCreatedOn());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        roleObj.setUpdatedBy(UserDetailServiceImpl.userId);
+        roleObj.setUpdatedBy(getUserId());
         roleObj.setUpdatedOn(date);
         return roleObj;
+    }
+
+
+    private String getUserId(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user=(User)auth.getPrincipal();
+        return user.getEmail();
     }
 }

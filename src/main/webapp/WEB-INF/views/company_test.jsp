@@ -101,12 +101,12 @@
                                 </div>
 
                                 <%--logo show--%>
-                                <div class="form-group" id="uploadedLogo">
+                                <div class="form-group" id="uploadedLogo" style="display: none">
                                     <label class="col-md-4 control-label" for="logo">Current Logo</label>
 
                                     <div class="col-md-6">
                                         <img id="uploadedLogoSrc"
-                                                src="resources/images/edit.gif" width="16" height="16" border="0">
+                                             src="resources/images/edit.gif" width="70" height="70" border="0">
                                     </div>
                                 </div>
 
@@ -161,8 +161,7 @@
                 $("saveCompany").show();
                 $("#updateCompany").hide();
                 var companyGb;
-                var mainPath = "file:///D:/projectguru/projectguru/target/skeleton-1.0.0";
-//                var mainPath=document.location.pathname;
+                var mainPath=document.origin+"/PG";
 
 
                 /* populate Company list when page load */
@@ -188,8 +187,7 @@
                         {
                             "mData": "path",
                             "render": function (url, type, full) {
-                                console.log(full)
-                                return '<img src="' + mainPath + full.imagePath + '" width="16" height="16" />';
+                                return '<img src="' + mainPath + full.imagePath + '" width="40" height="40" />';
                             }
                         },
 
@@ -237,14 +235,13 @@
                     initFormValidationMsg();
                     var newCompany = new Object();
                     var newCompany = companyGb;
-                    console.log(newCompany);
                     companyGb = null;
                     var data = messageResource.get('company.edit.validation.msg', 'configMessageForUI');
 
                     if (checkForMultipleRowSelect()) showServerSideMessage(data, "", 0, "Message");
                     else if (newCompany == null)showServerSideMessage(data, "", 0, "Message");
                     else {
-                        setSelectedRowValueToForm();
+                        setSelectedRowValueToForm(newCompany);
                     }
                 });
 
@@ -260,7 +257,7 @@
                     company.version = $("#version").val();
                     company.name = $("#name").val();
                     company.address = $("#address").val();
-                    if (formValidation()) callAjaxForEditOperation(part1, part2, icn, msg, company);
+                    if (formValidationForUpdate()) callAjaxForEditOperation(part1, part2, icn, msg, company);
 
                 });
 
@@ -328,6 +325,7 @@
                     uncheckedAllCheckBox();
                     window.location.href = "#viewTableData";
                     document.getElementById('companyForm').style.display = "none";
+                    document.getElementById('uploadedLogo').style.display = "none";
                 });
 
 
@@ -339,6 +337,7 @@
                     companyGb = null;
                     table.ajax.url(messageResource.get('company.list.load.url', 'configMessageForUI')).load();
                     document.getElementById('companyForm').style.display = "none";
+                    document.getElementById('uploadedLogo').style.display = "none";
                 });
 
 
@@ -381,44 +380,38 @@
 
                 /*  Ajax call for edit operation */
 
-                function callAjaxForEditOperation(part1, part2, icn, msg, company, obj) {
+                function callAjaxForEditOperation(part1, part2, icn, msg, company) {
                     $.ajax({
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        },
-                        'type': 'POST',
-                        'url': messageResource.get('company.edit.url', 'configMessageForUI'),
-                        'data': JSON.stringify(company),
-                        'dataType': 'json',
-                        'success': function (d) {
-                            if (d.successMsg) {
-                                icn = 1;
-                                part1 = d.successMsg;
-                                initializeCompanyForm();
-                                window.location.href = "#viewTableData";
-                                $("#updateCompany").hide();
-                                $("#saveCompany").show();
-                                document.getElementById('companyForm').style.display = "none";
-                                showServerSideMessage(part1, part2, icn, msg);
-                                table.ajax.url(messageResource.get('company.list.load.url', 'configMessageForUI')).load();
-                            }
-                            if (d.validationError) {
-                                icn = 0;
-                                msg = "";
-                                msg = '<strong style="color: red">Error</strong>';
-                                part2 = d.validationError;
-                                uncheckedAllCheckBox();
-                                showServerSideMessage(part1, part2, icn, msg);
-                            }
-                        },
-                        'error': function (error) {
+                        url: messageResource.get('company.edit.url', 'configMessageForUI'),
+                        type: "POST",
+                        data: new FormData(document.getElementById("formData")),
+                        enctype: 'multipart/form-data',
+                        processData: false,
+                        contentType: false
+                    }).done(function (data) {
+                        if (data.successMsg) {
+                            icn = 1;
+                            part1 = data.successMsg;
+                            initializeCompanyForm();
+                            window.location.href = "#viewTableData";
+                            $("#updateCompany").hide();
+                            $("#saveCompany").show();
+                            document.getElementById('companyForm').style.display = "none";
+                            document.getElementById('uploadedLogo').style.display = "none";
+                            showServerSideMessage(part1, part2, icn, msg);
+                            table.ajax.url(messageResource.get('company.list.load.url', 'configMessageForUI')).load();
+                        }
+                        if (data.validationError) {
                             icn = 0;
                             msg = '<strong style="color: red">Error</strong>';
-                            showServerSideMessage(part1, getErrorMessage(error), icn, msg);
+                            part2 = data.validationError;
+                            showServerSideMessage(part1, part2, icn, msg);
                         }
+                    }).fail(function (jqXHR, textStatus) {
+                        icn = 0;
+                        msg = '<strong style="color: red">Error</strong>';
+                        showServerSideMessage(part1, getErrorMessage(textStatus), icn, msg);
                     });
-                    company = null;
 
                 }
 
@@ -426,43 +419,6 @@
                 /*  Ajax call for save operation */
 
                 function callAjaxForAddOperation(part1, part2, icn, msg, company) {
-//                    $.ajax({
-//                        headers: {
-//                            'Accept': 'application/json',
-//                            'Content-Type': 'application/json'
-//                        },
-//                        url: messageResource.get('company.save.url', 'configMessageForUI'),
-//                        type: "POST",
-//                        data: JSON.stringify(company),
-//                        enctype: 'multipart/form-data',
-//                        processData: false,
-//                        contentType: false,
-//                        'success': function (d) {
-//                            if (d.successMsg) {
-//                                icn = 1;
-//                                msg = "";
-//                                part1 = d.successMsg;
-//                                initializeCompanyForm();
-//                                setNewDataTableValue(d.company, table);
-//                                window.location.href = "#viewTableData";
-//                                document.getElementById('companyForm').style.display = "none";
-//                                showServerSideMessage(part1, part2, icn, msg);
-//                            }
-//                            if (d.validationError) {
-//                                icn = 0;
-//                                msg = '<strong style="color: red">Error</strong>';
-//                                part2 = d.validationError;
-//                                showServerSideMessage(part1, part2, icn, msg);
-//                            }
-//                        },
-//                        'error': function (error) {
-//                            icn = 0;
-//                            msg = '<strong style="color: red">Error</strong>';
-//                            showServerSideMessage(part1, getErrorMessage(error), icn, msg);
-//                        }
-//                    });
-
-
                     $.ajax({
                         url: messageResource.get('company.save.url', 'configMessageForUI'),
                         type: "POST",
@@ -529,6 +485,24 @@
                     return isValid;
                 }
 
+                /* html form Validation when update */
+
+                function formValidationForUpdate() {
+                    var isValid = true;
+                    var name = $("#name").val();
+                    var address = $("#address").val();
+                    var filename = $("#logo").val();
+                    if (name == null || name.trim().length == 0) {
+                        $("#nameValidation").text("Name is required");
+                        isValid = false;
+                    }
+                    if ((address == null) || (address.trim().length) == 0) {
+                        $("#addressValidation").text("Address is required");
+                        isValid = false;
+                    }
+                    return isValid;
+                }
+
 
                 /* Initialize html form validation error field*/
 
@@ -548,7 +522,7 @@
                 });
 
 
-                /* move to add new company div*/
+                /* move to company Form*/
 
                 $('#moveToAdd').on('click', function () {
                     document.getElementById('companyForm').style.display = "block";
@@ -562,18 +536,20 @@
                 });
 
 
-                function setSelectedRowValueToForm(){
+                /* selected row value set to compant form when edit*/
+
+                function setSelectedRowValueToForm(newCompany) {
                     document.getElementById('companyForm').style.display = "block";
+                    document.getElementById('uploadedLogo').style.display = "block";
                     $("#updateCompany").show();
                     $("#saveCompany").hide();
                     $("#id").val(newCompany.id);
                     $("#name").val(newCompany.name);
                     $("#version").val(newCompany.version);
                     $("#address").val(newCompany.address);
-                    $("#my_image").attr("src",mainPath+newCompany.imagePath);
+                    $("#uploadedLogoSrc").attr("src", mainPath + newCompany.imagePath);
                     window.location.href = "#companyForm";
                 }
-
 
             });
             //

@@ -2,15 +2,19 @@ package com.dreamchain.skeleton.service.impl;
 
 import com.dreamchain.skeleton.dao.CompanyDao;
 import com.dreamchain.skeleton.model.Company;
+import com.dreamchain.skeleton.model.User;
 import com.dreamchain.skeleton.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -43,61 +47,69 @@ public class CompanyServiceImpl implements CompanyService {
 
 
     @Transactional
-    public Map<String,Object> save(MultipartHttpServletRequest request) throws Exception{
-        Map<String,Object> obj=new HashMap<>();
+    public Map<String, Object> save(MultipartHttpServletRequest request) throws Exception {
+        Map<String, Object> obj = new HashMap<>();
         String validationMsg = "";
-        Company newCompany=new Company();
-        Company company=createObjForSave(request.getParameter("name"), request.getParameter("address"),request.getFile("logo").getOriginalFilename());
+        Company newCompany = new Company();
+        Company company = createObjForSave(request.getParameter("name"), request.getParameter("address"), request.getFile("logo").getOriginalFilename());
         validationMsg = checkInput(company);
         Company existingCompany = companyDao.findByCompanyName(company.getName());
         if (existingCompany.getName() != null && validationMsg == "") validationMsg = COMPANY_EXISTS;
-        Map msg=fileSave(request);
-        if(msg.get("validationMsg") == "") company.setImagePath((String)msg.get("path"));
+        Map msg = fileSave(request);
+        if (msg.get("validationMsg") == "") company.setImagePath((String) msg.get("path"));
         if ("".equals(validationMsg)) {
-           long companyId= companyDao.save(company);
-            newCompany=companyDao.get(companyId);
+            long companyId = companyDao.save(company);
+            newCompany = companyDao.get(companyId);
         }
-        obj.put("company",newCompany);
-        obj.put("validationError",validationMsg);
+        obj.put("company", newCompany);
+        obj.put("validationError", validationMsg);
         return obj;
 
 
     }
 
     @Transactional
-    public Map<String,Object>  update(Map<String, String>  companyObj) throws ParseException {
-        Map<String,Object> obj=new HashMap<>();
+    public Map<String, Object> update(MultipartHttpServletRequest request) throws Exception {
+        Map<String, Object> obj = new HashMap<>();
+        Map<String, Object> msg = new HashMap<>();
         String validationMsg = "";
-        Company company=new Company();
-        Company newObj=new Company();
-        company.setId(Long.parseLong(companyObj.get("id")));
-        company.setVersion(Long.parseLong(companyObj.get("version")));
-        company.setName(companyObj.get("name"));
-        company.setAddress(companyObj.get("address"));
+        Company newCompany = new Company();
+        Company company = createObjForUpdate(request);
         validationMsg = checkInput(company);
+//        if (validationMsg == "")
+//             newCompany = companyDao.findByCompanyName(company.getName());
+//        if (newCompany.getName() != null && validationMsg == "") validationMsg = COMPANY_EXISTS;
         Company existingCompany = companyDao.get(company.getId());
-        if (company.getId() == 0l && validationMsg == "") validationMsg = INVALID_INPUT;
         if (existingCompany.getName() == null && validationMsg == "") validationMsg = INVALID_COMPANY;
         if (company.getVersion() != existingCompany.getVersion() && validationMsg == "") validationMsg = BACK_DATED_DATA;
-        if ("".equals(validationMsg)) {
-            newObj=setUpdateCompanyValue(company, existingCompany);
-            companyDao.update(newObj);
+        String fileName = request.getFile("logo").getOriginalFilename();
+        if (!("".equals(fileName))) {
+            validationMsg = deleteLogo(request.getRealPath(
+                    "/"), existingCompany.getImagePath());
+            if (validationMsg == "") msg = fileSave(request);
+            if (validationMsg == "") existingCompany.setImagePath((String) msg.get("path"));
         }
-        obj.put("company",newObj);
-        obj.put("validationError",validationMsg);
+        if ("".equals(validationMsg)) {
+            newCompany=null;
+            newCompany = setUpdateCompanyValue(company, existingCompany);
+            companyDao.update(newCompany);
+        }
+        obj.put("company", newCompany);
+        obj.put("validationError", validationMsg);
         return obj;
     }
 
 
-
     @Transactional
-    public String delete(Long companyId) {
+    public String delete(Long companyId,HttpServletRequest request) {
         String validationMsg = "";
         if (companyId == 0l) validationMsg = INVALID_INPUT;
         Company company = companyDao.get(companyId);
         if (company == null && validationMsg == "") validationMsg = INVALID_COMPANY;
-        List<Object> obj=companyDao.countOfCompany(companyId);
+        List<Object> obj = companyDao.countOfCompany(companyId);
         if (obj.size() > 0 && validationMsg == "") validationMsg = ASSOCIATED_COMPANY;
+        String fileName = company.getImagePath();
+        if (validationMsg == "") validationMsg = deleteLogo(request.getRealPath("/"),fileName);
         if ("".equals(validationMsg)) {
             companyDao.delete(company);
         }
@@ -126,61 +138,56 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
 
-
-
-
-
     // create company object for saving
 
-    private Company createObjForSave(String name,String address,String fileName) throws Exception {
+    private Company createObjForSave(String name, String address, String fileName) throws Exception {
         Company company = new Company();
         company.setName(name);
         company.setAddress(address);
         company.setImagePath(fileName);
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        company.setCreatedBy(UserDetailServiceImpl.userId);
+        company.setCreatedBy(getUserId());
         company.setCreatedOn(date);
         return company;
 
     }
 
-    private Company setUpdateCompanyValue(Company objFromUI,Company existingCompany) throws ParseException {
+    private Company setUpdateCompanyValue(Company objFromUI, Company existingCompany) throws ParseException {
         Company companyObj = new Company();
         companyObj.setId(objFromUI.getId());
         companyObj.setVersion(objFromUI.getVersion());
         companyObj.setName(objFromUI.getName());
         companyObj.setAddress(objFromUI.getAddress());
+        companyObj.setImagePath(existingCompany.getImagePath());
         companyObj.setCreatedBy(existingCompany.getCreatedBy());
         companyObj.setCreatedOn(existingCompany.getCreatedOn());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        companyObj.setUpdatedBy(UserDetailServiceImpl.userId);
+        companyObj.setUpdatedBy(getUserId());
         companyObj.setUpdatedOn(date);
         return companyObj;
     }
 
 
-    private Map fileSave(MultipartHttpServletRequest request){
-        Map<String,String> msg=new HashMap<>();
+    private Map fileSave(MultipartHttpServletRequest request) {
+        Map<String, String> msg = new HashMap<>();
         InputStream inputStream = null;
         OutputStream outputStream = null;
-        MultipartFile multipartFile=request.getFile("logo");
+        MultipartFile multipartFile = request.getFile("logo");
         String fileName = multipartFile.getOriginalFilename();
         Random rand = new Random();
-        int  n = rand.nextInt(50) + 1;
-        System.out.println(n);
-        fileName=n+"_"+fileName;
-        System.out.println(fileName);
+        int n = rand.nextInt(1000) + 1;
+        fileName = n + "_" + fileName;
         try {
-            String filePath =LOGO_PATH+ fileName;
+            String filePath = LOGO_PATH + fileName;
             String realPathFetch = request.getRealPath(
                     "/");
             inputStream = multipartFile.getInputStream();
-            File newFile = new File(realPathFetch+filePath);
-//            if (!newFile.exists()) {
-//                newFile.createNewFile();
-//            }
+            File newFile = new File(realPathFetch + filePath);
+            if (!newFile.exists()) {
+                newFile.createNewFile();
+            }
             outputStream = new FileOutputStream(newFile);
             int read = 0;
             byte[] bytes = new byte[1024];
@@ -189,13 +196,50 @@ public class CompanyServiceImpl implements CompanyService {
                 outputStream.write(bytes, 0, read);
             }
 
-            msg.put("validationMsg","");
-            msg.put("path",filePath);
+            msg.put("validationMsg", "");
+            msg.put("path", filePath);
+            inputStream.close();
+            outputStream.close();
         } catch (IOException e) {
-            msg.put("validationMsg",e.getMessage());
+            msg.put("validationMsg", e.getMessage());
             msg.put("path", "");
         }
         return msg;
 
     }
+
+
+    private String deleteLogo(String realPathFetch, String fileName) {
+        String msg = "";
+        try {
+            File file = new File(realPathFetch+fileName);
+            file.setWritable(true);
+            if (file.delete()) msg = "";
+            else msg = "Delete operation is failed.";
+        } catch (Exception e) {
+            msg = e.getMessage();
+        }
+        return msg;
+    }
+
+    // create company object for updating
+
+    private Company createObjForUpdate(MultipartHttpServletRequest request) throws Exception {
+        Company company = new Company();
+        company.setName(request.getParameter("name"));
+        company.setAddress(request.getParameter("address"));
+        company.setImagePath("test");
+        company.setId(Long.parseLong(request.getParameter("id")));
+        company.setVersion(Long.parseLong(request.getParameter("version")));
+        return company;
+
+    }
+
+
+    private String getUserId(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user=(User)auth.getPrincipal();
+        return user.getEmail();
+    }
+
 }
