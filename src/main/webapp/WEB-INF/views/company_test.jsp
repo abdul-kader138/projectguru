@@ -8,6 +8,7 @@
         <div id="viewTableData"></div>
         <div class="row clearfix">
             <div class="col-xs-10 col-xs-offset-1 card">
+                <div><h3>Company List</h3></div>
                 <br/><br/>
                 <table id="companyTable" class="display nowrap" cellspacing="0" width="100%">
                     <thead>
@@ -183,11 +184,11 @@
                             'bSortable': false
                         },
                         {"mData": "name", 'sWidth': '200px'},
-                        {"mData": "address"},
+                        {"mData": "address", 'sWidth': '400px'},
                         {
                             "mData": "path",
                             "render": function (url, type, full) {
-                                return '<img src="' + mainPath + full.imagePath + '" width="40" height="40" />';
+                                return '<img src="' + mainPath + full.imagePath + '" width="30" height="30" />';
                             }
                         },
 
@@ -517,7 +518,6 @@
                 /* clear logo field*/
 
                 $('#logoClear').on('click', function () {
-                    $("#logo").val("");
                     $("#logo").val("");
                 });
 

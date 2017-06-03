@@ -64,4 +64,18 @@ public class CompanyDaoImpl implements CompanyDao {
         return lst;
 
     }
+
+
+    @Override
+    public Company findByNewName(String CurrentName,String newName) {
+        DetachedCriteria dcr= DetachedCriteria.forClass(Company.class);
+        Criterion cr = Restrictions.eq("name", newName);
+        Criterion cr1 = Restrictions.ne("name", CurrentName);
+        dcr.add(cr);
+        dcr.add(cr1);
+        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
+        if(lst.size()==0)return new Company();
+        return (Company)lst.get(0);
+    }
+
 }

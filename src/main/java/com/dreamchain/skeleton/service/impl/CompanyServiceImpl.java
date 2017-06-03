@@ -49,13 +49,15 @@ public class CompanyServiceImpl implements CompanyService {
     @Transactional
     public Map<String, Object> save(MultipartHttpServletRequest request) throws Exception {
         Map<String, Object> obj = new HashMap<>();
+        Map<String, Object> msg = new HashMap<>();
         String validationMsg = "";
         Company newCompany = new Company();
+        Company existingCompany = new Company();
         Company company = createObjForSave(request.getParameter("name"), request.getParameter("address"), request.getFile("logo").getOriginalFilename());
         validationMsg = checkInput(company);
-        Company existingCompany = companyDao.findByCompanyName(company.getName());
+        if ("".equals(validationMsg)) existingCompany = companyDao.findByCompanyName(company.getName());
         if (existingCompany.getName() != null && validationMsg == "") validationMsg = COMPANY_EXISTS;
-        Map msg = fileSave(request);
+        if ("".equals(validationMsg)) msg = fileSave(request);
         if (msg.get("validationMsg") == "") company.setImagePath((String) msg.get("path"));
         if ("".equals(validationMsg)) {
             long companyId = companyDao.save(company);
@@ -74,23 +76,22 @@ public class CompanyServiceImpl implements CompanyService {
         Map<String, Object> msg = new HashMap<>();
         String validationMsg = "";
         Company newCompany = new Company();
+        Company existingCompany = new Company();
         Company company = createObjForUpdate(request);
         validationMsg = checkInput(company);
-//        if (validationMsg == "")
-//             newCompany = companyDao.findByCompanyName(company.getName());
-//        if (newCompany.getName() != null && validationMsg == "") validationMsg = COMPANY_EXISTS;
-        Company existingCompany = companyDao.get(company.getId());
-        if (existingCompany.getName() == null && validationMsg == "") validationMsg = INVALID_COMPANY;
-        if (company.getVersion() != existingCompany.getVersion() && validationMsg == "") validationMsg = BACK_DATED_DATA;
+        if ("".equals(validationMsg)) existingCompany = companyDao.get(company.getId());
+        if (existingCompany.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_COMPANY;
+        if (company.getVersion() != existingCompany.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
+        if ("".equals(validationMsg)) newCompany = companyDao.findByNewName(existingCompany.getName(),company.getName());
+        if (newCompany.getName() != null && "".equals(validationMsg)) validationMsg = COMPANY_EXISTS;
         String fileName = request.getFile("logo").getOriginalFilename();
         if (!("".equals(fileName))) {
             validationMsg = deleteLogo(request.getRealPath(
                     "/"), existingCompany.getImagePath());
-            if (validationMsg == "") msg = fileSave(request);
-            if (validationMsg == "") existingCompany.setImagePath((String) msg.get("path"));
+            if ("".equals(validationMsg)) msg = fileSave(request);
+            if ("".equals(validationMsg)) existingCompany.setImagePath((String) msg.get("path"));
         }
         if ("".equals(validationMsg)) {
-            newCompany=null;
             newCompany = setUpdateCompanyValue(company, existingCompany);
             companyDao.update(newCompany);
         }
@@ -103,13 +104,14 @@ public class CompanyServiceImpl implements CompanyService {
     @Transactional
     public String delete(Long companyId,HttpServletRequest request) {
         String validationMsg = "";
+        String fileName = "";
         if (companyId == 0l) validationMsg = INVALID_INPUT;
         Company company = companyDao.get(companyId);
-        if (company == null && validationMsg == "") validationMsg = INVALID_COMPANY;
+        if (company == null && "".equals(validationMsg)) validationMsg = INVALID_COMPANY;
         List<Object> obj = companyDao.countOfCompany(companyId);
-        if (obj.size() > 0 && validationMsg == "") validationMsg = ASSOCIATED_COMPANY;
-        String fileName = company.getImagePath();
-        if (validationMsg == "") validationMsg = deleteLogo(request.getRealPath("/"),fileName);
+        if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_COMPANY;
+        if (company != null) fileName = company.getImagePath();
+        if ("".equals(validationMsg)) validationMsg = deleteLogo(request.getRealPath("/"),fileName);
         if ("".equals(validationMsg)) {
             companyDao.delete(company);
         }
@@ -132,7 +134,7 @@ public class CompanyServiceImpl implements CompanyService {
         //server side validation check
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Set<ConstraintViolation<Company>> constraintViolations = validator.validate(company);
-        if (constraintViolations.size() > 0 && msg == "") msg = INVALID_INPUT;
+        if (constraintViolations.size() > 0 && "".equals(msg)) msg = INVALID_INPUT;
 
         return msg;
     }
@@ -178,7 +180,7 @@ public class CompanyServiceImpl implements CompanyService {
         String fileName = multipartFile.getOriginalFilename();
         Random rand = new Random();
         int n = rand.nextInt(1000) + 1;
-        fileName = n + "_" + fileName;
+        fileName = n + "_" + fileName; // create new name for logo file
         try {
             String filePath = LOGO_PATH + fileName;
             String realPathFetch = request.getRealPath(
@@ -215,7 +217,7 @@ public class CompanyServiceImpl implements CompanyService {
             File file = new File(realPathFetch+fileName);
             file.setWritable(true);
             if (file.delete()) msg = "";
-            else msg = "Delete operation is failed.";
+            else msg = environment.getProperty("company.file.delete.success.msg");
         } catch (Exception e) {
             msg = e.getMessage();
         }
