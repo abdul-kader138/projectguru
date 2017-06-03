@@ -77,12 +77,12 @@ public class CompanyController {
     @RequestMapping(value = "company/delete", method = RequestMethod.POST)
     public
     @ResponseBody
-    Map deleteCompany(@RequestBody Map<String, String> companyInfo,HttpServletRequest request) throws ParseException {
+    Map deleteCompany(@RequestBody String companyId,HttpServletRequest request) throws ParseException {
         HashMap serverResponse = new HashMap();
         String successMsg = "";
         String validationError = "";
         logger.info("Delete Company:  >> ");
-        validationError = companyService.delete(Long.parseLong(companyInfo.get("id")), request);
+        validationError = companyService.delete(Long.parseLong(companyId), request);
         if (validationError.length() == 0) successMsg = environment.getProperty("company.delete.success.msg");
         logger.info("Delete Company:  << " + successMsg + validationError);
         serverResponse.put("successMsg", successMsg);

@@ -125,7 +125,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     private Project createObjForSave(String name,Long companyId) throws Exception {
         Project project = new Project();
-        Company company = companyDao.get(companyId);;
+        Company company = companyDao.get(companyId);
         project.setName(name);
         project.setCompany(company);
         project.setCompanyId(company.getId());

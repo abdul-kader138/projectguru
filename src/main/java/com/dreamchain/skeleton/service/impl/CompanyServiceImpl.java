@@ -183,21 +183,15 @@ public class CompanyServiceImpl implements CompanyService {
         fileName = n + "_" + fileName; // create new name for logo file
         try {
             String filePath = LOGO_PATH + fileName;
-            String realPathFetch = request.getRealPath(
-                    "/");
+            String realPathFetch = request.getRealPath( "/");
             inputStream = multipartFile.getInputStream();
             File newFile = new File(realPathFetch + filePath);
-            if (!newFile.exists()) {
-                newFile.createNewFile();
-            }
             outputStream = new FileOutputStream(newFile);
             int read = 0;
             byte[] bytes = new byte[1024];
-
             while ((read = inputStream.read(bytes)) != -1) {
                 outputStream.write(bytes, 0, read);
             }
-
             msg.put("validationMsg", "");
             msg.put("path", filePath);
             inputStream.close();

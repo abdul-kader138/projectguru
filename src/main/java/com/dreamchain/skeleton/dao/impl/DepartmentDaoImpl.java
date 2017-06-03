@@ -44,10 +44,12 @@ public class DepartmentDaoImpl implements DepartmentDao{
     }
 
     @Override
-    public Department findByDepartmentName(String departmentName) {
+    public Department findByDepartmentName(String departmentName,long companyID) {
         DetachedCriteria dcr= DetachedCriteria.forClass(Department.class);
-        Criterion cr = Restrictions.eq("name", departmentName);
+        Criterion cr = Restrictions.eq("name", departmentName.trim().toUpperCase());
+        Criterion cr1 = Restrictions.eq("companyId", companyID);
         dcr.add(cr);
+        dcr.add(cr1);
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         if(lst.size()==0)return new Department();
         return (Department)lst.get(0);
@@ -55,12 +57,26 @@ public class DepartmentDaoImpl implements DepartmentDao{
 
     @Override
     public List<Object> countOfDepartment(long departmentID) {
-        DetachedCriteria dcr= DetachedCriteria.forClass(Department.class);//User
+        DetachedCriteria dcr= DetachedCriteria.forClass(Department.class);//Product
         Criterion cr = Restrictions.eq("id", departmentID);
         dcr.add(cr);
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         if(lst.size()==0)return new ArrayList<Object>();
         return lst;
 
+    }
+
+    @Override
+    public Department findByNewName(String CurrentName,String newName,Long id) {
+        DetachedCriteria dcr= DetachedCriteria.forClass(Department.class);
+        Criterion cr = Restrictions.eq("name", newName.trim().toUpperCase());
+        Criterion cr1 = Restrictions.ne("name", CurrentName.trim().toUpperCase());
+        Criterion cr2 = Restrictions.eq("companyId", id);
+        dcr.add(cr);
+        dcr.add(cr1);
+        dcr.add(cr2);
+        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
+        if(lst.size()==0)return new Department();
+        return (Department)lst.get(0);
     }
 }

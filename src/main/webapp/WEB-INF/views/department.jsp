@@ -8,12 +8,16 @@
         <div id="viewTableData"></div>
         <div class="row clearfix">
             <div class="col-xs-10 col-xs-offset-1 card">
+                <br/>
+                <div><h4>Department List</h4></div>
+                <hr/>
                 <br/><br/>
                 <table id="departmentTable" class="display nowrap" cellspacing="0" width="100%">
                     <thead>
                     <tr>
                         <th width="15px">id</th>
-                        <th width="200px">Name</th>
+                        <th width="200px">Department Name</th>
+                        <th width="200px">Company Name</th>
                     </tr>
                     </thead>
                 </table>
@@ -65,6 +69,18 @@
 
                                 <!-- Form Name -->
                                 <legend><strong>Department Setting</strong></legend>
+
+
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="listOfCompany">Company Name</label>
+
+                                    <div class="col-md-4">
+                                        <select id="listOfCompany" class="form-control"
+                                                style="border-color:#808080; border-width:1px; border-style:solid;"></select>
+                                        <label id="companyNameValidation" style="color:red; font-size: 11px;"
+                                               class="form-control"></label>
+                                    </div>
+                                </div>
 
                                 <!-- Text input-->
                                 <div class="form-group">
@@ -122,6 +138,7 @@
                 $("saveDepartment").show();
                 $("#updateDepartment").hide();
                 var companyGb;
+                getAllCompany();
 
 
                 /* populate Department list when page load */
@@ -142,16 +159,11 @@
                             'sWidth': '15px',
                             'bSortable': false
                         },
-                        {"mData": "name", 'sWidth': '200px'}
+                        {"mData": "name", 'sWidth': '200px'},
+                        {"mData": "company.name",'sWidth': '200px'}
                     ],
                     'aaSorting': [[0, 'asc']],
-                    "columnDefs": [
-                        {
-//                            "targets": [0],
-//                            "visible": false,
-//                            "searchable": false
-                        }
-                    ],
+                    "columnDefs": [{}],
                     "cache": false,
                     "bPaginate": true,
                     "bLengthChange": true,
@@ -174,6 +186,7 @@
                     var msg = "";
                     var department = new Object();
                     department.name = $("#name").val();
+                    department.companyId = $("#listOfCompany option:selected").val();
                     if (formValidation()) callAjaxForAddOperation(part1, part2, icn, msg, department);
                 });
 
@@ -190,15 +203,7 @@
 
                     if (checkForMultipleRowSelect()) showServerSideMessage(data, "", 0, "Message");
                     else if (newDepartment == null)showServerSideMessage(data, "", 0, "Message");
-                    else {
-                        document.getElementById('departmentForm').style.display = "block";
-                        $("#updateDepartment").show();
-                        $("#saveDepartment").hide();
-                        $("#id").val(newDepartment.id);
-                        $("#name").val(newDepartment.name);
-                        $("#version").val(newDepartment.version);
-                        window.location.href = "#departmentForm";
-                    }
+                    else setDataToDepartmentForm(newDepartment);
                 });
 
                 var table = $('#departmentTable').DataTable();
@@ -212,6 +217,7 @@
                     department.id = $("#id").val();
                     department.version = $("#version").val();
                     department.name = $("#name").val();
+                    department.companyId = $("#listOfCompany option:selected").val();
                     if (formValidation()) callAjaxForEditOperation(part1, part2, icn, msg, department);
 
                 });
@@ -304,7 +310,7 @@
                         },
                         'type': 'POST',
                         'url': messageResource.get('department.delete.url', 'configMessageForUI'),
-                        'data': JSON.stringify(newDepartment),
+                        'data': JSON.stringify(newDepartment.id),
                         'dataType': 'json',
                         'success': function (d) {
                             if (d.successMsg) {
@@ -323,6 +329,7 @@
                             }
                         },
                         'error': function (error) {
+                            uncheckedAllCheckBox();
                             icn = 0;
                             msg = '<strong style="color: red">Error</strong>';
                             showServerSideMessage(part1, getErrorMessage(error), icn, msg);
@@ -367,6 +374,7 @@
                         'error': function (error) {
                             icn = 0;
                             msg = '<strong style="color: red">Error</strong>';
+                            uncheckedAllCheckBox();
                             showServerSideMessage(part1, getErrorMessage(error), icn, msg);
                         }
                     });
@@ -421,6 +429,7 @@
                     $("#id").val("0");
                     $("#version").val("0");
                     $("#name").val("");
+                    $('#defaultOpt').val('0').prop('selected', true);
                 }
 
 
@@ -429,10 +438,16 @@
                 function formValidation() {
                     var isValid = true;
                     var name = $("#name").val();
+                    var companyId = $("#listOfCompany option:selected").val();
                     if (name == null || name.trim().length == 0) {
                         $("#nameValidation").text("Name is required");
                         isValid = false;
                     }
+                    if ((companyId == null) || (companyId == "0")) {
+                        $("#companyNameValidation").text("Company name is required");
+                        isValid = false;
+                    }
+
                     return isValid;
                 }
 
@@ -441,6 +456,7 @@
 
                 function initFormValidationMsg() {
                     $("#nameValidation").text("");
+                    $("#companyNameValidation").text("");
 
                 }
 
@@ -466,6 +482,7 @@
                         "id": department.id,
                         "name": department.name,
                         "version": department.version,
+                        "company": department.company,
                         "createdBy": department.createdBy,
                         "createdOn": department.createdOn,
                         "updatedBy": department.updatedBy,
@@ -473,6 +490,41 @@
                     }).draw();
 
                 };
+
+
+                /* set selected row data to department form for edit */
+
+                function setDataToDepartmentForm(newDepartment){
+                    document.getElementById('departmentForm').style.display = "block";
+                    $("#updateDepartment").show();
+                    $("#saveDepartment").hide();
+                    $("#id").val(newDepartment.id);
+                    $("#name").val(newDepartment.name);
+                    $("#version").val(newDepartment.version);
+                    $('#listOfCompany option:contains("' + newDepartment.company.name + '")').prop('selected', 'selected');
+                    window.location.href = "#departmentForm";
+                }
+
+                /* Load Company data to select box data using ajax */
+
+                function getAllCompany() {
+                    $('#getAllCompany').empty();
+                    $.ajax({
+                        type: "GET",
+                        url: "http://localhost:8080/company/companyList",
+                        success: function (data) {
+                            var collaboration;
+                            collaboration += '<option id="defaultOpt" value="0">Select Company</option>';
+                            $.each(data, function (i, d) {
+                                collaboration += "<option value=" + d.id + ">" + d.name + "</option>";
+                            });
+
+                            $('#listOfCompany').append(collaboration);
+                        },
+                        error: function (e) {
+                        }
+                    });
+                }
 
             });
             //

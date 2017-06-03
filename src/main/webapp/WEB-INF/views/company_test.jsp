@@ -8,7 +8,9 @@
         <div id="viewTableData"></div>
         <div class="row clearfix">
             <div class="col-xs-10 col-xs-offset-1 card">
-                <div><h3>Company List</h3></div>
+                <br/>
+                <div><h4>Company List</h4></div>
+                <hr/>
                 <br/><br/>
                 <table id="companyTable" class="display nowrap" cellspacing="0" width="100%">
                     <thead>
@@ -352,7 +354,7 @@
                         },
                         'type': 'POST',
                         'url': messageResource.get('company.delete.url', 'configMessageForUI'),
-                        'data': JSON.stringify(newCompany),
+                        'data': JSON.stringify(newCompany.id),
                         'dataType': 'json',
                         'success': function (d) {
                             if (d.successMsg) {
@@ -371,6 +373,7 @@
                             }
                         },
                         'error': function (error) {
+                            uncheckedAllCheckBox();
                             icn = 0;
                             msg = '<strong style="color: red">Error</strong>';
                             showServerSideMessage(part1, getErrorMessage(error), icn, msg);
@@ -403,12 +406,14 @@
                             table.ajax.url(messageResource.get('company.list.load.url', 'configMessageForUI')).load();
                         }
                         if (data.validationError) {
+                            uncheckedAllCheckBox();
                             icn = 0;
                             msg = '<strong style="color: red">Error</strong>';
                             part2 = data.validationError;
                             showServerSideMessage(part1, part2, icn, msg);
                         }
                     }).fail(function (jqXHR, textStatus) {
+                        uncheckedAllCheckBox();
                         icn = 0;
                         msg = '<strong style="color: red">Error</strong>';
                         showServerSideMessage(part1, getErrorMessage(textStatus), icn, msg);

@@ -74,7 +74,7 @@ public class DepartmentController {
         String successMsg = "";
         String validationError = "";
         logger.info("creating new department: >>");
-        objList = departmentService.save(departmentInfo.get("name"));
+        objList = departmentService.save(departmentInfo.get("name"),Long.parseLong(departmentInfo.get("companyId")));
         validationError = (String) objList.get("validationError");
         if (validationError.length() == 0) {
             objList.put("successMsg", environment.getProperty("department.save.success.msg"));
@@ -88,12 +88,12 @@ public class DepartmentController {
     @RequestMapping(value = "department/delete", method = RequestMethod.POST)
     public
     @ResponseBody
-    Map deleteDepartment(@RequestBody Map<String, String> departmentInfo) throws ParseException {
+    Map deleteDepartment(@RequestBody String departmentId) throws ParseException {
         HashMap serverResponse = new HashMap();
         String successMsg = "";
         String validationError = "";
         logger.info("department Company:  >> ");
-        validationError = departmentService.delete(Long.parseLong(departmentInfo.get("id")));
+        validationError = departmentService.delete(Long.parseLong(departmentId));
         if (validationError.length() == 0) successMsg = environment.getProperty("department.delete.success.msg");
         logger.info("department Company:  << " + successMsg + validationError);
         serverResponse.put("successMsg", successMsg);

@@ -1,6 +1,7 @@
 package com.dreamchain.skeleton.model;
 
 
+import com.sun.istack.NotNull;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -10,6 +11,9 @@ import java.util.Date;
 
 
 @Entity
+@Table(name="department",
+        uniqueConstraints=
+@UniqueConstraint(columnNames={"companyId", "name"}))
 public class Department implements Serializable {
 
     private static final long serialVersionUID = 8633415090390965715L;
@@ -24,15 +28,24 @@ public class Department implements Serializable {
 
     @NotEmpty
     @Length(max = 60)
-    @Column(unique = true)
     private String name;
 
 
-    @Column
-    private long createdBy;
+    @NotNull
+    @OneToOne
+    private Company company;
 
     @Column
-    private long updatedBy;
+    @NotNull
+    private long companyId;
+
+
+
+    @Column
+    private String createdBy;
+
+    @Column
+    private String updatedBy;
 
 
     @Column
@@ -46,6 +59,22 @@ public class Department implements Serializable {
     public Department() {
     }
 
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(long companyId) {
+        this.companyId = companyId;
+    }
 
     public Date getUpdatedOn() {
         return updatedOn;
@@ -63,20 +92,20 @@ public class Department implements Serializable {
         this.createdOn = createdOn;
     }
 
-    public long getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(long updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-    public long getCreatedBy() {
+    public String getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(long createdBy) {
+    public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
     }
 
     public String getName() {

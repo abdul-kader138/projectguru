@@ -9,7 +9,7 @@ import java.util.Map;
 public interface DepartmentService {
 
     Department get(Long id);
-    Map<String,Object> save(String departmentName) throws Exception;
+    Map<String,Object> save(String departmentName,long companyId) throws Exception;
     Map<String,Object> update(Map<String, String> companyObj) throws ParseException;
     String delete(Long departmentId);
     List<Department> findAll();

@@ -12,6 +12,7 @@ public interface DepartmentDao {
     void update(Department department);
     void delete(Department department);
     List<Department> findAll();
-    Department findByDepartmentName(String departmentName);
+    Department findByDepartmentName(String departmentName,long departmentID);
     List<Object> countOfDepartment(long departmentID);
+    Department findByNewName(String CurrentName,String newName,Long id);
 }
