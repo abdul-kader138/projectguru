@@ -46,7 +46,7 @@ public class DepartmentDaoImpl implements DepartmentDao{
     @Override
     public Department findByDepartmentName(String departmentName,long companyID) {
         DetachedCriteria dcr= DetachedCriteria.forClass(Department.class);
-        Criterion cr = Restrictions.eq("name", departmentName.trim().toUpperCase());
+        Criterion cr = Restrictions.eq("name", departmentName.trim()).ignoreCase();
         Criterion cr1 = Restrictions.eq("companyId", companyID);
         dcr.add(cr);
         dcr.add(cr1);
@@ -69,8 +69,8 @@ public class DepartmentDaoImpl implements DepartmentDao{
     @Override
     public Department findByNewName(String CurrentName,String newName,Long id) {
         DetachedCriteria dcr= DetachedCriteria.forClass(Department.class);
-        Criterion cr = Restrictions.eq("name", newName.trim().toUpperCase());
-        Criterion cr1 = Restrictions.ne("name", CurrentName.trim().toUpperCase());
+        Criterion cr = Restrictions.eq("name", newName.trim()).ignoreCase();
+        Criterion cr1 = Restrictions.ne("name", CurrentName.trim()).ignoreCase();
         Criterion cr2 = Restrictions.eq("companyId", id);
         dcr.add(cr);
         dcr.add(cr1);
