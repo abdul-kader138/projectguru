@@ -129,7 +129,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     private Department createObjForSave(String name,Long companyId) throws Exception {
         Department department = new Department();
         Company company = companyDao.get(companyId);
-        department.setName(name);
+        department.setName(name.trim());
         department.setCompany(company);
         department.setCompanyId(companyId);
         SimpleDateFormat dateFormat = new SimpleDateFormat();
@@ -160,7 +160,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         Company company = companyDao.get(objFromUI.getCompanyId());
         departmentObj.setId(objFromUI.getId());
         departmentObj.setVersion(objFromUI.getVersion());
-        departmentObj.setName(objFromUI.getName());
+        departmentObj.setName(objFromUI.getName().trim());
         departmentObj.setCompanyId(objFromUI.getCompanyId());
         departmentObj.setCompany(company);
         departmentObj.setCreatedBy(existingDepartment.getCreatedBy());

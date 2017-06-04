@@ -48,7 +48,7 @@ public class CompanyDaoImpl implements CompanyDao {
     @Override
     public Company findByCompanyName(String companyName) {
         DetachedCriteria dcr= DetachedCriteria.forClass(Company.class);
-        Criterion cr = Restrictions.eq("name", companyName.trim().toUpperCase());
+        Criterion cr = Restrictions.eq("name", companyName.trim()).ignoreCase();
         dcr.add(cr);
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         if(lst.size()==0)return new Company();
@@ -70,8 +70,8 @@ public class CompanyDaoImpl implements CompanyDao {
     @Override
     public Company findByNewName(String CurrentName,String newName) {
         DetachedCriteria dcr= DetachedCriteria.forClass(Company.class);
-        Criterion cr = Restrictions.eq("name", newName.trim().toUpperCase());
-        Criterion cr1 = Restrictions.ne("name", CurrentName.trim().toUpperCase());
+        Criterion cr = Restrictions.eq("name", newName.trim()).ignoreCase();
+        Criterion cr1 = Restrictions.ne("name", CurrentName.trim()).ignoreCase();
         dcr.add(cr);
         dcr.add(cr1);
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);

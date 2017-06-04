@@ -144,9 +144,9 @@ public class CompanyServiceImpl implements CompanyService {
 
     private Company createObjForSave(String name, String address, String fileName) throws Exception {
         Company company = new Company();
-        company.setName(name);
-        company.setAddress(address);
-        company.setImagePath(fileName);
+        company.setName(name.trim());
+        company.setAddress(address.trim());
+        company.setImagePath(fileName.trim());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
         company.setCreatedBy(getUserId());
@@ -159,8 +159,8 @@ public class CompanyServiceImpl implements CompanyService {
         Company companyObj = new Company();
         companyObj.setId(objFromUI.getId());
         companyObj.setVersion(objFromUI.getVersion());
-        companyObj.setName(objFromUI.getName());
-        companyObj.setAddress(objFromUI.getAddress());
+        companyObj.setName(objFromUI.getName().trim());
+        companyObj.setAddress(objFromUI.getAddress().trim());
         companyObj.setImagePath(existingCompany.getImagePath());
         companyObj.setCreatedBy(existingCompany.getCreatedBy());
         companyObj.setCreatedOn(existingCompany.getCreatedOn());
@@ -193,7 +193,7 @@ public class CompanyServiceImpl implements CompanyService {
                 outputStream.write(bytes, 0, read);
             }
             msg.put("validationMsg", "");
-            msg.put("path", filePath);
+            msg.put("path", filePath.trim());
             inputStream.close();
             outputStream.close();
         } catch (IOException e) {
