@@ -564,11 +564,21 @@
                     $("#version").val(newProduct.version);
                     $('#listOfCompany option:contains("' + newProduct.company.name + '")').prop('selected', 'selected');
                     var company = new Object();
-                    var id = newProduct.department.id;
-                    var val = newProduct.department.name;
-                    setOptionVal(id, val);
-                    $('#listOfDepartment option:contains("' + newProduct.department.name + '")').prop('selected', 'selected');
-                    window.location.href = "#productForm";
+                    var id = newProduct.company.id;
+                    id=parseInt(id);
+//                    var test =getAllDepartment(id);
+//                    test.then(function(newProduct){
+//                        console.log(newProduct);
+//                        $('#listOfDepartment option:contains("' + newProduct.department.name + '")').prop('selected', 'selected');
+//                        window.location.href = "#productForm";
+//                    })
+
+                    $.when(getAllDepartment(id)).done(function(  ) {
+//                        console.log(newProduct);
+//                        $('#listOfDepartment option:contains("' + newProduct.department.name + '")').prop('selected', 'selected');
+                        window.location.href = "#productForm";
+                    });
+
                 }
 
                 /* Load Company data to select box data using ajax */
