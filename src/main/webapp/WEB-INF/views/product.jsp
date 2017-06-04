@@ -171,12 +171,14 @@
                 getAllCompany();
 
 
+                /*Based on company Selection load department data */
+
                 $("#listOfCompany").change(function () {
                     var id = $(this).val();
                     id = parseInt(id);
                     var company = new Object();
                     company.id = id;
-                    getAllDepartment(company.id)
+                    getSelectedDepartment(company.id,"Select Department")
                 });
 
                 /* populate Product list when page load */
@@ -424,7 +426,6 @@
                             showServerSideMessage(part1, getErrorMessage(error), icn, msg);
                         }
                     });
-                    company = null;
 
                 }
 
@@ -551,10 +552,41 @@
                 };
 
 
+
+
+                /* Load Department data to select box data using ajax */
+
+                function getSelectedDepartment(companyId, obj) {
+                    $('#listOfDepartment').empty();
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        'type': 'POST',
+                        url: 'http://localhost:8080/department/departmentListByCompany',
+                        'data': JSON.stringify(companyId),
+                        'dataType': 'json',
+                        success: function (data) {
+                            var collaboration;
+                            collaboration += '<option id="defaultOptDepartment" value="0">Select Department</option>';
+                            $.each(data, function (i, d) {
+                                collaboration += "<option value=" + d.id + ">" + d.name + "</option>";
+                            });
+
+                            $('#listOfDepartment').append(collaboration);
+                            console.log("testing....");
+                            $('#listOfDepartment option:contains("' + obj + '")').prop('selected', 'selected');
+                        },
+                        error: function (e) {
+                        }
+                    });
+                }
+
+
                 /* set selected row data to product form for edit */
 
                 function setDataToProductForm(newProduct) {
-                    console.log(newProduct);
                     document.getElementById('productForm').style.display = "block";
                     $("#updateProduct").show();
                     $("#saveProduct").hide();
@@ -565,20 +597,9 @@
                     $('#listOfCompany option:contains("' + newProduct.company.name + '")').prop('selected', 'selected');
                     var company = new Object();
                     var id = newProduct.company.id;
-                    id=parseInt(id);
-//                    var test =getAllDepartment(id);
-//                    test.then(function(newProduct){
-//                        console.log(newProduct);
-//                        $('#listOfDepartment option:contains("' + newProduct.department.name + '")').prop('selected', 'selected');
-//                        window.location.href = "#productForm";
-//                    })
-
-                    $.when(getAllDepartment(id)).done(function(  ) {
-//                        console.log(newProduct);
-//                        $('#listOfDepartment option:contains("' + newProduct.department.name + '")').prop('selected', 'selected');
-                        window.location.href = "#productForm";
-                    });
-
+                    id = parseInt(id);
+                    getSelectedDepartment(id, newProduct.department.name);
+                    window.location.href = "#productForm";
                 }
 
                 /* Load Company data to select box data using ajax */
@@ -601,47 +622,6 @@
                         }
                     });
                 }
-
-
-                /* Load Department data to select box data using ajax */
-
-                function getAllDepartment(companyId) {
-                    $('#listOfDepartment').empty();
-                    $.ajax({
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        },
-                        'type': 'POST',
-                        url: 'http://localhost:8080/department/departmentListByCompany',
-                        'data': JSON.stringify(companyId),
-                        'dataType': 'json',
-                        success: function (data) {
-                            var collaboration;
-                            collaboration += '<option id="defaultOptDepartment" value="0">Select Department</option>';
-                            $.each(data, function (i, d) {
-                                collaboration += "<option value=" + d.id + ">" + d.name + "</option>";
-                            });
-
-                            $('#listOfDepartment').append(collaboration);
-                        },
-                        error: function (e) {
-                        }
-                    });
-                }
-
-
-                /* Load Department data to select box at edit time */
-
-                function setOptionVal(id, data) {
-                    $('#listOfDepartment').empty();
-                    console.log(data);
-                    var collaboration;
-                    collaboration += '<option id="defaultOptDepartment" value="0">Select Department</option>';
-                    collaboration += "<option value=" + id + ">" + data + "</option>";
-                    $('#listOfDepartment').append(collaboration);
-                }
-
 
             });
             //
