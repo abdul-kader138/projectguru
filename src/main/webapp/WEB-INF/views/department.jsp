@@ -185,6 +185,8 @@
                     var icn = 0;
                     var msg = "";
                     var department = new Object();
+                    department.id = $("#id").val();
+                    department.version = $("#version").val();
                     department.name = $("#name").val();
                     department.companyId = $("#listOfCompany option:selected").val();
                     if (formValidation()) callAjaxForAddOperation(part1, part2, icn, msg, department);

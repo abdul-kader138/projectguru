@@ -135,10 +135,12 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     private Department createObjForSave(Map<String, Object> departmentObj){
         Department department = new Department();
-        Company company=companyDao.get((Long)departmentObj.get("companyId"));;
+        Company company=companyDao.get(Long.parseLong((String)departmentObj.get("companyId")));
         department.setName(((String) departmentObj.get("name")).trim());
         department.setCompany(company);
-        department.setCompanyId((Long) departmentObj.get("companyId"));
+        department.setId(Long.parseLong((String) departmentObj.get("id")));
+        department.setVersion(Long.parseLong((String) departmentObj.get("version")));
+        department.setCompanyId(Long.parseLong((String) departmentObj.get("companyId")));
         return department;
 
     }

@@ -69,12 +69,12 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public Product findByNewName(String CurrentName, String newName, Long companyId,Long DepartmentId) {
+    public Product findByNewName(String CurrentName, String newName, Long companyId,Long departmentId) {
         DetachedCriteria dcr= DetachedCriteria.forClass(Product.class);
         Criterion cr = Restrictions.eq("name", newName.trim()).ignoreCase();
         Criterion cr1 = Restrictions.ne("name", CurrentName.trim()).ignoreCase();
         Criterion cr2 = Restrictions.eq("companyId", companyId);
-        Criterion cr3 = Restrictions.eq("DepartmentId", DepartmentId);
+        Criterion cr3 = Restrictions.eq("departmentId", departmentId);
         dcr.add(cr);
         dcr.add(cr1);
         dcr.add(cr2);

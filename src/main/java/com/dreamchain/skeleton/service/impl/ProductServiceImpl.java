@@ -120,10 +120,12 @@ public class ProductServiceImpl implements ProductService {
 
     private Product createObjForSave(Map<String, Object> productObj){
         Product product = new Product();
-        Company company=companyDao.get((Long)productObj.get("companyId"));
-        Department department=departmentDao.get((Long)productObj.get("departmentId"));
-        product.setCompanyId((Long)productObj.get("companyId"));
-        product.setDepartmentId((Long)productObj.get("departmentId"));
+        Company company=companyDao.get(Long.parseLong((String) productObj.get("companyId")));
+        Department department=departmentDao.get(Long.parseLong((String)productObj.get("departmentId")));
+        product.setId(Long.parseLong((String) productObj.get("id")));
+        product.setVersion(Long.parseLong((String) productObj.get("version")));
+        product.setCompanyId(Long.parseLong((String)productObj.get("companyId")));
+        product.setDepartmentId(Long.parseLong((String)productObj.get("departmentId")));
         product.setName(((String)productObj.get("name")).trim());
         product.setDescription(((String)productObj.get("description")).trim());
         product.setCompany(company);
