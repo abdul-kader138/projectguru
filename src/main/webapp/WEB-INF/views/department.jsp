@@ -197,7 +197,7 @@
                     initializeDepartmentForm();
                     initFormValidationMsg();
                     var newDepartment = new Object();
-                    var newDepartment = companyGb;
+                    newDepartment = companyGb;
                     companyGb = null;
                     var data = messageResource.get('department.edit.validation.msg', 'configMessageForUI');
 
@@ -511,7 +511,7 @@
                     $('#getAllCompany').empty();
                     $.ajax({
                         type: "GET",
-                        url: "http://localhost:8080/company/companyList",
+                        url: 'http://localhost:8080/company/companyList',
                         success: function (data) {
                             var collaboration;
                             collaboration += '<option id="defaultOpt" value="0">Select Company</option>';

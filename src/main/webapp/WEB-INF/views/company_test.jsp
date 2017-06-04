@@ -237,7 +237,7 @@
                     initializeCompanyForm();
                     initFormValidationMsg();
                     var newCompany = new Object();
-                    var newCompany = companyGb;
+                    newCompany = companyGb;
                     companyGb = null;
                     var data = messageResource.get('company.edit.validation.msg', 'configMessageForUI');
 

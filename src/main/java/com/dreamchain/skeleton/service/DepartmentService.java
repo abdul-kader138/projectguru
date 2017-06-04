@@ -9,8 +9,9 @@ import java.util.Map;
 public interface DepartmentService {
 
     Department get(Long id);
-    Map<String,Object> save(String departmentName,long companyId) throws Exception;
-    Map<String,Object> update(Map<String, String> companyObj) throws ParseException;
+    Map<String,Object> save(Map<String, Object> departmentObj) throws Exception;
+    Map<String,Object> update(Map<String, Object> departmentObj) throws ParseException;
     String delete(Long departmentId);
     List<Department> findAll();
+    List<Department> findByCompanyName(long companyId);
 }

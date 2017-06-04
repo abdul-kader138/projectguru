@@ -35,7 +35,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     private static String INVALID_INPUT = "Invalid input";
     private static String INVALID_DEPARTMENT = "Department not exists";
     private static String BACK_DATED_DATA = "Department data is old.Please try again with updated data";
-    private static String ASSOCIATED_DEPARTMENT = "Department is tagged with users.First remove tagging and try again";
+    private static String ASSOCIATED_DEPARTMENT = "Department is tagged with product.First remove tagging and try again";
 
 
     @Transactional(readOnly = true)
@@ -44,16 +44,20 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Transactional
-    public Map<String, Object> save(String departmentName,long companyId) throws Exception {
+    public Map<String, Object> save(Map<String, Object> departmentObj) throws Exception {
         Map<String,Object> obj=new HashMap<>();
         String validationMsg = "";
         Department newDepartment=new Department();
         Department existingDepartment=new Department();
-        Department department=createObjForSave(departmentName,companyId);
+        Department department=createObjForSave(departmentObj);
         validationMsg = checkInput(department);
         if ("".equals(validationMsg)) existingDepartment = departmentDao.findByDepartmentName(department.getName(),department.getCompanyId());
         if (existingDepartment.getName() != null && validationMsg == "") validationMsg = DEPARTMENT_EXISTS;
         if ("".equals(validationMsg)) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat();
+            Date date = dateFormat.parse(dateFormat.format(new Date()));
+            department.setCreatedBy(getUserId());
+            department.setCreatedOn(date);
             long departmentId= departmentDao.save(department);
             newDepartment=departmentDao.get(departmentId);
         }
@@ -63,12 +67,12 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Transactional
-    public Map<String, Object> update(Map<String, String> companyObj) throws ParseException {
+    public Map<String, Object> update(Map<String, Object> departmentObj) throws ParseException {
         Map<String,Object> obj=new HashMap<>();
         String validationMsg = "";
         Department newObj=new Department();
         Department existingDepartment=new Department();
-        Department department=createObjForUpdate(companyObj);
+        Department department=createObjForSave(departmentObj);
         validationMsg = checkInput(department);
         if (department.getId() == 0l && validationMsg == "") validationMsg = INVALID_INPUT;
         if ("".equals(validationMsg)) existingDepartment = departmentDao.get(department.getId());
@@ -108,12 +112,15 @@ public class DepartmentServiceImpl implements DepartmentService {
         return departmentDao.findAll();
     }
 
+    @Override
+    public List<Department> findByCompanyName(long companyId) {
+       return departmentDao.findByCompanyName(companyId);
+    }
+
 
     // check for invalid data
     private String checkInput(Department department) {
         String msg = "";
-        if (department.getName() == null || department.getCompanyId() == 0l)
-            msg = INVALID_INPUT;
 
         //server side validation check
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
@@ -126,16 +133,12 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     // create Department object for saving
 
-    private Department createObjForSave(String name,Long companyId) throws Exception {
+    private Department createObjForSave(Map<String, Object> departmentObj){
         Department department = new Department();
-        Company company = companyDao.get(companyId);
-        department.setName(name.trim());
+        Company company=companyDao.get((Long)departmentObj.get("companyId"));;
+        department.setName(((String) departmentObj.get("name")).trim());
         department.setCompany(company);
-        department.setCompanyId(companyId);
-        SimpleDateFormat dateFormat = new SimpleDateFormat();
-        Date date = dateFormat.parse(dateFormat.format(new Date()));
-        department.setCreatedBy(getUserId());
-        department.setCreatedOn(date);
+        department.setCompanyId((Long) departmentObj.get("companyId"));
         return department;
 
     }
@@ -143,26 +146,13 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     // create Department object for updating
 
-    private Department createObjForUpdate(Map<String, String> companyObj){
-        Department department = new Department();
-        Company company=companyDao.get(Long.parseLong(companyObj.get("id")));
-        department.setId(Long.parseLong(companyObj.get("id")));
-        department.setVersion(Long.parseLong(companyObj.get("version")));
-        department.setCompanyId(Long.parseLong(companyObj.get("companyId")));
-        department.setName(companyObj.get("name"));
-        department.setCompany(company);
-        return department;
-
-    }
-
     private Department setUpdateDepartmentValue(Department objFromUI,Department existingDepartment) throws ParseException {
         Department departmentObj = new Department();
-        Company company = companyDao.get(objFromUI.getCompanyId());
         departmentObj.setId(objFromUI.getId());
         departmentObj.setVersion(objFromUI.getVersion());
         departmentObj.setName(objFromUI.getName().trim());
         departmentObj.setCompanyId(objFromUI.getCompanyId());
-        departmentObj.setCompany(company);
+        departmentObj.setCompany(objFromUI.getCompany());
         departmentObj.setCreatedBy(existingDepartment.getCreatedBy());
         departmentObj.setCreatedOn(existingDepartment.getCreatedOn());
         SimpleDateFormat dateFormat = new SimpleDateFormat();

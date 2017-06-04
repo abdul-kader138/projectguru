@@ -44,6 +44,15 @@ public class DepartmentDaoImpl implements DepartmentDao{
     }
 
     @Override
+    public List<Department> findByCompanyName(long companyId) {
+        DetachedCriteria dcr= DetachedCriteria.forClass(Department.class);
+        Criterion cr = Restrictions.eq("companyId", companyId);
+        dcr.add(cr);
+        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
+        return craeteDepartmentList(lst);
+    }
+
+    @Override
     public Department findByDepartmentName(String departmentName,long companyID) {
         DetachedCriteria dcr= DetachedCriteria.forClass(Department.class);
         Criterion cr = Restrictions.eq("name", departmentName.trim()).ignoreCase();
@@ -78,5 +87,13 @@ public class DepartmentDaoImpl implements DepartmentDao{
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         if(lst.size()==0)return new Department();
         return (Department)lst.get(0);
+    }
+
+    private List<Department> craeteDepartmentList(List<Object> departmentList){
+       List<Department> list = new ArrayList<>();
+        for(final Object o : departmentList) {
+            list.add((Department)o);
+        }
+        return list;
     }
 }

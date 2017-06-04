@@ -36,7 +36,7 @@ public class CompanyServiceImpl implements CompanyService {
     private static String INVALID_INPUT = "Invalid input";
     private static String INVALID_COMPANY = "Company not exists";
     private static String BACK_DATED_DATA = "Company data is old.Please try again with updated data";
-    private static String ASSOCIATED_COMPANY = "Company is tagged with projects.First remove tagging and try again";
+    private static String ASSOCIATED_COMPANY = "Company is tagged with Department.First remove tagging and try again";
     private static String LOGO_PATH = "/resources/images/company_logo/";
 
 
@@ -128,8 +128,6 @@ public class CompanyServiceImpl implements CompanyService {
     // check for invalid data
     private String checkInput(Company company) {
         String msg = "";
-        if (company.getName() == null || company.getAddress() == null)
-            msg = INVALID_INPUT;
 
         //server side validation check
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
