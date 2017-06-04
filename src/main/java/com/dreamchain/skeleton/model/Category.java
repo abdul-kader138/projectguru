@@ -9,14 +9,13 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-
 @Entity
-@Table(name="product",
+@Table(name="category",
         uniqueConstraints=
-        @UniqueConstraint(columnNames={"companyId","name"}))
-public class Product implements Serializable{
+        @UniqueConstraint(columnNames={"companyId","departmentId","productId", "name"}))
+public class Category implements Serializable {
 
-    private static final long serialVersionUID = 8633415090380776715L;
+    private static final long serialVersionUID = 8633415080380776715L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,7 +38,21 @@ public class Product implements Serializable{
     private Company company;
 
     @NotNull
+    @OneToOne
+    private Department department;
+
+    @NotNull
+    @OneToOne
+    private Product product;
+
+    @NotNull
     private long companyId;
+
+    @NotNull
+    private long departmentId;
+
+    @NotNull
+    private long productId;
 
     @Column
     private String createdBy;
@@ -55,7 +68,7 @@ public class Product implements Serializable{
     @Column
     private Date updatedOn;
 
-    public Product() {
+    public Category() {
     }
 
     public static long getSerialVersionUID() {
@@ -102,7 +115,15 @@ public class Product implements Serializable{
         this.company = company;
     }
 
-   public long getCompanyId() {
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public long getCompanyId() {
         return companyId;
     }
 
@@ -116,6 +137,14 @@ public class Product implements Serializable{
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public long getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(long departmentId) {
+        this.departmentId = departmentId;
     }
 
     public String getUpdatedBy() {
@@ -140,5 +169,22 @@ public class Product implements Serializable{
 
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
+    }
+
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(long productId) {
+        this.productId = productId;
     }
 }

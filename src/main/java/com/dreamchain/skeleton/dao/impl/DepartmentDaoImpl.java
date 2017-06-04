@@ -49,7 +49,7 @@ public class DepartmentDaoImpl implements DepartmentDao{
         Criterion cr = Restrictions.eq("companyId", companyId);
         dcr.add(cr);
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
-        return craeteDepartmentList(lst);
+        return createDepartmentList(lst);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class DepartmentDaoImpl implements DepartmentDao{
         return (Department)lst.get(0);
     }
 
-    private List<Department> craeteDepartmentList(List<Object> departmentList){
+    private List<Department> createDepartmentList(List<Object> departmentList){
        List<Department> list = new ArrayList<>();
         for(final Object o : departmentList) {
             list.add((Department)o);

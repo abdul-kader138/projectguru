@@ -1,12 +1,14 @@
 package com.dreamchain.skeleton.web;
 
-import com.dreamchain.skeleton.model.ProductCategory;
-import com.dreamchain.skeleton.service.ProductCategoryService;
+import com.dreamchain.skeleton.model.Category;
+import com.dreamchain.skeleton.service.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,47 +24,51 @@ import java.util.Map;
 
 @Controller
 @PropertySource("classpath:config.properties")
-public class ProductCategoryController {
+public class CategoryController {
 
     @Autowired
-    ProductCategoryService productCategoryService;
+    CategoryService categoryService;
     @Autowired
     Environment environment;
 
     static final Logger logger =
-            LoggerFactory.getLogger(CompanyController.class.getName());
+            LoggerFactory.getLogger(CategoryController.class.getName());
 
-    @RequestMapping("/category1")
+    @RequestMapping("/category")
     public ModelAndView main()  {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Object obj=auth.getDetails();
+        Object obj1=auth.getPrincipal();
         ModelAndView model = new ModelAndView();
-        String pageName = "category1";
+        String pageName = "category";
         model.setViewName(pageName);
         return model;
 
     }
 
-    @RequestMapping(value = "category1/categoryList", method = RequestMethod.GET)
+    @RequestMapping(value = "category/categoryList", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<ProductCategory> loadProductCategoryList() {
+    List<Category> loadCategoryList() {
 
-        List<ProductCategory> productCategoryList = new ArrayList();
+        List<Category> categoryList = new ArrayList();
         logger.info("Loading all category info: >> ");
-        productCategoryList = productCategoryService.findAll();
-        logger.info("Loading all category info: << total " + productCategoryList.size());
-        return productCategoryList;
+        categoryList = categoryService.findAll();
+        logger.info("Loading all category info: << total " + categoryList.size());
+        return categoryList;
     }
 
 
-    @RequestMapping(value = "category1/save", method = RequestMethod.POST, consumes = "application/json", headers = "content-type=application/x-www-form-urlencoded")
+    @RequestMapping(value = "category/save", method = RequestMethod.POST, consumes = "application/json", headers = "content-type=application/x-www-form-urlencoded")
     public
     @ResponseBody
-    Map saveCompany(@RequestBody Map<String, String> productCategoryInfo) throws Exception {
+    Map saveCategory(@RequestBody Map<String, Object> categoryInfo) throws Exception {
         Map<String, Object> objList = new HashMap<>();
         String successMsg = "";
         String validationError = "";
         logger.info("creating new category: >>");
-        objList = productCategoryService.save(productCategoryInfo.get("name"), productCategoryInfo.get("description"));
+        objList = categoryService.save(categoryInfo);
         validationError = (String) objList.get("validationError");
         if (validationError.length() == 0) {
             objList.put("successMsg", environment.getProperty("category.save.success.msg"));
@@ -73,15 +79,15 @@ public class ProductCategoryController {
     }
 
 
-    @RequestMapping(value = "category1/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "category/delete", method = RequestMethod.POST)
     public
     @ResponseBody
-    Map deleteCompany(@RequestBody Map<String, String> productCategoryInfo) throws ParseException {
+    Map deleteCategory(@RequestBody String categoryId) throws ParseException {
         HashMap serverResponse = new HashMap();
         String successMsg = "";
         String validationError = "";
         logger.info("Delete category:  >> ");
-        validationError = productCategoryService.delete(Long.parseLong(productCategoryInfo.get("id")));
+        validationError = categoryService.delete(Long.parseLong(categoryId));
         if (validationError.length() == 0) successMsg = environment.getProperty("category.delete.success.msg");
         logger.info("Delete category:  << " + successMsg + validationError);
         serverResponse.put("successMsg", successMsg);
@@ -90,15 +96,15 @@ public class ProductCategoryController {
     }
 
 
-    @RequestMapping(value = "category1/update", method = RequestMethod.POST)
+    @RequestMapping(value = "category/update", method = RequestMethod.POST)
     public
     @ResponseBody
-    Map updateCompany(@RequestBody Map<String, String> productCategoryObj) throws ParseException {
+    Map updateCategory(@RequestBody Map<String, Object> categoryObj) throws ParseException {
         Map<String, Object> objList = new HashMap<>();
         String successMsg = "";
         String validationError = "";
         logger.info("Updating category: >>");
-        objList = productCategoryService.update(productCategoryObj);
+        objList = categoryService.update(categoryObj);
         validationError = (String) objList.get("validationError");
         if (validationError.length() == 0) {
             objList.put("successMsg", environment.getProperty("category.update.success.msg"));
@@ -107,6 +113,4 @@ public class ProductCategoryController {
         logger.info("Updating category:  << " + successMsg + validationError);
         return objList;
     }
-
-
 }

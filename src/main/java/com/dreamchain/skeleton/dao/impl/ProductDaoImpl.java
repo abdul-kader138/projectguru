@@ -45,14 +45,21 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public Product findByProductName(String productName, long companyId,long departmentId) {
+    public List<Product> findByCompanyName(long companyId) {
+        DetachedCriteria dcr= DetachedCriteria.forClass(Product.class);
+        Criterion cr = Restrictions.eq("companyId", companyId);
+        dcr.add(cr);
+        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
+        return createProductList(lst);
+    }
+
+    @Override
+    public Product findByProductName(String productName, long companyId) {
         DetachedCriteria dcr= DetachedCriteria.forClass(Product.class);
         Criterion cr = Restrictions.eq("name", productName.trim()).ignoreCase();
         Criterion cr1 = Restrictions.eq("companyId", companyId);
-        Criterion cr2 = Restrictions.eq("departmentId", departmentId);
         dcr.add(cr);
         dcr.add(cr1);
-        dcr.add(cr2);
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         if(lst.size()==0)return new Product();
         return (Product)lst.get(0);
@@ -69,18 +76,24 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public Product findByNewName(String CurrentName, String newName, Long companyId,Long departmentId) {
+    public Product findByNewName(String CurrentName, String newName, Long companyId) {
         DetachedCriteria dcr= DetachedCriteria.forClass(Product.class);
         Criterion cr = Restrictions.eq("name", newName.trim()).ignoreCase();
         Criterion cr1 = Restrictions.ne("name", CurrentName.trim()).ignoreCase();
         Criterion cr2 = Restrictions.eq("companyId", companyId);
-        Criterion cr3 = Restrictions.eq("departmentId", departmentId);
         dcr.add(cr);
         dcr.add(cr1);
         dcr.add(cr2);
-        dcr.add(cr3);
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         if(lst.size()==0)return new Product();
         return (Product)lst.get(0);
+    }
+
+    private List<Product> createProductList(List<Object> departmentList){
+        List<Product> list = new ArrayList<>();
+        for(final Object o : departmentList) {
+            list.add((Product)o);
+        }
+        return list;
     }
 }

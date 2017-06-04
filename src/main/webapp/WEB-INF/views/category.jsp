@@ -8,13 +8,20 @@
         <div id="viewTableData"></div>
         <div class="row clearfix">
             <div class="col-xs-10 col-xs-offset-1 card">
+                <br/>
+
+                <div><h4>Product List</h4></div>
+                <hr/>
                 <br/><br/>
                 <table id="categoryTable" class="display nowrap" cellspacing="0" width="100%">
                     <thead>
                     <tr>
-                        <th style="width: 15px">id</th>
-                        <th style="width: 200px">Name</th>
-                        <th>Description</th>
+                        <th width="15px">id</th>
+                        <th width="100px">Category Name</th>
+                        <th width="200px">Description</th>
+                        <th width="200px">Company</th>
+                        <th width="200px">Department</th>
+                        <th width="200px">Product</th>
                     </tr>
                     </thead>
                 </table>
@@ -51,7 +58,6 @@
 
         <br/><br/><br/>
 
-
         <%--start of save/update modal--%>
 
 
@@ -68,13 +74,50 @@
                                 <!-- Form Name -->
                                 <legend><strong>Category Setting</strong></legend>
 
+                                <!-- select Box for Company-->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="listOfCompany">Company Name</label>
+
+                                    <div class="col-md-4">
+                                        <select id="listOfCompany" class="form-control"
+                                                style="border-color:#808080; border-width:1px; border-style:solid;"></select>
+                                        <label id="companyNameValidation" style="color:red; font-size: 11px;"
+                                               class="form-control"></label>
+                                    </div>
+                                </div>
+
+                                <!-- select Box for Department-->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="listOfCompany">Department Name</label>
+
+                                    <div class="col-md-4">
+                                        <select id="listOfDepartment" class="form-control"
+                                                style="border-color:#808080; border-width:1px; border-style:solid;"></select>
+                                        <label id="departmentNameValidation" style="color:red; font-size: 11px;"
+                                               class="form-control"></label>
+                                    </div>
+                                </div>
+
+                                <!-- select Box for Department-->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="listOfCompany">Product Name</label>
+
+                                    <div class="col-md-4">
+                                        <select id="listOfProduct" class="form-control"
+                                                style="border-color:#808080; border-width:1px; border-style:solid;"></select>
+                                        <label id="productNameValidation" style="color:red; font-size: 11px;"
+                                               class="form-control"></label>
+                                    </div>
+                                </div>
+
                                 <!-- Text input-->
                                 <div class="form-group">
                                     <label class="col-md-4 control-label" for="name">Name :</label>
 
                                     <div class="col-md-6">
                                         <input type="hidden" class="form-control" id="id" name="id" value="0" required>
-                                        <input type="hidden" class="form-control" id="version" name="version" value="0" required>
+                                        <input type="hidden" class="form-control" id="version" name="version" value="0"
+                                               required>
                                         <input id="name" name="name" type="text" placeholder=""
                                                class="form-control input-md"
                                                style="border-color:#808080; border-width:1px; border-style:solid;"
@@ -84,6 +127,7 @@
 
                                     </div>
                                 </div>
+
 
                                 <!-- Textarea -->
                                 <div class="form-group">
@@ -97,6 +141,7 @@
                                                class="form-control"></label>
                                     </div>
                                 </div>
+
 
                                 <!-- Button -->
                                 <div class="form-group">
@@ -135,9 +180,21 @@
                 $("saveCategory").show();
                 $("#updateCategory").hide();
                 var companyGb;
+                getAllCompany();
 
 
-                /* populate category list when page load */
+                /*Based on company Selection load category data */
+
+                $("#listOfCompany").change(function () {
+                    var id = $(this).val();
+                    id = parseInt(id);
+                    var company = new Object();
+                    company.id = id;
+                    getSelectedDepartment(company.id,"Select Department")
+                    getSelectedProduct(company.id,"Select Product")
+                });
+
+                /* populate Category list when page load */
 
                 $('#categoryTable').DataTable({
                     "sAjaxSource": "http://localhost:8080/category/categoryList",
@@ -155,17 +212,14 @@
                             'sWidth': '15px',
                             'bSortable': false
                         },
-                        {"mData": "name", 'sWidth': '200px'},
-                        {"mData": "description"}
+                        {"mData": "name", 'sWidth': '100px'},
+                        {"mData": "description", 'sWidth': '200px'},
+                        {"mData": "company.name", 'sWidth': '200px'},
+                        {"mData": "department.name", 'sWidth': '200px'},
+                        {"mData": "product.name", 'sWidth': '200px'}
                     ],
                     'aaSorting': [[0, 'asc']],
-                    "columnDefs": [
-                        {
-//                            "targets": [0],
-//                            "visible": false,
-//                            "searchable": false
-                        }
-                    ],
+                    "columnDefs": [{}],
                     "cache": false,
                     "bPaginate": true,
                     "bLengthChange": true,
@@ -178,7 +232,7 @@
                 });
 
 
-                /* Save Category data using ajax */
+                /* Save category data using ajax */
 
                 $("#saveCategory").click(function (event) {
                     initFormValidationMsg();
@@ -187,8 +241,13 @@
                     var icn = 0;
                     var msg = "";
                     var category = new Object();
+                    category.id = $("#id").val();
+                    category.version = $("#version").val();
                     category.name = $("#name").val();
                     category.description = $("#description").val();
+                    category.companyId = $("#listOfCompany option:selected").val();
+                    category.departmentId = $("#listOfDepartment option:selected").val();
+                    category.productId = $("#listOfProduct option:selected").val();
                     if (formValidation()) callAjaxForAddOperation(part1, part2, icn, msg, category);
                 });
 
@@ -199,22 +258,13 @@
                     initializeCategoryForm();
                     initFormValidationMsg();
                     var newCategory = new Object();
-                    var newCategory = companyGb;
+                    newCategory = companyGb;
                     companyGb = null;
                     var data = messageResource.get('category.edit.validation.msg', 'configMessageForUI');
 
                     if (checkForMultipleRowSelect()) showServerSideMessage(data, "", 0, "Message");
                     else if (newCategory == null)showServerSideMessage(data, "", 0, "Message");
-                    else {
-                        document.getElementById('categoryForm').style.display = "block";
-                        $("#updateCategory").show();
-                        $("#saveCategory").hide();
-                        $("#id").val(newCategory.id);
-                        $("#name").val(newCategory.name);
-                        $("#version").val(newCategory.version);
-                        $("#description").val(newCategory.description);
-                        window.location.href = "#categoryForm";
-                    }
+                    else setDataToCategoryForm(newCategory);
                 });
 
                 var table = $('#categoryTable').DataTable();
@@ -224,17 +274,20 @@
                     var part2 = "";
                     var icn = 0;
                     var msg = "Message";
-                    var category = new Object();
-                    category.id = $("#id").val();
-                    category.version = $("#version").val();
-                    category.name = $("#name").val();
-                    category.description = $("#description").val();
-                    if (formValidation()) callAjaxForEditOperation(part1, part2, icn, msg, category);
+                    var newCategory = new Object();
+                    newCategory.id = $("#id").val();
+                    newCategory.version = $("#version").val();
+                    newCategory.name = $("#name").val();
+                    newCategory.description = $("#description").val();
+                    newCategory.companyId = $("#listOfCompany option:selected").val();
+                    newCategory.departmentId = $("#listOfDepartment option:selected").val();
+                    newCategory.productId = $("#listOfProduct option:selected").val();
+                    if (formValidation()) callAjaxForEditOperation(part1, part2, icn, msg, newCategory);
 
                 });
 
 
-                /* Delete category data using ajax */
+                /* Delete Category data using ajax */
 
                 $("#deleteCategory").click(function (event) {
                     document.getElementById('categoryForm').style.display = "none";
@@ -250,7 +303,7 @@
                     var data = messageResource.get('category.delete.validation.msg', 'configMessageForUI');
 
                     if (checkForMultipleRowSelect()) showServerSideMessage(data, "", 0, "Message");
-                    else if (newCategory == null) showServerSideMessage(data, "", 0, "Message");
+                    else if (newCategory == null)showServerSideMessage(data, "", 0, "Message");
                     else {
                         $.dialogbox({
                             type: 'msg',
@@ -321,7 +374,7 @@
                         },
                         'type': 'POST',
                         'url': messageResource.get('category.delete.url', 'configMessageForUI'),
-                        'data': JSON.stringify(newCategory),
+                        'data': JSON.stringify(newCategory.id),
                         'dataType': 'json',
                         'success': function (d) {
                             if (d.successMsg) {
@@ -340,6 +393,7 @@
                             }
                         },
                         'error': function (error) {
+                            uncheckedAllCheckBox();
                             icn = 0;
                             msg = '<strong style="color: red">Error</strong>';
                             showServerSideMessage(part1, getErrorMessage(error), icn, msg);
@@ -350,7 +404,7 @@
 
                 /*  Ajax call for edit operation */
 
-                function callAjaxForEditOperation(part1, part2, icn, msg, category, obj) {
+                function callAjaxForEditOperation(part1, part2, icn, msg, category) {
                     $.ajax({
                         headers: {
                             'Accept': 'application/json',
@@ -384,10 +438,10 @@
                         'error': function (error) {
                             icn = 0;
                             msg = '<strong style="color: red">Error</strong>';
+                            uncheckedAllCheckBox();
                             showServerSideMessage(part1, getErrorMessage(error), icn, msg);
                         }
                     });
-                    company = null;
 
                 }
 
@@ -410,10 +464,10 @@
                                 msg = "";
                                 part1 = d.successMsg;
                                 initializeCategoryForm();
-                                document.getElementById('categoryForm').style.display = "none";
-                                setNewDataTableValue(d.productCategory, table);
+                                setNewDataTableValue(d.product, table);
                                 window.location.href = "#viewTableData";
                                 showServerSideMessage(part1, part2, icn, msg);
+                                document.getElementById('categoryForm').style.display = "none";
                             }
                             if (d.validationError) {
                                 icn = 0;
@@ -439,6 +493,9 @@
                     $("#version").val("0");
                     $("#name").val("");
                     $("#description").val("");
+                    $('#defaultOpt').val('0').prop('selected', true);
+                    $('#defaultOptDepartment').val('0').prop('selected', true);
+                    $('#defaultOptProduct').val('0').prop('selected', true);
                 }
 
 
@@ -448,14 +505,31 @@
                     var isValid = true;
                     var name = $("#name").val();
                     var description = $("#description").val();
+                    var companyId = $("#listOfCompany option:selected").val();
+                    var departmentId = $("#listOfDepartment option:selected").val();
+                    var productId = $("#listOfProduct option:selected").val();
                     if (name == null || name.trim().length == 0) {
                         $("#nameValidation").text("Name is required");
                         isValid = false;
                     }
-                    if ((description == null) || (description.trim().length) == 0) {
+                    if (description == null || description.trim().length == 0) {
                         $("#descriptionValidation").text("Description is required");
                         isValid = false;
                     }
+                    if ((companyId == null) || (companyId == "0")) {
+                        $("#companyNameValidation").text("Company name is required");
+                        isValid = false;
+                    }
+
+                    if ((departmentId == null) || (departmentId == "0")) {
+                        $("#departmentNameValidation").text("Department name is required");
+                        isValid = false;
+                    }
+                    if ((productId == null) || (productId == "0")) {
+                        $("#departmentNameValidation").text("Product name is required");
+                        isValid = false;
+                    }
+
                     return isValid;
                 }
 
@@ -465,25 +539,28 @@
                 function initFormValidationMsg() {
                     $("#nameValidation").text("");
                     $("#descriptionValidation").text("");
+                    $("#companyNameValidation").text("");
+                    $("#departmentNameValidation").text("");
+                    $("#productNameValidation").text("");
 
                 }
 
 
-                /* move to add new category div*/
+                /* move to add new Category div*/
 
                 $('#moveToAdd').on('click', function () {
                     document.getElementById('categoryForm').style.display = "block";
                     companyGb = null;
                     $("#updateCategory").hide();
                     $("#saveCategory").show();
-                    uncheckedAllCheckBox();
                     initializeCategoryForm();
                     initFormValidationMsg();
+                    uncheckedAllCheckBox();
                     window.location.href = "#categoryForm";
                 });
 
 
-                /* Set new created category value to DataTable*/
+                /* Set new created Category value to DataTable*/
 
                 function setNewDataTableValue(category, table) {
                     table.row.add({
@@ -491,14 +568,115 @@
                         "name": category.name,
                         "description": category.description,
                         "version": category.version,
-                        "createdBy": category.createdBy,
-                        "createdOn": category.createdOn,
-                        "updatedBy": category.updatedBy,
-                        "updatedOn": category.updatedOn
+                        "company": category.company,
+                        "department": category.department,
+                        "product": category.product
                     }).draw();
 
                 };
 
+
+
+
+                /* Load Department data to select box data using ajax */
+
+                function getSelectedDepartment(companyId, obj) {
+                    $('#listOfDepartment').empty();
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        'type': 'POST',
+                        url: 'http://localhost:8080/department/departmentListByCompany',
+                        'data': JSON.stringify(companyId),
+                        'dataType': 'json',
+                        success: function (data) {
+                            var collaboration;
+                            collaboration += '<option id="defaultOptDepartment" value="0">Select Department</option>';
+                            $.each(data, function (i, d) {
+                                collaboration += "<option value=" + d.id + ">" + d.name + "</option>";
+                            });
+
+                            $('#listOfDepartment').append(collaboration);
+                            console.log("testing....");
+                            $('#listOfDepartment option:contains("' + obj + '")').prop('selected', 'selected');
+                        },
+                        error: function (e) {
+                        }
+                    });
+                }
+
+
+                /* Load Product data to select box data using ajax */
+
+                function getSelectedProduct(companyId, obj) {
+                    $('#listOfProduct').empty();
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        'type': 'POST',
+                        url: 'http://localhost:8080/product/productListByCompany',
+                        'data': JSON.stringify(companyId),
+                        'dataType': 'json',
+                        success: function (data) {
+                            var collaboration;
+                            collaboration += '<option id="defaultOptProduct" value="0">Select Product</option>';
+                            $.each(data, function (i, d) {
+                                collaboration += "<option value=" + d.id + ">" + d.name + "</option>";
+                            });
+
+                            $('#listOfProduct').append(collaboration);
+                            console.log("testing....");
+                            $('#listOfProduct option:contains("' + obj + '")').prop('selected', 'selected');
+                        },
+                        error: function (e) {
+                        }
+                    });
+                }
+
+
+                /* set selected row data to Category form for edit */
+
+                function setDataToCategoryForm(newCategory) {
+                    document.getElementById('categoryForm').style.display = "block";
+                    $("#updateCategory").show();
+                    $("#saveCategory").hide();
+                    $("#id").val(newCategory.id);
+                    $("#name").val(newCategory.name);
+                    $("#description").val(newCategory.description);
+                    $("#version").val(newCategory.version);
+                    $('#listOfCompany option:contains("' + newCategory.company.name + '")').prop('selected', 'selected');
+                    var company = new Object();
+                    var id = newCategory.company.id;
+                    id = parseInt(id);
+                    getSelectedDepartment(id, newCategory.department.name);
+                    getSelectedProduct(id, newCategory.product.name);
+                    window.location.href = "#categoryForm";
+                }
+
+                /* Load Company data to select box data using ajax */
+
+                function getAllCompany() {
+                    $('#listOfCompany').empty();
+                    $.ajax({
+                        type: "GET",
+                        url: 'http://localhost:8080/company/companyList',
+                        success: function (data) {
+                            var collaboration;
+                            collaboration += '<option id="defaultOpt" value="0">Select Company</option>';
+                            $.each(data, function (i, d) {
+                                collaboration += "<option value=" + d.id + ">" + d.name + "</option>";
+                            });
+
+                            $('#listOfCompany').append(collaboration);
+                        },
+                        error: function (e) {
+                        }
+                    });
+                }
 
             });
             //

@@ -11,7 +11,8 @@ public interface ProductDao {
     void update(Product product);
     void delete(Product product);
     List<Product> findAll();
-    Product findByProductName(String productName, long companyId,long departmentId);
+    List<Product> findByCompanyName(long companyId);
+    Product findByProductName(String productName, long companyId);
     List<Object> countOfProduct(long productID);
-    Product findByNewName(String CurrentName, String newName, Long companyId,Long DepartmentId);
+    Product findByNewName(String CurrentName, String newName, Long companyId);
 }

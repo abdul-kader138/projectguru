@@ -33,7 +33,7 @@ public class ProductController {
     Environment environment;
 
     static final Logger logger =
-            LoggerFactory.getLogger(DepartmentController.class.getName());
+            LoggerFactory.getLogger(ProductController.class.getName());
 
     @RequestMapping("/product")
     public ModelAndView main()  {
@@ -42,7 +42,7 @@ public class ProductController {
         Object obj=auth.getDetails();
         Object obj1=auth.getPrincipal();
         ModelAndView model = new ModelAndView();
-        String pageName = "product";
+        String pageName = "product_test";
         model.setViewName(pageName);
         return model;
 
@@ -53,11 +53,22 @@ public class ProductController {
     @ResponseBody
     List<Product> loadProductList() {
 
-        List<Product> departmentList = new ArrayList();
+        List<Product> productList = new ArrayList();
         logger.info("Loading all product info: >> ");
-        departmentList = productService.findAll();
-        logger.info("Loading all product info: << total " + departmentList.size());
-        return departmentList;
+        productList = productService.findAll();
+        logger.info("Loading all product info: << total " + productList.size());
+        return productList;
+    }
+
+    @RequestMapping(value = "product/productListByCompany", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    List<Product> loadDepartmentListByCompanyId(@RequestBody String companyId) throws Exception{
+        List<Product> productList = new ArrayList();
+        logger.info("Loading all product info: >> ");
+        productList = productService.findByCompanyName(Long.parseLong(companyId));
+        logger.info("Loading all product info: << total " + productList.size());
+        return productList;
     }
 
 

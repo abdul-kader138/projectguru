@@ -13,4 +13,5 @@ public interface ProductService {
     Map<String,Object> update(Map<String, Object> productObj) throws ParseException;
     String delete(Long departmentId);
     List<Product> findAll();
+    List<Product> findByCompanyName(long companyId);
 }

@@ -55,7 +55,7 @@ public class ProductServiceImpl implements ProductService {
         Product existingProduct=new Product();
         Product product=createObjForSave(productObj);
         validationMsg = checkInput(product);
-        if ("".equals(validationMsg)) existingProduct = productDao.findByProductName(product.getName(), product.getCompanyId(), product.getDepartmentId());
+        if ("".equals(validationMsg)) existingProduct = productDao.findByProductName(product.getName(), product.getCompanyId());
         if (existingProduct.getName() != null && validationMsg == "") validationMsg = PRODUCT_EXISTS;
         if ("".equals(validationMsg)) {
             SimpleDateFormat dateFormat = new SimpleDateFormat();
@@ -82,10 +82,10 @@ public class ProductServiceImpl implements ProductService {
         if ("".equals(validationMsg)) existingProduct = productDao.get(product.getId());
         if (existingProduct.getName() == null && validationMsg == "") validationMsg = INVALID_PRODUCT;
         if (product.getVersion() != existingProduct.getVersion() && validationMsg == "") validationMsg = BACK_DATED_DATA;
-        if ("".equals(validationMsg)) newObj = productDao.findByNewName(existingProduct.getName(),product.getName(),product.getCompanyId(),product.getDepartmentId());
+        if ("".equals(validationMsg)) newObj = productDao.findByNewName(existingProduct.getName(),product.getName(),product.getCompanyId());
         if (newObj.getName() != null && "".equals(validationMsg)) validationMsg = PRODUCT_EXISTS;
         if ("".equals(validationMsg)) {
-            newObj=setUpdateDepartmentValue(product, existingProduct);
+            newObj=setUpdateProductValue(product, existingProduct);
             productDao.update(newObj);
         }
         obj.put("product",newObj);
@@ -115,21 +115,23 @@ public class ProductServiceImpl implements ProductService {
         return productDao.findAll();
     }
 
+    @Override
+    public List<Product> findByCompanyName(long companyId) {
+        return productDao.findByCompanyName(companyId);
+    }
+
 
     // create Product object for saving
 
     private Product createObjForSave(Map<String, Object> productObj){
         Product product = new Product();
         Company company=companyDao.get(Long.parseLong((String) productObj.get("companyId")));
-        Department department=departmentDao.get(Long.parseLong((String)productObj.get("departmentId")));
         product.setId(Long.parseLong((String) productObj.get("id")));
         product.setVersion(Long.parseLong((String) productObj.get("version")));
         product.setCompanyId(Long.parseLong((String)productObj.get("companyId")));
-        product.setDepartmentId(Long.parseLong((String)productObj.get("departmentId")));
         product.setName(((String)productObj.get("name")).trim());
         product.setDescription(((String)productObj.get("description")).trim());
         product.setCompany(company);
-        product.setDepartment(department);
         return product;
 
     }
@@ -146,7 +148,7 @@ public class ProductServiceImpl implements ProductService {
         return msg;
     }
 
-    private Product setUpdateDepartmentValue(Product objFromUI,Product existingProduct) throws ParseException {
+    private Product setUpdateProductValue(Product objFromUI,Product existingProduct) throws ParseException {
         Product productObj = new Product();
         Company company = companyDao.get(objFromUI.getCompanyId());
         productObj.setId(objFromUI.getId());
@@ -155,8 +157,6 @@ public class ProductServiceImpl implements ProductService {
         productObj.setDescription(objFromUI.getDescription().trim());
         productObj.setCompanyId(objFromUI.getCompanyId());
         productObj.setCompany(company);
-        productObj.setDepartmentId(objFromUI.getDepartmentId());
-        productObj.setDepartment(objFromUI.getDepartment());
         productObj.setCreatedBy(existingProduct.getCreatedBy());
         productObj.setCreatedOn(existingProduct.getCreatedOn());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
