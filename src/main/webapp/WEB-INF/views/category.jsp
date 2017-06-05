@@ -10,7 +10,7 @@
             <div class="col-xs-10 col-xs-offset-1 card">
                 <br/>
 
-                <div><h4>Product List</h4></div>
+                <div><h4>Category List</h4></div>
                 <hr/>
                 <br/><br/>
                 <table id="categoryTable" class="display nowrap" cellspacing="0" width="100%">
@@ -19,9 +19,9 @@
                         <th width="15px">id</th>
                         <th width="100px">Category Name</th>
                         <th width="200px">Description</th>
-                        <th width="200px">Company</th>
-                        <th width="200px">Department</th>
-                        <th width="200px">Product</th>
+                        <th>Company</th>
+                        <th width="100px">Department</th>
+                        <th>Product</th>
                     </tr>
                     </thead>
                 </table>
@@ -212,10 +212,10 @@
                             'sWidth': '15px',
                             'bSortable': false
                         },
-                        {"mData": "name", 'sWidth': '100px'},
-                        {"mData": "description", 'sWidth': '200px'},
+                        {"mData": "name", 'sWidth': '150px'},
+                        {"mData": "description", 'sWidth': '250px'},
                         {"mData": "company.name", 'sWidth': '200px'},
-                        {"mData": "department.name", 'sWidth': '200px'},
+                        {"mData": "department.name", 'sWidth': '100px'},
                         {"mData": "product.name", 'sWidth': '200px'}
                     ],
                     'aaSorting': [[0, 'asc']],
@@ -464,7 +464,7 @@
                                 msg = "";
                                 part1 = d.successMsg;
                                 initializeCategoryForm();
-                                setNewDataTableValue(d.product, table);
+                                setNewDataTableValue(d.category, table);
                                 window.location.href = "#viewTableData";
                                 showServerSideMessage(part1, part2, icn, msg);
                                 document.getElementById('categoryForm').style.display = "none";
@@ -526,7 +526,7 @@
                         isValid = false;
                     }
                     if ((productId == null) || (productId == "0")) {
-                        $("#departmentNameValidation").text("Product name is required");
+                        $("#productNameValidation").text("Product name is required");
                         isValid = false;
                     }
 
@@ -563,6 +563,7 @@
                 /* Set new created Category value to DataTable*/
 
                 function setNewDataTableValue(category, table) {
+                    console.log(category);
                     table.row.add({
                         "id": category.id,
                         "name": category.name,
