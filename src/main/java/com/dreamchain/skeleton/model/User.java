@@ -95,6 +95,7 @@ public class User extends org.springframework.security.core.userdetails.User imp
 	@CollectionTable(name = "user_rights")
 	private Set<String> rights = new HashSet<>();
 
+
 	public Set<String> getRights() {
 		return rights;
 	}

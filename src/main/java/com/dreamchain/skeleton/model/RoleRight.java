@@ -14,7 +14,7 @@ import java.util.Set;
 
 
 @Entity
-public class Role implements Serializable
+public class RoleRight implements Serializable
 {
 
 
@@ -28,14 +28,11 @@ public class Role implements Serializable
     private long version;
 
 
-    @NotEmpty
-    @Length(max = 60)
-    @Column(unique = true)
-    private String name;
+    @NotNull
+    private long roleId;
 
-    @NotEmpty
-    @Length(max = 150)
-    private String description;
+    @NotNull
+    private Roles roles;
 
 
     @NotNull
@@ -59,7 +56,7 @@ public class Role implements Serializable
     private Date updatedOn;
 
 
-    public Role() {
+    public RoleRight() {
     }
 
     public Set<String> getRights() {
@@ -106,24 +103,24 @@ public class Role implements Serializable
         this.updatedBy = updatedBy;
     }
 
-    public String getDescription() {
-        return description;
+    public Roles getRoles() {
+        return roles;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setRoles(Roles roles) {
+        this.roles = roles;
     }
 
     public long getVersion() {
         return version;
+    }
+
+    public long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(long roleId) {
+        this.roleId = roleId;
     }
 
     public void setVersion(long version) {

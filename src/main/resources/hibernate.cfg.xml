@@ -11,9 +11,9 @@
 		<mapping class="com.dreamchain.skeleton.model.Project"></mapping>
 		<mapping class="com.dreamchain.skeleton.model.Department"></mapping>
 		<mapping class="com.dreamchain.skeleton.model.Designation"></mapping>
-		<mapping class="com.dreamchain.skeleton.model.ProductCategory"></mapping>
+		<mapping class="com.dreamchain.skeleton.model.Roles"></mapping>
 		<mapping class="com.dreamchain.skeleton.model.ProductSubCategory"></mapping>
-		<mapping class="com.dreamchain.skeleton.model.Role"></mapping>
+		<mapping class="com.dreamchain.skeleton.model.RoleRight"></mapping>
 		<mapping class="com.dreamchain.skeleton.model.Product"></mapping>
 		<mapping class="com.dreamchain.skeleton.model.Category"></mapping>
 	</session-factory>

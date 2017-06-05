@@ -1,9 +1,7 @@
 package com.dreamchain.skeleton.web;
 
-import com.dreamchain.skeleton.model.ProductSubCategory;
-import com.dreamchain.skeleton.model.Role;
-import com.dreamchain.skeleton.service.ProductSubCategoryService;
-import com.dreamchain.skeleton.service.RoleService;
+import com.dreamchain.skeleton.model.Roles;
+import com.dreamchain.skeleton.service.RolesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,91 +22,91 @@ import java.util.Map;
 
 @Controller
 @PropertySource("classpath:config.properties")
-public class RoleController {
+public class RolesController {
 
     @Autowired
-    RoleService roleService;
+    RolesService rolesService;
     @Autowired
     Environment environment;
 
     static final Logger logger =
-            LoggerFactory.getLogger(RoleController.class.getName());
+            LoggerFactory.getLogger(CompanyController.class.getName());
 
-    @RequestMapping("/role")
-    public ModelAndView main() {
+    @RequestMapping("/roles")
+    public ModelAndView main()  {
         ModelAndView model = new ModelAndView();
-        String pageName = "role";
+        String pageName = "roles";
         model.setViewName(pageName);
         return model;
 
     }
 
-    @RequestMapping(value = "role/roleList", method = RequestMethod.GET)
+    @RequestMapping(value = "roles/rolesList", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<Role> loadRoleList() {
+    List<Roles> loadProductCategoryList() {
 
-        List<Role> roleList = new ArrayList();
-        logger.info("Loading all subcategory info: >> ");
-        roleList = roleService.findAll();
-        logger.info("Loading all subcategory info: << total " + roleList.size());
-        return roleList;
+        List<Roles> rolesList = new ArrayList();
+        logger.info("Loading all roles info: >> ");
+        rolesList = rolesService.findAll();
+        logger.info("Loading all roles info: << total " + rolesList.size());
+        return rolesList;
     }
 
 
-    @RequestMapping(value = "role/save", method = RequestMethod.POST, consumes = "application/json", headers = "content-type=application/x-www-form-urlencoded")
+    @RequestMapping(value = "roles/save", method = RequestMethod.POST, consumes = "application/json", headers = "content-type=application/x-www-form-urlencoded")
     public
     @ResponseBody
-    Map saveProductSubCategory(@RequestBody Map<String, String> roleInfo) throws Exception {
+    Map saveCompany(@RequestBody Map<String, Object> rolesInfo) throws Exception {
         Map<String, Object> objList = new HashMap<>();
         String successMsg = "";
         String validationError = "";
-        logger.info("creating new role: >>");
-        objList = roleService.save(roleInfo);
+        logger.info("creating new roles: >>");
+        objList = rolesService.save(rolesInfo);
         validationError = (String) objList.get("validationError");
         if (validationError.length() == 0) {
             objList.put("successMsg", environment.getProperty("role.save.success.msg"));
             successMsg = environment.getProperty("role.save.success.msg");
         }
-        logger.info("creating new role: << " + successMsg + validationError);
+        logger.info("creating new roles: << " + successMsg + validationError);
         return objList;
-
     }
 
 
-    @RequestMapping(value = "role/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "roles/delete", method = RequestMethod.POST)
     public
     @ResponseBody
-    Map deleteCompany(@RequestBody Map<String, Object> RoleInfo) throws ParseException {
+    Map deleteCompany(@RequestBody String id) throws ParseException {
         HashMap serverResponse = new HashMap();
         String successMsg = "";
         String validationError = "";
-        logger.info("Delete role:  >> ");
-        Integer id=(Integer)RoleInfo.get("id");
-        validationError = roleService.delete(id.longValue());
+        logger.info("Delete roles:  >> ");
+        validationError = rolesService.delete(Long.parseLong(id));
         if (validationError.length() == 0) successMsg = environment.getProperty("role.delete.success.msg");
-        logger.info("Delete role:  << " + successMsg + validationError);
+        logger.info("Delete roles:  << " + successMsg + validationError);
         serverResponse.put("successMsg", successMsg);
         serverResponse.put("validationError", validationError);
         return serverResponse;
     }
 
 
-    @RequestMapping(value = "role/update", method = RequestMethod.POST)
+    @RequestMapping(value = "roles/update", method = RequestMethod.POST)
     public
     @ResponseBody
-    Map updateCompany(@RequestBody Map<String, String> roleObj) throws ParseException {
+    Map updateCompany(@RequestBody Map<String, Object> productCategoryObj) throws ParseException {
         Map<String, Object> objList = new HashMap<>();
         String successMsg = "";
         String validationError = "";
-        logger.info("Updating role: >>");
-        objList = roleService.update(roleObj);
+        logger.info("Updating roles: >>");
+        objList = rolesService.update(productCategoryObj);
         validationError = (String) objList.get("validationError");
         if (validationError.length() == 0) {
             objList.put("successMsg", environment.getProperty("role.update.success.msg"));
             successMsg = environment.getProperty("role.update.success.msg");
         }
-        logger.info("Updating role:  << " + successMsg + validationError);
+        logger.info("Updating roles:  << " + successMsg + validationError);
         return objList;
     }
+
+
 }

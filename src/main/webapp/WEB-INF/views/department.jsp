@@ -510,7 +510,7 @@
                 /* Load Company data to select box data using ajax */
 
                 function getAllCompany() {
-                    $('#getAllCompany').empty();
+                    $('#listOfCompany').empty();
                     $.ajax({
                         type: "GET",
                         url: 'http://localhost:8080/company/companyList',

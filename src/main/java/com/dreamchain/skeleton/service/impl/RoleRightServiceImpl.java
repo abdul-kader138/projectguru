@@ -1,9 +1,10 @@
 package com.dreamchain.skeleton.service.impl;
 
-import com.dreamchain.skeleton.dao.RoleDao;
-import com.dreamchain.skeleton.model.Role;
+import com.dreamchain.skeleton.dao.RoleRightDao;
+import com.dreamchain.skeleton.dao.RolesDao;
+import com.dreamchain.skeleton.model.RoleRight;
 import com.dreamchain.skeleton.model.User;
-import com.dreamchain.skeleton.service.RoleService;
+import com.dreamchain.skeleton.service.RoleRightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -21,10 +22,12 @@ import java.util.*;
 
 @Service
 @PropertySource("classpath:config.properties")
-public class RoleServiceImpl implements RoleService {
+public class RoleRightServiceImpl implements RoleRightService {
 
     @Autowired
-    RoleDao roleDao;
+    RoleRightDao roleRightDao;
+    @Autowired
+    RolesDao rolesDao;
     @Autowired
     Environment environment;
 
@@ -35,42 +38,39 @@ public class RoleServiceImpl implements RoleService {
     private static String BACK_DATED_DATA = "Role data is old.Please try again with updated data";
 
     @Transactional(readOnly = true)
-    public Role get(Long id) {
-        return roleDao.get(id);
+    public RoleRight get(Long id) {
+        return roleRightDao.get(id);
     }
 
     @Transactional
-    public Map<String, Object> save(Map<String, String> roleObj) throws Exception {
+    public Map<String, Object> save(Map<String, Object> roleObj) throws Exception {
         Map<String, Object> obj = new HashMap<>();
         String validationMsg = "";
-        Role newRole = new Role();
+        RoleRight newRoleRight = new RoleRight();
         validationMsg = checkInput(roleObj);
-        Role role = createRoleObj(roleObj);
-        Role existingRole = roleDao.findByRoleName(role.getName());
-        if (existingRole.getName() != null && validationMsg == "") validationMsg = ROLE_EXISTS;
+        RoleRight roleRight = createRoleObj(roleObj);
         if ("".equals(validationMsg)) {
-            long roleId = roleDao.save(role);
-            newRole = roleDao.get(roleId);
+            long roleId = roleRightDao.save(roleRight);
+            newRoleRight = roleRightDao.get(roleId);
         }
-        obj.put("role", newRole);
+        obj.put("role", newRoleRight);
         obj.put("validationError", validationMsg);
         return obj;
     }
 
     @Transactional
-    public Map<String, Object> update(Map<String, String> roleObj) throws ParseException {
+    public Map<String, Object> update(Map<String, Object> roleObj) throws ParseException {
         Map<String,Object> obj=new HashMap<>();
         String validationMsg = "";
-        Role newObj=new Role();
+        RoleRight newObj=new RoleRight();
         validationMsg = checkInput(roleObj);
-        Role role = createRoleObj(roleObj);
-        Role existingRole = roleDao.get(role.getId());
-        if (role.getId() == 0l && validationMsg == "") validationMsg = INVALID_INPUT;
-        if (existingRole.getName() == null && validationMsg == "") validationMsg = INVALID_ROLE;
-        if (role.getVersion() != existingRole.getVersion() && validationMsg == "") validationMsg = BACK_DATED_DATA;
+        RoleRight roleRight = createRoleObj(roleObj);
+        RoleRight existingRoleRight = roleRightDao.get(roleRight.getId());
+        if (roleRight.getId() == 0l && validationMsg == "") validationMsg = INVALID_INPUT;
+        if (roleRight.getVersion() != existingRoleRight.getVersion() && validationMsg == "") validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg)) {
-            newObj=setUpdateCompanyValue(role, existingRole);
-            roleDao.update(newObj);
+            newObj=setUpdateCompanyValue(roleRight, existingRoleRight);
+            roleRightDao.update(newObj);
         }
         obj.put("role",newObj);
         obj.put("validationError",validationMsg);
@@ -81,38 +81,33 @@ public class RoleServiceImpl implements RoleService {
     public String delete(Long roleId) {
         String validationMsg = "";
         if (roleId == 0l) validationMsg = INVALID_INPUT;
-        Role role = roleDao.get(roleId);
-        if (role == null && validationMsg == "") validationMsg = INVALID_ROLE;
+        RoleRight roleRight = roleRightDao.get(roleId);
+        if (roleRight == null && validationMsg == "") validationMsg = INVALID_ROLE;
         //@todo need implement after user implementation
 //        List<Object> obj=roleDao.countOfRole(roleId);
 //        if (obj.size() > 0 && validationMsg == "") validationMsg = ASSOCIATED_ROLE;
 
         if ("".equals(validationMsg)) {
-            roleDao.delete(role);
+            roleRightDao.delete(roleRight);
         }
         return validationMsg;
 
     }
 
     @Override
-    public List<Role> findAll() {
-        return roleDao.findAll();
+    public List<RoleRight> findAll() {
+        return roleRightDao.findAll();
     }
 
 
     // check for invalid data
-    private String checkInput(Map<String, String> roleObj) throws ParseException {
+    private String checkInput(Map<String, Object> roleObj) throws ParseException {
         String msg = "";
 
-        int num=isRightSelected(roleObj);
-        if (roleObj.get("name") == null || roleObj.get("description") == null ||
-                num < 0)
-            msg = INVALID_INPUT;
-
-        Role role =createRoleObj(roleObj);
+        RoleRight roleRight =createRoleObj(roleObj);
         //server side validation check
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-        Set<ConstraintViolation<Role>> constraintViolations = validator.validate(role);
+        Set<ConstraintViolation<RoleRight>> constraintViolations = validator.validate(roleRight);
         if (constraintViolations.size() > 0 && msg == "") msg = INVALID_INPUT;
 
         return msg;
@@ -128,49 +123,49 @@ public class RoleServiceImpl implements RoleService {
         return counter;
     }
 
-    private Role createRoleObj(Map<String, String> roleObj) throws ParseException {
-        Role role = new Role();
+    private RoleRight createRoleObj(Map<String, Object> roleObj) throws ParseException {
+        RoleRight roleRight = new RoleRight();
         Set<String> rights = new HashSet<>();
-        role.setId(Long.parseLong(roleObj.get("id")));
-        role.setVersion(Long.parseLong(roleObj.get("version")));
-        role.setName(roleObj.get("name"));
-        role.setDescription(roleObj.get("description"));
-        if (roleObj.get("VIEW_PRIVILEGE") != ""){
-            rights.add(roleObj.get("VIEW_PRIVILEGE"));
+        roleRight.setId(Long.parseLong((String) roleObj.get("id")));
+        roleRight.setVersion(Long.parseLong((String) roleObj.get("version")));
+        roleRight.setRoleId(Long.parseLong((String) roleObj.get("roleId")));
+        roleRight.setRoles(rolesDao.get(Long.parseLong((String) roleObj.get("version"))));
+        if ((String)roleObj.get("VIEW_PRIVILEGE") != ""){
+            rights.add((String)roleObj.get("VIEW_PRIVILEGE"));
         }
 
-        if (roleObj.get("WRITE_PRIVILEGE") != ""){
-            rights.add(roleObj.get("WRITE_PRIVILEGE"));
+        if ((String)roleObj.get("WRITE_PRIVILEGE") != ""){
+            rights.add((String)roleObj.get("WRITE_PRIVILEGE"));
         }
 
-        if (roleObj.get("EDIT_PRIVILEGE") != ""){
-            rights.add(roleObj.get("EDIT_PRIVILEGE"));
+        if ((String)roleObj.get("EDIT_PRIVILEGE") != ""){
+            rights.add((String)roleObj.get("EDIT_PRIVILEGE"));
         }
 
-        if (roleObj.get("DELETE_PRIVILEGE") != "")
-            rights.add(roleObj.get("DELETE_PRIVILEGE"));
+        if ((String)roleObj.get("DELETE_PRIVILEGE") != "")
+            rights.add((String)roleObj.get("DELETE_PRIVILEGE"));
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        role.setCreatedBy(getUserId());
-        role.setCreatedOn(date);
-        role.setRights(rights);
-        return role;
+        roleRight.setCreatedBy(getUserId());
+        roleRight.setCreatedOn(date);
+        roleRight.setRights(rights);
+        return roleRight;
     }
 
-    private Role setUpdateCompanyValue(Role objFromUI,Role existingRole) throws ParseException {
-        Role roleObj = new Role();
-        roleObj.setId(objFromUI.getId());
-        roleObj.setVersion(objFromUI.getVersion());
-        roleObj.setName(objFromUI.getName());
-        roleObj.setDescription(objFromUI.getDescription());
-        roleObj.setRights(objFromUI.getRights());
-        roleObj.setCreatedBy(existingRole.getCreatedBy());
-        roleObj.setCreatedOn(existingRole.getCreatedOn());
+    private RoleRight setUpdateCompanyValue(RoleRight objFromUI,RoleRight existingRoleRight) throws ParseException {
+        RoleRight roleRightObj = new RoleRight();
+        roleRightObj.setId(objFromUI.getId());
+        roleRightObj.setVersion(objFromUI.getVersion());
+        roleRightObj.setRoleId(objFromUI.getRoleId());
+        roleRightObj.setRights(objFromUI.getRights());
+        roleRightObj.setRoles(objFromUI.getRoles());
+        roleRightObj.setCreatedBy(existingRoleRight.getCreatedBy());
+        roleRightObj.setCreatedOn(existingRoleRight.getCreatedOn());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        roleObj.setUpdatedBy(getUserId());
-        roleObj.setUpdatedOn(date);
-        return roleObj;
+        roleRightObj.setUpdatedBy(getUserId());
+        roleRightObj.setUpdatedOn(date);
+        return roleRightObj;
     }
 
 

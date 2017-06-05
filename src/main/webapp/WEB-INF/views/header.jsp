@@ -397,7 +397,10 @@
                                 </a>
                                 <ul class="ml-menu">
                                     <li>
-                                       <a href="role">Role</a>
+                                        <a href="roles">Role->New</a>
+                                    </li>
+                                    <li>
+                                       <a href="role_right">Role</a>
                                     </li>
                                     <li>
                                         <a href="department">Department</a>

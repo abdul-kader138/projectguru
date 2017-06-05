@@ -5,19 +5,19 @@
 
     <%--start of table div--%>
 
-    <div id="viewTableData" >
-
-    </div>
+    <div id="viewTableData"></div>
     <div class="row clearfix">
       <div class="col-xs-10 col-xs-offset-1 card">
+        <br/>
+        <div><h4>Role List</h4></div>
+        <hr/>
         <br/><br/>
-        <table id="subCategoryTable" class="display nowrap" cellspacing="0" width="100%">
+        <table id="roleTable" class="display nowrap" cellspacing="0" width="100%">
           <thead>
           <tr>
-            <th style="width: 15px"></th>
-            <th style="width: 2000px">Name</th>
-            <th style="width: 3000px">Description</th>
-            <th>Category Name</th>
+            <th width="15px">id</th>
+            <th width="200px">Role Name</th>
+            <th width="200px">Description</th>
           </tr>
           </thead>
         </table>
@@ -28,18 +28,18 @@
         &nbsp;
         &nbsp;
 
-        <button type="button" class="btn bg-grey waves-war" id="editSubCategory" value="1" title="Edit"><img
+        <button type="button" class="btn bg-grey waves-war" id="editRole" value="1" title="Edit"><img
                 src="resources/images/edit.gif" width="16" height="16" border="0">&nbsp;Edit
         </button>
         &nbsp;
         &nbsp;
-        <button type="button" class="btn bg-grey waves-war" id="deleteSubCategory" value="1" title="Delete"><img
+        <button type="button" class="btn bg-grey waves-war" id="deleteRole" value="1" title="Delete"><img
                 src="resources/images/delete.gif" width="16" height="16" border="0">&nbsp;Delete
 
         </button>
         &nbsp;
         &nbsp;
-        <button type="button" class="btn bg-grey waves-war" id="refreshSubCategory" value="1" title="Delete"><img
+        <button type="button" class="btn bg-grey waves-war" id="refreshRole" value="1" title="Delete"><img
                 src="resources/images/refresh.png" width="16" height="16" border="0">&nbsp;Refresh
         </button>
         &nbsp;<br/><br/>
@@ -54,11 +54,10 @@
 
     <br/><br/><br/>
 
-
     <%--start of save/update modal--%>
 
 
-    <div class="row clearfix" id="subCategoryForm" style="display: none">
+    <div class="row clearfix" id="roleForm" style="display: none">
       <div class="col-xs-8 col-xs-offset-2">
         <div class="card">
           <div class="header" style="background-color:#a5a5a5">
@@ -68,8 +67,6 @@
             <form class="form-horizontal">
               <fieldset>
 
-                <!-- Form Name -->
-                <legend><strong>Sub-Category Setting</strong></legend>
 
                 <!-- Text input-->
                 <div class="form-group">
@@ -77,7 +74,8 @@
 
                   <div class="col-md-6">
                     <input type="hidden" class="form-control" id="id" name="id" value="0" required>
-                    <input type="hidden" class="form-control" id="version" name="version" value="0" required>
+                    <input type="hidden" class="form-control" id="version" name="version" value="0"
+                           required>
                     <input id="name" name="name" type="text" placeholder=""
                            class="form-control input-md"
                            style="border-color:#808080; border-width:1px; border-style:solid;"
@@ -87,41 +85,36 @@
 
                   </div>
                 </div>
+
+
+                <!-- Textarea -->
                 <div class="form-group">
                   <label class="col-md-4 control-label" for="description">Description :</label>
 
                   <div class="col-md-6">
                                         <textarea id="description" class="form-control input-md"
                                                   style="border-color:#808080; border-width:1px; border-style:solid;"
-                                                  name="address" rows="4" cols="16"></textarea>
+                                                  name="description" rows="6" cols="20"></textarea>
                     <label id="descriptionValidation" style="color:red; font-size: 11px;"
                            class="form-control"></label>
                   </div>
                 </div>
 
-                <div class="form-group">
-                  <label class="col-md-4 control-label" for="listOfCategory">Category Name</label>
 
-                  <div class="col-md-4">
-                    <select id="listOfCategory" class="form-control"
-                            style="border-color:#808080; border-width:1px; border-style:solid;"></select>
-                    <label id="categoryNameValidation" style="color:red; font-size: 11px;"
-                           class="form-control"></label>
-                  </div>
-                </div>
 
                 <!-- Button -->
                 <div class="form-group">
-                  <label class="col-md-4 control-label" for="saveSubCategory"></label>
+                  <label class="col-md-4 control-label" for="saveRole"></label>
 
                   <div class="col-md-4">
-                    <button id="saveSubCategory" name="saveSubCategory" class="btn btn-primary"
+                    <button id="saveRole" name="saveRole" class="btn btn-primary"
                             type="button">Save
                     </button>
-                    <button id="updateSubCategory" name="updateSubCategory" class="btn btn-primary"
+                    <button id="updateRole" name="updateRole" class="btn btn-primary"
                             type="button">Update
                     </button>
-                    <button id="resetSubCategory" name="resetSubCategory" class="btn bg-grey"
+                    <button style="position: static" id="resetRole" name="resetRole"
+                            class="btn bg-grey"
                             type="button">Cancel
                     </button>
                   </div>
@@ -139,20 +132,22 @@
 
     <script type="text/javascript">
       $(document).ready(function () {
+
         var loading = $.loading();
         initFormValidationMsg();
-        initializeSubCategoryForm();
-        $("saveSubCategory").show();
-        $("#updateSubCategory").hide();
+        initializeRoleForm();
+        $("saveRole").show();
+        $("#updateRole").hide();
         var companyGb;
 
 
-        /* Load subcategory data to select box data using ajax */
+        /* populate Role list when page load */
 
-        $('#subCategoryTable').DataTable({
-          "sAjaxSource": "http://localhost:8080/subcategory/subcategoryList",
+        $('#roleTable').DataTable({
+          "sAjaxSource": "http://localhost:8080/roles/rolesList",
+//                    "sAjaxSource": messageResource.get('company.list.load.url', 'configMessageForUI'),
           "sAjaxDataProp": "",
-          "order": [[1, "asc"]],
+          "order": [[0, "asc"]],
           'aoColumns': [
             {
               'sTitle': '',
@@ -164,18 +159,11 @@
               'sWidth': '15px',
               'bSortable': false
             },
-            {"mData": "name",'sWidth': '200px'},
-            {"mData": "description",'sWidth': '300px'},
-            {"mData": "roles.name"}
+            {"mData": "name", 'sWidth': '200px'},
+            {"mData": "description",'sWidth': '300px'}
           ],
           'aaSorting': [[0, 'asc']],
-          "columnDefs": [
-            {
-//                            "targets": [0],
-//                            "visible": false,
-//                            "searchable": false
-            }
-          ],
+          "columnDefs": [{}],
           "cache": false,
           "bPaginate": true,
           "bLengthChange": true,
@@ -188,115 +176,84 @@
         });
 
 
-        /* populate Company list when page load */
+        /* Save roles data using ajax */
 
-        function getAllCategory() {
-          $('#getAllCategory').empty();
-          $.ajax({
-            type: "GET",
-            url: "http://localhost:8080/category/categoryList",
-            success: function (data) {
-              var collaboration;
-              collaboration += '<option id="defaultOpt" value="0">Select Category</option>';
-              $.each(data, function (i, d) {
-                collaboration += "<option value=" + d.id + ">" + d.name + "</option>";
-              });
-
-              $('#listOfCategory').append(collaboration);
-            },
-            error: function (e) {
-              console.log(e);
-            }
-          });
-        }
-
-        getAllCategory();
-
-        /* Save SubCategory data using ajax */
-
-        $("#saveSubCategory").click(function (event) {
+        $("#saveRole").click(function (event) {
           initFormValidationMsg();
           var part1 = "";
           var part2 = "";
           var icn = 0;
           var msg = "";
-          var subCategory = new Object();
-          subCategory.name = $("#name").val();
-          subCategory.description = $("#description").val();
-          subCategory.categoryId = $("#listOfCategory option:selected").val();
-          if (formValidation()) callAjaxForAddOperation(part1, part2, icn, msg, subCategory);
+          var roles = new Object();
+          roles.id = $("#id").val();
+          roles.version = $("#version").val();
+          roles.name = $("#name").val();
+          roles.description = $("#description").val();
+          if (formValidation()) callAjaxForAddOperation(part1, part2, icn, msg, roles);
         });
 
 
-        /* Update SubCategory data using ajax */
+        /* Update roles data using ajax */
 
-        $('#editSubCategory').click(function () {
-          initializeSubCategoryForm();
+        $('#editRole').click(function () {
+          initializeRoleForm();
           initFormValidationMsg();
-          var subCategory = new Object();
-          subCategory = companyGb;
+          var newRole = new Object();
+          newRole = companyGb;
           companyGb = null;
-          var data = messageResource.get('subcategory.edit.validation.msg', 'configMessageForUI');
+          var data = messageResource.get('roles.edit.validation.msg', 'configMessageForUI');
 
           if (checkForMultipleRowSelect()) showServerSideMessage(data, "", 0, "Message");
-          else if (subCategory == null)showServerSideMessage(data, "", 0, "Message");
-          else {
-            document.getElementById('subCategoryForm').style.display = "block";
-            $("#updateSubCategory").show();
-            $("#saveSubCategory").hide();
-            $("#id").val(subCategory.id);
-            $("#name").val(subCategory.name);
-            $("#version").val(subCategory.version);
-            $("#description").val(subCategory.description);
-            $('#listOfCategory option:contains("' + subCategory.roles.name + '")').prop('selected', 'selected');
-            window.location.href = "#subCategoryForm";
-          }
+          else if (newRole == null)showServerSideMessage(data, "", 0, "Message");
+          else setDataToRoleForm(newRole);
         });
-        var table = $('#subCategoryTable').DataTable();
 
-        $("#updateSubCategory").click(function (event) {
+        var table = $('#roleTable').DataTable();
+
+        $("#updateRole").click(function (event) {
           var part1 = "";
           var part2 = "";
           var icn = 0;
           var msg = "Message";
-          var subCategory = new Object();
-          subCategory.id = $("#id").val();
-          subCategory.version = $("#version").val();
-          subCategory.name = $("#name").val();
-          subCategory.description = $("#description").val();
-          subCategory.categoryId = $("#listOfCategory option:selected").val();
-          if (formValidation()) callAjaxForEditOperation(part1, part2, icn, msg, subCategory);
+          var role = new Object();
+          role.id = $("#id").val();
+          role.version = $("#version").val();
+          role.name = $("#name").val();
+          role.description = $("#description").val();
+          if (formValidation()) callAjaxForEditOperation(part1, part2, icn, msg, role);
+
         });
 
 
-        /* Delete SubCategory data using ajax */
+        /* Delete Role data using ajax */
 
-        $("#deleteSubCategory").click(function (event) {
-          document.getElementById('subCategoryForm').style.display = "none";
-          initializeSubCategoryForm();
+        $("#deleteRole").click(function (event) {
+          document.getElementById('roleForm').style.display = "none";
+          initializeRoleForm();
           initFormValidationMsg();
-          var subCategory = new Object();
-          subCategory = companyGb;
+          var newRole = new Object();
+          newRole = companyGb;
           companyGb = null;
           var part1 = "";
           var part2 = "";
           var icn = 0;
           var msg = "Message";
-          var data =  messageResource.get('subcategory.delete.validation.msg', 'configMessageForUI');
+          var data = messageResource.get('roles.delete.validation.msg', 'configMessageForUI');
 
           if (checkForMultipleRowSelect()) showServerSideMessage(data, "", 0, "Message");
-          else if (subCategory == null)showServerSideMessage(data, "", 0, "Message");
+          else if (newRole == null)showServerSideMessage(data, "", 0, "Message");
           else {
             $.dialogbox({
               type: 'msg',
               title: 'Confirm Title',
-              content: messageResource.get('subcategory.delete.confirm.msg', 'configMessageForUI'),
+              content: messageResource.get('roles.delete.confirm.msg', 'configMessageForUI'),
               closeBtn: true,
               btn: ['Confirm', 'Cancel'],
               call: [
                 function () {
                   $.dialogbox.close();
-                  callAjaxForDeleteOperation(part1, part2, icn, msg, subCategory);
+                  callAjaxForDeleteOperation(part1, part2, icn, msg, newRole);
+
                 },
                 function () {
                   $.dialogbox.close();
@@ -304,14 +261,16 @@
                 }
               ]
             });
+
             window.location.href = "#viewTableData";
           }
+
         });
 
 
         /* DataTable select value send to global var */
 
-        $('#subCategoryTable tbody').on('click', 'tr', function () {
+        $('#roleTable tbody').on('click', 'tr', function () {
           companyGb = table.row(this).data();
           var isChecked = $('#' + companyGb.id).is(":checked");
           if (isChecked == false) companyGb = null;
@@ -320,40 +279,40 @@
 
         /* Initialize html form value  based on reset button*/
 
-        $('#resetSubCategory').on('click', function () {
+        $('#resetRole').on('click', function () {
           companyGb = null;
-          initializeSubCategoryForm();
+          initializeRoleForm();
           initFormValidationMsg();
-          $('#saveSubCategory').show();
-          $('#updateSubCategory').hide();
+          $('#saveRole').show();
+          $('#updateRole').hide();
           uncheckedAllCheckBox();
           window.location.href = "#viewTableData";
-          document.getElementById('subCategoryForm').style.display = "none";
+          document.getElementById('roleForm').style.display = "none";
         });
 
 
         /* load table data on click refresh button*/
 
-        $('#refreshSubCategory').on('click', function () {
-          initializeSubCategoryForm();
+        $('#refreshRole').on('click', function () {
+          initializeRoleForm();
           initFormValidationMsg();
           companyGb = null;
-          table.ajax.url( messageResource.get('subcategory.list.load.url', 'configMessageForUI')).load();
-          document.getElementById('subCategoryForm').style.display = "none";
+          table.ajax.url(messageResource.get('roles.list.load.url', 'configMessageForUI')).load();
+          document.getElementById('roleForm').style.display = "none";
         });
 
 
         /*  Ajax call for delete operation */
 
-        function callAjaxForDeleteOperation(part1, part2, icn, msg, subcategory) {
+        function callAjaxForDeleteOperation(part1, part2, icn, msg, newRoles) {
           $.ajax({
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
             },
             'type': 'POST',
-            'url': messageResource.get('subcategory.delete.url', 'configMessageForUI'),
-            'data': JSON.stringify(subcategory),
+            'url': messageResource.get('roles.delete.url', 'configMessageForUI'),
+            'data': JSON.stringify(newRoles.id),
             'dataType': 'json',
             'success': function (d) {
               if (d.successMsg) {
@@ -361,7 +320,7 @@
                 msg = "";
                 part1 = d.successMsg;
                 showServerSideMessage(part1, part2, icn, msg);
-                table.ajax.url(messageResource.get('subcategory.list.load.url', 'configMessageForUI')).load();
+                table.ajax.url(messageResource.get('roles.list.load.url', 'configMessageForUI')).load();
               }
               if (d.validationError) {
                 icn = 0;
@@ -372,6 +331,7 @@
               }
             },
             'error': function (error) {
+              uncheckedAllCheckBox();
               icn = 0;
               msg = '<strong style="color: red">Error</strong>';
               showServerSideMessage(part1, getErrorMessage(error), icn, msg);
@@ -382,27 +342,27 @@
 
         /*  Ajax call for edit operation */
 
-        function callAjaxForEditOperation(part1, part2, icn, msg, subcategory) {
+        function callAjaxForEditOperation(part1, part2, icn, msg, roles) {
           $.ajax({
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
             },
             'type': 'POST',
-            'url': messageResource.get('subcategory.edit.url', 'configMessageForUI'),
-            'data': JSON.stringify(subcategory),
+            'url': messageResource.get('roles.edit.url', 'configMessageForUI'),
+            'data': JSON.stringify(roles),
             'dataType': 'json',
             'success': function (d) {
               if (d.successMsg) {
                 icn = 1;
                 part1 = d.successMsg;
-                initializeSubCategoryForm();
+                initializeRoleForm();
                 window.location.href = "#viewTableData";
-                $("#updateSubCategory").hide();
-                $("#saveSubCategory").show();
+                $("#updateRole").hide();
+                $("#saveRole").show();
+                document.getElementById('roleForm').style.display = "none";
                 showServerSideMessage(part1, part2, icn, msg);
-                document.getElementById('subCategoryForm').style.display = "none";
-                table.ajax.url(messageResource.get('subcategory.list.load.url', 'configMessageForUI')).load();
+                table.ajax.url(messageResource.get('roles.list.load.url', 'configMessageForUI')).load();
               }
               if (d.validationError) {
                 icn = 0;
@@ -416,6 +376,7 @@
             'error': function (error) {
               icn = 0;
               msg = '<strong style="color: red">Error</strong>';
+              uncheckedAllCheckBox();
               showServerSideMessage(part1, getErrorMessage(error), icn, msg);
             }
           });
@@ -426,26 +387,26 @@
 
         /*  Ajax call for save operation */
 
-        function callAjaxForAddOperation(part1, part2, icn, msg, subcategory) {
+        function callAjaxForAddOperation(part1, part2, icn, msg, role) {
           $.ajax({
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
             },
             'type': 'POST',
-            'url': messageResource.get('subcategory.save.url', 'configMessageForUI'),
-            'data': JSON.stringify(subcategory),
+            'url': messageResource.get('roles.save.url', 'configMessageForUI'),
+            'data': JSON.stringify(role),
             'dataType': 'json',
             'success': function (d) {
               if (d.successMsg) {
                 icn = 1;
                 msg = "";
                 part1 = d.successMsg;
-                initializeSubCategoryForm();
-                setNewDataTableValue(d.productSubCategory, table);
-                document.getElementById('subCategoryForm').style.display = "none";
+                initializeRoleForm();
+                setNewDataTableValue(d.roles, table);
                 window.location.href = "#viewTableData";
                 showServerSideMessage(part1, part2, icn, msg);
+                document.getElementById('roleForm').style.display = "none";
               }
               if (d.validationError) {
                 icn = 0;
@@ -466,12 +427,11 @@
 
         /* Initialize html form value */
 
-        function initializeSubCategoryForm() {
+        function initializeRoleForm() {
           $("#id").val("0");
           $("#version").val("0");
           $("#name").val("");
           $("#description").val("");
-          $('#defaultOpt').val('0').prop('selected', true);
         }
 
 
@@ -481,7 +441,6 @@
           var isValid = true;
           var name = $("#name").val();
           var description = $("#description").val();
-          var categoryId = $("#listOfCategory option:selected").val();
           if (name == null || name.trim().length == 0) {
             $("#nameValidation").text("Name is required");
             isValid = false;
@@ -490,10 +449,7 @@
             $("#descriptionValidation").text("Description is required");
             isValid = false;
           }
-          if ((categoryId == null) || (categoryId == "0")) {
-            $("#categoryNameValidation").text("Product category name is required");
-            isValid = false;
-          }
+
           return isValid;
         }
 
@@ -503,40 +459,49 @@
         function initFormValidationMsg() {
           $("#nameValidation").text("");
           $("#descriptionValidation").text("");
-          $("#categoryNameValidation").text("");
+
         }
 
 
-        /* move to add new SubCategory div*/
+        /* move to add new role div*/
 
         $('#moveToAdd').on('click', function () {
-          document.getElementById('subCategoryForm').style.display = "block";
+          document.getElementById('roleForm').style.display = "block";
           companyGb = null;
-          $("#updateSubCategory").hide();
-          $("#saveSubCategory").show();
-          uncheckedAllCheckBox();
-          initializeSubCategoryForm();
+          $("#updateRole").hide();
+          $("#saveRole").show();
+          initializeRoleForm();
           initFormValidationMsg();
-          window.location.href = "#subCategoryForm";
+          uncheckedAllCheckBox();
+          window.location.href = "#roleForm";
         });
 
 
-        /* Set new created SubCategory value to DataTable*/
+        /* Set new created role value to DataTable*/
 
-        function setNewDataTableValue(productSubCategory, table) {
+        function setNewDataTableValue(role, table) {
           table.row.add({
-            "id": productSubCategory.id,
-            "name": productSubCategory.name,
-            "version": productSubCategory.version,
-            "description": productSubCategory.description,
-            "roles": productSubCategory.roles,
-            "createdBy": productSubCategory.createdBy,
-            "createdOn": productSubCategory.createdOn,
-            "updatedBy": productSubCategory.updatedBy,
-            "updatedOn": productSubCategory.updatedOn
+            "id": role.id,
+            "name": role.name,
+            "version": role.version,
+            "description": role.description
           }).draw();
 
         };
+
+
+        /* set selected row data to role form for edit */
+
+        function setDataToRoleForm(role){
+          document.getElementById('roleForm').style.display = "block";
+          $("#updateRole").show();
+          $("#saveRole").hide();
+          $("#id").val(role.id);
+          $("#name").val(role.name);
+          $("#description").val(role.description);
+          $("#version").val(role.version);
+          window.location.href = "#roleForm";
+        }
 
 
       });

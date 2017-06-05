@@ -1,8 +1,8 @@
 package com.dreamchain.skeleton.service.impl;
 
-import com.dreamchain.skeleton.dao.ProductCategoryDao;
+import com.dreamchain.skeleton.dao.RolesDao;
 import com.dreamchain.skeleton.dao.ProductSubCategoryDao;
-import com.dreamchain.skeleton.model.ProductCategory;
+import com.dreamchain.skeleton.model.Roles;
 import com.dreamchain.skeleton.model.ProductSubCategory;
 import com.dreamchain.skeleton.service.ProductSubCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class ProductSubCategoryServiceImpl implements ProductSubCategoryService{
     @Autowired
     ProductSubCategoryDao productSubCategoryDao;
     @Autowired
-    ProductCategoryDao productCategoryDao;
+    RolesDao rolesDao;
     @Autowired
     Environment environment;
 
@@ -71,7 +71,7 @@ public class ProductSubCategoryServiceImpl implements ProductSubCategoryService{
         productSubCategory.setVersion(Long.parseLong(productSubCategoryObj.get("version")));
         productSubCategory.setName(productSubCategoryObj.get("name"));
         productSubCategory.setDescription(productSubCategoryObj.get("description"));
-        productSubCategory.setProductCategory(productCategoryDao.get(Long.parseLong(productSubCategoryObj.get("categoryId"))));
+        productSubCategory.setRoles(rolesDao.get(Long.parseLong(productSubCategoryObj.get("categoryId"))));
         productSubCategory.setProductCategoryId(Long.parseLong(productSubCategoryObj.get("categoryId")));
         validationMsg = checkInput(productSubCategory);
         ProductSubCategory existingProductSubCategory = productSubCategoryDao.get(productSubCategory.getId());
@@ -109,7 +109,7 @@ public class ProductSubCategoryServiceImpl implements ProductSubCategoryService{
     // check for invalid data
     private String checkInput(ProductSubCategory productSubCategory) {
         String msg = "";
-        if (productSubCategory.getName() == null || productSubCategory.getProductCategory() == null ||
+        if (productSubCategory.getName() == null || productSubCategory.getRoles() == null ||
                 productSubCategory.getDescription() ==null)
             msg = INVALID_INPUT;
 
@@ -126,11 +126,11 @@ public class ProductSubCategoryServiceImpl implements ProductSubCategoryService{
 
     private ProductSubCategory createObjForSave(String name,String description,Long productCategoryId) throws Exception {
         ProductSubCategory productSubCategory = new ProductSubCategory();
-        ProductCategory productCategory = productCategoryDao.get(productCategoryId);;
+        Roles roles = rolesDao.get(productCategoryId);;
         productSubCategory.setName(name);
         productSubCategory.setDescription(description);
-        productSubCategory.setProductCategory(productCategory);
-        productSubCategory.setProductCategoryId(productCategory.getId());
+        productSubCategory.setRoles(roles);
+        productSubCategory.setProductCategoryId(roles.getId());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
         productSubCategory.setCreatedBy(UserDetailServiceImpl.userId);
@@ -144,7 +144,7 @@ public class ProductSubCategoryServiceImpl implements ProductSubCategoryService{
         productSubCategory.setId(objFromUI.getId());
         productSubCategory.setVersion(objFromUI.getVersion());
         productSubCategory.setName(objFromUI.getName());
-        productSubCategory.setProductCategory(objFromUI.getProductCategory());
+        productSubCategory.setRoles(objFromUI.getRoles());
         productSubCategory.setDescription(objFromUI.getDescription());
         productSubCategory.setProductCategoryId(objFromUI.getProductCategoryId());
         productSubCategory.setCreatedBy(existingProductSubCategory.getCreatedBy());

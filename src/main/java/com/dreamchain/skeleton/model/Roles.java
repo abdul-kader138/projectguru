@@ -8,11 +8,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class ProductCategory implements Serializable
+public class Roles implements Serializable
 {
 
 
-    private static final long serialVersionUID = 8633415090390876715L;
+    private static final long serialVersionUID = 8633416060390876715L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO )
@@ -34,10 +34,10 @@ public class ProductCategory implements Serializable
 
 
     @Column
-    private long createdBy;
+    private String createdBy;
 
     @Column
-    private long updatedBy;
+    private String updatedBy;
 
 
     @Column
@@ -47,7 +47,7 @@ public class ProductCategory implements Serializable
     @Column
     private Date updatedOn;
 
-    public ProductCategory() {
+    public Roles() {
     }
 
     public static long getSerialVersionUID() {
@@ -86,19 +86,19 @@ public class ProductCategory implements Serializable
         this.description = description;
     }
 
-    public long getCreatedBy() {
+    public String getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(long createdBy) {
+    public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 
-    public long getUpdatedBy() {
+    public String getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(long updatedBy) {
+    public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
     }
 

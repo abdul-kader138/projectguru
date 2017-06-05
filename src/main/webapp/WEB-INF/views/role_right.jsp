@@ -17,9 +17,8 @@
                     <thead>
                     <tr>
                         <th style="width: 15px"></th>
-                        <th style="width: 1000px">Name</th>
-                        <th style="width: 1000px">Description</th>
-                        <th style="width: 50px">PRIVILEGE</th>
+                        <th style="width: 200px">Role Name</th>
+                        <th style="width: 300px">PRIVILEGE</th>
                     </tr>
                     </thead>
                 </table>
@@ -74,34 +73,21 @@
                                 <!-- Form Name -->
                                 <legend><strong>Role Setting</strong></legend>
 
-                                <!-- Text input-->
+                                <input type="hidden" class="form-control" id="id" name="id" value="0" required>
+                                <input type="hidden" class="form-control" id="version" name="version" value="0"
+                                       required>
+
+                                <!-- select box -->
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="name">Name :</label>
+                                    <label class="col-md-4 control-label" for="listOfRole">Role Name</label>
 
-                                    <div class="col-md-6">
-                                        <input type="hidden" class="form-control" id="id" name="id" value="0" required>
-                                        <input type="hidden" class="form-control" id="version" name="version" value="0" required>
-                                        <input id="name" name="name" type="text" placeholder=""
-                                               class="form-control input-md"
-                                               style="border-color:#808080; border-width:1px; border-style:solid;"
-                                               required="">
-                                        <label id="nameValidation" style="color:red; font-size: 11px;"
-                                               class="form-control"></label>
-
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label" for="description">Description :</label>
-
-                                    <div class="col-md-6">
-                                        <textarea id="description" class="form-control input-md"
-                                                  style="border-color:#808080; border-width:1px; border-style:solid;"
-                                                  name="address" rows="4" cols="16"></textarea>
-                                        <label id="descriptionValidation" style="color:red; font-size: 11px;"
+                                    <div class="col-md-4">
+                                        <select id="listOfRole" class="form-control"
+                                                style="border-color:#808080; border-width:1px; border-style:solid;"></select>
+                                        <label id="roleNameValidation" style="color:red; font-size: 11px;"
                                                class="form-control"></label>
                                     </div>
                                 </div>
-
 
                                 <!-- Multiple Checkboxes (inline) -->
                                 <div class="form-group">
@@ -170,10 +156,11 @@
                 $("#updateRole").hide();
                 var companyGb;
 
+                getAllRole();
                 /* Load role data to select box data using ajax */
 
                 $('#roleTable').DataTable({
-                    "sAjaxSource": "http://localhost:8080/role/roleList",
+                    "sAjaxSource": "http://localhost:8080/role_right/role_rightList",
                     "sAjaxDataProp": "",
                     "order": [[1, "asc"]],
                     'aoColumns': [
@@ -187,17 +174,12 @@
                             'sWidth': '15px',
                             'bSortable': false
                         },
-                        {"mData": "name", 'sWidth': '100px'},
-                        {"mData": "description", 'sWidth': '100px'},
-                        {"mData": "rights"},
+                        {"mData": "role.name", 'sWidth': '200px'},
+                        {"mData": "rights"}
                     ],
                     'aaSorting': [[0, 'asc']],
                     "columnDefs": [
-                        {
-//                            "targets": [0],
-//                            "visible": false,
-//                            "searchable": false
-                        }
+                        {}
                     ],
                     "cache": false,
                     "bPaginate": true,
@@ -233,7 +215,7 @@
                     var role = new Object();
                     role = companyGb;
                     companyGb = null;
-                    var data = messageResource.get('role.edit.validation.msg', 'configMessageForUI');
+                    var data = messageResource.get('role_right.edit.validation.msg', 'configMessageForUI');
 
                     if (checkForMultipleRowSelect()) showServerSideMessage(data, "", 0, "Message");
                     else if (role == null)showServerSideMessage(data, "", 0, "Message");
@@ -270,7 +252,7 @@
                     var part2 = "";
                     var icn = 0;
                     var msg = "Message";
-                    var data = messageResource.get('role.delete.validation.msg', 'configMessageForUI');
+                    var data = messageResource.get('role_right.delete.validation.msg', 'configMessageForUI');
 
                     if (checkForMultipleRowSelect()) showServerSideMessage(data, "", 0, "Message");
                     else if (role == null)showServerSideMessage(data, "", 0, "Message");
@@ -278,7 +260,7 @@
                         $.dialogbox({
                             type: 'msg',
                             title: 'Confirm Title',
-                            content: messageResource.get('role.delete.confirm.msg', 'configMessageForUI'),
+                            content: messageResource.get('role_right.delete.confirm.msg', 'configMessageForUI'),
                             closeBtn: true,
                             btn: ['Confirm', 'Cancel'],
                             call: [
@@ -326,7 +308,7 @@
                     initializeRoleForm();
                     initFormValidationMsg();
                     companyGb = null;
-                    table.ajax.url(messageResource.get('role.list.load.url', 'configMessageForUI')).load();
+                    table.ajax.url(messageResource.get('role_right.list.load.url', 'configMessageForUI')).load();
                     document.getElementById('roleForm').style.display = "none";
                 });
 
@@ -340,7 +322,7 @@
                             'Content-Type': 'application/json'
                         },
                         'type': 'POST',
-                        'url': messageResource.get('role.delete.url', 'configMessageForUI'),
+                        'url': messageResource.get('role_right.delete.url', 'configMessageForUI'),
                         'data': JSON.stringify(role),
                         'dataType': 'json',
                         'success': function (d) {
@@ -349,7 +331,7 @@
                                 msg = "";
                                 part1 = d.successMsg;
                                 showServerSideMessage(part1, part2, icn, msg);
-                                table.ajax.url(messageResource.get('role.list.load.url', 'configMessageForUI')).load();
+                                table.ajax.url(messageResource.get('role_right.list.load.url', 'configMessageForUI')).load();
                             }
                             if (d.validationError) {
                                 icn = 0;
@@ -362,6 +344,7 @@
                         'error': function (error) {
                             icn = 0;
                             msg = '<strong style="color: red">Error</strong>';
+                            uncheckedAllCheckBox();
                             showServerSideMessage(part1, getErrorMessage(error), icn, msg);
                         }
                     });
@@ -377,7 +360,7 @@
                             'Content-Type': 'application/json'
                         },
                         'type': 'POST',
-                        'url': messageResource.get('role.edit.url', 'configMessageForUI'),
+                        'url': messageResource.get('role_right.edit.url', 'configMessageForUI'),
                         'data': JSON.stringify(role),
                         'dataType': 'json',
                         'success': function (d) {
@@ -390,7 +373,7 @@
                                 $("#saveRole").show();
                                 showServerSideMessage(part1, part2, icn, msg);
                                 document.getElementById('roleForm').style.display = "none";
-                                table.ajax.url(messageResource.get('role.list.load.url', 'configMessageForUI')).load();
+                                table.ajax.url(messageResource.get('role_right.list.load.url', 'configMessageForUI')).load();
                             }
                             if (d.validationError) {
                                 icn = 0;
@@ -404,6 +387,7 @@
                         'error': function (error) {
                             icn = 0;
                             msg = '<strong style="color: red">Error</strong>';
+                            uncheckedAllCheckBox();
                             showServerSideMessage(part1, getErrorMessage(error), icn, msg);
                         }
                     });
@@ -421,7 +405,7 @@
                             'Content-Type': 'application/json'
                         },
                         'type': 'POST',
-                        'url': messageResource.get('role.save.url', 'configMessageForUI'),
+                        'url': messageResource.get('role_right.save.url', 'configMessageForUI'),
                         'data': JSON.stringify(role),
                         'dataType': 'json',
                         'success': function (d) {
@@ -430,7 +414,7 @@
                                 msg = "";
                                 part1 = d.successMsg;
                                 initializeRoleForm();
-                                console.log(d.role);
+                                console.log(d.role_right);
                                 setNewDataTableValue(d.role, table);
                                 document.getElementById('roleForm').style.display = "none";
                                 window.location.href = "#viewTableData";
@@ -458,8 +442,7 @@
                 function initializeRoleForm() {
                     $("#id").val(0);
                     $("#version").val(0);
-                    $("#name").val("");
-                    $("#description").val("");
+                    $('#defaultOpt').val('0').prop('selected', true);
                     $('input:checkbox.rightVal').each(function () {
                         var sThisVal = (this.checked ? $(this).val() : "");
                         if (sThisVal) $(this).prop('checked', false);
@@ -471,15 +454,9 @@
 
                 function formValidation() {
                     var isValid = true;
-                    var name = $("#name").val();
-                    var description = $("#description").val();
-                    var categoryId = $("#listOfCategory option:selected").val();
-                    if (name == null || name.trim().length == 0) {
-                        $("#nameValidation").text("Name is required");
-                        isValid = false;
-                    }
-                    if (description == null || description.trim().length == 0) {
-                        $("#descriptionValidation").text("Description is required");
+                    var roleId = $("#listOfRole option:selected").val();
+                    if (roleId == 0) {
+                        $("#roleNameValidation").text("Role is required");
                         isValid = false;
                     }
                     if (checkForSingleRightSelect()) {
@@ -493,8 +470,7 @@
                 /* Initialize html form validation error field*/
 
                 function initFormValidationMsg() {
-                    $("#nameValidation").text("");
-                    $("#descriptionValidation").text("");
+                    $("#roleNameValidation").text("");
                     $("#rightsValidation").text("");
                 }
 
@@ -518,14 +494,9 @@
                 function setNewDataTableValue(role, table) {
                     table.row.add({
                         "id": role.id,
-                        "name": role.name,
                         "version": role.version,
-                        "description": role.description,
-                        "rights": role.rights,
-                        "createdBy": role.createdBy,
-                        "createdOn": role.createdOn,
-                        "updatedBy": role.updatedBy,
-                        "updatedOn": role.updatedOn
+                        "role": role.role,
+                        "rights": role.rights
                     }).draw();
 
                 };
@@ -560,8 +531,7 @@
                 function createObjTOUpdate(role) {
                     role.id = $("#id").val();
                     role.version = $("#version").val();
-                    role.name = $("#name").val();
-                    role.description = $("#description").val();
+                    role.roleId = $("#listOfRole option:selected").val();
                     role.VIEW_PRIVILEGE = ($("#viewRights").is(":checked")) ? "View" : "";
                     role.WRITE_PRIVILEGE = ($("#writeRights").is(":checked")) ? "Write" : "";
                     role.EDIT_PRIVILEGE = ($("#editRights").is(":checked")) ? "Edit" : "";
@@ -572,10 +542,32 @@
                     $("#updateRole").show();
                     $("#saveRole").hide();
                     $("#id").val(role.id);
-                    $("#name").val(role.name);
                     $("#version").val(role.version);
-                    $("#description").val(role.description);
+                    $('#listOfRole option:contains("' + role.role.name + '")').prop('selected', 'selected');;
                 }
+
+
+                /* Load Role data to select box data using ajax */
+
+                function getAllRole() {
+                    $('#listOfRole').empty();
+                    $.ajax({
+                        type: "GET",
+                        url: 'http://localhost:8080/roles/rolesList',
+                        success: function (data) {
+                            var collaboration;
+                            collaboration += '<option id="defaultOpt" value="0">Select Role</option>';
+                            $.each(data, function (i, d) {
+                                collaboration += "<option value=" + d.id + ">" + d.name + "</option>";
+                            });
+
+                            $('#listOfRole').append(collaboration);
+                        },
+                        error: function (e) {
+                        }
+                    });
+                }
+
             });
             //
 

@@ -33,7 +33,7 @@ public class ProductSubCategory implements Serializable {
 
     @NotNull
     @OneToOne
-    private ProductCategory productCategory;
+    private Roles roles;
 
 
     @NotNull
@@ -100,12 +100,12 @@ public class ProductSubCategory implements Serializable {
         this.description = description;
     }
 
-    public ProductCategory getProductCategory() {
-        return productCategory;
+    public Roles getRoles() {
+        return roles;
     }
 
-    public void setProductCategory(ProductCategory productCategory) {
-        this.productCategory = productCategory;
+    public void setRoles(Roles roles) {
+        this.roles = roles;
     }
 
     public long getCreatedBy() {

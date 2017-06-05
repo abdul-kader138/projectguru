@@ -1,7 +1,8 @@
 package com.dreamchain.skeleton.dao.impl;
 
-import com.dreamchain.skeleton.dao.RoleDao;
-import com.dreamchain.skeleton.model.Role;
+import com.dreamchain.skeleton.dao.RoleRightDao;
+import com.dreamchain.skeleton.model.Department;
+import com.dreamchain.skeleton.model.RoleRight;
 import com.dreamchain.skeleton.model.User;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
@@ -14,34 +15,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class RoleDaoInpl implements RoleDao {
+public class RoleRightDaoImpl implements RoleRightDao {
 
     @Autowired
     private HibernateTemplate hibernateTemplate;
 
     @Override
-    public Role get(Long id) {
-        return hibernateTemplate.get(Role.class, id);
+    public RoleRight get(Long id) {
+        return hibernateTemplate.get(RoleRight.class, id);
     }
 
     @Override
-    public Long save(Role role) {
-        return (Long) hibernateTemplate.save(role);
+    public Long save(RoleRight roleRight) {
+        return (Long) hibernateTemplate.save(roleRight);
     }
 
     @Override
-    public void update(Role role) {
-        hibernateTemplate.merge(role);
+    public void update(RoleRight roleRight) {
+        hibernateTemplate.merge(roleRight);
     }
 
     @Override
-    public void delete(Role role) {
-        hibernateTemplate.delete(role);
+    public void delete(RoleRight roleRight) {
+        hibernateTemplate.delete(roleRight);
     }
 
     @Override
-    public List<Role> findAll() {
-        return hibernateTemplate.loadAll(Role.class);
+    public List<RoleRight> findAll() {
+        return hibernateTemplate.loadAll(RoleRight.class);
 
     }
 
@@ -55,13 +56,5 @@ public class RoleDaoInpl implements RoleDao {
         return lst;
     }
 
-    @Override
-    public Role findByRoleName(String roleName) {
-        DetachedCriteria dcr = DetachedCriteria.forClass(Role.class);
-        Criterion cr = Restrictions.eq("name", roleName);
-        dcr.add(cr);
-        List<Object> lst = hibernateTemplate.findByCriteria(dcr);
-        if (lst.size() == 0) return new Role();
-        return (Role) lst.get(0);
-    }
+
 }
