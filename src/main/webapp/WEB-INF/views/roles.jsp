@@ -302,6 +302,8 @@
         });
 
 
+
+
         /*  Ajax call for delete operation */
 
         function callAjaxForDeleteOperation(part1, part2, icn, msg, newRoles) {

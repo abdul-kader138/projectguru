@@ -79,6 +79,7 @@ public class RolesController {
     Map deleteCompany(@RequestBody String id) throws ParseException {
         HashMap serverResponse = new HashMap();
         String successMsg = "";
+
         String validationError = "";
         logger.info("Delete roles:  >> ");
         validationError = rolesService.delete(Long.parseLong(id));

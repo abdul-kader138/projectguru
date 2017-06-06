@@ -42,7 +42,9 @@
 		<!--<security:intercept-url pattern="/customer" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />-->
 
 		
-		
+
+
+
 		<!--multiple session invalid-->
 		<security:session-management session-fixation-protection="newSession">
 			<security:concurrency-control max-sessions="1"  expired-url="/login?expire=1" error-if-maximum-exceeded="true" />

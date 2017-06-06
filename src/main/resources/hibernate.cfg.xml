@@ -18,3 +18,4 @@
 		<mapping class="com.dreamchain.skeleton.model.Category"></mapping>
 	</session-factory>
 </hibernate-configuration>
+
