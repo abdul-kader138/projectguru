@@ -18,6 +18,7 @@ public class RoleRight implements Serializable
 {
 
 
+
     private static final long serialVersionUID = 8633415090980966715L;
 
     @Id

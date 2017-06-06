@@ -77,6 +77,7 @@ public class User extends org.springframework.security.core.userdetails.User imp
 		super(username, password, enabled, accountNonExpired,
 				credentialsNonExpired, accountNonLocked, authorities);
 
+
 		this.name = name;
 		this.password = password;
 		this.email = email;

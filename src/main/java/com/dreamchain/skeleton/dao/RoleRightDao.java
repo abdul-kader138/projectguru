@@ -15,3 +15,4 @@ public interface RoleRightDao {
     List<Object> countOfRole(long roleID);
 
 }
+

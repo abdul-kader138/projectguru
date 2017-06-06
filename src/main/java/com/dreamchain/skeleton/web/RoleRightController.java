@@ -61,6 +61,7 @@ public class RoleRightController {
         Map<String, Object> objList = new HashMap<>();
         String successMsg = "";
         String validationError = "";
+
         logger.info("creating new role_right: >>");
         objList = roleRightService.save(roleInfo);
         validationError = (String) objList.get("validationError");

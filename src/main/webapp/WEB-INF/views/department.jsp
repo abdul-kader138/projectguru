@@ -404,6 +404,7 @@
                                 part1 = d.successMsg;
                                 initializeDepartmentForm();
                                 setNewDataTableValue(d.department, table);
+
                                 window.location.href = "#viewTableData";
                                 showServerSideMessage(part1, part2, icn, msg);
                                 document.getElementById('departmentForm').style.display = "none";

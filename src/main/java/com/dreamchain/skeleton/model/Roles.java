@@ -94,6 +94,7 @@ public class Roles implements Serializable
         this.createdBy = createdBy;
     }
 
+
     public String getUpdatedBy() {
         return updatedBy;
     }

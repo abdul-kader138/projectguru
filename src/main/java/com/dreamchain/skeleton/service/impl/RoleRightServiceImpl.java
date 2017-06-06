@@ -33,6 +33,7 @@ public class RoleRightServiceImpl implements RoleRightService {
 
 
     private static String ROLE_EXISTS = "This role name is already used.Please try again with new one!!!";
+
     private static String INVALID_INPUT = "Invalid input";
     private static String INVALID_ROLE = "Role not exists";
     private static String BACK_DATED_DATA = "Role data is old.Please try again with updated data";

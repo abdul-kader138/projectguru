@@ -22,6 +22,8 @@ public class ProductSubCategory implements Serializable {
     private long version;
 
 
+
+
     @NotEmpty
     @Length(max = 60)
     @Column(unique = true)

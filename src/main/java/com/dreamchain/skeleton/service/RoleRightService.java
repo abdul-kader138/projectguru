@@ -11,6 +11,7 @@ public interface RoleRightService {
     RoleRight get(Long id);
     Map<String,Object> save(Map<String,Object> roleObj) throws Exception;
     Map<String,Object> update(Map<String, Object>  roleObj) throws ParseException;
+
     String delete(Long roleId);
     List<RoleRight> findAll();
 }

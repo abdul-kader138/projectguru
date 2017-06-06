@@ -414,6 +414,7 @@
                                 msg = "";
                                 part1 = d.successMsg;
                                 initializeRoleForm();
+
                                 console.log(d.role_right);
                                 setNewDataTableValue(d.role, table);
                                 document.getElementById('roleForm').style.display = "none";

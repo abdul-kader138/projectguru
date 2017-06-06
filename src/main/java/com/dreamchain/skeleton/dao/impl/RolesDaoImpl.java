@@ -59,6 +59,7 @@ public class RolesDaoImpl implements RolesDao {
     public List<Object> countOfRoles(long rolesId) {
         DetachedCriteria dcr= DetachedCriteria.forClass(Roles.class);// sub category
         Criterion cr = Restrictions.eq("rolesId", rolesId);
+
         dcr.add(cr);
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         if(lst.size()==0)return new ArrayList<Object>();

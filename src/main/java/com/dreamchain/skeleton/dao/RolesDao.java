@@ -16,3 +16,4 @@ public interface RolesDao {
     Roles findByNewName(String CurrentName,String newName);
 
 }
+
