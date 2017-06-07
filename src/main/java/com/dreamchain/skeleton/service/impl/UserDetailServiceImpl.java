@@ -39,7 +39,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 			grantedAuthorities.add(grantedAuthority);
 		}
 		userId=user.getId();
-		return new User(user.getName(),user.getPassword(),true,true,true,true,grantedAuthorities,user.getName(),user.getEmail(),user.getRole(),user.getPhone(),user.getRights(),user.getCreatedBy(),user.getUpdatedBy(),user.getCreatedOn(),user.getUpdatedOn());
+		return new User(user.getName(),user.getPassword(),true,true,true,true,grantedAuthorities,user.getName(),user.getEmail(),user.getRole(),user.getPhone(),user.getRights(),user.getImagePath(),user.getDesignation(),user.getCreatedBy(),user.getUpdatedBy(),user.getCreatedOn(),user.getUpdatedOn());
 	}
 	
 }

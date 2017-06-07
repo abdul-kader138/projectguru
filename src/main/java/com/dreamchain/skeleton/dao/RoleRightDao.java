@@ -12,7 +12,10 @@ public interface RoleRightDao {
     void update(RoleRight roleRight);
     void delete(RoleRight roleRight);
     List<RoleRight> findAll();
-    List<Object> countOfRole(long roleID);
+    List<Object> countOfRole(long roleId);
+    RoleRight findByRolesName(long roleId);
+    RoleRight findByNewName(long currentRoleId,long newRoleId);
+
 
 }
 

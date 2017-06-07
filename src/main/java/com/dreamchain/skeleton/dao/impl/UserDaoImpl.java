@@ -51,8 +51,8 @@ public class UserDaoImpl implements UserDao {
 	}
 
 
-	public void save(User user) {
-		hibernateTemplate.merge(user);
+	public Long save(User user) {
+		return (Long) hibernateTemplate.save(user);
 
 	}
 
@@ -69,6 +69,18 @@ public class UserDaoImpl implements UserDao {
 		dcr.add(cr);
 		List<Object> lst= hibernateTemplate.findByCriteria(dcr);
 		if(lst.size()==0)return user;
+		return (User)lst.get(0);
+	}
+
+	@Override
+	public User findByNewName(String CurrentName,String newName) {
+		DetachedCriteria dcr= DetachedCriteria.forClass(User.class);
+		Criterion cr = Restrictions.eq("name", newName.trim()).ignoreCase();
+		Criterion cr1 = Restrictions.ne("name", CurrentName.trim()).ignoreCase();
+		dcr.add(cr);
+		dcr.add(cr1);
+		List<Object> lst= hibernateTemplate.findByCriteria(dcr);
+		if(lst.size()==0)return new User();
 		return (User)lst.get(0);
 	}
 

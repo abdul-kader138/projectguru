@@ -1,5 +1,6 @@
 package com.dreamchain.skeleton.web;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.dreamchain.skeleton.model.User;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import com.dreamchain.skeleton.service.UserService;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.ParseException;
@@ -52,17 +54,19 @@ public class UserController {
     @RequestMapping(value = "/user/save", method = RequestMethod.POST)
     public
     @ResponseBody
-    Map saveUser(@RequestBody User user,HttpSession httpSession) throws ParseException {
+    Map saveUser(@RequestBody MultipartHttpServletRequest request) throws Exception {
+        Map<String, Object> objList = new HashMap<>();
         String successMsg = "";
-        String validationError="";
-        String invalidUserError="";
+        String validationError = "";
         logger.info("creating new user: >>");
-        boolean isLoggedUserInvalid=checkLoggedInUserExistence(httpSession);
-        if(isLoggedUserInvalid) invalidUserError= environment.getProperty("user.invalid.error.msg");
-        if(!isLoggedUserInvalid)validationError = userService.save(user);
-        if (validationError.length() == 0 && !isLoggedUserInvalid) successMsg = environment.getProperty("user.save.success.msg");
-        logger.info("creating new user: << " + successMsg + invalidUserError + invalidUserError);
-        return createServerResponse(successMsg,validationError,invalidUserError,null);
+        objList = userService.save(request);
+        validationError = (String) objList.get("validationError");
+        if (validationError.length() == 0) {
+            objList.put("successMsg", environment.getProperty("user.save.success.msg"));
+            successMsg = environment.getProperty("user.save.success.msg");
+        }
+        logger.info("creating new user: << " + successMsg + validationError);
+        return objList;
     }
 
 
@@ -135,17 +139,19 @@ public class UserController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public
     @ResponseBody
-    Map updateUser(@RequestBody User user,HttpSession httpSession) throws ParseException {
+    Map updateUser(@RequestBody MultipartHttpServletRequest request) throws Exception {
+        Map<String, Object> objList = new HashMap<>();
         String successMsg = "";
-        String validationError="";
-        String invalidUserError="";
+        String validationError = "";
         logger.info("Updating user: >>");
-        boolean isLoggedUserInvalid=checkLoggedInUserExistence(httpSession);
-        if(isLoggedUserInvalid) invalidUserError= environment.getProperty("user.invalid.error.msg");
-        if(!isLoggedUserInvalid) validationError = userService.updateUser(user);
-        if (validationError.length() == 0 && !isLoggedUserInvalid) successMsg = environment.getProperty("user.update.success.msg");
-        logger.info("Updating user:  << "+successMsg+invalidUserError+invalidUserError);
-        return createServerResponse(successMsg,validationError,invalidUserError,userService.get(user.getId()));
+        objList = userService.updateUser(request);
+        validationError = (String) objList.get("validationError");
+        if (validationError.length() == 0) {
+            objList.put("successMsg", environment.getProperty("user.update.success.msg"));
+            successMsg = environment.getProperty("user.update.success.msg");
+        }
+        logger.info("Updating user:: << " + successMsg + validationError);
+        return objList;
 
    }
 
@@ -153,17 +159,17 @@ public class UserController {
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public
     @ResponseBody
-    Map deleteUser(@RequestBody String id,HttpSession httpSession) throws ParseException {
+    Map deleteUser(String userId,HttpServletRequest request) throws ParseException {
+        HashMap serverResponse = new HashMap();
         String successMsg = "";
         String validationError = "";
-        String invalidUserError="";
         logger.info("Delete user:  >> ");
-        boolean isLoggedUserInvalid=checkLoggedInUserExistence(httpSession);
-        if(isLoggedUserInvalid) invalidUserError= environment.getProperty("user.invalid.error.msg");
-        if(!isLoggedUserInvalid) validationError = userService.delete(Long.parseLong(id));
-        if (validationError.length() == 0 && !isLoggedUserInvalid) successMsg = environment.getProperty("user.delete.success.msg");
-        logger.info("Delete user:  << "+successMsg+invalidUserError+invalidUserError);
-        return createServerResponse(successMsg,validationError,invalidUserError,null);
+        validationError = userService.delete(Long.parseLong(userId), request);
+        if (validationError.length() == 0) successMsg = environment.getProperty("user.delete.success.msg");
+        logger.info("Delete user:  << " + successMsg + validationError);
+        serverResponse.put("successMsg", successMsg);
+        serverResponse.put("validationError", validationError);
+        return serverResponse;
     }
 
 

@@ -1,7 +1,6 @@
 package com.dreamchain.skeleton.dao.impl;
 
 import com.dreamchain.skeleton.dao.RoleRightDao;
-import com.dreamchain.skeleton.model.Department;
 import com.dreamchain.skeleton.model.RoleRight;
 import com.dreamchain.skeleton.model.User;
 import org.hibernate.criterion.Criterion;
@@ -54,6 +53,31 @@ public class RoleRightDaoImpl implements RoleRightDao {
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         if(lst.size()==0)return new ArrayList<Object>();
         return lst;
+    }
+
+
+
+    @Override
+    public RoleRight findByNewName(long currentRoleId,long newRoleId) {
+        DetachedCriteria dcr= DetachedCriteria.forClass(RoleRight.class);
+        Criterion cr = Restrictions.eq("roleId", newRoleId);
+        Criterion cr1 = Restrictions.ne("roleId", currentRoleId);
+        dcr.add(cr);
+        dcr.add(cr1);
+        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
+        if(lst.size()==0)return new RoleRight();
+        return (RoleRight)lst.get(0);
+    }
+
+
+    @Override
+    public RoleRight findByRolesName(long roleId) {
+        DetachedCriteria dcr= DetachedCriteria.forClass(RoleRight.class);
+        Criterion cr = Restrictions.eq("roleId", roleId);
+        dcr.add(cr);
+        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
+        if(lst.size()==0)return new RoleRight();
+        return (RoleRight)lst.get(0);
     }
 
 

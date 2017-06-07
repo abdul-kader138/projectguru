@@ -196,6 +196,7 @@
                 /* Update Department data using ajax */
 
                 $('#editDepartment').click(function () {
+                    document.getElementById('departmentForm').style.display = "none";
                     initializeDepartmentForm();
                     initFormValidationMsg();
                     var newDepartment = new Object();

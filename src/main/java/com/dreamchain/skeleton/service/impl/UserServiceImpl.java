@@ -1,11 +1,9 @@
 package com.dreamchain.skeleton.service.impl;
 
-import com.dreamchain.skeleton.list.content.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,10 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dreamchain.skeleton.dao.UserDao;
 import com.dreamchain.skeleton.model.User;
 import com.dreamchain.skeleton.service.UserService;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -38,6 +40,7 @@ public class UserServiceImpl implements UserService {
     private static String INVALID_INPUT = "Invalid input";
     private static String INVALID_USER = "User not exists";
     private static String BACK_DATED_DATA = "User data is old.Please try again with updated data";
+    private static String LOGO_PATH = "/resources/images/user_photo/";
 
     @Transactional(readOnly = true)
     public User get(Long id) {
@@ -56,51 +59,78 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public String save(User user) throws ParseException {
+    public Map<String, Object> save(MultipartHttpServletRequest request) throws Exception {
+        Map<String, Object> obj = new HashMap<>();
+        Map<String, Object> msg = new HashMap<>();
         String validationMsg = "";
+        User newUser = new User();
+        User existingUser = new User();
+        User user = createObjForSave(request);
         validationMsg = checkInput(user);
-        User existingUser = userDao.findByUserName(user.getEmail());
-        if (existingUser != null && validationMsg == "") validationMsg = EMAIL_EXISTS;
+        if ("".equals(validationMsg)) existingUser = userDao.findByUserName(user.getEmail());
+        if (existingUser.getName() != null && validationMsg == "") validationMsg = EMAIL_EXISTS;
+        if ("".equals(validationMsg)) msg = fileSave(request);
+        if (msg.get("validationMsg") == "") user.setImagePath((String) msg.get("path"));
         if ("".equals(validationMsg)) {
-            User userObj = setUserRole(user);
-            userObj = setEditorInfo(userObj, "save");
-            BCryptPasswordEncoder encodePassword = new BCryptPasswordEncoder();
-            String newEncodedPassword = encodePassword.encode(userObj.getPassword());
-            userObj.setPassword(newEncodedPassword);
-            userDao.save(userObj);
+            long companyId = userDao.save(user);
+            newUser = userDao.get(companyId);
         }
-        return validationMsg;
-    }
+        obj.put("user", newUser);
+        obj.put("validationError", validationMsg);
+        return obj;
 
-    @Transactional
-    public String updateUser(User user) throws ParseException {
-        String validationMsg = "";
-        validationMsg = checkInput(user);
-        User existingUser = userDao.get(user.getId());
-        if (existingUser == null && validationMsg == "") validationMsg = INVALID_USER;
-        if (user.getVersion() != existingUser.getVersion() && validationMsg == "") validationMsg = BACK_DATED_DATA;
-            //@todo
-            // email check now omit bcz it is not send from user side
-            //if (validationMsg == "") validationMsg = checkForDuplicateEmail(existingUser, user.getEmail());
-        if ("".equals(validationMsg)) {
-            User newObj=setUpdateUserValue(user,existingUser);
-            userDao.remove(existingUser);
-            userDao.update(newObj);
-        }
-        return validationMsg;
     }
 
 
 
+    @Transactional
+    public Map<String, Object> updateUser(MultipartHttpServletRequest request) throws Exception {
+        Map<String, Object> obj = new HashMap<>();
+        Map<String, Object> msg = new HashMap<>();
+        String validationMsg = "";
+        User newUser = new User();
+        User existingUser = new User();
+        User user = createObjForSave(request);
+        validationMsg = checkInput(user);
+        if ("".equals(validationMsg)) existingUser = userDao.get(user.getId());
+        if (existingUser.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_USER;
+        if (user.getVersion() != existingUser.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
+        if ("".equals(validationMsg)) newUser = userDao.findByNewName(existingUser.getEmail(),user.getEmail());
+        if (newUser.getName() != null && "".equals(validationMsg)) validationMsg = EMAIL_EXISTS;
+        String fileName = request.getFile("photo").getOriginalFilename();
+        if (!("".equals(fileName))) {
+            validationMsg = deleteLogo(request.getRealPath(
+                    "/"), existingUser.getImagePath());
+            if ("".equals(validationMsg)) msg = fileSave(request);
+            if ("".equals(validationMsg)) existingUser.setImagePath((String) msg.get("path"));
+        }
+        if ("".equals(validationMsg)) {
+            newUser = setUpdateUserValue(user, existingUser);
+            userDao.update(newUser);
+        }
+        obj.put("user", newUser);
+        obj.put("validationError", validationMsg);
+        return obj;
+    }
+
+
+
 
     @Transactional
-    public String delete(Long userId) {
+    public String delete(Long userId,HttpServletRequest request) {
         String validationMsg = "";
-        if (userId == null) validationMsg = INVALID_INPUT;
-        User existingUser = userDao.get(userId);
-        if (existingUser == null && validationMsg == "") validationMsg = INVALID_USER;
+        String fileName = "";
+        if (userId == 0l) validationMsg = INVALID_INPUT;
+        User user = userDao.get(userId);
+        if (user == null && "".equals(validationMsg)) validationMsg = INVALID_USER;
+
+        // later implementation
+//        List<Object> obj = userDao.countOfCompany(companyId);
+//        if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_COMPANY;
+        if (user != null) fileName = user.getImagePath();
+        if ("".equals(validationMsg)) validationMsg = deleteLogo(request.getRealPath("/"),fileName);
         if ("".equals(validationMsg)) {
-            userDao.delete(existingUser);
+            userDao.delete(user);
         }
         return validationMsg;
     }
@@ -141,9 +171,6 @@ public class UserServiceImpl implements UserService {
 
     private String checkInput(User user) {
         String msg = "";
-        if (user.getName() == null || user.getEmail() == null
-                || user.getPhone() == null || user.getPassword() == null || user.getRole() == null)
-            msg = INVALID_INPUT;
 
         //server side validation check
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
@@ -166,17 +193,17 @@ public class UserServiceImpl implements UserService {
       @ set user role based on user user type
      */
 
-    private User setUserRole(User oldUser) {
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-        User newUser = new User(oldUser.getName(), oldUser.getPassword(), true, true, true, true, grantedAuthorities, oldUser.getName(), oldUser.getEmail(), oldUser.getRole(), oldUser.getPhone(), oldUser.getRights(), oldUser.getCreatedBy(), oldUser.getUpdatedBy(), oldUser.getCreatedOn(), oldUser.getUpdatedOn());
-        if (environment.getProperty("role.admin").equals(oldUser.getRole())) newUser.setRole(Role.ROLE_ADMIN.name());
-        if (environment.getProperty("role.super.admin").equals(oldUser.getRole()))
-            newUser.setRole(Role.ROLE_SUPER_ADMIN.name());
-        if (environment.getProperty("role.user").equals(oldUser.getRole())) newUser.setRole(Role.ROLE_USER.name());
-        if (environment.getProperty("role.super.other").equals(oldUser.getRole()))
-            newUser.setRole(Role.ROLE_OTHER.name());
-        return newUser;
-    }
+//    private User setUserRole(User oldUser) {
+//        List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
+//        User newUser = new User(oldUser.getName(), oldUser.getPassword(), true, true, true, true, grantedAuthorities, oldUser.getName(), oldUser.getEmail(), oldUser.getRole(), oldUser.getPhone(), oldUser.getRights(), oldUser.getCreatedBy(), oldUser.getUpdatedBy(), oldUser.getCreatedOn(), oldUser.getUpdatedOn());
+//        if (environment.getProperty("role.admin").equals(oldUser.getRole())) newUser.setRole(Role.ROLE_ADMIN.name());
+//        if (environment.getProperty("role.super.admin").equals(oldUser.getRole()))
+//            newUser.setRole(Role.ROLE_SUPER_ADMIN.name());
+//        if (environment.getProperty("role.user").equals(oldUser.getRole())) newUser.setRole(Role.ROLE_USER.name());
+//        if (environment.getProperty("role.super.other").equals(oldUser.getRole()))
+//            newUser.setRole(Role.ROLE_OTHER.name());
+//        return newUser;
+//    }
 
 
     private User setEditorInfo(User user, String action) throws ParseException {
@@ -199,24 +226,103 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    private String checkForDuplicateEmail(User user, String email) {
+
+    // create user object for saving
+
+    private User createObjForSave(MultipartHttpServletRequest request) throws Exception {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodedPassword = encoder.encode(request.getParameter("password"));
+        User user = new User();
+        user.setName(request.getParameter("name").trim());
+        user.setEmail(request.getParameter("email").trim());
+        user.setPhone(request.getParameter("phone").trim());
+        user.setPassword(request.getParameter("phone").trim());
+        user.setDesignation(request.getParameter("designation").trim());
+        user.setRole(request.getParameter("ROLE_ADMIN"));
+        user.setImagePath(request.getFile("photo").getOriginalFilename());
+        user.setPassword(encodedPassword);
+        SimpleDateFormat dateFormat = new SimpleDateFormat();
+        Date date = dateFormat.parse(dateFormat.format(new Date()));
+        user.setCreatedBy(getUserId());
+        user.setCreatedOn(date);
+        return user;
+
+    }
+
+    private User setUpdateUserValue(User objFromUI, User existingUser) throws ParseException {
+        User userObj = new User();
+        userObj.setId(objFromUI.getId());
+        userObj.setVersion(objFromUI.getVersion());
+        userObj.setName(objFromUI.getName().trim());
+        userObj.setEmail(objFromUI.getEmail().trim());
+        userObj.setPhone(objFromUI.getPhone().trim());
+        userObj.setDesignation(objFromUI.getDesignation().trim());
+        userObj.setImagePath(existingUser.getImagePath());
+        userObj.setCreatedBy(existingUser.getCreatedBy());
+        userObj.setCreatedOn(existingUser.getCreatedOn());
+        userObj.setPassword(existingUser.getPassword());
+        SimpleDateFormat dateFormat = new SimpleDateFormat();
+        Date date = dateFormat.parse(dateFormat.format(new Date()));
+        userObj.setUpdatedBy(getUserId());
+        userObj.setUpdatedOn(date);
+        return userObj;
+    }
+
+
+    private Map fileSave(MultipartHttpServletRequest request) {
+        Map<String, String> msg = new HashMap<>();
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        MultipartFile multipartFile = request.getFile("photo");
+        String fileName = multipartFile.getOriginalFilename();
+        Random rand = new Random();
+        int n = rand.nextInt(1000) + 1;
+        fileName = n + "_" + fileName; // create new name for logo file
+        try {
+            String filePath = LOGO_PATH + fileName;
+            String realPathFetch = request.getRealPath( "/");
+            inputStream = multipartFile.getInputStream();
+            File newFile = new File(realPathFetch + filePath);
+            outputStream = new FileOutputStream(newFile);
+            int read = 0;
+            byte[] bytes = new byte[1024];
+            while ((read = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, read);
+            }
+            msg.put("validationMsg", "");
+            msg.put("path", filePath.trim());
+            inputStream.close();
+            outputStream.close();
+        } catch (IOException e) {
+            msg.put("validationMsg", e.getMessage());
+            msg.put("path", "");
+        }
+        return msg;
+
+    }
+
+
+    private String deleteLogo(String realPathFetch, String fileName) {
         String msg = "";
-        if (!email.equals(user.getEmail().toString())) {
-            User duplicateObj = userDao.findByUserName(email);
-            if (duplicateObj != null) msg = EMAIL_EXISTS;
+        try {
+            File file = new File(realPathFetch+fileName);
+            file.setWritable(true);
+            if (file.delete()) msg = "";
+            else msg = environment.getProperty("user.file.delete.success.msg");
+        } catch (Exception e) {
+            msg = e.getMessage();
         }
         return msg;
     }
 
-    private User setUpdateUserValue(User objFromUI,User existingUser) throws ParseException {
-        User userObj = setUserRole(objFromUI);
-        userObj.setId(objFromUI.getId());
-        userObj.setVersion(objFromUI.getVersion());
-        userObj = setEditorInfo(userObj, "update");
-        userObj.setCreatedBy(existingUser.getCreatedBy());
-        userObj.setCreatedOn(existingUser.getCreatedOn());
-        userObj.setPassword(existingUser.getPassword());
-        return userObj;
+    // create company object for updating
+
+
+
+    private String getUserId(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user=(User)auth.getPrincipal();
+        return user.getEmail();
     }
 
 

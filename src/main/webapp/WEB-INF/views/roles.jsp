@@ -66,7 +66,7 @@
           <div class="body" style="border:solid; border-width: 1px; border-color:#a5a5a5;">
             <form class="form-horizontal">
               <fieldset>
-
+                <legend><strong>Role Setting</strong></legend>
 
                 <!-- Text input-->
                 <div class="form-group">
@@ -196,6 +196,7 @@
         /* Update roles data using ajax */
 
         $('#editRole').click(function () {
+          document.getElementById('roleForm').style.display = "none";
           initializeRoleForm();
           initFormValidationMsg();
           var newRole = new Object();

@@ -3,19 +3,22 @@ package com.dreamchain.skeleton.service;
 import com.dreamchain.skeleton.model.User;
 import com.dreamchain.skeleton.web.UserCommand;
 import com.dreamchain.skeleton.web.UserGrid;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
 	
 	User get(Long id);
-	
-	String save(User user) throws ParseException;
 
-	String updateUser(User user) throws ParseException;
+	Map<String, Object> save(MultipartHttpServletRequest request) throws Exception;
 
-	String delete(Long userId);
+	Map<String, Object> updateUser(MultipartHttpServletRequest request) throws Exception;
+
+	String delete(Long companyId,HttpServletRequest request);
 
 	String changePassword(String userId,String oldPassword,String newPassword) throws Exception;
 

@@ -49,6 +49,16 @@ public class User extends org.springframework.security.core.userdetails.User imp
 	@NotEmpty
 	private String role;
 
+
+	@NotEmpty
+	@Length(max = 150)
+	private String imagePath;
+
+
+	@NotEmpty
+	@Length(max = 50)
+	private String designation;
+
 	@Column
 	private String createdBy;
 
@@ -73,7 +83,7 @@ public class User extends org.springframework.security.core.userdetails.User imp
 				boolean accountNonLocked,
 					Collection authorities,
 					String name,String email, String role,
-					String phone,Set<String> rights, String createdBy,String updatedBy,Date createdOn,Date updatedOn) {
+					String phone,Set<String> rights, String imagePath,String designation,String createdBy,String updatedBy,Date createdOn,Date updatedOn) {
 		super(username, password, enabled, accountNonExpired,
 				credentialsNonExpired, accountNonLocked, authorities);
 
@@ -83,6 +93,8 @@ public class User extends org.springframework.security.core.userdetails.User imp
 		this.email = email;
 		this.role = role;
 		this.phone = phone;
+		this.designation = designation;
+		this.imagePath = imagePath;
 		this.rights=rights;
 		this.createdBy = createdBy;
 		this.updatedBy=updatedBy;
@@ -108,6 +120,7 @@ public class User extends org.springframework.security.core.userdetails.User imp
 	public Long getId() {
 		return id;
 	}
+
 
 	public void setId(Long id) {
 		this.id = id;
@@ -191,6 +204,26 @@ public class User extends org.springframework.security.core.userdetails.User imp
 
 	public void setVersion(long version) {
 		this.version = version;
+	}
+
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
+	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+
+	public String getDesignation() {
+		return designation;
+	}
+
+	public void setDesignation(String designation) {
+		this.designation = designation;
 	}
 
 	public static ArrayList<GrantedAuthority> getALLAuthority() {

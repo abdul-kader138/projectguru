@@ -240,6 +240,7 @@
                 /* Update Product data using ajax */
 
                 $('#editProduct').click(function () {
+                    document.getElementById('productForm').style.display = "none";
                     initializeProductForm();
                     initFormValidationMsg();
                     var newProduct = new Object();

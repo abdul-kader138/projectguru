@@ -7,12 +7,13 @@ import com.dreamchain.skeleton.model.User;
 public interface UserDao {
 
 	User get(Long id);
-	void save(User user);
+	Long save(User user);
 	void update(User user);
 	void delete(User user);
 	void remove(User user);
 	List<User> findAll(String username);
 	List<User> findAll();
 	User findByUserName(String username);
+	User findByNewName(String CurrentName,String newName);
 
 }

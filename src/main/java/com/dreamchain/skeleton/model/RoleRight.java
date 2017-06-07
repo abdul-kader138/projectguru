@@ -33,6 +33,7 @@ public class RoleRight implements Serializable
     private long roleId;
 
     @NotNull
+    @OneToOne
     private Roles roles;
 
 

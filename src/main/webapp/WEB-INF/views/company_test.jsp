@@ -109,7 +109,7 @@
 
                                     <div class="col-md-6">
                                         <img id="uploadedLogoSrc"
-                                             src="resources/images/edit.gif" width="70" height="70" border="0">
+                                             src="" width="70" height="70" border="0">
                                     </div>
                                 </div>
 
@@ -192,7 +192,7 @@
                             "render": function (url, type, full) {
                                 return '<img src="' + mainPath + full.imagePath + '" width="30" height="30" />';
                             }
-                        },
+                        }
 
                     ],
                     'aaSorting': [[0, 'asc']],
@@ -234,6 +234,7 @@
                 /* Update company data using ajax */
 
                 $('#editCompany').click(function () {
+                    document.getElementById('companyForm').style.display = "none";
                     initializeCompanyForm();
                     initFormValidationMsg();
                     var newCompany = new Object();
@@ -541,7 +542,7 @@
                 });
 
 
-                /* selected row value set to compant form when edit*/
+                /* selected row value set to company form when edit*/
 
                 function setSelectedRowValueToForm(newCompany) {
                     document.getElementById('companyForm').style.display = "block";

@@ -5,13 +5,12 @@
 
         <%--start of table div--%>
 
-        <div id="viewTableData">
-
-        </div>
-
-
+        <div id="viewTableData"> </div>
         <div class="row clearfix">
             <div class="col-xs-10 col-xs-offset-1 card">
+                <br/>
+                <div><h4>Role-Rights List</h4></div>
+                <hr/>
                 <br/><br/>
                 <table id="roleTable" class="display nowrap" cellspacing="0" width="100%">
                     <thead>
@@ -71,7 +70,7 @@
                             <fieldset>
 
                                 <!-- Form Name -->
-                                <legend><strong>Role Setting</strong></legend>
+                                <legend><strong>Role-Rights Setting</strong></legend>
 
                                 <input type="hidden" class="form-control" id="id" name="id" value="0" required>
                                 <input type="hidden" class="form-control" id="version" name="version" value="0"
@@ -174,7 +173,7 @@
                             'sWidth': '15px',
                             'bSortable': false
                         },
-                        {"mData": "role.name", 'sWidth': '200px'},
+                        {"mData": "roles.name", 'sWidth': '200px'},
                         {"mData": "rights"}
                     ],
                     'aaSorting': [[0, 'asc']],
@@ -210,6 +209,7 @@
                 /* Update role data using ajax */
 //
                 $('#editRole').click(function () {
+                    document.getElementById('roleForm').style.display = "none";
                     initializeRoleForm();
                     initFormValidationMsg();
                     var role = new Object();
@@ -305,11 +305,11 @@
                 /* load table data on click refresh button*/
 
                 $('#refreshRole').on('click', function () {
+                    document.getElementById('roleForm').style.display = "none";
                     initializeRoleForm();
                     initFormValidationMsg();
                     companyGb = null;
                     table.ajax.url(messageResource.get('role_right.list.load.url', 'configMessageForUI')).load();
-                    document.getElementById('roleForm').style.display = "none";
                 });
 
 
@@ -496,7 +496,7 @@
                     table.row.add({
                         "id": role.id,
                         "version": role.version,
-                        "role": role.role,
+                        "roles": role.roles,
                         "rights": role.rights
                     }).draw();
 
@@ -544,7 +544,7 @@
                     $("#saveRole").hide();
                     $("#id").val(role.id);
                     $("#version").val(role.version);
-                    $('#listOfRole option:contains("' + role.role.name + '")').prop('selected', 'selected');;
+                    $('#listOfRole option:contains("' + role.roles.name + '")').prop('selected', 'selected');;
                 }
 
 

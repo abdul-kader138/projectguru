@@ -48,8 +48,12 @@ public class RoleRightServiceImpl implements RoleRightService {
         Map<String, Object> obj = new HashMap<>();
         String validationMsg = "";
         RoleRight newRoleRight = new RoleRight();
+        RoleRight roleRight=new RoleRight();
+        RoleRight existingRoleRight=new RoleRight();
         validationMsg = checkInput(roleObj);
-        RoleRight roleRight = createRoleObj(roleObj);
+        if ("".equals(validationMsg)) roleRight = createRoleObj(roleObj);
+        if ("".equals(validationMsg)) existingRoleRight = roleRightDao.findByRolesName(roleRight.getRoleId());
+        if (existingRoleRight.getRoles() != null && validationMsg == "") validationMsg = ROLE_EXISTS;
         if ("".equals(validationMsg)) {
             long roleId = roleRightDao.save(roleRight);
             newRoleRight = roleRightDao.get(roleId);
@@ -69,6 +73,8 @@ public class RoleRightServiceImpl implements RoleRightService {
         RoleRight existingRoleRight = roleRightDao.get(roleRight.getId());
         if (roleRight.getId() == 0l && validationMsg == "") validationMsg = INVALID_INPUT;
         if (roleRight.getVersion() != existingRoleRight.getVersion() && validationMsg == "") validationMsg = BACK_DATED_DATA;
+        if ("".equals(validationMsg)) newObj = roleRightDao.findByNewName(existingRoleRight.getRoleId(),roleRight.getRoleId());
+        if (newObj.getRoles() != null && "".equals(validationMsg)) validationMsg = ROLE_EXISTS;
         if ("".equals(validationMsg)) {
             newObj=setUpdateCompanyValue(roleRight, existingRoleRight);
             roleRightDao.update(newObj);
@@ -130,7 +136,7 @@ public class RoleRightServiceImpl implements RoleRightService {
         roleRight.setId(Long.parseLong((String) roleObj.get("id")));
         roleRight.setVersion(Long.parseLong((String) roleObj.get("version")));
         roleRight.setRoleId(Long.parseLong((String) roleObj.get("roleId")));
-        roleRight.setRoles(rolesDao.get(Long.parseLong((String) roleObj.get("version"))));
+        roleRight.setRoles(rolesDao.get(Long.parseLong((String) roleObj.get("roleId"))));
         if ((String)roleObj.get("VIEW_PRIVILEGE") != ""){
             rights.add((String)roleObj.get("VIEW_PRIVILEGE"));
         }

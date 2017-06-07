@@ -255,6 +255,7 @@
                 /* Update Category data using ajax */
 
                 $('#editCategory').click(function () {
+                    document.getElementById('categoryForm').style.display = "none";
                     initializeCategoryForm();
                     initFormValidationMsg();
                     var newCategory = new Object();
