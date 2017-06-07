@@ -39,7 +39,11 @@ public class RoleRight implements Serializable
 
     @NotNull
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "rights")
+    @CollectionTable(
+            name = "rights",
+            joinColumns=@JoinColumn(name = "id", referencedColumnName = "id")
+    )
+    @Column(name="rights")
     private Set<String> rights = new HashSet<>();
 
 

@@ -98,7 +98,7 @@
                                     <label class="col-md-4 control-label" for="name">Password :</label>
 
                                     <div class="col-md-6">
-                                               required>
+
                                         <input id="password" name="password" type="text" placeholder=""
                                                class="form-control input-md"
                                                style="border-color:#808080; border-width:1px; border-style:solid;"
@@ -114,11 +114,11 @@
                                     <label class="col-md-4 control-label" for="name">Email :</label>
 
                                     <div class="col-md-6">
-                                        required>
+
                                         <input id="email" name="email" type="text" placeholder=""
                                                class="form-control input-md"
                                                style="border-color:#808080; border-width:1px; border-style:solid;"
-                                               required="">
+                                               required=""/>
                                         <label id="emailValidation" style="color:red; font-size: 11px;"
                                                class="form-control"></label>
 
@@ -130,7 +130,7 @@
                                     <label class="col-md-4 control-label" for="name">Phone :</label>
 
                                     <div class="col-md-6">
-                                        required>
+
                                         <input id="phone" name="phone" type="text" placeholder=""
                                                class="form-control input-md"
                                                style="border-color:#808080; border-width:1px; border-style:solid;"
@@ -146,7 +146,7 @@
                                     <label class="col-md-4 control-label" for="name">Designation :</label>
 
                                     <div class="col-md-6">
-                                        required>
+
                                         <input id="designation" name="designation" type="text" placeholder=""
                                                class="form-control input-md"
                                                style="border-color:#808080; border-width:1px; border-style:solid;"
@@ -279,7 +279,7 @@
 
                 /* Save User data using ajax */
 
-                $("#saveDepartment").click(function (event) {
+                $("#saveUser").click(function (event) {
                     initFormValidationMsg();
                     var part1 = "";
                     var part2 = "";
@@ -564,10 +564,10 @@
                         $("#roleNameValidation").text("Role name is required");
                         isValid = false;
                     }
-                    if (!(isJpg(filename) || isPng(filename) || isGif(filename)) && isValid==true) {
-                        $("#logoValidation").text('Please browse a JPG/PNG/GIF file to upload ...');
-                        isValid = false;
-                    }
+//                    if (!(isJpg(filename) || isPng(filename) || isGif(filename)) && isValid==true) {
+//                        $("#logoValidation").text('Please browse a JPG/PNG/GIF file to upload ...');
+//                        isValid = false;
+//                    }
                     return isValid;
                 }
 

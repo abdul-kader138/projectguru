@@ -323,7 +323,7 @@
                         },
                         'type': 'POST',
                         'url': messageResource.get('role_right.delete.url', 'configMessageForUI'),
-                        'data': JSON.stringify(role),
+                        'data': JSON.stringify(role.id),
                         'dataType': 'json',
                         'success': function (d) {
                             if (d.successMsg) {
@@ -415,7 +415,6 @@
                                 part1 = d.successMsg;
                                 initializeRoleForm();
 
-                                console.log(d.role_right);
                                 setNewDataTableValue(d.role, table);
                                 document.getElementById('roleForm').style.display = "none";
                                 window.location.href = "#viewTableData";
