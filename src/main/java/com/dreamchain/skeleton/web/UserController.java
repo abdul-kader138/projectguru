@@ -54,7 +54,7 @@ public class UserController {
     @RequestMapping(value = "/user/save", method = RequestMethod.POST)
     public
     @ResponseBody
-    Map saveUser(@RequestBody MultipartHttpServletRequest request) throws Exception {
+    Map saveUser(MultipartHttpServletRequest request) throws Exception {
         Map<String, Object> objList = new HashMap<>();
         String successMsg = "";
         String validationError = "";

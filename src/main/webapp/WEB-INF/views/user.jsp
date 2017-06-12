@@ -69,7 +69,7 @@
                         <h2><strong>&nbsp;</strong></h2>
                     </div>
                     <div class="body" style="border:solid; border-width: 1px; border-color:#a5a5a5;">
-                        <form class="form-horizontal">
+                        <form class="form-horizontal" id="userDetails">
                             <fieldset>
 
                                 <!-- Form Name -->
@@ -92,18 +92,34 @@
 
                                     </div>
                                 </div>
-
                                 <!-- Text input-->
+
                                 <div class="form-group">
                                     <label class="col-md-4 control-label" for="name">Password :</label>
 
                                     <div class="col-md-6">
 
-                                        <input id="password" name="password" type="text" placeholder=""
+                                        <input id="password" name="password" type="password" placeholder=""
                                                class="form-control input-md"
                                                style="border-color:#808080; border-width:1px; border-style:solid;"
                                                required="">
                                         <label id="passwordValidation" style="color:red; font-size: 11px;"
+                                               class="form-control"></label>
+
+                                    </div>
+                                </div>
+
+                                <!-- Text input-->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="name">Confirm Password :</label>
+
+                                    <div class="col-md-6">
+
+                                        <input id="confirmPassword" name="confirmPassword" type="password" placeholder=""
+                                               class="form-control input-md"
+                                               style="border-color:#808080; border-width:1px; border-style:solid;"
+                                               required="">
+                                        <label id="confirmPasswordValidation" style="color:red; font-size: 11px;"
                                                class="form-control"></label>
 
                                     </div>
@@ -285,9 +301,14 @@
                     var part2 = "";
                     var icn = 0;
                     var msg = "";
-                    var user = new Object();
+                    var roleId=$("#listOfRole option:selected").val();
+                    var roleName=$("#listOfRole option:selected").text();
+                    var user=new FormData(document.getElementById("userDetails"));
+                    user.append('roleId', roleId);
+                    user.append('roleName', roleName);
                     if (formValidation()) callAjaxForAddOperation(part1, part2, icn, msg, user);
                 });
+
 
 
                 /* Update User data using ajax */
@@ -481,10 +502,11 @@
                 /*  Ajax call for save operation */
 
                 function callAjaxForAddOperation(part1, part2, icn, msg, user) {
+
                     $.ajax({
                         url: messageResource.get('user.save.url', 'configMessageForUI'),
                         type: "POST",
-                        data: new FormData(document.getElementById("formData")),
+                        data:user,
                         enctype: 'multipart/form-data',
                         processData: false,
                         contentType: false
@@ -525,6 +547,7 @@
                     $("#name").val("");
                     $("#email").val("");
                     $("#password").val("");
+                    $("#confirmPassword").val("");
                     $("#phone").val("");
                     $("#designation").val("");
                     $("#photo").val("");
@@ -539,35 +562,39 @@
                     var name = $("#name").val();
                     var email = $("#email").val();
                     var password = $("#password").val();
+                    var confirmPassword = $("#confirmPassword").val();
                     var phone = $("#phone").val();
                     var designation = $("#designation").val();
-                    var filename = $("#logo").val();
+                    var filename = $("#photo").val();
                     var roleId = $("#listOfRole option:selected").val();
 
                     isValid=blankCheck(name,"name",isValid);
 
+                    //password check
+                    if(isValid == true) isValid=passwordCheck(password,confirmPassword,"password", "confirmPassword");
+
                     // email check
                     if(isValid == true) isValid=blankCheck(email,"email",isValid);
-                    if (!/^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/g.test(email)){
+                    if ((!/^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/g.test(email)) && isValid == true){
                         $("#emailValidation").text('Only valid email is allowed!');
                         isValid = false;
                     }
 
                     // Phone Check
                     if(isValid == true) isValid=blankCheck(phone,"phone",isValid);
-                    if (!/^\d{11}$/g.test(phone)){
+                    if ((!/^\d{11}$/g.test(phone)) && isValid == true){
                         $("#phoneValidation").text('Only 11 digit phone no is allowed!');
                         isValid = false;
                     }
-                    if(isValid == true) isValid=blankCheck(phone,"designation",isValid);
+                    if(isValid == true) isValid=blankCheck(designation,"designation",isValid);
                     if ((roleId == null) || (roleId == "0") && isValid==true) {
                         $("#roleNameValidation").text("Role name is required");
                         isValid = false;
                     }
-//                    if (!(isJpg(filename) || isPng(filename) || isGif(filename)) && isValid==true) {
-//                        $("#logoValidation").text('Please browse a JPG/PNG/GIF file to upload ...');
-//                        isValid = false;
-//                    }
+                    if (!(isJpg(filename) || isPng(filename) || isGif(filename)) && isValid==true) {
+                        $("#photoValidation").text('Please browse a JPG/PNG/GIF file to upload ...');
+                        isValid = false;
+                    }
                     return isValid;
                 }
 
@@ -579,6 +606,7 @@
                     $("#nameValidation").text("");
                     $("#emailValidation").text("");
                     $("#passwordValidation").text("");
+                    $("#confirmPasswordValidation").text("");
                     $("#phoneValidation").text("");
                     $("#designationValidation").text("");
                     $("#photoValidation").text("");

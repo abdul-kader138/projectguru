@@ -1,5 +1,7 @@
 package com.dreamchain.skeleton.service.impl;
 
+import com.dreamchain.skeleton.dao.RoleRightDao;
+import com.dreamchain.skeleton.model.RoleRight;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -31,6 +33,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserDao userDao;
+    @Autowired
+    RoleRightDao roleRightDao;
     @Autowired
     Environment environment;
 
@@ -68,7 +72,7 @@ public class UserServiceImpl implements UserService {
         User user = createObjForSave(request);
         validationMsg = checkInput(user);
         if ("".equals(validationMsg)) existingUser = userDao.findByUserName(user.getEmail());
-        if (existingUser.getName() != null && validationMsg == "") validationMsg = EMAIL_EXISTS;
+        if (existingUser != null && validationMsg == "") validationMsg = EMAIL_EXISTS;
         if ("".equals(validationMsg)) msg = fileSave(request);
         if (msg.get("validationMsg") == "") user.setImagePath((String) msg.get("path"));
         if ("".equals(validationMsg)) {
@@ -232,15 +236,18 @@ public class UserServiceImpl implements UserService {
     private User createObjForSave(MultipartHttpServletRequest request) throws Exception {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(request.getParameter("password"));
+        RoleRight roleRight=roleRightDao.findByRolesName(Long.parseLong(request.getParameter("roleId")));
+        Set rightList=new HashSet();
+        if(roleRight !=null) rightList.addAll(roleRight.getRights());
         User user = new User();
         user.setName(request.getParameter("name").trim());
+        user.setPassword(encodedPassword);
         user.setEmail(request.getParameter("email").trim());
         user.setPhone(request.getParameter("phone").trim());
-        user.setPassword(request.getParameter("phone").trim());
         user.setDesignation(request.getParameter("designation").trim());
-        user.setRole(request.getParameter("ROLE_ADMIN"));
+        user.setRole(request.getParameter("roleName"));
+        user.setRights(rightList);
         user.setImagePath(request.getFile("photo").getOriginalFilename());
-        user.setPassword(encodedPassword);
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
         user.setCreatedBy(getUserId());
@@ -257,6 +264,8 @@ public class UserServiceImpl implements UserService {
         userObj.setEmail(objFromUI.getEmail().trim());
         userObj.setPhone(objFromUI.getPhone().trim());
         userObj.setDesignation(objFromUI.getDesignation().trim());
+        userObj.setRole(objFromUI.getRole());
+        userObj.setRights(objFromUI.getRights());
         userObj.setImagePath(existingUser.getImagePath());
         userObj.setCreatedBy(existingUser.getCreatedBy());
         userObj.setCreatedOn(existingUser.getCreatedOn());
