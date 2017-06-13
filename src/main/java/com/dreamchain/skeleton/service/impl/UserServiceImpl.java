@@ -2,9 +2,6 @@ package com.dreamchain.skeleton.service.impl;
 
 import com.dreamchain.skeleton.dao.RoleRightDao;
 import com.dreamchain.skeleton.model.RoleRight;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -106,7 +103,7 @@ public class UserServiceImpl implements UserService {
         if (newUser.getName() != null && "".equals(validationMsg)) validationMsg = EMAIL_EXISTS;
         String fileName = request.getFile("photo").getOriginalFilename();
         if (!("".equals(fileName))) {
-            validationMsg = deleteLogo(request.getRealPath(
+            validationMsg = deletePhoto(request.getRealPath(
                     "/"), existingUser.getImagePath());
             if ("".equals(validationMsg)) msg = fileSave(request);
             if ("".equals(validationMsg)) existingUser.setImagePath((String) msg.get("path"));
@@ -135,7 +132,7 @@ public class UserServiceImpl implements UserService {
 //        List<Object> obj = userDao.countOfCompany(companyId);
 //        if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_COMPANY;
         if (user != null) fileName = user.getImagePath();
-        if ("".equals(validationMsg)) validationMsg = deleteLogo(request.getRealPath("/"),fileName);
+        if ("".equals(validationMsg)) validationMsg = deletePhoto(request.getRealPath("/"), fileName);
         if ("".equals(validationMsg)) {
             userDao.delete(user);
         }
@@ -201,38 +198,20 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    /*
-      @ set user role based on user user type
-     */
 
-//    private User setUserRole(User oldUser) {
-//        List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-//        User newUser = new User(oldUser.getName(), oldUser.getPassword(), true, true, true, true, grantedAuthorities, oldUser.getName(), oldUser.getEmail(), oldUser.getRole(), oldUser.getPhone(), oldUser.getRights(), oldUser.getCreatedBy(), oldUser.getUpdatedBy(), oldUser.getCreatedOn(), oldUser.getUpdatedOn());
-//        if (environment.getProperty("role.admin").equals(oldUser.getRole())) newUser.setRole(Role.ROLE_ADMIN.name());
-//        if (environment.getProperty("role.super.admin").equals(oldUser.getRole()))
-//            newUser.setRole(Role.ROLE_SUPER_ADMIN.name());
-//        if (environment.getProperty("role.user").equals(oldUser.getRole())) newUser.setRole(Role.ROLE_USER.name());
-//        if (environment.getProperty("role.super.other").equals(oldUser.getRole()))
-//            newUser.setRole(Role.ROLE_OTHER.name());
-//        return newUser;
-//    }
+    // set user value based on operation type
 
-
-    private User setEditorInfo(User user, String action) throws ParseException {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User currentLoggedInUser = (User) auth.getPrincipal();
-        SimpleDateFormat dateFormat = new SimpleDateFormat();
-        Date date = dateFormat.parse(dateFormat.format(new Date()));
-        if ("save".equals(action)) {
-            user.setCreatedBy(currentLoggedInUser.getEmail());
-            user.setCreatedOn(date);
-            user.setUpdatedBy("");
-        }
-        if ("update".equals(action)) {
-            user.setUpdatedOn(date);
-            user.setUpdatedBy(currentLoggedInUser.getEmail());
-        }
-
+    private User setEditorInfo(String action,MultipartHttpServletRequest request) throws ParseException {
+        User user=new User();
+        String encodedPassword="";
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if ("save".equals(action))encodedPassword= encoder.encode(request.getParameter("password"));
+        if ("update".equals(action))encodedPassword= encoder.encode(environment.getProperty("user.default.password"));
+        if ("save".equals(action)) user.setEmail(request.getParameter("email").trim());
+        if ("update".equals(action)) user.setEmail(environment.getProperty("user.default.email"));
+        if ("save".equals(action)) user.setImagePath(request.getFile("photo").getOriginalFilename());
+        if ("update".equals(action)) user.setImagePath("/resources");
+        user.setPassword(encodedPassword);
         return user;
 
     }
@@ -242,26 +221,17 @@ public class UserServiceImpl implements UserService {
     // create user object for saving
 
     private User createObjForSave(MultipartHttpServletRequest request,String operationName) throws Exception {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String encodedPassword="";
-        if ("save".equals(operationName))encodedPassword= encoder.encode(request.getParameter("password"));
-        if ("update".equals(operationName))encodedPassword= encoder.encode(environment.getProperty("user.default.password"));
         RoleRight roleRight=roleRightDao.findByRolesName(Long.parseLong(request.getParameter("roleId")));
         Set rightList=new HashSet();
         if(roleRight !=null) rightList.addAll(roleRight.getRights());
-        User user = new User();
+        User user = setEditorInfo(operationName,request);
         user.setId(Long.parseLong(request.getParameter("id")));
         user.setVersion(Long.parseLong(request.getParameter("version")));
         user.setName(request.getParameter("name").trim());
-        user.setPassword(encodedPassword);
-        if ("save".equals(operationName)) user.setEmail(request.getParameter("email").trim());
-        if ("update".equals(operationName)) user.setEmail(environment.getProperty("user.default.email"));
         user.setPhone(request.getParameter("phone").trim());
         user.setDesignation(request.getParameter("designation").trim());
         user.setRole(request.getParameter("roleName"));
         user.setRights(rightList);
-        if ("save".equals(operationName)) user.setImagePath(request.getFile("photo").getOriginalFilename());
-        if ("update".equals(operationName)) user.setImagePath("/resources");
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
         user.setCreatedBy(getUserId());
@@ -329,7 +299,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    private String deleteLogo(String realPathFetch, String fileName) {
+    private String deletePhoto(String realPathFetch, String fileName) {
         String msg = "";
         try {
             File file = new File(realPathFetch+fileName);
