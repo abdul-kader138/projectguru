@@ -321,6 +321,7 @@
                                 msg = "";
                                 part1 = d.successMsg;
                                 showServerSideMessage(part1, part2, icn, msg);
+//                                deleteDataRow(newDepartment.id,'departmentTable');
                                 table.ajax.url(messageResource.get('department.list.load.url', 'configMessageForUI')).load();
                             }
                             if (d.validationError) {

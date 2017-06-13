@@ -105,7 +105,10 @@ public class User extends org.springframework.security.core.userdetails.User imp
 
 
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "user_rights")
+	@CollectionTable(
+			name = "user_rights",
+			joinColumns=@JoinColumn(name = "id", referencedColumnName = "id")
+	)
 	private Set<String> rights = new HashSet<>();
 
 

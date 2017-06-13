@@ -111,7 +111,7 @@ public class UserController {
 
 
 
-    @RequestMapping(value = "/user/userList", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/userList1", method = RequestMethod.GET)
     public
     @ResponseBody
     List<User> loadUserList(@RequestBody String email,HttpSession httpSession) {
@@ -124,7 +124,7 @@ public class UserController {
         return userList;
     }
 
-    @RequestMapping(value = "/user/userList1", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/userList", method = RequestMethod.GET)
     public
     @ResponseBody
     List<User> loadUserList1() {
@@ -136,10 +136,10 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/update", method = RequestMethod.POST)
     public
     @ResponseBody
-    Map updateUser(@RequestBody MultipartHttpServletRequest request) throws Exception {
+    Map updateUser(MultipartHttpServletRequest request) throws Exception {
         Map<String, Object> objList = new HashMap<>();
         String successMsg = "";
         String validationError = "";
@@ -156,10 +156,10 @@ public class UserController {
    }
 
 
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/delete", method = RequestMethod.POST)
     public
     @ResponseBody
-    Map deleteUser(String userId,HttpServletRequest request) throws ParseException {
+    Map deleteUser(@RequestBody String userId,HttpServletRequest request) throws ParseException {
         HashMap serverResponse = new HashMap();
         String successMsg = "";
         String validationError = "";

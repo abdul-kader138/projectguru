@@ -33,18 +33,18 @@
                 &nbsp;
                 &nbsp;
 
-                <button type="button" class="btn bg-grey waves-war" id="editDepartment" value="1" title="Edit"><img
+                <button type="button" class="btn bg-grey waves-war" id="editUser" value="1" title="Edit"><img
                         src="resources/images/edit.gif" width="16" height="16" border="0">&nbsp;Edit
                 </button>
                 &nbsp;
                 &nbsp;
-                <button type="button" class="btn bg-grey waves-war" id="deleteDepartment" value="1" title="Delete"><img
+                <button type="button" class="btn bg-grey waves-war" id="deleteUser" value="1" title="Delete"><img
                         src="resources/images/delete.gif" width="16" height="16" border="0">&nbsp;Delete
 
                 </button>
                 &nbsp;
                 &nbsp;
-                <button type="button" class="btn bg-grey waves-war" id="refreshDepartment" value="1" title="Delete"><img
+                <button type="button" class="btn bg-grey waves-war" id="refreshUser" value="1" title="Delete"><img
                         src="resources/images/refresh.png" width="16" height="16" border="0">&nbsp;Refresh
                 </button>
                 &nbsp;<br/><br/>
@@ -94,7 +94,7 @@
                                 </div>
                                 <!-- Text input-->
 
-                                <div class="form-group">
+                                <div class="form-group" id="passwordGroup">
                                     <label class="col-md-4 control-label" for="name">Password :</label>
 
                                     <div class="col-md-6">
@@ -110,7 +110,7 @@
                                 </div>
 
                                 <!-- Text input-->
-                                <div class="form-group">
+                                <div class="form-group" id="confirmPasswordGroup">
                                     <label class="col-md-4 control-label" for="name">Confirm Password :</label>
 
                                     <div class="col-md-6">
@@ -126,7 +126,7 @@
                                 </div>
 
                                 <!-- Text input-->
-                                <div class="form-group">
+                                <div class="form-group" id="emailGroup">
                                     <label class="col-md-4 control-label" for="name">Email :</label>
 
                                     <div class="col-md-6">
@@ -301,11 +301,7 @@
                     var part2 = "";
                     var icn = 0;
                     var msg = "";
-                    var roleId=$("#listOfRole option:selected").val();
-                    var roleName=$("#listOfRole option:selected").text();
-                    var user=new FormData(document.getElementById("userDetails"));
-                    user.append('roleId', roleId);
-                    user.append('roleName', roleName);
+                    var user=setRoleName();
                     if (formValidation()) callAjaxForAddOperation(part1, part2, icn, msg, user);
                 });
 
@@ -317,7 +313,7 @@
                     document.getElementById('userForm').style.display = "none";
                     initializeUserForm();
                     initFormValidationMsg();
-                    var newUser = new Object();
+                    var newUser =setRoleName();
                     newUser = companyGb;
                     companyGb = null;
                     var data = messageResource.get('user.edit.validation.msg', 'configMessageForUI');
@@ -334,8 +330,8 @@
                     var part2 = "";
                     var icn = 0;
                     var msg = "Message";
-                    var user = new Object();
-                    if (formValidation()) callAjaxForEditOperation(part1, part2, icn, msg, user);
+                    var user=setRoleName();
+                    if (formValidationForUpdate()) callAjaxForEditOperation(part1, part2, icn, msg, user);
 
                 });
 
@@ -422,6 +418,7 @@
                 /*  Ajax call for delete operation */
 
                 function callAjaxForDeleteOperation(part1, part2, icn, msg, newUser) {
+                    console.log(JSON.stringify(newUser.id));
                     $.ajax({
                         headers: {
                             'Accept': 'application/json',
@@ -437,6 +434,7 @@
                                 msg = "";
                                 part1 = d.successMsg;
                                 showServerSideMessage(part1, part2, icn, msg);
+//                                deleteDataRow(newUser.id,'userTable');
                                 table.ajax.url(messageResource.get('user.list.load.url', 'configMessageForUI')).load();
                             }
                             if (d.validationError) {
@@ -463,7 +461,7 @@
                     $.ajax({
                         url: messageResource.get('user.edit.url', 'configMessageForUI'),
                         type: "POST",
-                        data: new FormData(document.getElementById("formData")),
+                        data: user,
                         enctype: 'multipart/form-data',
                         processData: false,
                         contentType: false
@@ -517,7 +515,7 @@
                                     msg = "";
                                     part1 = d.successMsg;
                                     initializeUserForm();
-                                    setNewDataTableValue(d.user, table);
+//                                    setNewDataTableValue(d.user, table);
                                     window.location.href = "#viewTableData";
                                     showServerSideMessage(part1, part2, icn, msg);
                                     table.ajax.url(messageResource.get('user.list.load.url', 'configMessageForUI')).load();
@@ -555,7 +553,7 @@
                 }
 
 
-                /* html form Validation */
+                /* html form Validation for save */
 
                 function formValidation() {
                     var isValid = true;
@@ -600,6 +598,34 @@
 
 
 
+                /* html form Validation for update */
+
+                function formValidationForUpdate() {
+                    var isValid = true;
+                    var name = $("#name").val();
+                    var phone = $("#phone").val();
+                    var designation = $("#designation").val();
+                    var filename = $("#photo").val();
+                    var roleId = $("#listOfRole option:selected").val();
+
+                    isValid=blankCheck(name,"name",isValid);
+
+                    // Phone Check
+                    if(isValid == true) isValid=blankCheck(phone,"phone",isValid);
+                    if ((!/^\d{11}$/g.test(phone)) && isValid == true){
+                        $("#phoneValidation").text('Only 11 digit phone no is allowed!');
+                        isValid = false;
+                    }
+                    if(isValid == true) isValid=blankCheck(designation,"designation",isValid);
+                    if ((roleId == null) || (roleId == "0") && isValid==true) {
+                        $("#roleNameValidation").text("Role name is required");
+                        isValid = false;
+                    }
+                    return isValid;
+                }
+
+
+
                 /* Initialize html form validation error field*/
 
                 function initFormValidationMsg() {
@@ -630,6 +656,9 @@
                     companyGb = null;
                     $("#updateUser").hide();
                     $("#saveUser").show();
+                    $("#passwordGroup").show();
+                    $("#confirmPasswordGroup").show();
+                    $("#emailGroup").show();
                     initializeUserForm();
                     initFormValidationMsg();
                     uncheckedAllCheckBox();
@@ -645,12 +674,14 @@
                     document.getElementById('uploadedPhoto').style.display = "block";
                     $("#updateUser").show();
                     $("#saveUser").hide();
+                    $("#passwordGroup").hide();
+                    $("#confirmPasswordGroup").hide();
+                    $("#emailGroup").hide();
                     $("#id").val(newUser.id);
                     $("#name").val(newUser.name);
                     $("#version").val(newUser.version);
-                    $("#email").val(newUser.email);
                     $("#phone").val(newUser.phone);
-                    $("#desination").val(newUser.designation);
+                    $("#designation").val(newUser.designation);
                     $("#uploadedPhotoSrc").attr("src", mainPath + newUser.imagePath);
                     $('#listOfRole option:contains("' + newUser.role + '")').prop('selected', 'selected');
                     window.location.href = "#userForm";
@@ -675,6 +706,33 @@
                         error: function (e) {
                         }
                     });
+                }
+
+
+                /* Set new created user value to DataTable*/
+
+                function setNewDataTableValue(user, table) {
+                    table.row.add({
+                        "id": user.id,
+                        "name": user.name,
+                        "email": user.email,
+                        "phone": user.phone,
+                        "designation": user.designation,
+                        "version": user.version,
+                        "role": user.role,
+                        "path": user.imagePath
+                    }).draw();
+
+                };
+
+
+                function setRoleName(){
+                    var roleId=$("#listOfRole option:selected").val();
+                    var roleName=$("#listOfRole option:selected").text();
+                    var user=new FormData(document.getElementById("userDetails"));
+                    user.append('roleId', roleId);
+                    user.append('roleName', roleName);
+                    return user;
                 }
 
             });

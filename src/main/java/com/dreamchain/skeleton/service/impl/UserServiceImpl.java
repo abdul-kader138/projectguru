@@ -2,6 +2,9 @@ package com.dreamchain.skeleton.service.impl;
 
 import com.dreamchain.skeleton.dao.RoleRightDao;
 import com.dreamchain.skeleton.model.RoleRight;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -69,7 +72,7 @@ public class UserServiceImpl implements UserService {
         String validationMsg = "";
         User newUser = new User();
         User existingUser = new User();
-        User user = createObjForSave(request);
+        User user = createObjForSave(request,"save");
         validationMsg = checkInput(user);
         if ("".equals(validationMsg)) existingUser = userDao.findByUserName(user.getEmail());
         if (existingUser != null && validationMsg == "") validationMsg = EMAIL_EXISTS;
@@ -94,7 +97,7 @@ public class UserServiceImpl implements UserService {
         String validationMsg = "";
         User newUser = new User();
         User existingUser = new User();
-        User user = createObjForSave(request);
+        User user = createObjForSave(request,"update");
         validationMsg = checkInput(user);
         if ("".equals(validationMsg)) existingUser = userDao.get(user.getId());
         if (existingUser.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_USER;
@@ -233,21 +236,27 @@ public class UserServiceImpl implements UserService {
 
     // create user object for saving
 
-    private User createObjForSave(MultipartHttpServletRequest request) throws Exception {
+    private User createObjForSave(MultipartHttpServletRequest request,String operationName) throws Exception {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String encodedPassword = encoder.encode(request.getParameter("password"));
+        String encodedPassword="";
+        if ("save".equals(operationName))encodedPassword= encoder.encode(request.getParameter("password"));
+        if ("update".equals(operationName))encodedPassword= encoder.encode(environment.getProperty("user.default.password"));
         RoleRight roleRight=roleRightDao.findByRolesName(Long.parseLong(request.getParameter("roleId")));
         Set rightList=new HashSet();
         if(roleRight !=null) rightList.addAll(roleRight.getRights());
         User user = new User();
+        user.setId(Long.parseLong(request.getParameter("id")));
+        user.setVersion(Long.parseLong(request.getParameter("version")));
         user.setName(request.getParameter("name").trim());
         user.setPassword(encodedPassword);
-        user.setEmail(request.getParameter("email").trim());
+        if ("save".equals(operationName)) user.setEmail(request.getParameter("email").trim());
+        if ("update".equals(operationName)) user.setEmail(environment.getProperty("user.default.email"));
         user.setPhone(request.getParameter("phone").trim());
         user.setDesignation(request.getParameter("designation").trim());
         user.setRole(request.getParameter("roleName"));
         user.setRights(rightList);
-        user.setImagePath(request.getFile("photo").getOriginalFilename());
+        if ("save".equals(operationName)) user.setImagePath(request.getFile("photo").getOriginalFilename());
+        if ("update".equals(operationName)) user.setImagePath("/resources");
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
         user.setCreatedBy(getUserId());
@@ -256,17 +265,21 @@ public class UserServiceImpl implements UserService {
 
     }
 
+
+
+
+
     private User setUpdateUserValue(User objFromUI, User existingUser) throws ParseException {
         User userObj = new User();
         userObj.setId(objFromUI.getId());
         userObj.setVersion(objFromUI.getVersion());
         userObj.setName(objFromUI.getName().trim());
-        userObj.setEmail(objFromUI.getEmail().trim());
         userObj.setPhone(objFromUI.getPhone().trim());
         userObj.setDesignation(objFromUI.getDesignation().trim());
         userObj.setRole(objFromUI.getRole());
         userObj.setRights(objFromUI.getRights());
         userObj.setImagePath(existingUser.getImagePath());
+        userObj.setEmail(existingUser.getEmail());
         userObj.setCreatedBy(existingUser.getCreatedBy());
         userObj.setCreatedOn(existingUser.getCreatedOn());
         userObj.setPassword(existingUser.getPassword());
@@ -333,6 +346,8 @@ public class UserServiceImpl implements UserService {
         User user=(User)auth.getPrincipal();
         return user.getEmail();
     }
+
+
 
 
 }
