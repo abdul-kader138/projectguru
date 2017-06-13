@@ -14,6 +14,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -36,13 +37,14 @@ public class AuthenticationController {
     @RequestMapping("/login")
     public ModelAndView login(@RequestParam(value = "failed", required = false) String failed,
                               @RequestParam(value = "error", required = false) String error,
-                              @RequestParam(value = "logout", required = false) String logout) {
+                              @RequestParam(value = "logout", required = false) String logout,HttpSession httpSession) {
 
         ModelAndView model = new ModelAndView();
         String pageName = "main";
         if (error != null) {
             model.addObject("error", "Invalid username or password!");
         }
+        httpSession.setAttribute("passwordMsg","");
         return model;
 
     }
@@ -52,19 +54,7 @@ public class AuthenticationController {
         ModelAndView model = new ModelAndView();
         String pageName = "main";
         String userName = "";
-//		for(Cookie cookie:req.getCookies()){
-//			if(cookie.getName().equals("userName")){
-//				userName=cookie.getValue();
-//				break;
-//			}
-//		}
-//		if(userName.length()==0){
-//			Cookie cookies =new Cookie("userName",userName);
-//			resp.addCookie(cookies);
-//		}
-
         createXmlFile(request);
-//		readXmlFile(request);
         model.setViewName(pageName);
         return model;
 

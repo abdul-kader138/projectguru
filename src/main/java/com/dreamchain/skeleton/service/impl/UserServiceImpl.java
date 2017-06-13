@@ -147,23 +147,28 @@ public class UserServiceImpl implements UserService {
 
 
     @Transactional
-    public String changePassword(String userName, String oldPassword, String newPassword) throws Exception {
+    public Map changePassword(String oldPassword, String newPassword) throws Exception {
         String validationMsg = "";
+        Map<String, Object> obj = new HashMap<>();
         //check for valid input
-        validationMsg = checkInput(userName, oldPassword, newPassword);
-        User user = userDao.findByUserName(userName);
+        validationMsg = checkPasswordInput(oldPassword, newPassword);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User loggedUser=(User)auth.getPrincipal();
+        User user = userDao.findByUserName(loggedUser.getEmail());
+        if(user == null) validationMsg=INVALID_USER;
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(newPassword);
-        //check new password
-        if (encoder.matches(newPassword, user.getPassword()) && validationMsg == "") validationMsg = PASSWORD_IS_SAME;
         //check previous password matched or not
         if (!encoder.matches(oldPassword, user.getPassword()) && validationMsg == "")
             validationMsg = OLD_PASSWORD_NOT_MATCHED;
+        //check new password
+        if (encoder.matches(newPassword, user.getPassword()) && validationMsg == "") validationMsg = PASSWORD_IS_SAME;
         if ("".equals(validationMsg)) {
             user.setPassword(encodedPassword);
             userDao.update(user);
         }
-        return validationMsg;
+        obj.put("validationError", validationMsg);
+        return obj;
     }
 
     @Override
@@ -187,9 +192,9 @@ public class UserServiceImpl implements UserService {
         return msg;
     }
 
-    private String checkInput(String userName, String oldPassword, String newPassword) {
+    private String checkPasswordInput(String oldPassword, String newPassword) {
         String msg = "";
-        if (oldPassword == null || newPassword == null || userName == null)
+        if (oldPassword == null || newPassword == null)
             msg = INVALID_INPUT;
         return msg;
 

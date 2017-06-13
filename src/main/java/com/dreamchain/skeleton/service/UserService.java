@@ -20,7 +20,7 @@ public interface UserService {
 
 	String delete(Long companyId,HttpServletRequest request);
 
-	String changePassword(String userId,String oldPassword,String newPassword) throws Exception;
+	Map<String, Object> changePassword(String oldPassword,String newPassword) throws Exception;
 
 	List<User> findAll(String userName);
 	

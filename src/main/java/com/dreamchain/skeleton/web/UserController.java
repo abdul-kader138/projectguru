@@ -49,6 +49,15 @@ public class UserController {
 
     }
 
+    @RequestMapping("/change_password")
+    public ModelAndView changePasswordView()  {
+        ModelAndView model = new ModelAndView();
+        String pageName = "changepassword";
+        model.setViewName(pageName);
+        return model;
+
+    }
+
 
 
     @RequestMapping(value = "/user/save", method = RequestMethod.POST)
@@ -95,16 +104,17 @@ public class UserController {
         String successMsg = "";
         String invalidUserError="";
         String validationError="";
+        Map<String, Object> objList = new HashMap<>();
         logger.info("Changing user password: >>");
-        boolean isLoggedUserInvalid=checkLoggedInUserExistence(httpSession);
-        if(isLoggedUserInvalid) invalidUserError= environment.getProperty("user.invalid.error.msg");
-        if(!isLoggedUserInvalid) validationError = userService.changePassword(userInfo.get("userName"), userInfo.get("oldPassword"), userInfo.get("newPassword"));
-        if (validationError.length() == 0 && !isLoggedUserInvalid) {
-            httpSession.invalidate();
+        objList = userService.changePassword(userInfo.get("oldPassword"), userInfo.get("password"));
+        validationError = (String) objList.get("validationError");
+        if (validationError.length() == 0 ) {
+            objList.put("successMsg", environment.getProperty("user.password.change.success.msg"));
             successMsg = environment.getProperty("user.password.change.success.msg");
+            httpSession.setAttribute("passwordMsg",environment.getProperty("user.password.change.success.msg"));
         }
         logger.info("Changing user password: << "+successMsg+invalidUserError+invalidUserError);
-        return createServerResponse(successMsg,validationError,invalidUserError,null);
+        return objList;
     }
 
 
@@ -173,16 +183,6 @@ public class UserController {
     }
 
 
-
-    private Map createServerResponse(String successMsg,String validationError,String invalidUserError,User user){
-        HashMap serverResponse = new HashMap();
-        serverResponse.put("successMsg", successMsg);
-        serverResponse.put("validationError", validationError);
-        serverResponse.put("invalidUserError", invalidUserError);
-        serverResponse.put("user",user);
-        return serverResponse;
-
-    }
 
     private boolean checkLoggedInUserExistence(HttpSession httpSession) {
         boolean isLoggedUserExists = false;
