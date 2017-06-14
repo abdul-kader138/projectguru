@@ -56,10 +56,10 @@
     <link href="resources/node_modules/imageloader/loadimg.min.css" rel="stylesheet"/>
 
     <link href="resources/node_modules/custom-css/app.css" rel="stylesheet"/>
-    <link type="text/css" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css" rel="stylesheet" />
+    <link type="text/css" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css"
+          rel="stylesheet"/>
 
     <script src="resources/node_modules/datatable/jquery.js"></script>
-
 
 
 </head>
@@ -327,19 +327,16 @@
                 <img src="resources/images/user.png" width="48" height="48" alt="User"/>
             </div>
             <div class="info-container">
-                <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Abdul Kader</div>
-                <div class="email">admin@domain.com</div>
+                <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${name}</div>
+                <div class="email">${email}</div>
                 <div class="btn-group user-helper-dropdown">
                     <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                     <ul class="dropdown-menu pull-right">
                         <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
-                        <%--<li role="seperator" class="divider"></li>--%>
-                        <%--<li><a href="javascript:void(0);"><i class="material-icons">group</i>Followers</a></li>--%>
-                        <%--<li><a href="javascript:void(0);"><i class="material-icons">shopping_cart</i>Sales</a></li>--%>
-                        <%--<li><a href="javascript:void(0);"><i class="material-icons">favorite</i>Likes</a></li>--%>
                         <li role="seperator" class="divider"></li>
                         <li><a href="change_password"><i class="material-icons">build</i>Change Password</a></li>
-                        <li><a href="<c:url value="j_spring_security_logout" />"><i class="material-icons">input</i>Sign Out</a></li>
+                        <li><a href="<c:url value="j_spring_security_logout" />"><i class="material-icons">input</i>Sign
+                            Out</a></li>
                     </ul>
                 </div>
             </div>
@@ -356,69 +353,69 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="javascript:void(0);" class="menu-toggle">
-                        <i class="material-icons">settings</i>
-                        <span>All Settings</span>
-                    </a>
-                    <ul class="ml-menu">
+                <%--only visible for admin and super admin user--%>
+                <c:if test="${role == 'ROLE_ADMIN' || role == 'ROLE_SUPER_ADMIN'}">
+                    <li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">settings</i>
+                            <span>All Settings</span>
+                        </a>
+                        <ul class="ml-menu">
 
-                        <li>
-                            <a href="javascript:void(0);" class="menu-toggle">
-                                <span>Product Settings</span>
-                            </a>
-                            <ul class="ml-menu">
-                                <li>
-                                    <a href="product">Product</a>
-                                </li>
-                                <li>
-                                    <a href="category">Category</a>
-                                </li>
-                                <li>
-                                    <a href="subcategory">Sub-Category</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);" class="menu-toggle">
-                                <span>Company Settings</span>
-                            </a>
-                            <ul class="ml-menu">
-                                <li>
-                                    <a href="company">Company</a>
-                                </li>
-                                <li>
-                                <a href="project">Division </a>
-                                </li>
-                            </ul>
-                        </li>
+                            <li>
+                                <a href="javascript:void(0);" class="menu-toggle">
+                                    <span>Product Settings</span>
+                                </a>
+                                <ul class="ml-menu">
+                                    <li>
+                                        <a href="product">Product</a>
+                                    </li>
+                                    <li>
+                                        <a href="category">Category</a>
+                                    </li>
+                                    <li>
+                                        <a href="subcategory">Sub-Category</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);" class="menu-toggle">
+                                    <span>Company Settings</span>
+                                </a>
+                                <ul class="ml-menu">
+                                    <li>
+                                        <a href="company">Company</a>
+                                    </li>
+                                    <li>
+                                        <a href="department">Department</a>
+                                    </li>
+                                </ul>
+                            </li>
                             <li>
                                 <a href="javascript:void(0);" class="menu-toggle">
                                     <span>User Settings</span>
                                 </a>
                                 <ul class="ml-menu">
-                                    <li>
-                                        <a href="roles">Role->New</a>
 
-                                    </li>
-                                    <li>
-                                       <a href="role_right">Role</a>
-                                    </li>
-                                    <li>
-                                        <a href="department">Department</a>
-                                    </li>
-                                    <li>
-                                        <a href="designation">Designation</a>
-                                    </li>
+                                        <%--only visible for super admin user--%>
+                                    <c:if test="${role == 'ROLE_SUPER_ADMIN'}">
+                                        <li>
+                                            <a href="roles">Roles</a>
+
+                                        </li>
+                                        <li>
+                                            <a href="role_right">Role & Rights</a>
+                                        </li>
+                                    </c:if>
                                     <li>
                                         <a href="user">User</a>
                                     </li>
                                 </ul>
                             </li>
-                    </ul>
-                </li>
-                <br/>
-
+                        </ul>
+                    </li>
+                    <br/>
+                </c:if>
 
                 <li class="header">Request</li>
                 <li>

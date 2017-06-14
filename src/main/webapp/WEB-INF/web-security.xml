@@ -23,22 +23,28 @@
 		<security:logout logout-success-url="/login" delete-cookies="true" logout-url="/j_spring_security_logout" invalidate-session="true"/>
 
 		<!--set url access for user-->
- 		<security:intercept-url pattern="/secret/*"  access="hasRole('ROLE_USER')"  />
  		<security:intercept-url pattern="/home" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
- 		<security:intercept-url pattern="/user" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
- 		<security:intercept-url pattern="/user/*" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
- 		<security:intercept-url pattern="/company" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
-		<security:intercept-url pattern="/company/*" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
-		<security:intercept-url pattern="/project" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
- 		<security:intercept-url pattern="/project/*" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
-		<security:intercept-url pattern="/department" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
- 		<security:intercept-url pattern="/department/*" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
-		<security:intercept-url pattern="/designation" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
- 		<security:intercept-url pattern="/designation/*" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
- 		<security:intercept-url pattern="/category" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
- 		<security:intercept-url pattern="/category/*" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
- 		<security:intercept-url pattern="/roles" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
- 		<security:intercept-url pattern="/roles/*" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
+ 		<security:intercept-url pattern="/user" access="hasAnyRole('ROLE_ADMIN','ROLE_SUPER_ADMIN')" />
+		<security:intercept-url pattern="/user/userList" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
+ 		<security:intercept-url pattern="/user/*" access="hasAnyRole('ROLE_ADMIN','ROLE_SUPER_ADMIN')" />
+ 		<security:intercept-url pattern="/company" access="hasAnyRole('ROLE_ADMIN','ROLE_SUPER_ADMIN')" />
+		<security:intercept-url pattern="/company/companyList" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
+		<security:intercept-url pattern="/company/*" access="hasAnyRole('ROLE_ADMIN','ROLE_SUPER_ADMIN')" />
+		<security:intercept-url pattern="/project" access="hasAnyRole('ROLE_ADMIN','ROLE_SUPER_ADMIN')" />
+		<security:intercept-url pattern="/project/projectList" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
+ 		<security:intercept-url pattern="/project/*" access="hasAnyRole('ROLE_ADMIN','ROLE_SUPER_ADMIN')" />
+		<security:intercept-url pattern="/department" access="hasAnyRole('ROLE_ADMIN','ROLE_SUPER_ADMIN')" />
+		<security:intercept-url pattern="/department/departmentList" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
+ 		<security:intercept-url pattern="/department/*" access="hasAnyRole('ROLE_ADMIN','ROLE_SUPER_ADMIN')" />
+ 		<security:intercept-url pattern="/category" access="hasAnyRole('ROLE_ADMIN','ROLE_SUPER_ADMIN')" />
+		<security:intercept-url pattern="/category/categoryList" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
+ 		<security:intercept-url pattern="/category/*" access="hasAnyRole('ROLE_ADMIN','ROLE_SUPER_ADMIN')" />
+ 		<security:intercept-url pattern="/roles" access="hasAnyRole('ROLE_SUPER_ADMIN')" />
+		<security:intercept-url pattern="/roles/rolesList" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
+ 		<security:intercept-url pattern="/roles/*" access="hasAnyRole('ROLE_SUPER_ADMIN')" />
+ 		<security:intercept-url pattern="/role_right" access="hasAnyRole('ROLE_SUPER_ADMIN')" />
+		<security:intercept-url pattern="/role_right/role_rightList" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
+ 		<security:intercept-url pattern="/role_right/*" access="hasAnyRole('ROLE_SUPER_ADMIN')" />
  		<!--<security:intercept-url pattern="/role" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />-->
  		<!--<security:intercept-url pattern="/role/*" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />-->
 		<!--<security:intercept-url pattern="/customer" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />-->

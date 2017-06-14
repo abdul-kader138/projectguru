@@ -1,6 +1,9 @@
 package com.dreamchain.skeleton.web;
 
+import com.dreamchain.skeleton.model.User;
 import org.apache.commons.logging.Log;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -37,14 +40,15 @@ public class AuthenticationController {
     @RequestMapping("/login")
     public ModelAndView login(@RequestParam(value = "failed", required = false) String failed,
                               @RequestParam(value = "error", required = false) String error,
-                              @RequestParam(value = "logout", required = false) String logout,HttpSession httpSession) {
+                              @RequestParam(value = "logout", required = false) String logout,HttpServletRequest request) {
 
         ModelAndView model = new ModelAndView();
+        HttpSession httpSession=request.getSession();
         String pageName = "main";
         if (error != null) {
             model.addObject("error", "Invalid username or password!");
         }
-        httpSession.setAttribute("passwordMsg","");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return model;
 
     }
@@ -54,123 +58,21 @@ public class AuthenticationController {
         ModelAndView model = new ModelAndView();
         String pageName = "main";
         String userName = "";
-        createXmlFile(request);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user=(User)auth.getPrincipal();
+        HttpSession httpSession=request.getSession();
         model.setViewName(pageName);
+        httpSession.setAttribute("name",user.getName());
+        httpSession.setAttribute("email",user.getEmail());
+        httpSession.setAttribute("role",user.getRole());
+        httpSession.setAttribute("path",user.getImagePath());
         return model;
 
     }
 
-    private void createXmlFile(HttpServletRequest request) throws ParserConfigurationException, TransformerException, FileNotFoundException {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
-        Document doc = documentBuilder.newDocument();
-
-        Element root = doc.createElement("student.information");
-        Element parentElement = doc.createElement("students");
-        Element studentElement = doc.createElement("student");
-        Element name = doc.createElement("name");
-        Element email = doc.createElement("email");
-        Element age = doc.createElement("age");
 
 
-        Text nameText = doc.createTextNode("Abdul Kader");
-        Text ageText = doc.createTextNode("30");
-        Text emailText = doc.createTextNode("babu@gmail.com");
 
-        name.appendChild(nameText);
-        age.appendChild(ageText);
-        email.appendChild(emailText);
-
-
-        studentElement.appendChild(name);
-        studentElement.appendChild(age);
-        studentElement.appendChild(email);
-
-
-        parentElement.appendChild(studentElement);
-
-
-        root.appendChild(parentElement);
-
-        doc.appendChild(root);
-
-        String path = request.getSession().getServletContext().getRealPath("/WEB-INF/");
-        System.out.println(path);
-        String mainPath = path + "\\studentInfo.xml";
-        File file = new File(mainPath);
-        if (file.exists()) {
-
-
-            Transformer transform = TransformerFactory.newInstance().newTransformer();
-            transform.transform(new DOMSource(doc), new StreamResult(file));
-
-        }
-//
-    }
-
-
-    private void readXmlFile(HttpServletRequest request) {
-        try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            String path = null;
-            try {
-                path = request.getSession().getServletContext().getRealPath("/WEB-INF/");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            System.out.println(path);
-            String mainPath = path + "\\studentInfo.xml";
-            File file = new File(mainPath);
-            if (file.exists()) {
-                Document doc = db.parse(file);
-                Element docEle = doc.getDocumentElement();
-
-                // Print root element of the document
-                System.out.println("Root element of the document: "
-                        + docEle.getNodeName());
-
-                NodeList studentList = docEle.getElementsByTagName("student");
-
-                // Print total student elements in document
-                System.out
-                        .println("Total students: " + studentList.getLength());
-
-                if (studentList != null && studentList.getLength() > 0) {
-                    for (int i = 0; i < studentList.getLength(); i++) {
-
-                        Node node = studentList.item(i);
-
-                        if (node.getNodeType() == Node.ELEMENT_NODE) {
-
-                            System.out
-                                    .println("=====================");
-
-                            Element e = (Element) node;
-                            NodeList nodeList = e.getElementsByTagName("name");
-                            System.out.println("Name: "
-                                    + nodeList.item(0).getChildNodes().item(0)
-                                    .getNodeValue());
-
-                            nodeList = e.getElementsByTagName("grade");
-                            System.out.println("Grade: "
-                                    + nodeList.item(0).getChildNodes().item(0)
-                                    .getNodeValue());
-
-                            nodeList = e.getElementsByTagName("age");
-                            System.out.println("Age: "
-                                    + nodeList.item(0).getChildNodes().item(0)
-                                    .getNodeValue());
-                        }
-                    }
-                } else {
-                    System.exit(1);
-                }
-            }
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
 
 }
 
