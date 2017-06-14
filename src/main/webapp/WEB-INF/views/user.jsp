@@ -23,6 +23,8 @@
                         <th width="200px">Designation</th>
                         <th width="200px">Role</th>
                         <th width="200px">Photo</th>
+                        <th width="200px">Company name</th>
+
                     </tr>
                     </thead>
                 </table>
@@ -74,6 +76,18 @@
 
                                 <!-- Form Name -->
                                 <legend><strong>User Setting</strong></legend>
+
+                                <!-- Select input-->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="listOfCompany">Company Name</label>
+
+                                    <div class="col-md-4">
+                                        <select id="listOfCompany" class="form-control"
+                                                style="border-color:#808080; border-width:1px; border-style:solid;"></select>
+                                        <label id="companyNameValidation" style="color:red; font-size: 11px;"
+                                               class="form-control"></label>
+                                    </div>
+                                </div>
 
                                 <!-- Text input-->
                                 <div class="form-group">
@@ -247,6 +261,7 @@
                 var mainPath = document.origin + "/PG";
                 var companyGb;
                 getAllRole();
+                getAllCompany();
 
 
                 /* populate User list when page load */
@@ -277,7 +292,8 @@
                             "render": function (url, type, full) {
                                 return '<img src="' + mainPath + full.imagePath + '" width="30" height="30" />';
                             }
-                        }
+                        },
+                        {"mData": "company.name",'sWidth': '200px'}
                     ],
                     'aaSorting': [[0, 'asc']],
                     "columnDefs": [{}],
@@ -550,6 +566,7 @@
                     $("#designation").val("");
                     $("#photo").val("");
                     $('#defaultOpt').val('0').prop('selected', true);
+                    $('#defaultOptCompany').val('0').prop('selected', true);
                 }
 
 
@@ -565,8 +582,14 @@
                     var designation = $("#designation").val();
                     var filename = $("#photo").val();
                     var roleId = $("#listOfRole option:selected").val();
+                    var companyId = $("#listOfCompany option:selected").val();
 
                     isValid=blankCheck(name,"name",isValid);
+
+                    if ((companyId == null) || (companyId == "0") && isValid==true) {
+                        $("#companyNameValidation").text("Company name is required");
+                        isValid = false;
+                    }
 
                     //password check
                     if(isValid == true) isValid=passwordCheck(password,confirmPassword,"password", "confirmPassword");
@@ -607,8 +630,14 @@
                     var designation = $("#designation").val();
                     var filename = $("#photo").val();
                     var roleId = $("#listOfRole option:selected").val();
+                    var companyId = $("#listOfCompany option:selected").val();
 
                     isValid=blankCheck(name,"name",isValid);
+
+                    if ((companyId == null) || (companyId == "0") && isValid==true) {
+                        $("#companyNameValidation").text("Company name is required");
+                        isValid = false;
+                    }
 
                     // Phone Check
                     if(isValid == true) isValid=blankCheck(phone,"phone",isValid);
@@ -637,6 +666,7 @@
                     $("#designationValidation").text("");
                     $("#photoValidation").text("");
                     $("#roleNameValidation").text("");
+                    $("#companyNameValidation").text("");
 
                 }
 
@@ -684,6 +714,7 @@
                     $("#designation").val(newUser.designation);
                     $("#uploadedPhotoSrc").attr("src", mainPath + newUser.imagePath);
                     $('#listOfRole option:contains("' + newUser.role + '")').prop('selected', 'selected');
+                    $('#listOfCompany option:contains("' + newUser.company.name + '")').prop('selected', 'selected');
                     window.location.href = "#userForm";
                 }
 
@@ -720,7 +751,8 @@
                         "designation": user.designation,
                         "version": user.version,
                         "role": user.role,
-                        "path": user.imagePath
+                        "path": user.imagePath,
+                        "company": user.company
                     }).draw();
 
                 };
@@ -729,10 +761,34 @@
                 function setRoleName(){
                     var roleId=$("#listOfRole option:selected").val();
                     var roleName=$("#listOfRole option:selected").text();
+                    var companyId=$("#listOfCompany option:selected").val();
                     var user=new FormData(document.getElementById("userDetails"));
                     user.append('roleId', roleId);
+                    user.append('companyId', companyId);
                     user.append('roleName', roleName);
                     return user;
+                }
+
+
+                /* Load Company data to select box data using ajax */
+
+                function getAllCompany() {
+                    $('#listOfCompany').empty();
+                    $.ajax({
+                        type: "GET",
+                        url: 'http://localhost:8080/company/companyList',
+                        success: function (data) {
+                            var collaboration;
+                            collaboration += '<option id="defaultOptCompany" value="0">Select Company</option>';
+                            $.each(data, function (i, d) {
+                                collaboration += "<option value=" + d.id + ">" + d.name + "</option>";
+                            });
+
+                            $('#listOfCompany').append(collaboration);
+                        },
+                        error: function (e) {
+                        }
+                    });
                 }
 
             });

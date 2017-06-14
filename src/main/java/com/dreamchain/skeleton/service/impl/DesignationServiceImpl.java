@@ -122,7 +122,6 @@ public class DesignationServiceImpl implements DesignationService{
         designation.setName(name);
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        designation.setCreatedBy(UserDetailServiceImpl.userId);
         designation.setCreatedOn(date);
         return designation;
 
@@ -137,7 +136,6 @@ public class DesignationServiceImpl implements DesignationService{
         designationObj.setCreatedOn(existingDesignation.getCreatedOn());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        designationObj.setUpdatedBy(UserDetailServiceImpl.userId);
         designationObj.setUpdatedOn(date);
         return designationObj;
     }

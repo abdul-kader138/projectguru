@@ -134,7 +134,6 @@ public class ProductSubCategoryServiceImpl implements ProductSubCategoryService{
         productSubCategory.setProductCategoryId(roles.getId());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        productSubCategory.setCreatedBy(UserDetailServiceImpl.userId);
         productSubCategory.setCreatedOn(date);
         return productSubCategory;
 
@@ -152,7 +151,6 @@ public class ProductSubCategoryServiceImpl implements ProductSubCategoryService{
         productSubCategory.setCreatedOn(existingProductSubCategory.getCreatedOn());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        productSubCategory.setUpdatedBy(UserDetailServiceImpl.userId);
         productSubCategory.setUpdatedOn(date);
         return productSubCategory;
     }

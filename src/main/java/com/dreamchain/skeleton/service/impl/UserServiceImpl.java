@@ -1,6 +1,8 @@
 package com.dreamchain.skeleton.service.impl;
 
+import com.dreamchain.skeleton.dao.CompanyDao;
 import com.dreamchain.skeleton.dao.RoleRightDao;
+import com.dreamchain.skeleton.model.Company;
 import com.dreamchain.skeleton.model.RoleRight;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
@@ -31,6 +33,8 @@ import java.util.*;
 @PropertySource("classpath:config.properties")
 public class UserServiceImpl implements UserService {
 
+    @Autowired
+    CompanyDao companyDao;
     @Autowired
     UserDao userDao;
     @Autowired
@@ -222,8 +226,7 @@ public class UserServiceImpl implements UserService {
 
     private User createObjForSave(MultipartHttpServletRequest request,String operationName) throws Exception {
         RoleRight roleRight=roleRightDao.findByRolesName(Long.parseLong(request.getParameter("roleId")));
-        Set rightList=new HashSet();
-        if(roleRight !=null) rightList.addAll(roleRight.getRights());
+        Company company=companyDao.get(Long.parseLong(request.getParameter("companyId")));
         User user = setEditorInfo(operationName,request);
         user.setId(Long.parseLong(request.getParameter("id")));
         user.setVersion(Long.parseLong(request.getParameter("version")));
@@ -231,7 +234,10 @@ public class UserServiceImpl implements UserService {
         user.setPhone(request.getParameter("phone").trim());
         user.setDesignation(request.getParameter("designation").trim());
         user.setRole(request.getParameter("roleName"));
-        user.setRights(rightList);
+        user.setRoleRight(roleRight);
+        user.setRoleRightsId(roleRight.getId());
+        user.setCompanyId(company.getId());
+        user.setCompany(company);
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
         user.setCreatedBy(getUserId());
@@ -252,7 +258,10 @@ public class UserServiceImpl implements UserService {
         userObj.setPhone(objFromUI.getPhone().trim());
         userObj.setDesignation(objFromUI.getDesignation().trim());
         userObj.setRole(objFromUI.getRole());
-        userObj.setRights(objFromUI.getRights());
+        userObj.setRoleRight(objFromUI.getRoleRight());
+        userObj.setRoleRightsId(objFromUI.getRoleRightsId());
+        userObj.setCompany(objFromUI.getCompany());
+        userObj.setCompanyId(objFromUI.getCompanyId());
         userObj.setImagePath(existingUser.getImagePath());
         userObj.setEmail(existingUser.getEmail());
         userObj.setCreatedBy(existingUser.getCreatedBy());

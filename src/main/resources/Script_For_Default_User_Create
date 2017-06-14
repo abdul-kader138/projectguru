@@ -1,30 +1,45 @@
 // run this script to create user to login the application
 
 
+1) insert to Company table
+
+INSERT INTO company(
+            id, address, created_by,image_path, name,version)
+    VALUES (9999999993, 'Dhaka', 'admin@domain.com', '/test/path','Test Company', 0);
+
+
+2) Insert to roles table
+
+INSERT INTO roles(
+            id, created_by, description, name,version)
+    VALUES (9999999991, 'admin@domain.com', 'ROLE_ADMIN', 'ROLE_ADMIN',0);
+
+3) Insert to role_rights table
+
+INSERT INTO role_right(
+            id, created_by,role_id,version, roles)
+    VALUES (9999999992, 'admin@domain.com', 9999999991,0, 9999999991);
+
+
+4) Insert into rights table
+
+   INSERT INTO rights(id, rights) VALUES (9999999992, 'View');
+   INSERT INTO rights(id, rights) VALUES (9999999992, 'Write');
+   INSERT INTO rights(id, rights) VALUES (9999999992, 'Edit');
+
+
+5) Insert into users table
+
 INSERT INTO users(
-            id,  email, name, password, phone, role, version,image_path,designation)
-    VALUES (9999999999,'admin@domain.com', 'Admin User','$2a$10$xR6y2eJ1LgzvB9N2CRlEYOiIcRsi.LRe4X/qIRubcvhrvA2h.WG/G','09876543211', 'ROLE_ADMIN',0,'/test','SD');
+            id,  email, name, password, phone, role, version,image_path,designation,role_right,role_rights_id,company_id,company)
+    VALUES (9999999999,'admin@domain.com', 'Admin User','$2a$10$xR6y2eJ1LgzvB9N2CRlEYOiIcRsi.LRe4X/qIRubcvhrvA2h.WG/G','09876543211', 'ROLE_ADMIN',0,'/test','SD',9999999992,9999999992,9999999993,9999999993);
 
 
 
 
 
-// user_rights table configuration
 
-CREATE TABLE user_rights
-(
-  "user" bigint,
-  rights character varying,
-  CONSTRAINT users_rights_users_fkey FOREIGN KEY ("user")
-      REFERENCES users (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION
-)
-
-INSERT INTO user_rights(
-            id, rights)
-    VALUES (9999999999,'Write');
-
-//then enter below info and login to the system
+6) then enter below info and login to the system
 
 Email-admin@domain.com
 password-baBU1234

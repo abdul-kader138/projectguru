@@ -131,7 +131,6 @@ public class ProjectServiceImpl implements ProjectService {
         project.setCompanyId(company.getId());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        project.setCreatedBy(UserDetailServiceImpl.userId);
         project.setCreatedOn(date);
         return project;
 
@@ -148,7 +147,6 @@ public class ProjectServiceImpl implements ProjectService {
         projectObj.setCreatedOn(existingProject.getCreatedOn());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        projectObj.setUpdatedBy(UserDetailServiceImpl.userId);
         projectObj.setUpdatedOn(date);
         return projectObj;
     }

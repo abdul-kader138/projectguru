@@ -1,7 +1,6 @@
 package com.dreamchain.skeleton.model;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.*;
 
 import javax.persistence.*;
@@ -11,7 +10,6 @@ import com.dreamchain.skeleton.service.impl.UserDetailServiceImpl;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.NumberFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -73,6 +71,21 @@ public class User extends org.springframework.security.core.userdetails.User imp
 	@Column
 	private Date updatedOn;
 
+	@Column
+	private Long roleRightsId;
+
+	@NotNull
+	@OneToOne
+	private RoleRight roleRight;
+
+	@NotNull
+	@OneToOne
+	private Company company;
+
+	@Column
+	@NotNull
+	private long companyId;
+
 
 
 	public User(){
@@ -83,7 +96,7 @@ public class User extends org.springframework.security.core.userdetails.User imp
 				boolean accountNonLocked,
 					Collection authorities,
 					String name,String email, String role,
-					String phone,Set<String> rights, String imagePath,String designation,String createdBy,String updatedBy,Date createdOn,Date updatedOn) {
+					String phone, String imagePath,String designation,Long roleRightsId,RoleRight roleRight,Long companyId,Company company,String createdBy,String updatedBy,Date createdOn,Date updatedOn) {
 		super(username, password, enabled, accountNonExpired,
 				credentialsNonExpired, accountNonLocked, authorities);
 
@@ -95,7 +108,10 @@ public class User extends org.springframework.security.core.userdetails.User imp
 		this.phone = phone;
 		this.designation = designation;
 		this.imagePath = imagePath;
-		this.rights=rights;
+		this.roleRightsId=roleRightsId;
+		this.roleRight=roleRight;
+		this.companyId=companyId;
+		this.company=company;
 		this.createdBy = createdBy;
 		this.updatedBy=updatedBy;
 		this.createdOn=createdOn;
@@ -104,21 +120,22 @@ public class User extends org.springframework.security.core.userdetails.User imp
 	}
 
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(
-			name = "user_rights",
-			joinColumns=@JoinColumn(name = "id", referencedColumnName = "id")
-	)
-	private Set<String> rights = new HashSet<>();
-
-
-	public Set<String> getRights() {
-		return rights;
+	public Long getRoleRightsId() {
+		return roleRightsId;
 	}
 
-	public void setRights(Set<String> rights) {
-		this.rights = rights;
+	public void setRoleRightsId(Long roleRightsId) {
+		this.roleRightsId = roleRightsId;
 	}
+
+	public RoleRight getRoleRight() {
+		return roleRight;
+	}
+
+	public void setRoleRight(RoleRight roleRight) {
+		this.roleRight = roleRight;
+	}
+
 
 	public Long getId() {
 		return id;
@@ -227,6 +244,23 @@ public class User extends org.springframework.security.core.userdetails.User imp
 
 	public void setDesignation(String designation) {
 		this.designation = designation;
+	}
+
+
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
+	public long getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(long companyId) {
+		this.companyId = companyId;
 	}
 
 	public static ArrayList<GrantedAuthority> getALLAuthority() {
