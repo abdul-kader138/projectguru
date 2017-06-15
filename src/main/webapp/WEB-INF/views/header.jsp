@@ -24,7 +24,6 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
 
     <!-- Bootstrap Core Css -->
-    <%--<link href="resources/node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet">--%>
     <link href="resources/node_modules/adminbsb/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="resources/node_modules/datatable/jquery.dataTables.min.css">
 
@@ -407,12 +406,16 @@
                                             <a href="role_right">Role & Rights</a>
                                         </li>
                                     </c:if>
-                                    <li>
-                                        <a href="user">User</a>
-                                    </li>
-                                    <li>
-                                        <a href="team">Team Member</a>
-                                    </li>
+                                    <c:if test="${userType == 'vendor'}">
+                                        <li>
+                                            <a href="user">User</a>
+                                        </li>
+                                    </c:if>
+                                    <c:if test="${userType == 'client'}">
+                                        <li>
+                                            <a href="team">Team Member</a>
+                                        </li>
+                                    </c:if>
                                 </ul>
                             </li>
                         </ul>
