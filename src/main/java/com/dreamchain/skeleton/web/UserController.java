@@ -50,6 +50,16 @@ public class UserController {
     }
 
 
+    @RequestMapping("/change_password")
+    public ModelAndView mainChangePassword()  {
+        ModelAndView model = new ModelAndView();
+        String pageName = "change_password";
+        model.setViewName(pageName);
+        return model;
+
+    }
+
+
     @RequestMapping(value = "/user/save", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -72,10 +82,11 @@ public class UserController {
     @RequestMapping(value = "/user/changePassword", method = RequestMethod.POST, headers = {"Content-type=application/json"})
     public
     @ResponseBody
-    Map ChangePassword(@RequestBody Map<String, String> userInfo, HttpSession httpSession) throws Exception {
+    Map ChangePassword(@RequestBody Map<String, String> userInfo, HttpServletRequest request) throws Exception {
         String successMsg = "";
         String invalidUserError="";
         String validationError="";
+        HttpSession httpSession=request.getSession();
         Map<String, Object> objList = new HashMap<>();
         logger.info("Changing user password: >>");
         objList = userService.changePassword(userInfo.get("oldPassword"), userInfo.get("password"));
@@ -84,6 +95,7 @@ public class UserController {
             objList.put("successMsg", environment.getProperty("user.password.change.success.msg"));
             successMsg = environment.getProperty("user.password.change.success.msg");
             httpSession.setAttribute("passwordMsg",environment.getProperty("user.password.change.success.msg"));
+            httpSession.setAttribute("isPasswordChanged",environment.getProperty("user.is.password.changed"));
         }
         logger.info("Changing user password: << "+successMsg+invalidUserError+invalidUserError);
         return objList;

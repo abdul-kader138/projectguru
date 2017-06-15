@@ -34,8 +34,6 @@ import java.io.FileOutputStream;
 @Controller
 public class AuthenticationController {
 
-//	private Log
-
 
     @RequestMapping("/login")
     public ModelAndView login(@RequestParam(value = "failed", required = false) String failed,
@@ -62,6 +60,8 @@ public class AuthenticationController {
         User user=(User)auth.getPrincipal();
         HttpSession httpSession=request.getSession();
         model.setViewName(pageName);
+        httpSession.setAttribute("passwordMsg",null);
+        httpSession.setAttribute("isPasswordChanged",null);
         httpSession.setAttribute("name",user.getName());
         httpSession.setAttribute("email",user.getEmail());
         httpSession.setAttribute("role",user.getRole());

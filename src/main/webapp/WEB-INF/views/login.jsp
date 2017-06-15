@@ -42,10 +42,9 @@
         <div class="body">
             <form id="sign_in" method="POST" action="<c:url value='j_spring_security_check'/>">
                 <div class="msg">Sign in to start your session</div>
-                <%--<div class="msg"><c:out value="${sessionScope.passwordMsg}"/></div>--%>
-                <%--<c:if test="${not empty passwordMsg}">--%>
-                    <%--<div class="msg">{{passwordMsg}}</div>--%>
-                <%--</c:if>--%>
+                <c:if test="${isPasswordChanged == 'Yes'}">
+                    <div class="msg">${passwordMsg}</div>
+                </c:if>
                 <div class="input-group">
     <span class="input-group-addon">
     <i class="material-icons">person</i>
@@ -87,9 +86,6 @@
 <script src="resources/node_modules/ngstorage/ngStorage.min.js"></script>
 <script src="resources/node_modules/custom-js/app.js"></script>
 <script src="resources/node_modules/custom-js/controller.js"></script>
-<%--<script src="resources/node_modules/metisMenu/metisMenu.min.js"></script>--%>
-<%--<script src="resources/node_modules/sb-admin-2/sb-admin-2.js"></script>--%>
-
 
 <script src="resources/node_modules/adminbsb/node-waves/waves.js"></script>
 
