@@ -5,7 +5,7 @@
 
 INSERT INTO company(
             id, address, created_by,image_path, name,version)
-    VALUES (9999999993, 'Dhaka', 'admin@domain.com', '/test/path','Test Company', 0);
+    VALUES (9999999993, 'Dhaka', 'admin@domain.com', '/resources/images/company_logo/default.jpg','Test Company', 0);
 
 
 2) Insert to roles table
