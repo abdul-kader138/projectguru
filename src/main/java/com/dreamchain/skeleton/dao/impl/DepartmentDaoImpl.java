@@ -2,6 +2,7 @@ package com.dreamchain.skeleton.dao.impl;
 
 
 import com.dreamchain.skeleton.dao.DepartmentDao;
+import com.dreamchain.skeleton.model.Category;
 import com.dreamchain.skeleton.model.Department;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
@@ -66,8 +67,8 @@ public class DepartmentDaoImpl implements DepartmentDao{
 
     @Override
     public List<Object> countOfDepartment(long departmentID) {
-        DetachedCriteria dcr= DetachedCriteria.forClass(Department.class);//Product
-        Criterion cr = Restrictions.eq("id", departmentID);
+        DetachedCriteria dcr= DetachedCriteria.forClass(Category.class);
+        Criterion cr = Restrictions.eq("departmentId", departmentID);
         dcr.add(cr);
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         if(lst.size()==0)return new ArrayList<Object>();

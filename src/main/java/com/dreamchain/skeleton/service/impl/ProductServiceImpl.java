@@ -1,5 +1,6 @@
 package com.dreamchain.skeleton.service.impl;
 
+import com.dreamchain.skeleton.dao.CategoryDao;
 import com.dreamchain.skeleton.dao.CompanyDao;
 import com.dreamchain.skeleton.dao.DepartmentDao;
 import com.dreamchain.skeleton.dao.ProductDao;
@@ -27,7 +28,7 @@ import java.util.*;
 @PropertySource("classpath:config.properties")
 public class ProductServiceImpl implements ProductService {
     @Autowired
-    DepartmentDao departmentDao;
+    CategoryDao categoryDao;
     @Autowired
     CompanyDao companyDao;
     @Autowired
@@ -39,7 +40,7 @@ public class ProductServiceImpl implements ProductService {
     private static String INVALID_INPUT = "Invalid input";
     private static String INVALID_PRODUCT = "Product not exists";
     private static String BACK_DATED_DATA = "Product data is old.Please try again with updated data";
-    private static String ASSOCIATED_DEPARTMENT = "Product is tagged with category.First remove tagging and try again";
+    private static String ASSOCIATED_PRODUCT = "Product is tagged with category.First remove tagging and try again";
 
 
     @Transactional(readOnly = true)
@@ -99,11 +100,8 @@ public class ProductServiceImpl implements ProductService {
         if (productId == 0l) validationMsg = INVALID_INPUT;
         Product product = productDao.get(productId);
         if (product == null && validationMsg == "") validationMsg = INVALID_PRODUCT;
-
-        //@todo need implement after Category implementation
-//        List<Object> obj=departmentDao.countOfDepartment(departmentId);
-//        if (obj.size() > 0 && validationMsg == "") validationMsg = ASSOCIATED_COMPANY;
-
+        List<Object> obj=categoryDao.countOfProduct(productId);
+        if (obj.size() > 0 && validationMsg == "") validationMsg = ASSOCIATED_PRODUCT;
         if ("".equals(validationMsg)) {
             productDao.delete(product);
         }

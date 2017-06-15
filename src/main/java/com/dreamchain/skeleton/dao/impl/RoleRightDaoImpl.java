@@ -46,9 +46,9 @@ public class RoleRightDaoImpl implements RoleRightDao {
     }
 
     @Override
-    public List<Object> countOfRole(long roleID) {
+    public List<Object> countOfRights(long rightsId) {
         DetachedCriteria dcr= DetachedCriteria.forClass(User.class);// user
-        Criterion cr = Restrictions.eq("roleId", roleID);
+        Criterion cr = Restrictions.eq("roleRightsId", rightsId);
         dcr.add(cr);
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         if(lst.size()==0)return new ArrayList<Object>();

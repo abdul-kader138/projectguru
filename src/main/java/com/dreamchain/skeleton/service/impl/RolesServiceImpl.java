@@ -33,7 +33,7 @@ public class RolesServiceImpl implements RolesService {
     private static String INVALID_INPUT = "Invalid input";
     private static String INVALID_ROLES = "Roles not exists";
     private static String BACK_DATED_DATA = "Roles data is old.Please try again with updated data";
-    private static String ASSOCIATED_ROLES = "Roles is tagged with User.First remove tagging and try again";
+    private static String ASSOCIATED_ROLES = "Roles is tagged with rights.First remove tagging and try again";
 
 
     @Override
@@ -93,10 +93,8 @@ public class RolesServiceImpl implements RolesService {
         if (rolesId == 0l) validationMsg = INVALID_INPUT;
         Roles roles = rolesDao.get(rolesId);
         if (roles == null && validationMsg == "") validationMsg = INVALID_ROLES;
-
-        //@todo need implement after User implementation
-//        List<Object> obj=departmentDao.countOfDepartment(departmentId);
-//        if (obj.size() > 0 && validationMsg == "") validationMsg = ASSOCIATED_COMPANY;
+        List<Object> obj=rolesDao.countOfRoles(rolesId);
+        if (obj.size() > 0 && validationMsg == "") validationMsg = ASSOCIATED_ROLES;
 
         if ("".equals(validationMsg)) {
             rolesDao.delete(roles);

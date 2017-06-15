@@ -1,6 +1,7 @@
 package com.dreamchain.skeleton.dao.impl;
 
 import com.dreamchain.skeleton.dao.RolesDao;
+import com.dreamchain.skeleton.model.RoleRight;
 import com.dreamchain.skeleton.model.Roles;
 import com.dreamchain.skeleton.model.ProductSubCategory;
 import org.hibernate.criterion.Criterion;
@@ -57,9 +58,8 @@ public class RolesDaoImpl implements RolesDao {
 
     @Override
     public List<Object> countOfRoles(long rolesId) {
-        DetachedCriteria dcr= DetachedCriteria.forClass(Roles.class);// sub category
-        Criterion cr = Restrictions.eq("rolesId", rolesId);
-
+        DetachedCriteria dcr= DetachedCriteria.forClass(RoleRight.class);
+        Criterion cr = Restrictions.eq("roleId", rolesId);
         dcr.add(cr);
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         if(lst.size()==0)return new ArrayList<Object>();

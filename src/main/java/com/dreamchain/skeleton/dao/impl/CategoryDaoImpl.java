@@ -71,6 +71,7 @@ public class CategoryDaoImpl implements CategoryDao {
         return null;
     }
 
+
     @Override
     public Category findByNewName(String CurrentName, String newName, Long companyId, Long departmentId, long productId) {
         DetachedCriteria dcr= DetachedCriteria.forClass(Category.class);

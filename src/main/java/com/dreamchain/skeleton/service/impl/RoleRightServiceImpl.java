@@ -37,6 +37,7 @@ public class RoleRightServiceImpl implements RoleRightService {
     private static String INVALID_INPUT = "Invalid input";
     private static String INVALID_ROLE = "Role not exists";
     private static String BACK_DATED_DATA = "Role data is old.Please try again with updated data";
+    private static String ASSOCIATED_RIGHTS = "Rights is tagged with user.First remove tagging and try again";
 
     @Transactional(readOnly = true)
     public RoleRight get(Long id) {
@@ -90,9 +91,8 @@ public class RoleRightServiceImpl implements RoleRightService {
         if (roleId == 0l) validationMsg = INVALID_INPUT;
         RoleRight roleRight = roleRightDao.get(roleId);
         if (roleRight == null && validationMsg == "") validationMsg = INVALID_ROLE;
-        //@todo need implement after user implementation
-//        List<Object> obj=roleDao.countOfRole(roleId);
-//        if (obj.size() > 0 && validationMsg == "") validationMsg = ASSOCIATED_ROLE;
+        List<Object> obj=roleRightDao.countOfRights(roleId);
+        if (obj.size() > 0 && validationMsg == "") validationMsg = ASSOCIATED_RIGHTS;
 
         if ("".equals(validationMsg)) {
             roleRightDao.delete(roleRight);
