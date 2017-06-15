@@ -33,7 +33,7 @@ INSERT INTO role_right(
 
 INSERT INTO users(
             id,  email, name, password, phone, role, version,image_path,designation,role_right,role_rights_id,company_id,company,user_type)
-    VALUES (9999999999,'admin@domain.com', 'Admin User','$2a$10$8ftimfEd8fCvG/cxprK80.1ksGmcMKqCiYAv5doFz5hIipMwn3u16','09876543211', 'ROLE_SUPER_ADMIN',0,'user.png','SD',9999999992,9999999992,9999999993,9999999993,'vendor');
+    VALUES (9999999999,'admin@domain.com', 'Admin User','$2a$10$8ftimfEd8fCvG/cxprK80.1ksGmcMKqCiYAv5doFz5hIipMwn3u16','09876543211', 'ROLE_SUPER_ADMIN',0,'/resources/images/user_photo/user.png','SD',9999999992,9999999992,9999999993,9999999993,'vendor');
 
 
 
@@ -99,7 +99,7 @@ INSERT INTO role_right(
 
    INSERT INTO users(
                id,  email, name, password, phone, role, version,image_path,designation,role_right,role_rights_id,company_id,company,user_type)
-       VALUES (9999999998,'admin@client.com', 'Admin User','$2a$10$8ftimfEd8fCvG/cxprK80.1ksGmcMKqCiYAv5doFz5hIipMwn3u16','09876543211', 'ROLE_ADMIN',0,'client.png','SD',9999999992,9999999992,9999999993,9999999993,'client');
+       VALUES (9999999998,'admin@client.com', 'Admin User','$2a$10$8ftimfEd8fCvG/cxprK80.1ksGmcMKqCiYAv5doFz5hIipMwn3u16','09876543211', 'ROLE_ADMIN',0,'/resources/images/team_member_photo/client.png','SD',9999999992,9999999992,9999999993,9999999993,'client');
 
     Email-admin@client.com
     password-12345678

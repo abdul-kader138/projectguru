@@ -55,8 +55,8 @@ public class UserDaoImpl implements UserDao {
 		DetachedCriteria dcr= DetachedCriteria.forClass(User.class);
 		Criterion cr1 = Restrictions.eq("userType", user.getUserType());
 		Criterion cr = Restrictions.ne("email", user.getEmail());
-		dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		dcr.add(cr1);
+//		dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		dcr.add(cr1).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<Object> lst= hibernateTemplate.findByCriteria(dcr);
 		return createProductList(lst);
 	}

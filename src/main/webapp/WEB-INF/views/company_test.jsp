@@ -165,6 +165,7 @@
                 $("#updateCompany").hide();
                 var companyGb;
                 var mainPath=document.origin+"/PG";
+                console.log(mainPath);
 
 
                 /* populate Company list when page load */
