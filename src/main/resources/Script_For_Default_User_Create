@@ -1,4 +1,4 @@
-// run this script to create user to login the application
+// run this script to create  user to login the application
 
 
 1) insert to Company table
@@ -12,7 +12,7 @@ INSERT INTO company(
 
 INSERT INTO roles(
             id, created_by, description, name,version)
-    VALUES (9999999991, 'admin@domain.com', 'ROLE_ADMIN', 'ROLE_ADMIN',0);
+    VALUES (9999999991, 'admin@domain.com', 'ROLE_SUPER_ADMIN', 'ROLE_SUPER_ADMIN',0);
 
 3) Insert to role_rights table
 
@@ -32,7 +32,7 @@ INSERT INTO role_right(
 
 INSERT INTO users(
             id,  email, name, password, phone, role, version,image_path,designation,role_right,role_rights_id,company_id,company)
-    VALUES (9999999999,'admin@domain.com', 'Admin User','$2a$10$xR6y2eJ1LgzvB9N2CRlEYOiIcRsi.LRe4X/qIRubcvhrvA2h.WG/G','09876543211', 'ROLE_ADMIN',0,'/test','SD',9999999992,9999999992,9999999993,9999999993);
+    VALUES (9999999999,'admin@domain.com', 'Admin User','$2a$10$xR6y2eJ1LgzvB9N2CRlEYOiIcRsi.LRe4X/qIRubcvhrvA2h.WG/G','09876543211', 'ROLE_SUPER_ADMIN',0,'/test','SD',9999999992,9999999992,9999999993,9999999993);
 
 
 
@@ -43,3 +43,27 @@ INSERT INTO users(
 
 Email-admin@domain.com
 password-baBU1234
+
+
+
+
+// insert user roles to roles table
+
+
+2) Insert to roles table
+
+INSERT INTO roles(
+            id, created_by, description, name,version)
+    VALUES (9999999994, 'admin@domain.com', 'ROLE_USER', 'ROLE_USER',0);
+
+3) Insert to role_rights table
+
+INSERT INTO role_right(
+            id, created_by,role_id,version, roles)
+    VALUES (9999999995, 'admin@domain.com', 9999999994,0, 9999999994);
+
+
+4) Insert into rights table
+
+   INSERT INTO rights(id, rights) VALUES (9999999995, 'View');
+   INSERT INTO rights(id, rights) VALUES (9999999995, 'Write');

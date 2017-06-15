@@ -21,7 +21,7 @@
                         <th width="200px">Email</th>
                         <th width="200px">Phone</th>
                         <th width="200px">Designation</th>
-                        <th width="200px">Role</th>
+                        <%--<th width="200px">Role</th>--%>
                         <th width="200px">Photo</th>
                         <th width="200px">Company name</th>
 
@@ -286,7 +286,7 @@
                         {"mData": "email", 'sWidth': '200px'},
                         {"mData": "phone", 'sWidth': '200px'},
                         {"mData": "designation", 'sWidth': '200px'},
-                        {"mData": "role", 'sWidth': '200px'},
+//                        {"mData": "role", 'sWidth': '200px'},
                         {
                             "mData": "path",
                             "render": function (url, type, full) {
