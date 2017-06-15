@@ -14,9 +14,9 @@ public interface UserService {
 	
 	User get(Long id);
 
-	Map<String, Object> save(MultipartHttpServletRequest request) throws Exception;
+	Map<String, Object> save(MultipartHttpServletRequest request,String usersType) throws Exception;
 
-	Map<String, Object> updateUser(MultipartHttpServletRequest request) throws Exception;
+	Map<String, Object> updateUser(MultipartHttpServletRequest request,String usersType) throws Exception;
 
 	String delete(Long companyId,HttpServletRequest request);
 
@@ -24,8 +24,6 @@ public interface UserService {
 
 	List<User> findAll(String userName);
 	
-//	List<String> findAllUserRole();
-
 	User findByUserName(String username);
 	List<User> findAll();
 

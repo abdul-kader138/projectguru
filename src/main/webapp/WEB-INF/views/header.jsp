@@ -334,7 +334,7 @@
                     <ul class="dropdown-menu pull-right">
                         <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
                         <li role="seperator" class="divider"></li>
-                        <li><a href="change_password"><i class="material-icons">build</i>Change Password</a></li>
+                        <li><a href="change_password"><i class="material-icons">build</i>Change Password &nbsp;</a></li>
                         <li><a href="<c:url value="j_spring_security_logout" />"><i class="material-icons">input</i>Sign
                             Out</a></li>
                     </ul>
@@ -409,6 +409,9 @@
                                     </c:if>
                                     <li>
                                         <a href="user">User</a>
+                                    </li>
+                                    <li>
+                                        <a href="team">Team Member</a>
                                     </li>
                                 </ul>
                             </li>

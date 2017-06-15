@@ -21,7 +21,6 @@
             <th width="200px">Email</th>
             <th width="200px">Phone</th>
             <th width="200px">Designation</th>
-            <th width="200px">Role</th>
             <th width="200px">Photo</th>
             <th width="200px">Company name</th>
 
@@ -736,6 +735,8 @@
           var companyId=$("#listOfCompany option:selected").val();
           var user=new FormData(document.getElementById("userDetails"));
           user.append('companyId', companyId);
+          user.append('roleId', 0);
+          user.append('companyName', "No");
           return user;
         }
 

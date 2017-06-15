@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-configuration PUBLIC
-		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-		"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-	<session-factory>
-		<mapping class="com.dreamchain.skeleton.model.User"></mapping>
-		<!--<mapping class="com.dreamchain.skeleton.model.Customer"></mapping>-->
-		<!--<mapping class="com.dreamchain.skeleton.model.Order"></mapping>-->
-		<mapping class="com.dreamchain.skeleton.model.Company"></mapping>
-		<mapping class="com.dreamchain.skeleton.model.Project"></mapping>
-		<mapping class="com.dreamchain.skeleton.model.Department"></mapping>
-		<mapping class="com.dreamchain.skeleton.model.Designation"></mapping>
-		<mapping class="com.dreamchain.skeleton.model.Roles"></mapping>
-		<mapping class="com.dreamchain.skeleton.model.ProductSubCategory"></mapping>
-		<mapping class="com.dreamchain.skeleton.model.RoleRight"></mapping>
-		<mapping class="com.dreamchain.skeleton.model.Product"></mapping>
-		<mapping class="com.dreamchain.skeleton.model.Category"></mapping>
-	</session-factory>
+    <session-factory>
+        <mapping class="com.dreamchain.skeleton.model.User"></mapping>
+        <mapping class="com.dreamchain.skeleton.model.Company"></mapping>
+        <mapping class="com.dreamchain.skeleton.model.Department"></mapping>
+        <mapping class="com.dreamchain.skeleton.model.Roles"></mapping>
+        <mapping class="com.dreamchain.skeleton.model.RoleRight"></mapping>
+        <mapping class="com.dreamchain.skeleton.model.Product"></mapping>
+        <mapping class="com.dreamchain.skeleton.model.Category"></mapping>
+    </session-factory>
 </hibernate-configuration>
 

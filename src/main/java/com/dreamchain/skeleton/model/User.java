@@ -6,7 +6,6 @@ import java.util.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-import com.dreamchain.skeleton.service.impl.UserDetailServiceImpl;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -87,6 +86,11 @@ public class User extends org.springframework.security.core.userdetails.User imp
 	private long companyId;
 
 
+	@Column
+	@NotNull
+	private String userType;
+
+
 
 	public User(){
 		super("test", "test1234", true, true,true, true, User.getALLAuthority());}
@@ -96,7 +100,9 @@ public class User extends org.springframework.security.core.userdetails.User imp
 				boolean accountNonLocked,
 					Collection authorities,
 					String name,String email, String role,
-					String phone, String imagePath,String designation,Long roleRightsId,RoleRight roleRight,Long companyId,Company company,String createdBy,String updatedBy,Date createdOn,Date updatedOn) {
+					String phone, String imagePath,String designation,Long roleRightsId,
+				RoleRight roleRight,Long companyId,Company company,String userType,String createdBy,
+				String updatedBy,Date createdOn,Date updatedOn) {
 		super(username, password, enabled, accountNonExpired,
 				credentialsNonExpired, accountNonLocked, authorities);
 
@@ -112,6 +118,7 @@ public class User extends org.springframework.security.core.userdetails.User imp
 		this.roleRight=roleRight;
 		this.companyId=companyId;
 		this.company=company;
+		this.userType=userType;
 		this.createdBy = createdBy;
 		this.updatedBy=updatedBy;
 		this.createdOn=createdOn;
@@ -261,6 +268,14 @@ public class User extends org.springframework.security.core.userdetails.User imp
 
 	public void setCompanyId(long companyId) {
 		this.companyId = companyId;
+	}
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
 	}
 
 	public static ArrayList<GrantedAuthority> getALLAuthority() {
