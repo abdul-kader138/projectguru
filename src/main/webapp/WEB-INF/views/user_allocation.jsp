@@ -10,7 +10,7 @@
             <div class="col-xs-10 col-xs-offset-1 card">
                 <br/>
 
-                <div><h4>Allocation List</h4></div>
+                <div><h4>Team Member Allocation List</h4></div>
                 <hr/>
                 <br/><br/>
                 <table id="allocationTable" class="display nowrap" cellspacing="0" width="100%">
@@ -21,8 +21,8 @@
                         <%--<th width="100px">Department</th>--%>
                         <th width="200px">Product</th>
                         <th width="200px">Category</th>
-                        <th width="250px">Requested By</th>
-                        <th width="250px">Checked By</th>
+                        <th width="250px">IT Coordinator</th>
+                        <th width="250px">Approved By</th>
                     </tr>
                     </thead>
                 </table>
@@ -74,7 +74,7 @@
                             <fieldset>
 
                                 <!-- Form Name -->
-                                <legend><strong>User Allocation Setting</strong></legend>
+                                <legend><strong>Team Member Allocation Setting</strong></legend>
 
                                 <input type="hidden" class="form-control" id="id" name="id" value="0" required>
                                 <input type="hidden" class="form-control" id="version" name="version" value="0"
@@ -128,31 +128,32 @@
                                     </div>
                                 </div>
 
-
-                                <!-- select Box for Requested By-->
+                                <!-- select Box for IT Coordinator-->
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="listOfRequestBy">Request by</label>
+                                    <label class="col-md-4 control-label" for="listOfCoordinator">IT
+                                        Coordinator </label>
 
                                     <div class="col-md-4">
-                                        <select id="listOfRequestBy" class="form-control"
+                                        <select id="listOfCoordinator" class="form-control"
                                                 style="border-color:#808080; border-width:1px; border-style:solid;"></select>
-                                        <label id="requestByNameValidation" style="color:red; font-size: 11px;"
+                                        <label id="coordinatorNameValidation" style="color:red; font-size: 11px;"
                                                class="form-control"></label>
                                     </div>
                                 </div>
 
 
-                                <!-- select Box for Checked By-->
+                                <!-- select Box for Approved By-->
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="listOfCheckedBy">Checked by</label>
+                                    <label class="col-md-4 control-label" for="listOfApprovedBy">Approved by</label>
 
                                     <div class="col-md-4">
-                                        <select id="listOfCheckedBy" class="form-control"
+                                        <select id="listOfApprovedBy" class="form-control"
                                                 style="border-color:#808080; border-width:1px; border-style:solid;"></select>
-                                        <label id="checkedByNameValidation" style="color:red; font-size: 11px;"
+                                        <label id="approvedByNameValidation" style="color:red; font-size: 11px;"
                                                class="form-control"></label>
                                     </div>
                                 </div>
+
 
 
                                 <!-- Button -->
@@ -240,8 +241,8 @@
 //                        {"mData": "departmentName", 'sWidth': '100px'},
                         {"mData": "productName", 'sWidth': '200px'},
                         {"mData": "categoryName", 'sWidth': '200px'},
-                        {"mData": "requestedBy.name", 'sWidth': '250px'},
-                        {"mData": "checkedBy.name", 'sWidth': '250px'}
+                        {"mData": "itCoordinator.name", 'sWidth': '250px'},
+                        {"mData": "approvedBy.name", 'sWidth': '250px'}
                     ],
                     'aaSorting': [[0, 'asc']],
                     "columnDefs": [{}],
@@ -272,8 +273,8 @@
 //                    allocation.departmentId = $("#listOfDepartment option:selected").val();
                     allocation.productId = $("#listOfProduct option:selected").val();
                     allocation.categoryId = $("#listOfCategory option:selected").val();
-                    allocation.requestById = $("#listOfRequestBy option:selected").val();
-                    allocation.checkedById = $("#listOfCheckedBy option:selected").val();
+                    allocation.itCoordinatorId = $("#listOfCoordinator option:selected").val();
+                    allocation.approvedById = $("#listOfApprovedBy option:selected").val();
                     if (formValidation()) callAjaxForAddOperation(part1, part2, icn, msg, allocation);
                 });
 
@@ -308,8 +309,8 @@
 //                    newAllocation.departmentId = $("#listOfDepartment option:selected").val();
                     newAllocation.productId = $("#listOfProduct option:selected").val();
                     newAllocation.categoryId = $("#listOfCategory option:selected").val();
-                    newAllocation.requestById = $("#listOfRequestBy option:selected").val();
-                    newAllocation.checkedById = $("#listOfCheckedBy option:selected").val();
+                    newAllocation.itCoordinatorId = $("#listOfCoordinator option:selected").val();
+                    newAllocation.approvedById = $("#listOfApprovedBy option:selected").val();
                     if (formValidation()) callAjaxForEditOperation(part1, part2, icn, msg, newAllocation);
 
                 });
@@ -523,8 +524,8 @@
 //                    $('#defaultOptDepartment').val('0').prop('selected', true);
                     $('#defaultOptProduct').val('0').prop('selected', true);
                     $('#defaultOptCategory').val('0').prop('selected', true);
-                    $('#defaultOptRequestBy').val('0').prop('selected', true);
-                    $('#defaultOptCheckedBy').val('0').prop('selected', true);
+                    $('#defaultOptCoordinator').val('0').prop('selected', true);
+                    $('#defaultOptApprovedBy').val('0').prop('selected', true);
                 }
 
 
@@ -536,8 +537,8 @@
 //                    var departmentId = $("#listOfDepartment option:selected").val();
                     var productId = $("#listOfProduct option:selected").val();
                     var categoryId = $("#listOfCategory option:selected").val();
-                    var requestById = $("#listOfRequestBy option:selected").val();
-                    var checkedById = $("#listOfCheckedBy option:selected").val();
+                    var itCoordinatorId = $("#listOfCoordinator option:selected").val();
+                    var approvedId = $("#listOfApprovedBy option:selected").val();
 
                     if ((companyId == null) || (companyId == "0")) {
                         $("#companyNameValidation").text("Company name is required");
@@ -557,19 +558,18 @@
                         $("#categoryNameValidation").text("Category name is required");
                         isValid = false;
                     }
-
-                    if ((requestById == null) || (requestById == "0")) {
-                        $("#requestByNameValidation").text("Requester name is required");
+                    if ((itCoordinatorId == null) || (itCoordinatorId == "0")) {
+                        $("#coordinatorNameValidation").text("Coordinator name is required");
                         isValid = false;
                     }
 
-                    if ((checkedById == null) || (checkedById == "0")) {
-                        $("#checkedByNameValidation").text("Checked By name is required");
+                    if ((approvedId == null) || (approvedId == "0")) {
+                        $("#approvedByNameValidation").text("Approved By name is required");
                         isValid = false;
                     }
 
-                    if (checkedById == requestById && ((requestById != null) || (requestById != "0"))) {
-                        $("#checkedByNameValidation").text("Checked By and Requester name can't be same");
+                    if (approvedId == itCoordinatorId && ((itCoordinatorId != null) || (itCoordinatorId != "0"))) {
+                        $("#approvedByNameValidation").text("Approved By and Coordinator name can't be same");
                         isValid = false;
                     }
                     return isValid;
@@ -583,9 +583,8 @@
 //                    $("#departmentNameValidation").text("");
                     $("#productNameValidation").text("");
                     $("#categoryNameValidation").text("");
-                    $("#requestByNameValidation").text("");
-                    $("#checkedByNameValidation").text("");
-
+                    $("#coordinatorNameValidation").text("");
+                    $("#approvedByNameValidation").text("");
                 }
 
 
@@ -613,8 +612,8 @@
 //                        "departmentName": allocation.departmentName,
                         "productName": allocation.productName,
                         "categoryName": allocation.categoryName,
-                        "requestedBy": allocation.requestedBy,
-                        "checkedBy": allocation.checkedBy,
+                        "itCoordinator": allocation.itCoordinator,
+                        "approvedBy": allocation.approvedBy,
                         "companyId": allocation.companyId,
                         "departmentId": allocation.departmentId,
                         "productId": allocation.productId,
@@ -720,8 +719,8 @@
                     $("#id").val(newAllocation.id);
                     $("#version").val(newAllocation.version);
                     $('#listOfCompany option:contains("' + newAllocation.companyName + '")').prop('selected', 'selected');
-                    $('#listOfRequestBy option:contains("' + newAllocation.requestedBy.name + '")').prop('selected', 'selected');
-                    $('#listOfCheckedBy option:contains("' + newAllocation.checkedBy.name + '")').prop('selected', 'selected');
+                    $('#listOfCoordinator option:contains("' + newAllocation.itCoordinator.name + '")').prop('selected', 'selected');
+                    $('#listOfApprovedBy option:contains("' + newAllocation.approvedBy.name + '")').prop('selected', 'selected');
                     var company = new Object();
                     var id = newAllocation.companyId;
                     var productId = newAllocation.productId;
@@ -760,23 +759,22 @@
                 /* Load User data to select box data using ajax */
 
                 function getAllUser() {
-                    $('#listOfRequestBy').empty();
-                    $('#listOfcheckedBy').empty();
+                    $('#listOfCoordinator').empty();
+                    $('#listOfApprovedBy').empty();
                     $.ajax({
                         type: "GET",
                         url: 'http://localhost:8080/user/userList',
                         success: function (data) {
-                            var collaborationRequest;
-                            var collaborationChecked;
-                            collaborationRequest += '<option id="defaultOptRequestBy" value="0">Select RequestBy</option>';
-                            collaborationChecked += '<option id="defaultOptCheckedBy" value="0">Select CheckedBy</option>';
+                            var collaborationCoordinator;
+                            var collaborationApproved;
+                            collaborationCoordinator += '<option id="defaultOptCoordinator" value="0">Select IT Coordinator</option>';
+                            collaborationApproved += '<option id="defaultOptApprovedBy" value="0">Select Approved By</option>';
                             $.each(data, function (i, d) {
-                                collaborationRequest += "<option value=" + d.id + ">" + d.name + "</option>";
-                                collaborationChecked += "<option value=" + d.id + ">" + d.name + "</option>";
+                                collaborationCoordinator += "<option value=" + d.id + ">" + d.name + "</option>";
+                                collaborationApproved += "<option value=" + d.id + ">" + d.name + "</option>";
                             });
-
-                            $('#listOfRequestBy').append(collaborationRequest);
-                            $('#listOfCheckedBy').append(collaborationChecked);
+                            $('#listOfCoordinator').append(collaborationCoordinator);
+                            $('#listOfApprovedBy').append(collaborationApproved);
                         },
                         error: function (e) {
                         }

@@ -11,7 +11,7 @@ import java.util.Date;
 @Entity
 @Table(name="user_allocation",
         uniqueConstraints=
-        @UniqueConstraint(columnNames={"companyId","productId","categoryId","requestById","checkedById"}))
+        @UniqueConstraint(columnNames={"companyId","productId","categoryId","itCoordinatorId","approvedById"}))
 public class UserAllocation implements Serializable {
 
     private static final long serialVersionUID = 8633415080370876715L;
@@ -35,13 +35,6 @@ public class UserAllocation implements Serializable {
     @NotEmpty
     private String categoryName;
 
-    @NotNull
-    @OneToOne
-    private User requestedBy;
-
-    @NotNull
-    @OneToOne
-    private User checkedBy;
 
     @NotNull
     private long companyId;
@@ -56,11 +49,21 @@ public class UserAllocation implements Serializable {
     @NotNull
     private long categoryId;
 
-    @NotNull
-    private long requestById;
 
     @NotNull
-    private long checkedById;
+    private long itCoordinatorId;
+
+    @NotNull
+    private long approvedById;
+
+    @NotNull
+    @OneToOne
+    private User approvedBy;
+
+    @NotNull
+    @OneToOne
+    private User itCoordinator;
+
 
     @Column
     @NotNull
@@ -104,23 +107,6 @@ public class UserAllocation implements Serializable {
         this.version = version;
     }
 
-
-    public User getRequestedBy() {
-        return requestedBy;
-    }
-
-    public void setRequestedBy(User requestedBy) {
-        this.requestedBy = requestedBy;
-    }
-
-    public User getCheckedBy() {
-        return checkedBy;
-    }
-
-    public void setCheckedBy(User checkedBy) {
-        this.checkedBy = checkedBy;
-    }
-
     public long getCompanyId() {
         return companyId;
     }
@@ -151,22 +137,6 @@ public class UserAllocation implements Serializable {
 
     public void setCategoryId(long categoryId) {
         this.categoryId = categoryId;
-    }
-
-    public long getRequestById() {
-        return requestById;
-    }
-
-    public void setRequestById(long requestById) {
-        this.requestById = requestById;
-    }
-
-    public long getCheckedById() {
-        return checkedById;
-    }
-
-    public void setCheckedById(long checkedById) {
-        this.checkedById = checkedById;
     }
 
     public String getCreatedBy() {
@@ -241,5 +211,35 @@ public class UserAllocation implements Serializable {
         this.categoryName = categoryName;
     }
 
+    public long getItCoordinatorId() {
+        return itCoordinatorId;
+    }
 
+    public void setItCoordinatorId(long itCoordinatorId) {
+        this.itCoordinatorId = itCoordinatorId;
+    }
+
+    public long getApprovedById() {
+        return approvedById;
+    }
+
+    public void setApprovedById(long approvedById) {
+        this.approvedById = approvedById;
+    }
+
+    public User getApprovedBy() {
+        return approvedBy;
+    }
+
+    public void setApprovedBy(User approvedBy) {
+        this.approvedBy = approvedBy;
+    }
+
+    public User getItCoordinator() {
+        return itCoordinator;
+    }
+
+    public void setItCoordinator(User itCoordinator) {
+        this.itCoordinator = itCoordinator;
+    }
 }

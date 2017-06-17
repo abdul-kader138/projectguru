@@ -10,7 +10,7 @@
       <div class="col-xs-10 col-xs-offset-1 card">
         <br/>
 
-        <div><h4>Team List</h4></div>
+        <div><h4>Team Member List</h4></div>
         <hr/>
         <br/><br/>
         <table id="userTable" class="display nowrap" cellspacing="0" width="100%">
@@ -74,7 +74,7 @@
               <fieldset>
 
                 <!-- Form Name -->
-                <legend><strong>Team Setting</strong></legend>
+                <legend><strong>Team Member Setting</strong></legend>
 
                 <!-- Select input-->
                 <div class="form-group">

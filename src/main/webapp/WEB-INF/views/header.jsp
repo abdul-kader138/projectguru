@@ -372,9 +372,9 @@
                                     <li>
                                         <a href="category">Category</a>
                                     </li>
-                                    <li>
-                                        <a href="subcategory">Sub-Category</a>
-                                    </li>
+                                    <%--<li>--%>
+                                        <%--<a href="subcategory">Sub-Category</a>--%>
+                                    <%--</li>--%>
                                 </ul>
                             </li>
                             <li>
@@ -392,7 +392,7 @@
                             </li>
                             <li>
                                 <a href="javascript:void(0);" class="menu-toggle">
-                                    <span>User Settings</span>
+                                    <span>Team Member Settings</span>
                                 </a>
                                 <ul class="ml-menu">
 
@@ -408,8 +408,8 @@
                                     </c:if>
                                     <c:if test="${userType == 'vendor'}">
                                         <li>
-                                            <a href="user">User</a>
-                                            <a href="user_allocation">User Allocation</a>
+                                            <a href="user">Team Member</a>
+                                            <a href="user_allocation">Team Member Allocation</a>
                                         </li>
                                     </c:if>
                                     <c:if test="${userType == 'client'}">

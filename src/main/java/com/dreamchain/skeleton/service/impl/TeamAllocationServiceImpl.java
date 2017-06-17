@@ -54,8 +54,8 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
         TeamAllocation existingTeamAllocation=new TeamAllocation();
         TeamAllocation teamAllocation=createObjForSave(teamAllocationObj);
         validationMsg = checkInput(teamAllocation);
-        if ("".equals(validationMsg)) existingTeamAllocation = teamAllocationDao.findByUserId(teamAllocation.getItCoordinatorId(),
-                teamAllocation.getApprovedById(),teamAllocation.getCompanyId(),
+        if ("".equals(validationMsg)) existingTeamAllocation = teamAllocationDao.findByUserId(teamAllocation.getRequestById(),
+                teamAllocation.getCheckedById(),teamAllocation.getCompanyId(),
                 teamAllocation.getProductId(),teamAllocation.getCategoryId());
 //                userAllocation.getDepartmentId(),userAllocation.getProductId(),userAllocation.getCategoryId());
         if (existingTeamAllocation.getCategoryName() != null && validationMsg == "") validationMsg = TEAM_ALLOCATION_EXISTS;
@@ -123,8 +123,8 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
     private TeamAllocation createObjForSave(Map<String, Object> teamAllocationObj) throws ParseException {
         TeamAllocation teamAllocation = new TeamAllocation();
         Category category=categoryDao.get(Long.parseLong((String)teamAllocationObj.get("categoryId")));
-        User itCoordinator=userDao.get(Long.parseLong((String)teamAllocationObj.get("itCoordinatorId")));
-        User approvedBy=userDao.get(Long.parseLong((String)teamAllocationObj.get("approvedById")));
+        User requestByUser=userDao.get(Long.parseLong((String)teamAllocationObj.get("requestById")));
+        User checkedByUser=userDao.get(Long.parseLong((String)teamAllocationObj.get("checkedById")));
         teamAllocation.setId(Long.parseLong((String) teamAllocationObj.get("id")));
         teamAllocation.setVersion(Long.parseLong((String) teamAllocationObj.get("version")));
         teamAllocation.setCompanyId(category.getCompanyId());
@@ -138,10 +138,10 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User loggedUser=(User) auth.getPrincipal();
         teamAllocation.setUserType(loggedUser.getUserType());
-        teamAllocation.setItCoordinatorId(itCoordinator.getId());
-        teamAllocation.setItCoordinator(itCoordinator);
-        teamAllocation.setApprovedById(approvedBy.getId());
-        teamAllocation.setApprovedBy(approvedBy);
+        teamAllocation.setCheckedById(checkedByUser.getId());
+        teamAllocation.setCheckedBy(checkedByUser);
+        teamAllocation.setRequestById(requestByUser.getId());
+        teamAllocation.setRequestedBy(requestByUser);
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
         teamAllocation.setUpdatedBy(getUserId());
@@ -175,10 +175,10 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
         teamAllocation.setProductName(objFromUI.getProductName());
         teamAllocation.setCategoryId(objFromUI.getCategoryId());
         teamAllocation.setCategoryName(objFromUI.getCategoryName());
-        teamAllocation.setItCoordinatorId(objFromUI.getItCoordinator().getId());
-        teamAllocation.setItCoordinator(objFromUI.getItCoordinator());
-        teamAllocation.setApprovedById(objFromUI.getApprovedBy().getId());
-        teamAllocation.setApprovedBy(objFromUI.getApprovedBy());
+        teamAllocation.setRequestById(objFromUI.getRequestById());
+        teamAllocation.setRequestedBy(objFromUI.getRequestedBy());
+        teamAllocation.setCheckedById(objFromUI.getCheckedById());
+        teamAllocation.setCheckedBy(objFromUI.getCheckedBy());
         teamAllocation.setCreatedBy(existingTeamAllocation.getCreatedBy());
         teamAllocation.setCreatedOn(existingTeamAllocation.getCreatedOn());
         SimpleDateFormat dateFormat = new SimpleDateFormat();

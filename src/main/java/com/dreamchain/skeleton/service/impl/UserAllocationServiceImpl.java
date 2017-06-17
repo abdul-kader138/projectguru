@@ -50,8 +50,8 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         UserAllocation existingUserAllocation=new UserAllocation();
         UserAllocation userAllocation=createObjForSave(userAllocationObj);
         validationMsg = checkInput(userAllocation);
-        if ("".equals(validationMsg)) existingUserAllocation = userAllocationDao.findByUserId(userAllocation.getRequestById(),
-                userAllocation.getCheckedById(),userAllocation.getCompanyId(),
+        if ("".equals(validationMsg)) existingUserAllocation = userAllocationDao.findByUserId(userAllocation.getItCoordinatorId(),
+                userAllocation.getApprovedById(),userAllocation.getCompanyId(),
                 userAllocation.getProductId(),userAllocation.getCategoryId());
 //                userAllocation.getDepartmentId(),userAllocation.getProductId(),userAllocation.getCategoryId());
         if (existingUserAllocation.getCategoryName() != null && validationMsg == "") validationMsg = USER_ALLOCATION_EXISTS;
@@ -119,8 +119,9 @@ public class UserAllocationServiceImpl implements UserAllocationService {
     private UserAllocation createObjForSave(Map<String, Object> userAllocationObj) throws ParseException {
         UserAllocation userAllocation = new UserAllocation();
         Category category=categoryDao.get(Long.parseLong((String)userAllocationObj.get("categoryId")));
-        User requestByUser=userDao.get(Long.parseLong((String)userAllocationObj.get("requestById")));
-        User checkedByUser=userDao.get(Long.parseLong((String)userAllocationObj.get("checkedById")));
+        User itCoordinator=userDao.get(Long.parseLong((String)userAllocationObj.get("itCoordinatorId")));
+        User approvedBy=userDao.get(Long.parseLong((String)userAllocationObj.get("approvedById")));
+
         userAllocation.setId(Long.parseLong((String) userAllocationObj.get("id")));
         userAllocation.setVersion(Long.parseLong((String) userAllocationObj.get("version")));
         userAllocation.setCompanyId(category.getCompanyId());
@@ -134,10 +135,10 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User loggedUser=(User) auth.getPrincipal();
         userAllocation.setUserType(loggedUser.getUserType());
-        userAllocation.setCheckedById(checkedByUser.getId());
-        userAllocation.setCheckedBy(checkedByUser);
-        userAllocation.setRequestById(requestByUser.getId());
-        userAllocation.setRequestedBy(requestByUser);
+        userAllocation.setItCoordinatorId(itCoordinator.getId());
+        userAllocation.setItCoordinator(itCoordinator);
+        userAllocation.setApprovedById(approvedBy.getId());
+        userAllocation.setApprovedBy(approvedBy);
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
         userAllocation.setUpdatedBy(getUserId());
@@ -171,10 +172,10 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         userAllocation.setProductName(objFromUI.getProductName());
         userAllocation.setCategoryId(objFromUI.getCategoryId());
         userAllocation.setCategoryName(objFromUI.getCategoryName());
-        userAllocation.setRequestById(objFromUI.getRequestById());
-        userAllocation.setRequestedBy(objFromUI.getRequestedBy());
-        userAllocation.setCheckedById(objFromUI.getCheckedById());
-        userAllocation.setCheckedBy(objFromUI.getCheckedBy());
+        userAllocation.setItCoordinatorId(objFromUI.getItCoordinator().getId());
+        userAllocation.setItCoordinator(objFromUI.getItCoordinator());
+        userAllocation.setApprovedById(objFromUI.getApprovedBy().getId());
+        userAllocation.setApprovedBy(objFromUI.getApprovedBy());
         userAllocation.setCreatedBy(existingUserAllocation.getCreatedBy());
         userAllocation.setCreatedOn(existingUserAllocation.getCreatedOn());
         SimpleDateFormat dateFormat = new SimpleDateFormat();

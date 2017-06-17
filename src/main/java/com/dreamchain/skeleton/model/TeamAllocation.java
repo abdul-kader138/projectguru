@@ -10,7 +10,7 @@ import java.util.Date;
 @Entity
 @Table(name="team_allocation",
         uniqueConstraints=
-        @UniqueConstraint(columnNames={"companyId","productId","categoryId","itCoordinatorId","approvedById"}))
+        @UniqueConstraint(columnNames={"companyId","productId","categoryId","requestById","checkedById"}))
 public class TeamAllocation implements Serializable {
 
     private static final long serialVersionUID = 8633415080370876715L;
@@ -34,13 +34,6 @@ public class TeamAllocation implements Serializable {
     @NotEmpty
     private String categoryName;
 
-    @NotNull
-    @OneToOne
-    private User approvedBy;
-
-    @NotNull
-    @OneToOne
-    private User itCoordinator;
 
     @NotNull
     private long companyId;
@@ -56,10 +49,18 @@ public class TeamAllocation implements Serializable {
     private long categoryId;
 
     @NotNull
-    private long itCoordinatorId;
+    private long requestById;
 
     @NotNull
-    private long approvedById;
+    private long checkedById;
+
+    @NotNull
+    @OneToOne
+    private User requestedBy;
+
+    @NotNull
+    @OneToOne
+    private User checkedBy;
 
     @Column
     @NotNull
@@ -104,37 +105,6 @@ public class TeamAllocation implements Serializable {
     }
 
 
-    public User getApprovedBy() {
-        return approvedBy;
-    }
-
-    public void setApprovedBy(User approvedBy) {
-        this.approvedBy = approvedBy;
-    }
-
-    public User getItCoordinator() {
-        return itCoordinator;
-    }
-
-    public void setItCoordinator(User itCoordinator) {
-        this.itCoordinator = itCoordinator;
-    }
-
-    public long getItCoordinatorId() {
-        return itCoordinatorId;
-    }
-
-    public void setItCoordinatorId(long itCoordinatorId) {
-        this.itCoordinatorId = itCoordinatorId;
-    }
-
-    public long getApprovedById() {
-        return approvedById;
-    }
-
-    public void setApprovedById(long approvedById) {
-        this.approvedById = approvedById;
-    }
 
     public long getCompanyId() {
         return companyId;
@@ -240,4 +210,36 @@ public class TeamAllocation implements Serializable {
         this.categoryName = categoryName;
     }
 
+
+    public long getRequestById() {
+        return requestById;
+    }
+
+    public void setRequestById(long requestById) {
+        this.requestById = requestById;
+    }
+
+    public long getCheckedById() {
+        return checkedById;
+    }
+
+    public void setCheckedById(long checkedById) {
+        this.checkedById = checkedById;
+    }
+
+    public User getRequestedBy() {
+        return requestedBy;
+    }
+
+    public void setRequestedBy(User requestedBy) {
+        this.requestedBy = requestedBy;
+    }
+
+    public User getCheckedBy() {
+        return checkedBy;
+    }
+
+    public void setCheckedBy(User checkedBy) {
+        this.checkedBy = checkedBy;
+    }
 }
