@@ -142,7 +142,7 @@
                                 </div>
 
 
-                                <!-- select Box for Requested By-->
+                                <!-- select Box for Checked By-->
                                 <div class="form-group">
                                     <label class="col-md-4 control-label" for="listOfCheckedBy">Checked by</label>
 

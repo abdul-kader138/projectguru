@@ -59,8 +59,8 @@ public class TeamAllocationDaoImpl implements TeamAllocationDao {
 //    public UserAllocation findByUserId(long requestById, long checkedById, long companyId, long departmentId, long productId,long categoryId) {
     public TeamAllocation findByUserId(long requestById, long checkedById, long companyId, long productId,long categoryId) {
         DetachedCriteria dcr= DetachedCriteria.forClass(TeamAllocation.class);
-        Criterion cr =  Restrictions.eq("requestById", requestById);
-        Criterion cr1 =  Restrictions.eq("checkedById", checkedById);
+        Criterion cr =  Restrictions.eq("itCoordinatorId", requestById);
+        Criterion cr1 =  Restrictions.eq("approvedById", checkedById);
         Criterion cr2 = Restrictions.eq("companyId", companyId);
 //        Criterion cr3 = Restrictions.eq("departmentId", departmentId);
         Criterion cr4 = Restrictions.eq("productId", productId);

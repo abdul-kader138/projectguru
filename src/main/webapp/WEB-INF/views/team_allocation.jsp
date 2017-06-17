@@ -129,13 +129,13 @@
                                 </div>
 
 
-                                <!-- select Box for Requested By-->
+                                <!-- select Box for IT Coordinator-->
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="listOfCoordinator ">IT
+                                    <label class="col-md-4 control-label" for="listOfCoordinator">IT
                                         Coordinator </label>
 
                                     <div class="col-md-4">
-                                        <select id="listOfCoordinator " class="form-control"
+                                        <select id="listOfCoordinator" class="form-control"
                                                 style="border-color:#808080; border-width:1px; border-style:solid;"></select>
                                         <label id="coordinatorNameValidation" style="color:red; font-size: 11px;"
                                                class="form-control"></label>
@@ -143,14 +143,14 @@
                                 </div>
 
 
-                                <!-- select Box for Requested By-->
+                                <!-- select Box for Approved By-->
                                 <div class="form-group">
                                     <label class="col-md-4 control-label" for="listOfApprovedBy">Approved by</label>
 
                                     <div class="col-md-4">
                                         <select id="listOfApprovedBy" class="form-control"
                                                 style="border-color:#808080; border-width:1px; border-style:solid;"></select>
-                                        <label id="ApprovedByNameValidation" style="color:red; font-size: 11px;"
+                                        <label id="approvedByNameValidation" style="color:red; font-size: 11px;"
                                                class="form-control"></label>
                                     </div>
                                 </div>
@@ -775,8 +775,6 @@
                                 collaborationCoordinator += "<option value=" + d.id + ">" + d.name + "</option>";
                                 collaborationApproved += "<option value=" + d.id + ">" + d.name + "</option>";
                             });
-                            console.log(collaborationCoordinator);
-//                            console.log(collaborationApproved);
                             $('#listOfCoordinator').append(collaborationCoordinator);
                             $('#listOfApprovedBy').append(collaborationApproved);
                         },
