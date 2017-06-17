@@ -415,6 +415,7 @@
                                     <c:if test="${userType == 'client'}">
                                         <li>
                                             <a href="team">Team Member</a>
+                                            <a href="team_allocation">Team Member Allocation</a>
                                         </li>
                                     </c:if>
                                 </ul>

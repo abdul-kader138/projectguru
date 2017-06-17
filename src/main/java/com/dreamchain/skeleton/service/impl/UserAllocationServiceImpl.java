@@ -60,8 +60,8 @@ public class UserAllocationServiceImpl implements UserAllocationService {
             Date date = dateFormat.parse(dateFormat.format(new Date()));
             userAllocation.setCreatedBy(getUserId());
             userAllocation.setCreatedOn(date);
-            long productId= userAllocationDao.save(userAllocation);
-            newUserAllocation=userAllocationDao.get(productId);
+            long id= userAllocationDao.save(userAllocation);
+            newUserAllocation=userAllocationDao.get(id);
         }
         obj.put("userAllocation",newUserAllocation);
         obj.put("validationError",validationMsg);

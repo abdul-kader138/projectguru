@@ -1,7 +1,7 @@
 package com.dreamchain.skeleton.web;
 
-import com.dreamchain.skeleton.model.UserAllocation;
-import com.dreamchain.skeleton.service.UserAllocationService;
+import com.dreamchain.skeleton.model.TeamAllocation;
+import com.dreamchain.skeleton.service.TeamAllocationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,68 +24,68 @@ import java.util.Map;
 
 @Controller
 @PropertySource("classpath:config.properties")
-public class UserAllocationController {
+public class TeamAllocationController {
     @Autowired
-    UserAllocationService userAllocationService;
+    TeamAllocationService teamAllocationService;
     @Autowired
     Environment environment;
 
     static final Logger logger =
-            LoggerFactory.getLogger(UserAllocationController.class.getName());
+            LoggerFactory.getLogger(TeamAllocationController.class.getName());
 
-    @RequestMapping("/user_allocation")
+    @RequestMapping("/team_allocation")
     public ModelAndView main()  {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         ModelAndView model = new ModelAndView();
-        String pageName = "user_allocation";
+        String pageName = "team_allocation";
         model.setViewName(pageName);
         return model;
 
     }
 
-    @RequestMapping(value = "user_allocation/user_allocationList", method = RequestMethod.GET)
+    @RequestMapping(value = "team_allocation/team_allocationList", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<UserAllocation> loadUserAllocationList() {
+    List<TeamAllocation> loadTeamAllocationList() {
 
-        List<UserAllocation> userAllocationList = new ArrayList();
+        List<TeamAllocation> teamAllocationList = new ArrayList();
         logger.info("Loading all allocation info: >> ");
-        userAllocationList = userAllocationService.findAll();
-        logger.info("Loading all allocation info: << total " + userAllocationList.size());
-        return userAllocationList;
+        teamAllocationList = teamAllocationService.findAll();
+        logger.info("Loading all allocation info: << total " + teamAllocationList.size());
+        return teamAllocationList;
     }
 
 
-    @RequestMapping(value = "user_allocation/save", method = RequestMethod.POST, consumes = "application/json", headers = "content-type=application/x-www-form-urlencoded")
+    @RequestMapping(value = "team_allocation/save", method = RequestMethod.POST, consumes = "application/json", headers = "content-type=application/x-www-form-urlencoded")
     public
     @ResponseBody
-    Map saveUserAllocation(@RequestBody Map<String, Object> userAllocationInfo) throws Exception {
+    Map saveTeamAllocation(@RequestBody Map<String, Object> teamAllocationInfo) throws Exception {
         Map<String, Object> objList = new HashMap<>();
         String successMsg = "";
         String validationError = "";
         logger.info("creating new allocation: >>");
-        objList = userAllocationService.save(userAllocationInfo);
+        objList = teamAllocationService.save(teamAllocationInfo);
         validationError = (String) objList.get("validationError");
         if (validationError.length() == 0) {
-            objList.put("successMsg", environment.getProperty("userAllocation.save.success.msg"));
-            successMsg = environment.getProperty("userAllocation.save.success.msg");
+            objList.put("successMsg", environment.getProperty("teamAllocation.save.success.msg"));
+            successMsg = environment.getProperty("teamAllocation.save.success.msg");
         }
         logger.info("creating new allocation: << " + successMsg + validationError);
         return objList;
     }
 
 
-    @RequestMapping(value = "user_allocation/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "team_allocation/delete", method = RequestMethod.POST)
     public
     @ResponseBody
-    Map deleteUserAllocation(@RequestBody String userAllocationId) throws ParseException {
+    Map deleteTeamAllocation(@RequestBody String teamAllocationId) throws ParseException {
         HashMap serverResponse = new HashMap();
         String successMsg = "";
         String validationError = "";
         logger.info("Delete allocation:  >> ");
-        validationError = userAllocationService.delete(Long.parseLong(userAllocationId));
-        if (validationError.length() == 0) successMsg = environment.getProperty("userAllocation.delete.success.msg");
+        validationError = teamAllocationService.delete(Long.parseLong(teamAllocationId));
+        if (validationError.length() == 0) successMsg = environment.getProperty("teamAllocation.delete.success.msg");
         logger.info("Delete allocation:  << " + successMsg + validationError);
         serverResponse.put("successMsg", successMsg);
         serverResponse.put("validationError", validationError);
@@ -93,19 +93,19 @@ public class UserAllocationController {
     }
 
 
-    @RequestMapping(value = "user_allocation/update", method = RequestMethod.POST)
+    @RequestMapping(value = "team_allocation/update", method = RequestMethod.POST)
     public
     @ResponseBody
-    Map updateUserAllocation(@RequestBody Map<String, Object> userAllocationObj) throws ParseException {
+    Map updateUserAllocation(@RequestBody Map<String, Object> teamAllocationObj) throws ParseException {
         Map<String, Object> objList = new HashMap<>();
         String successMsg = "";
         String validationError = "";
         logger.info("Updating allocation: >>");
-        objList = userAllocationService.update(userAllocationObj);
+        objList = teamAllocationService.update(teamAllocationObj);
         validationError = (String) objList.get("validationError");
         if (validationError.length() == 0) {
-            objList.put("successMsg", environment.getProperty("userAllocation.update.success.msg"));
-            successMsg = environment.getProperty("userAllocation.update.success.msg");
+            objList.put("successMsg", environment.getProperty("teamAllocation.update.success.msg"));
+            successMsg = environment.getProperty("teamAllocation.update.success.msg");
         }
         logger.info("Updating allocation:  << " + successMsg + validationError);
         return objList;
