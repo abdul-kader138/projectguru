@@ -409,6 +409,7 @@
                                     <c:if test="${userType == 'vendor'}">
                                         <li>
                                             <a href="user">User</a>
+                                            <a href="user_allocation">User Allocation</a>
                                         </li>
                                     </c:if>
                                     <c:if test="${userType == 'client'}">

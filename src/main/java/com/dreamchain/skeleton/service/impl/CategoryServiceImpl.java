@@ -116,6 +116,11 @@ public class CategoryServiceImpl implements CategoryService{
         return categoryDao.findAll();
     }
 
+    @Override
+    public List<Category> findByProductId(long productId) {
+        return categoryDao.findByProductId(productId);
+    }
+
 
     // create Category object for saving
 

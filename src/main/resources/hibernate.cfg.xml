@@ -11,6 +11,7 @@
         <mapping class="com.dreamchain.skeleton.model.RoleRight"></mapping>
         <mapping class="com.dreamchain.skeleton.model.Product"></mapping>
         <mapping class="com.dreamchain.skeleton.model.Category"></mapping>
+        <mapping class="com.dreamchain.skeleton.model.UserAllocation"></mapping>
     </session-factory>
 </hibernate-configuration>
 

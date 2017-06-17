@@ -40,7 +40,7 @@
                 </button>
                 &nbsp;
                 &nbsp;
-                <button type="button" class="btn bg-grey waves-war" id="refreshCompany" value="1" title="Delete"><img
+                <button type="button" class="btn bg-grey waves-war" id="refreshCompany" value="1" title="Refresh"><img
                         src="resources/images/refresh.png" width="16" height="16" border="0">&nbsp;Refresh
                 </button>
                 &nbsp;<br/><br/>
@@ -165,7 +165,6 @@
                 $("#updateCompany").hide();
                 var companyGb;
                 var mainPath=document.origin+"/PG";
-                console.log(mainPath);
 
 
                 /* populate Company list when page load */

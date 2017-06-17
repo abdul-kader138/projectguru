@@ -38,8 +38,6 @@ public class CategoryController {
     public ModelAndView main()  {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Object obj=auth.getDetails();
-        Object obj1=auth.getPrincipal();
         ModelAndView model = new ModelAndView();
         String pageName = "category";
         model.setViewName(pageName);
@@ -112,5 +110,17 @@ public class CategoryController {
         }
         logger.info("Updating category:  << " + successMsg + validationError);
         return objList;
+    }
+
+
+    @RequestMapping(value = "category/categoryListByProduct", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    List<Category> loadDepartmentListByCompanyId(@RequestBody String productId) throws Exception{
+        List<Category> productList = new ArrayList();
+        logger.info("Loading all category info: >> ");
+        productList = categoryService.findByProductId(Long.parseLong(productId));
+        logger.info("Loading all category info: << total " + productList.size());
+        return productList;
     }
 }

@@ -43,7 +43,7 @@
                 </button>
                 &nbsp;
                 &nbsp;
-                <button type="button" class="btn bg-grey waves-war" id="refreshCategory" value="1" title="Delete"><img
+                <button type="button" class="btn bg-grey waves-war" id="refreshCategory" value="1" title="Refresh"><img
                         src="resources/images/refresh.png" width="16" height="16" border="0">&nbsp;Refresh
                 </button>
                 &nbsp;<br/><br/>
@@ -98,9 +98,9 @@
                                     </div>
                                 </div>
 
-                                <!-- select Box for Department-->
+                                <!-- select Box for Product-->
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="listOfCompany">Product Name</label>
+                                    <label class="col-md-4 control-label" for="listOfProduct">Product Name</label>
 
                                     <div class="col-md-4">
                                         <select id="listOfProduct" class="form-control"
@@ -564,7 +564,6 @@
                 /* Set new created Category value to DataTable*/
 
                 function setNewDataTableValue(category, table) {
-                    console.log(category);
                     table.row.add({
                         "id": category.id,
                         "name": category.name,
@@ -601,7 +600,6 @@
                             });
 
                             $('#listOfDepartment').append(collaboration);
-                            console.log("testing....");
                             $('#listOfDepartment option:contains("' + obj + '")').prop('selected', 'selected');
                         },
                         error: function (e) {
@@ -631,7 +629,6 @@
                             });
 
                             $('#listOfProduct').append(collaboration);
-                            console.log("testing....");
                             $('#listOfProduct option:contains("' + obj + '")').prop('selected', 'selected');
                         },
                         error: function (e) {

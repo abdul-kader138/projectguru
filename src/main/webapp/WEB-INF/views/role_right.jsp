@@ -33,7 +33,7 @@
                 </button>
                 &nbsp;
                 &nbsp;
-                <button type="button" class="btn bg-grey waves-war" id="deleteRole" value="1" title="Delete"><img
+                <button type="button" class="btn bg-grey waves-war" id="deleteRole" value="1" title="Refresh"><img
                         src="resources/images/delete.gif" width="16" height="16" border="0">&nbsp;Delete
 
                 </button>

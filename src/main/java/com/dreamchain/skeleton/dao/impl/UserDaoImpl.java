@@ -96,9 +96,9 @@ public class UserDaoImpl implements UserDao {
 	}
 
 
-	private List<User> createProductList(List<Object> departmentList){
+	private List<User> createProductList(List<Object> userList){
 		List<User> list = new ArrayList<>();
-		for(final Object o : departmentList) {
+		for(final Object o : userList) {
 			list.add((User)o);
 		}
 		return list;

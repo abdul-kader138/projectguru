@@ -46,7 +46,7 @@
                 </button>
                 &nbsp;
                 &nbsp;
-                <button type="button" class="btn bg-grey waves-war" id="refreshUser" value="1" title="Delete"><img
+                <button type="button" class="btn bg-grey waves-war" id="refreshUser" value="1" title="Refresh"><img
                         src="resources/images/refresh.png" width="16" height="16" border="0">&nbsp;Refresh
                 </button>
                 &nbsp;<br/><br/>
@@ -434,7 +434,6 @@
                 /*  Ajax call for delete operation */
 
                 function callAjaxForDeleteOperation(part1, part2, icn, msg, newUser) {
-                    console.log(JSON.stringify(newUser.id));
                     $.ajax({
                         headers: {
                             'Accept': 'application/json',

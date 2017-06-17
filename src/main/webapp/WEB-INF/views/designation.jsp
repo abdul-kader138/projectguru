@@ -35,7 +35,7 @@
                 </button>
                 &nbsp;
                 &nbsp;
-                <button type="button" class="btn bg-grey waves-war" id="refreshDesignation" value="1" title="Delete">
+                <button type="button" class="btn bg-grey waves-war" id="refreshDesignation" value="1" title="Refresh">
                     <img
                             src="resources/images/refresh.png" width="16" height="16" border="0">&nbsp;Refresh
                 </button>

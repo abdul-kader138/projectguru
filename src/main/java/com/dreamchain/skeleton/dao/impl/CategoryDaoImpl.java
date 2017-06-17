@@ -89,4 +89,21 @@ public class CategoryDaoImpl implements CategoryDao {
         if(lst.size()==0)return new Category();
         return (Category)lst.get(0);
     }
+
+    @Override
+    public List<Category> findByProductId(long productId) {
+        DetachedCriteria dcr= DetachedCriteria.forClass(Category.class);
+        Criterion cr = Restrictions.eq("productId", productId);
+        dcr.add(cr);
+        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
+        return createProductList(lst);
+    }
+
+    private List<Category> createProductList(List<Object> departmentList){
+        List<Category> list = new ArrayList<>();
+        for(final Object o : departmentList) {
+            list.add((Category)o);
+        }
+        return list;
+    }
 }

@@ -42,7 +42,7 @@
                 </button>
                 &nbsp;
                 &nbsp;
-                <button type="button" class="btn bg-grey waves-war" id="refreshProduct" value="1" title="Delete"><img
+                <button type="button" class="btn bg-grey waves-war" id="refreshProduct" value="1" title="Refresh"><img
                         src="resources/images/refresh.png" width="16" height="16" border="0">&nbsp;Refresh
                 </button>
                 &nbsp;<br/><br/>
@@ -576,7 +576,6 @@
                             });
 
                             $('#listOfDepartment').append(collaboration);
-                            console.log("testing....");
                             $('#listOfDepartment option:contains("' + obj + '")').prop('selected', 'selected');
                         },
                         error: function (e) {

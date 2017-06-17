@@ -14,4 +14,5 @@ public interface CategoryDao {
     Category findByProductName(String categoryName, long companyId,long departmentId,long productId);
     List<Object> countOfProduct(long productID);
     Category findByNewName(String CurrentName, String newName, Long companyId,Long departmentId,long productId);
+    List<Category> findByProductId(long productId);
 }

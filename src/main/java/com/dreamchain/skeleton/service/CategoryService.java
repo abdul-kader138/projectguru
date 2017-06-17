@@ -14,4 +14,5 @@ public interface CategoryService {
     Map<String,Object> update(Map<String, Object> categoryObj) throws ParseException;
     String delete(Long categoryId);
     List<Category> findAll();
+    List<Category> findByProductId(long productId);
 }
