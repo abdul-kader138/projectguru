@@ -67,6 +67,7 @@ public class AuthenticationController {
         httpSession.setAttribute("role",user.getRole());
         httpSession.setAttribute("path",user.getImagePath());
         httpSession.setAttribute("userType",user.getUserType());
+        httpSession.setAttribute("imagePath",user.getImagePath());
         return model;
 
     }

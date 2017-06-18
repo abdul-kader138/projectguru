@@ -167,7 +167,6 @@
                                                required="">
                                         <label id="phoneValidation" style="color:red; font-size: 11px;"
                                                class="form-control"></label>
-
                                     </div>
                                 </div>
 
@@ -176,14 +175,12 @@
                                     <label class="col-md-4 control-label" for="name">Designation :</label>
 
                                     <div class="col-md-6">
-
                                         <input id="designation" name="designation" type="text" placeholder=""
                                                class="form-control input-md"
                                                style="border-color:#808080; border-width:1px; border-style:solid;"
                                                required="">
                                         <label id="designationValidation" style="color:red; font-size: 11px;"
                                                class="form-control"></label>
-
                                     </div>
                                 </div>
 
