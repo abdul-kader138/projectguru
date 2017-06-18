@@ -323,8 +323,8 @@
         <!-- User Info -->
         <div class="user-info">
             <div class="image">
+                <img src="resources/images/user.png" width="48" height="48" alt="User"/>
                 <%--<img src="http://localhost:8080 ${imagePath}" width="48" height="48" alt="User"/>--%>
-                <img src="http://localhost:8080 ${imagePath}" width="48" height="48" alt="User"/>
             </div>
             <div class="info-container">
                 <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${name}</div>
