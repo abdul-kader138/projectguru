@@ -76,6 +76,20 @@ public class TeamAllocationDaoImpl implements TeamAllocationDao {
         return (TeamAllocation)lst.get(0);
     }
 
+    @Override
+    public TeamAllocation findByProductAndCategory(long companyId, long productId, long categoryId) {
+        DetachedCriteria dcr= DetachedCriteria.forClass(TeamAllocation.class);
+        Criterion cr = Restrictions.eq("companyId", companyId);
+        Criterion cr1 = Restrictions.eq("productId", productId);
+        Criterion cr2 = Restrictions.eq("categoryId", categoryId);
+        dcr.add(cr);
+        dcr.add(cr1);
+        dcr.add(cr2);
+        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
+        if(lst.size()==0)return new TeamAllocation();
+        return (TeamAllocation)lst.get(0);
+    }
+
 //    @Override
 //    public UserAllocation findByUserIdAtUpdate(long requestById, long checkedById,
 //                                               long companyId, long departmentId, long productId, long categoryId) {

@@ -231,7 +231,7 @@ public class UserServiceImpl implements UserService {
         Roles roles;
         String roleName = request.getParameter("roleName");
         Long roleId = Long.parseLong(request.getParameter("roleId"));
-        if ("".equals(roleName)) roleName = environment.getProperty("team.default.role");
+        if ("".equals(roleName) || roleName == null) roleName = environment.getProperty("team.default.role");
         if (roleId == 0l) {
             roles = rolesDao.findByRolesName(roleName);
             roleId = roles.getId();

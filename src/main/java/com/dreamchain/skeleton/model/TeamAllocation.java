@@ -10,7 +10,7 @@ import java.util.Date;
 @Entity
 @Table(name="team_allocation",
         uniqueConstraints=
-        @UniqueConstraint(columnNames={"companyId","productId","categoryId","requestById","checkedById"}))
+        @UniqueConstraint(columnNames={"companyId","productId","categoryId"}))
 public class TeamAllocation implements Serializable {
 
     private static final long serialVersionUID = 8633415080370876715L;

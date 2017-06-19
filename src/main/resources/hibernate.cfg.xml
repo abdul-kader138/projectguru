@@ -13,6 +13,7 @@
         <mapping class="com.dreamchain.skeleton.model.Category"></mapping>
         <mapping class="com.dreamchain.skeleton.model.UserAllocation"></mapping>
         <mapping class="com.dreamchain.skeleton.model.TeamAllocation"></mapping>
+        <mapping class="com.dreamchain.skeleton.model.ChangeRequest"></mapping>
     </session-factory>
 </hibernate-configuration>
 

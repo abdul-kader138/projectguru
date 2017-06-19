@@ -428,7 +428,7 @@
 
                 <li class="header">Request</li>
                 <li>
-                    <a href="javascript:void(0);">
+                    <a href="change_request">
                         <i class="material-icons col-red">donut_large</i>
                         <span>Product Changes Request</span>
                     </a>

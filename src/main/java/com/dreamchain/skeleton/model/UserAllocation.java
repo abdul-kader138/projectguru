@@ -11,7 +11,7 @@ import java.util.Date;
 @Entity
 @Table(name="user_allocation",
         uniqueConstraints=
-        @UniqueConstraint(columnNames={"companyId","productId","categoryId","itCoordinatorId","approvedById"}))
+        @UniqueConstraint(columnNames={"companyId","productId","categoryId"}))
 public class UserAllocation implements Serializable {
 
     private static final long serialVersionUID = 8633415080370876715L;

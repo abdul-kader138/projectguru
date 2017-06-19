@@ -6,8 +6,12 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 
-
+@Entity
+@Table(name="change_request",
+        uniqueConstraints=
+        @UniqueConstraint(columnNames={"companyId","productId", "categoryId","name"}))
 public class ChangeRequest implements Serializable {
 
     private static final long serialVersionUID = 8633416055380776715L;
@@ -41,7 +45,6 @@ public class ChangeRequest implements Serializable {
 
     @NotEmpty
     @Length(max = 60)
-    @Column(unique = true)
     private String name;
 
     @NotEmpty
@@ -52,6 +55,30 @@ public class ChangeRequest implements Serializable {
     @NotEmpty
     @Length(max = 150)
     private String docPath;
+
+
+    @NotEmpty
+    private String wipStatus;
+
+
+    @NotEmpty
+    private String status;
+
+
+    @Column
+    private String createdBy;
+
+    @Column
+    private String updatedBy;
+
+
+    @Column
+    private Date createdOn;
+
+
+    @Column
+    private Date updatedOn;
+
 
     public long getCategoryId() {
         return categoryId;
@@ -143,6 +170,54 @@ public class ChangeRequest implements Serializable {
 
     public void setDocPath(String docPath) {
         this.docPath = docPath;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Date getUpdatedOn() {
+        return updatedOn;
+    }
+
+    public void setUpdatedOn(Date updatedOn) {
+        this.updatedOn = updatedOn;
+    }
+
+    public Date getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public String getWipStatus() {
+        return wipStatus;
+    }
+
+    public void setWipStatus(String wipStatus) {
+        this.wipStatus = wipStatus;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public ChangeRequest() {
