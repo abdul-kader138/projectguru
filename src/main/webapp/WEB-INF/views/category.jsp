@@ -214,9 +214,9 @@
                         },
                         {"mData": "name", 'sWidth': '150px'},
                         {"mData": "description", 'sWidth': '250px'},
-                        {"mData": "company.name", 'sWidth': '200px'},
-                        {"mData": "department.name", 'sWidth': '100px'},
-                        {"mData": "product.name", 'sWidth': '200px'}
+                        {"mData": "companyName", 'sWidth': '200px'},
+                        {"mData": "departmentName", 'sWidth': '100px'},
+                        {"mData": "productName", 'sWidth': '200px'}
                     ],
                     'aaSorting': [[0, 'asc']],
                     "columnDefs": [{}],
@@ -569,9 +569,12 @@
                         "name": category.name,
                         "description": category.description,
                         "version": category.version,
-                        "company": category.company,
-                        "department": category.department,
-                        "product": category.product
+                        "companyName": category.companyName,
+                        "departmentName": category.departmentName,
+                        "productName": category.productName,
+                        "companyId": category.companyId,
+                        "departmentId": category.departmentId,
+                        "productId": category.productId
                     }).draw();
 
                 };
@@ -647,12 +650,12 @@
                     $("#name").val(newCategory.name);
                     $("#description").val(newCategory.description);
                     $("#version").val(newCategory.version);
-                    $('#listOfCompany option:contains("' + newCategory.company.name + '")').prop('selected', 'selected');
+                    $('#listOfCompany option:contains("' + newCategory.companyName + '")').prop('selected', 'selected');
                     var company = new Object();
-                    var id = newCategory.company.id;
+                    var id = newCategory.companyId;
                     id = parseInt(id);
-                    getSelectedDepartment(id, newCategory.department.name);
-                    getSelectedProduct(id, newCategory.product.name);
+                    getSelectedDepartment(id, newCategory.departmentName);
+                    getSelectedProduct(id, newCategory.productName);
                     window.location.href = "#categoryForm";
                 }
 

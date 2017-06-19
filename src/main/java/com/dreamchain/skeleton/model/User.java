@@ -78,8 +78,8 @@ public class User extends org.springframework.security.core.userdetails.User imp
 	private RoleRight roleRight;
 
 	@NotNull
-	@OneToOne
-	private Company company;
+	@Column
+	private String companyName;
 
 	@Column
 	@NotNull
@@ -101,7 +101,7 @@ public class User extends org.springframework.security.core.userdetails.User imp
 					Collection authorities,
 					String name,String email, String role,
 					String phone, String imagePath,String designation,Long roleRightsId,
-				RoleRight roleRight,Long companyId,Company company,String userType,String createdBy,
+				RoleRight roleRight,Long companyId,String companyName,String userType,String createdBy,
 				String updatedBy,Date createdOn,Date updatedOn) {
 		super(username, password, enabled, accountNonExpired,
 				credentialsNonExpired, accountNonLocked, authorities);
@@ -117,7 +117,7 @@ public class User extends org.springframework.security.core.userdetails.User imp
 		this.roleRightsId=roleRightsId;
 		this.roleRight=roleRight;
 		this.companyId=companyId;
-		this.company=company;
+		this.companyName=companyName;
 		this.userType=userType;
 		this.createdBy = createdBy;
 		this.updatedBy=updatedBy;
@@ -254,12 +254,12 @@ public class User extends org.springframework.security.core.userdetails.User imp
 	}
 
 
-	public Company getCompany() {
-		return company;
+	public String getCompanyName() {
+		return companyName;
 	}
 
-	public void setCompany(Company company) {
-		this.company = company;
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
 
 	public long getCompanyId() {

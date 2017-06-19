@@ -1,22 +1,16 @@
 package com.dreamchain.skeleton.model;
 
-
-import com.sun.istack.NotNull;
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
 
-@Entity
-@Table(name="department",
-        uniqueConstraints=
-@UniqueConstraint(columnNames={"companyId", "name"}))
-public class Department implements Serializable {
+public class RequestStatus implements Serializable {
 
-    private static final long serialVersionUID = 8633415090390965715L;
+    private static final long serialVersionUID = 8633415060380776715L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO )
@@ -25,21 +19,27 @@ public class Department implements Serializable {
     @Version
     private long version;
 
+    @Column
+    @NotNull
+    private Long projectId;
 
+
+    @Column
     @NotEmpty
-    @Length(max = 60)
     private String name;
 
-
-    @NotNull
-    @Column
-    private String companyName;
-
     @Column
     @NotNull
-    private long companyId;
+    private Long userId;
+
+    @Column
+    @NotEmpty
+    private String approvedStatus;
 
 
+    @Column
+    @NotEmpty
+    private String projectStatus;
 
     @Column
     private String createdBy;
@@ -56,24 +56,8 @@ public class Department implements Serializable {
     private Date updatedOn;
 
 
-    public Department() {
-    }
-
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public long getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(long companyId) {
-        this.companyId = companyId;
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
     public Date getUpdatedOn() {
@@ -92,14 +76,6 @@ public class Department implements Serializable {
         this.createdOn = createdOn;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
     public String getUpdatedBy() {
         return updatedBy;
     }
@@ -108,12 +84,52 @@ public class Department implements Serializable {
         this.updatedBy = updatedBy;
     }
 
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getProjectStatus() {
+        return projectStatus;
+    }
+
+    public void setProjectStatus(String projectStatus) {
+        this.projectStatus = projectStatus;
+    }
+
+    public String getApprovedStatus() {
+        return approvedStatus;
+    }
+
+    public void setApprovedStatus(String approvedStatus) {
+        this.approvedStatus = approvedStatus;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
     }
 
     public long getVersion() {
@@ -132,7 +148,6 @@ public class Department implements Serializable {
         this.id = id;
     }
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
+    public RequestStatus() {
     }
 }

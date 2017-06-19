@@ -231,7 +231,7 @@ public class UserServiceImpl implements UserService {
         Roles roles;
         String roleName = request.getParameter("roleName");
         Long roleId = Long.parseLong(request.getParameter("roleId"));
-        if (!("".equals(roleName))) roleName = environment.getProperty("team.default.role");
+        if ("".equals(roleName)) roleName = environment.getProperty("team.default.role");
         if (roleId == 0l) {
             roles = rolesDao.findByRolesName(roleName);
             roleId = roles.getId();
@@ -248,7 +248,7 @@ public class UserServiceImpl implements UserService {
         user.setRoleRight(roleRight);
         user.setRoleRightsId(roleRight.getId());
         user.setCompanyId(company.getId());
-        user.setCompany(company);
+        user.setCompanyName(company.getName());
         user.setRole(roleName);
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
@@ -269,7 +269,7 @@ public class UserServiceImpl implements UserService {
         userObj.setRole(objFromUI.getRole());
         userObj.setRoleRight(objFromUI.getRoleRight());
         userObj.setRoleRightsId(objFromUI.getRoleRightsId());
-        userObj.setCompany(objFromUI.getCompany());
+        userObj.setCompanyName(objFromUI.getCompanyName());
         userObj.setCompanyId(objFromUI.getCompanyId());
         userObj.setImagePath(existingUser.getImagePath());
         userObj.setUserType(objFromUI.getUserType());

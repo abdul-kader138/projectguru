@@ -241,8 +241,8 @@
 //                        {"mData": "departmentName", 'sWidth': '100px'},
                         {"mData": "productName", 'sWidth': '200px'},
                         {"mData": "categoryName", 'sWidth': '200px'},
-                        {"mData": "itCoordinator.name", 'sWidth': '250px'},
-                        {"mData": "approvedBy.name", 'sWidth': '250px'}
+                        {"mData": "itCoordinator", 'sWidth': '250px'},
+                        {"mData": "approvedBy", 'sWidth': '250px'}
                     ],
                     'aaSorting': [[0, 'asc']],
                     "columnDefs": [{}],
@@ -617,7 +617,9 @@
                         "companyId": allocation.companyId,
                         "departmentId": allocation.departmentId,
                         "productId": allocation.productId,
-                        "categoryId": allocation.categoryId
+                        "categoryId": allocation.categoryId,
+                        "approvedById": allocation.approvedById,
+                        "itCoordinatorId": allocation.itCoordinatorId
                     }).draw();
 
                 };
@@ -719,8 +721,8 @@
                     $("#id").val(newAllocation.id);
                     $("#version").val(newAllocation.version);
                     $('#listOfCompany option:contains("' + newAllocation.companyName + '")').prop('selected', 'selected');
-                    $('#listOfCoordinator option:contains("' + newAllocation.itCoordinator.name + '")').prop('selected', 'selected');
-                    $('#listOfApprovedBy option:contains("' + newAllocation.approvedBy.name + '")').prop('selected', 'selected');
+                    $('#listOfCoordinator option:contains("' + newAllocation.itCoordinator+ '")').prop('selected', 'selected');
+                    $('#listOfApprovedBy option:contains("' + newAllocation.approvedBy + '")').prop('selected', 'selected');
                     var company = new Object();
                     var id = newAllocation.companyId;
                     var productId = newAllocation.productId;

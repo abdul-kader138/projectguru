@@ -3,6 +3,7 @@ package com.dreamchain.skeleton.service.impl;
 import com.dreamchain.skeleton.dao.RoleRightDao;
 import com.dreamchain.skeleton.dao.RolesDao;
 import com.dreamchain.skeleton.model.RoleRight;
+import com.dreamchain.skeleton.model.Roles;
 import com.dreamchain.skeleton.model.User;
 import com.dreamchain.skeleton.service.RoleRightService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class RoleRightServiceImpl implements RoleRightService {
         validationMsg = checkInput(roleObj);
         if ("".equals(validationMsg)) roleRight = createRoleObj(roleObj);
         if ("".equals(validationMsg)) existingRoleRight = roleRightDao.findByRolesName(roleRight.getRoleId());
-        if (existingRoleRight.getRoles() != null && validationMsg == "") validationMsg = ROLE_EXISTS;
+        if (existingRoleRight.getRoleName() != null && validationMsg == "") validationMsg = ROLE_EXISTS;
         if ("".equals(validationMsg)) {
             long roleId = roleRightDao.save(roleRight);
             newRoleRight = roleRightDao.get(roleId);
@@ -75,7 +76,7 @@ public class RoleRightServiceImpl implements RoleRightService {
         if (roleRight.getId() == 0l && validationMsg == "") validationMsg = INVALID_INPUT;
         if (roleRight.getVersion() != existingRoleRight.getVersion() && validationMsg == "") validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg)) newObj = roleRightDao.findByNewName(existingRoleRight.getRoleId(),roleRight.getRoleId());
-        if (newObj.getRoles() != null && "".equals(validationMsg)) validationMsg = ROLE_EXISTS;
+        if (newObj.getRoleName() != null && "".equals(validationMsg)) validationMsg = ROLE_EXISTS;
         if ("".equals(validationMsg)) {
             newObj=setUpdateCompanyValue(roleRight, existingRoleRight);
             roleRightDao.update(newObj);
@@ -132,11 +133,12 @@ public class RoleRightServiceImpl implements RoleRightService {
 
     private RoleRight createRoleObj(Map<String, Object> roleObj) throws ParseException {
         RoleRight roleRight = new RoleRight();
+        Roles roles=rolesDao.get(Long.parseLong((String) roleObj.get("roleId")));
         Set<String> rights = new HashSet<>();
         roleRight.setId(Long.parseLong((String) roleObj.get("id")));
         roleRight.setVersion(Long.parseLong((String) roleObj.get("version")));
-        roleRight.setRoleId(Long.parseLong((String) roleObj.get("roleId")));
-        roleRight.setRoles(rolesDao.get(Long.parseLong((String) roleObj.get("roleId"))));
+        roleRight.setRoleId(roles.getId());
+        roleRight.setRoleName(roles.getName());
         if ((String)roleObj.get("VIEW_PRIVILEGE") != ""){
             rights.add((String)roleObj.get("VIEW_PRIVILEGE"));
         }
@@ -165,7 +167,7 @@ public class RoleRightServiceImpl implements RoleRightService {
         roleRightObj.setVersion(objFromUI.getVersion());
         roleRightObj.setRoleId(objFromUI.getRoleId());
         roleRightObj.setRights(objFromUI.getRights());
-        roleRightObj.setRoles(objFromUI.getRoles());
+        roleRightObj.setRoleName(objFromUI.getRoleName());
         roleRightObj.setCreatedBy(existingRoleRight.getCreatedBy());
         roleRightObj.setCreatedOn(existingRoleRight.getCreatedOn());
         SimpleDateFormat dateFormat = new SimpleDateFormat();

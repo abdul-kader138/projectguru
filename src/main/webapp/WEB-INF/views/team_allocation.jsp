@@ -240,8 +240,8 @@
 //                        {"mData": "departmentName", 'sWidth': '100px'},
                         {"mData": "productName", 'sWidth': '200px'},
                         {"mData": "categoryName", 'sWidth': '200px'},
-                        {"mData": "requestedBy.name", 'sWidth': '250px'},
-                        {"mData": "checkedBy.name", 'sWidth': '250px'}
+                        {"mData": "requestedBy", 'sWidth': '250px'},
+                        {"mData": "checkedBy", 'sWidth': '250px'}
 
                     ],
                     'aaSorting': [[0, 'asc']],
@@ -621,7 +621,9 @@
                         "companyId": allocation.companyId,
                         "departmentId": allocation.departmentId,
                         "productId": allocation.productId,
-                        "categoryId": allocation.categoryId
+                        "categoryId": allocation.categoryId,
+                        "requestedById": allocation.requestedById,
+                        "checkedById": allocation.checkedById
                     }).draw();
 
                 };
@@ -723,8 +725,8 @@
                     $("#id").val(newAllocation.id);
                     $("#version").val(newAllocation.version);
                     $('#listOfCompany option:contains("' + newAllocation.companyName + '")').prop('selected', 'selected');
-                    $('#listOfRequestBy option:contains("' + newAllocation.requestedBy.name + '")').prop('selected', 'selected');
-                    $('#listOfCheckedBy option:contains("' + newAllocation.checkedBy.name + '")').prop('selected', 'selected');
+                    $('#listOfRequestBy option:contains("' + newAllocation.requestedBy + '")').prop('selected', 'selected');
+                    $('#listOfCheckedBy option:contains("' + newAllocation.checkedBy + '")').prop('selected', 'selected');
                     var company = new Object();
                     var id = newAllocation.companyId;
                     var productId = newAllocation.productId;

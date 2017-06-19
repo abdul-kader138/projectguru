@@ -160,7 +160,7 @@
                             'bSortable': false
                         },
                         {"mData": "name", 'sWidth': '200px'},
-                        {"mData": "company.name",'sWidth': '200px'}
+                        {"mData": "companyName",'sWidth': '200px'}
                     ],
                     'aaSorting': [[0, 'asc']],
                     "columnDefs": [{}],
@@ -487,7 +487,7 @@
                         "id": department.id,
                         "name": department.name,
                         "version": department.version,
-                        "company": department.company,
+                        "companyName": department.companyName,
                         "createdBy": department.createdBy,
                         "createdOn": department.createdOn,
                         "updatedBy": department.updatedBy,
@@ -506,7 +506,7 @@
                     $("#id").val(newDepartment.id);
                     $("#name").val(newDepartment.name);
                     $("#version").val(newDepartment.version);
-                    $('#listOfCompany option:contains("' + newDepartment.company.name + '")').prop('selected', 'selected');
+                    $('#listOfCompany option:contains("' + newDepartment.companyName + '")').prop('selected', 'selected');
                     window.location.href = "#departmentForm";
                 }
 

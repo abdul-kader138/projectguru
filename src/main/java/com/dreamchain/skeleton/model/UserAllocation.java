@@ -57,12 +57,12 @@ public class UserAllocation implements Serializable {
     private long approvedById;
 
     @NotNull
-    @OneToOne
-    private User approvedBy;
+    @Column
+    private String approvedBy;
 
     @NotNull
-    @OneToOne
-    private User itCoordinator;
+    @Column
+    private String itCoordinator;
 
 
     @Column
@@ -227,19 +227,19 @@ public class UserAllocation implements Serializable {
         this.approvedById = approvedById;
     }
 
-    public User getApprovedBy() {
+    public String getApprovedBy() {
         return approvedBy;
     }
 
-    public void setApprovedBy(User approvedBy) {
+    public void setApprovedBy(String approvedBy) {
         this.approvedBy = approvedBy;
     }
 
-    public User getItCoordinator() {
+    public String getItCoordinator() {
         return itCoordinator;
     }
 
-    public void setItCoordinator(User itCoordinator) {
+    public void setItCoordinator(String itCoordinator) {
         this.itCoordinator = itCoordinator;
     }
 }

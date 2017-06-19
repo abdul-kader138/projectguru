@@ -126,7 +126,6 @@ public class CategoryServiceImpl implements CategoryService{
 
     private Category createObjForSave(Map<String, Object> categoryObj){
         Category category = new Category();
-        Company company=companyDao.get(Long.parseLong((String) categoryObj.get("companyId")));
         Department department=departmentDao.get(Long.parseLong((String)categoryObj.get("departmentId")));
         Product product=productDao.get(Long.parseLong((String)categoryObj.get("productId")));
         category.setId(Long.parseLong((String) categoryObj.get("id")));
@@ -136,9 +135,9 @@ public class CategoryServiceImpl implements CategoryService{
         category.setProductId(Long.parseLong((String) categoryObj.get("productId")));
         category.setName(((String)categoryObj.get("name")).trim());
         category.setDescription(((String)categoryObj.get("description")).trim());
-        category.setCompany(company);
-        category.setDepartment(department);
-        category.setProduct(product);
+        category.setCompanyName(department.getCompanyName());
+        category.setDepartmentName(department.getName());
+        category.setProductName(product.getName());
         return category;
 
     }
@@ -157,7 +156,6 @@ public class CategoryServiceImpl implements CategoryService{
 
     private Category setUpdateCategoryValue(Category objFromUI,Category existingCategory) throws ParseException {
         Category categoryObj = new Category();
-        Company company = companyDao.get(objFromUI.getCompanyId());
         Department department = departmentDao.get(objFromUI.getDepartmentId());
         Product product=productDao.get(objFromUI.getProductId());
         categoryObj.setId(objFromUI.getId());
@@ -165,11 +163,11 @@ public class CategoryServiceImpl implements CategoryService{
         categoryObj.setName(objFromUI.getName().trim());
         categoryObj.setDescription(objFromUI.getDescription().trim());
         categoryObj.setCompanyId(objFromUI.getCompanyId());
-        categoryObj.setCompany(company);
+        categoryObj.setCompanyName(department.getCompanyName());
         categoryObj.setDepartmentId(objFromUI.getDepartmentId());
-        categoryObj.setDepartment(department);
+        categoryObj.setDepartmentName(department.getName());
         categoryObj.setProductId(objFromUI.getProductId());
-        categoryObj.setProduct(product);
+        categoryObj.setProductName(product.getName());
         categoryObj.setCreatedBy(existingCategory.getCreatedBy());
         categoryObj.setCreatedOn(existingCategory.getCreatedOn());
         SimpleDateFormat dateFormat = new SimpleDateFormat();

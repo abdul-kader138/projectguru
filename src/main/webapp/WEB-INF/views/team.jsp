@@ -280,7 +280,7 @@
                 return '<img src="' + mainPath + full.imagePath + '" width="30" height="30" />';
               }
             },
-            {"mData": "company.name",'sWidth': '200px'}
+            {"mData": "companyName",'sWidth': '200px'}
           ],
           'aaSorting': [[0, 'asc']],
           "columnDefs": [{}],
@@ -687,7 +687,7 @@
           $("#phone").val(newUser.phone);
           $("#designation").val(newUser.designation);
           $("#uploadedPhotoSrc").attr("src", mainPath + newUser.imagePath);
-          $('#listOfCompany option:contains("' + newUser.company.name + '")').prop('selected', 'selected');
+          $('#listOfCompany option:contains("' + newUser.companyName + '")').prop('selected', 'selected');
           window.location.href = "#userForm";
         }
 
@@ -724,7 +724,7 @@
             "designation": user.designation,
             "version": user.version,
             "path": user.imagePath,
-            "company": user.company
+            "companyName": user.companyName
           }).draw();
 
         }

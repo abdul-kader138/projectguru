@@ -20,7 +20,6 @@
                         <th width="200px">Product Name</th>
                         <th width="200px">Description</th>
                         <th width="200px">Company</th>
-                        <th width="200px">Department</th>
                     </tr>
                     </thead>
                 </table>
@@ -178,7 +177,7 @@
                     id = parseInt(id);
                     var company = new Object();
                     company.id = id;
-                    getSelectedDepartment(company.id,"Select Department")
+                   // getSelectedDepartment(company.id,"Select Department")
                 });
 
                 /* populate Product list when page load */
@@ -201,8 +200,7 @@
                         },
                         {"mData": "name", 'sWidth': '200px'},
                         {"mData": "description", 'sWidth': '200px'},
-                        {"mData": "company.name", 'sWidth': '200px'},
-                        {"mData": "department.name", 'sWidth': '200px'}
+                        {"mData": "companyName", 'sWidth': '200px'}
                     ],
                     'aaSorting': [[0, 'asc']],
                     "columnDefs": [{}],
@@ -545,9 +543,9 @@
                         "id": product.id,
                         "name": product.name,
                         "description": product.description,
+                        "companyName": product.companyName,
                         "version": product.version,
-                        "company": product.company,
-                        "department": product.department
+                        "companyId": product.companyId
                     }).draw();
 
                 };
@@ -555,33 +553,33 @@
 
 
 
-                /* Load Department data to select box data using ajax */
-
-                function getSelectedDepartment(companyId, obj) {
-                    $('#listOfDepartment').empty();
-                    $.ajax({
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        },
-                        'type': 'POST',
-                        url: 'http://localhost:8080/department/departmentListByCompany',
-                        'data': JSON.stringify(companyId),
-                        'dataType': 'json',
-                        success: function (data) {
-                            var collaboration;
-                            collaboration += '<option id="defaultOptDepartment" value="0">Select Department</option>';
-                            $.each(data, function (i, d) {
-                                collaboration += "<option value=" + d.id + ">" + d.name + "</option>";
-                            });
-
-                            $('#listOfDepartment').append(collaboration);
-                            $('#listOfDepartment option:contains("' + obj + '")').prop('selected', 'selected');
-                        },
-                        error: function (e) {
-                        }
-                    });
-                }
+//                /* Load Department data to select box data using ajax */
+//
+//                function getSelectedDepartment(companyId, obj) {
+//                    $('#listOfDepartment').empty();
+//                    $.ajax({
+//                        headers: {
+//                            'Accept': 'application/json',
+//                            'Content-Type': 'application/json'
+//                        },
+//                        'type': 'POST',
+//                        url: 'http://localhost:8080/department/departmentListByCompany',
+//                        'data': JSON.stringify(companyId),
+//                        'dataType': 'json',
+//                        success: function (data) {
+//                            var collaboration;
+//                            collaboration += '<option id="defaultOptDepartment" value="0">Select Department</option>';
+//                            $.each(data, function (i, d) {
+//                                collaboration += "<option value=" + d.id + ">" + d.name + "</option>";
+//                            });
+//
+//                            $('#listOfDepartment').append(collaboration);
+//                            $('#listOfDepartment option:contains("' + obj + '")').prop('selected', 'selected');
+//                        },
+//                        error: function (e) {
+//                        }
+//                    });
+//                }
 
 
                 /* set selected row data to product form for edit */
@@ -594,11 +592,11 @@
                     $("#name").val(newProduct.name);
                     $("#description").val(newProduct.description);
                     $("#version").val(newProduct.version);
-                    $('#listOfCompany option:contains("' + newProduct.company.name + '")').prop('selected', 'selected');
+                    $('#listOfCompany option:contains("' + newProduct.companyName + '")').prop('selected', 'selected');
                     var company = new Object();
                     var id = newProduct.company.id;
                     id = parseInt(id);
-                    getSelectedDepartment(id, newProduct.department.name);
+//                    getSelectedDepartment(id, newProduct.departmentName);
                     window.location.href = "#productForm";
                 }
 

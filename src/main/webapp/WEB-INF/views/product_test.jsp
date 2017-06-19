@@ -18,7 +18,7 @@
           <tr>
             <th width="15px">id</th>
             <th width="200px">Product Name</th>
-            <th width="200px">Description</th>
+            <th width="300px">Description</th>
             <th width="200px">Company Name</th>
           </tr>
           </thead>
@@ -178,8 +178,8 @@
               'bSortable': false
             },
             {"mData": "name", 'sWidth': '200px'},
-            {"mData": "description", 'sWidth': '200px'},
-            {"mData": "company.name", 'sWidth': '200px'}
+            {"mData": "description", 'sWidth': '300px'},
+            {"mData": "companyName", 'sWidth': '200px'}
           ],
           'aaSorting': [[0, 'asc']],
           "columnDefs": [{}],
@@ -512,7 +512,7 @@
             "name": product.name,
             "description": product.description,
             "version": product.version,
-            "company": product.company
+            "companyName": product.companyName
           }).draw();
 
         };
@@ -528,7 +528,7 @@
           $("#name").val(newProduct.name);
           $("#description").val(newProduct.description);
           $("#version").val(newProduct.version);
-          $('#listOfCompany option:contains("' + newProduct.company.name + '")').prop('selected', 'selected');
+          $('#listOfCompany option:contains("' + newProduct.companyName + '")').prop('selected', 'selected');
           window.location.href = "#productForm";
         }
 

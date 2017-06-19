@@ -55,12 +55,12 @@ public class TeamAllocation implements Serializable {
     private long checkedById;
 
     @NotNull
-    @OneToOne
-    private User requestedBy;
+    @Column
+    private String requestedBy;
 
     @NotNull
-    @OneToOne
-    private User checkedBy;
+    @Column
+    private String checkedBy;
 
     @Column
     @NotNull
@@ -227,19 +227,19 @@ public class TeamAllocation implements Serializable {
         this.checkedById = checkedById;
     }
 
-    public User getRequestedBy() {
+    public String getRequestedBy() {
         return requestedBy;
     }
 
-    public void setRequestedBy(User requestedBy) {
+    public void setRequestedBy(String requestedBy) {
         this.requestedBy = requestedBy;
     }
 
-    public User getCheckedBy() {
+    public String getCheckedBy() {
         return checkedBy;
     }
 
-    public void setCheckedBy(User checkedBy) {
+    public void setCheckedBy(String checkedBy) {
         this.checkedBy = checkedBy;
     }
 }

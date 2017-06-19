@@ -33,8 +33,8 @@ public class RoleRight implements Serializable
     private long roleId;
 
     @NotNull
-    @OneToOne
-    private Roles roles;
+    @Column
+    private String roleName;
 
 
     @NotNull
@@ -109,12 +109,12 @@ public class RoleRight implements Serializable
         this.updatedBy = updatedBy;
     }
 
-    public Roles getRoles() {
-        return roles;
+    public String getRoleName() {
+        return roleName;
     }
 
-    public void setRoles(Roles roles) {
-        this.roles = roles;
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
     public long getVersion() {

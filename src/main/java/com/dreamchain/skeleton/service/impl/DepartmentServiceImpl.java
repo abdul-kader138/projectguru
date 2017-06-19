@@ -135,7 +135,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         Department department = new Department();
         Company company=companyDao.get(Long.parseLong((String)departmentObj.get("companyId")));
         department.setName(((String) departmentObj.get("name")).trim());
-        department.setCompany(company);
+        department.setCompanyName(company.getName());
         department.setId(Long.parseLong((String) departmentObj.get("id")));
         department.setVersion(Long.parseLong((String) departmentObj.get("version")));
         department.setCompanyId(Long.parseLong((String) departmentObj.get("companyId")));
@@ -152,7 +152,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         departmentObj.setVersion(objFromUI.getVersion());
         departmentObj.setName(objFromUI.getName().trim());
         departmentObj.setCompanyId(objFromUI.getCompanyId());
-        departmentObj.setCompany(objFromUI.getCompany());
+        departmentObj.setCompanyName(objFromUI.getCompanyName());
         departmentObj.setCreatedBy(existingDepartment.getCreatedBy());
         departmentObj.setCreatedOn(existingDepartment.getCreatedOn());
         SimpleDateFormat dateFormat = new SimpleDateFormat();

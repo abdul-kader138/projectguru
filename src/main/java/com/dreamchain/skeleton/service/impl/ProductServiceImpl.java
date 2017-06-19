@@ -129,7 +129,7 @@ public class ProductServiceImpl implements ProductService {
         product.setCompanyId(Long.parseLong((String)productObj.get("companyId")));
         product.setName(((String)productObj.get("name")).trim());
         product.setDescription(((String)productObj.get("description")).trim());
-        product.setCompany(company);
+        product.setCompanyName(company.getName());
         return product;
 
     }
@@ -154,7 +154,7 @@ public class ProductServiceImpl implements ProductService {
         productObj.setName(objFromUI.getName().trim());
         productObj.setDescription(objFromUI.getDescription().trim());
         productObj.setCompanyId(objFromUI.getCompanyId());
-        productObj.setCompany(company);
+        productObj.setCompanyName(company.getName());
         productObj.setCreatedBy(existingProduct.getCreatedBy());
         productObj.setCreatedOn(existingProduct.getCreatedOn());
         SimpleDateFormat dateFormat = new SimpleDateFormat();

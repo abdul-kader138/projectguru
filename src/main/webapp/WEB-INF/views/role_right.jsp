@@ -173,7 +173,7 @@
                             'sWidth': '15px',
                             'bSortable': false
                         },
-                        {"mData": "roles.name", 'sWidth': '200px'},
+                        {"mData": "roleName", 'sWidth': '200px'},
                         {"mData": "rights"}
                     ],
                     'aaSorting': [[0, 'asc']],
@@ -495,7 +495,7 @@
                     table.row.add({
                         "id": role.id,
                         "version": role.version,
-                        "roles": role.roles,
+                        "roleName": role.roleName,
                         "rights": role.rights
                     }).draw();
 
@@ -543,7 +543,7 @@
                     $("#saveRole").hide();
                     $("#id").val(role.id);
                     $("#version").val(role.version);
-                    $('#listOfRole option:contains("' + role.roles.name + '")').prop('selected', 'selected');;
+                    $('#listOfRole option:contains("' + role.roleName + '")').prop('selected', 'selected');;
                 }
 
 
