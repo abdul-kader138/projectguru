@@ -4,18 +4,25 @@ package com.dreamchain.skeleton.dao.impl;
 import com.dreamchain.skeleton.dao.DepartmentDao;
 import com.dreamchain.skeleton.model.Category;
 import com.dreamchain.skeleton.model.Department;
+import com.dreamchain.skeleton.model.User;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate4.HibernateTemplate;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 @Repository
+@PropertySource("classpath:config.properties")
 public class DepartmentDaoImpl implements DepartmentDao{
-
+    @Autowired
+    Environment environment;
     @Autowired
     private HibernateTemplate hibernateTemplate;
 
@@ -41,7 +48,13 @@ public class DepartmentDaoImpl implements DepartmentDao{
 
     @Override
     public List<Department> findAll() {
-        return hibernateTemplate.loadAll(Department.class);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user=(User)auth.getPrincipal();
+        DetachedCriteria dcr= DetachedCriteria.forClass(Department.class);
+        Criterion cr = Restrictions.eq("companyId", user.getCompanyId());
+        if (environment.getProperty("user.type.client").equals(user.getUserType())) dcr.add(cr);
+        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
+        return createDepartmentList(lst);
     }
 
     @Override

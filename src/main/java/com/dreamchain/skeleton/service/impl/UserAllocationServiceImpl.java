@@ -36,6 +36,7 @@ public class UserAllocationServiceImpl implements UserAllocationService {
     private static String INVALID_USER_ALLOCATION = "User allocation not exists";
     private static String BACK_DATED_DATA = "User allocation data is old.Please try again with updated data";
     private static String ASSOCIATED_REQUEST = "User is allocated with request.First remove tagging and try again";
+    private static String SAME_ALLOCATED_USER = "Approved By and Coordinator name can't be same";
 
     @Transactional(readOnly = true)
     public UserAllocation get(Long id) {
@@ -55,6 +56,7 @@ public class UserAllocationServiceImpl implements UserAllocationService {
                 userAllocation.getProductId(),userAllocation.getCategoryId());
 //                userAllocation.getDepartmentId(),userAllocation.getProductId(),userAllocation.getCategoryId());
         if (existingUserAllocation.getCategoryName() != null && validationMsg == "") validationMsg = USER_ALLOCATION_EXISTS;
+        if(userAllocation.getApprovedById() == userAllocation.getItCoordinatorId() ) validationMsg=SAME_ALLOCATED_USER;
         if ("".equals(validationMsg)) {
             SimpleDateFormat dateFormat = new SimpleDateFormat();
             Date date = dateFormat.parse(dateFormat.format(new Date()));
@@ -77,6 +79,7 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         UserAllocation userAllocation=createObjForSave(userAllocationObj);
         validationMsg = checkInput(userAllocation);
         if (userAllocation.getId() == 0l && validationMsg == "") validationMsg = INVALID_INPUT;
+        if(userAllocation.getApprovedById() == userAllocation.getItCoordinatorId() ) validationMsg=SAME_ALLOCATED_USER;
         if ("".equals(validationMsg)) existingUserAllocation = userAllocationDao.get(userAllocation.getId());
         if (existingUserAllocation == null && validationMsg == "") validationMsg = INVALID_USER_ALLOCATION;
         if (userAllocation.getVersion() != existingUserAllocation.getVersion() && validationMsg == "") validationMsg = BACK_DATED_DATA;

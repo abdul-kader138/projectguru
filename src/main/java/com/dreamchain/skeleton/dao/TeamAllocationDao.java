@@ -2,6 +2,7 @@ package com.dreamchain.skeleton.dao;
 
 
 import com.dreamchain.skeleton.model.TeamAllocation;
+import com.dreamchain.skeleton.model.User;
 
 import java.util.List;
 

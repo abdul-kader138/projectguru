@@ -4,17 +4,26 @@ package com.dreamchain.skeleton.dao.impl;
 import com.dreamchain.skeleton.dao.CategoryDao;
 import com.dreamchain.skeleton.model.Category;
 import com.dreamchain.skeleton.model.Product;
+import com.dreamchain.skeleton.model.User;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate4.HibernateTemplate;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 @Repository
+@PropertySource("classpath:config.properties")
 public class CategoryDaoImpl implements CategoryDao {
+
+    @Autowired
+    Environment environment;
 
     @Autowired
     private HibernateTemplate hibernateTemplate;
@@ -41,7 +50,13 @@ public class CategoryDaoImpl implements CategoryDao {
 
     @Override
     public List<Category> findAll() {
-       return hibernateTemplate.loadAll(Category.class);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user=(User)auth.getPrincipal();
+        DetachedCriteria dcr= DetachedCriteria.forClass(Category.class);
+        Criterion cr = Restrictions.eq("companyId", user.getCompanyId());
+        if (environment.getProperty("user.type.client").equals(user.getUserType())) dcr.add(cr);
+        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
+        return createCategoryList(lst);
     }
 
     @Override
@@ -52,9 +67,9 @@ public class CategoryDaoImpl implements CategoryDao {
         Criterion cr2 = Restrictions.eq("departmentId", departmentId);
         Criterion cr3 = Restrictions.eq("productId", productId);
         dcr.add(cr);
-        dcr.add(cr1);
         dcr.add(cr2);
         dcr.add(cr3);
+        dcr.add(cr1);
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         if(lst.size()==0)return new Category();
         return (Category)lst.get(0);
@@ -96,12 +111,12 @@ public class CategoryDaoImpl implements CategoryDao {
         Criterion cr = Restrictions.eq("productId", productId);
         dcr.add(cr);
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
-        return createProductList(lst);
+        return createCategoryList(lst);
     }
 
-    private List<Category> createProductList(List<Object> departmentList){
+    private List<Category> createCategoryList(List<Object> categoryList){
         List<Category> list = new ArrayList<>();
-        for(final Object o : departmentList) {
+        for(final Object o : categoryList) {
             list.add((Category)o);
         }
         return list;

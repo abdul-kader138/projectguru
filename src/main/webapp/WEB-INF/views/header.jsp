@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: LAPTOP DREAM
-  Date: 5/16/2017
-  Time: 9:31 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -115,7 +108,7 @@
                 <li class="dropdown">
                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
                         <i class="material-icons">notifications</i>
-                        <span class="label-count">7</span>
+                        <span class="label-count" id="notificationCount">7</span>
                     </a>
                     <ul class="dropdown-menu">
                         <li class="header">NOTIFICATIONS</li>

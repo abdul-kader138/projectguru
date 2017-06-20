@@ -3,7 +3,6 @@ package com.dreamchain.skeleton.dao.impl;
 import com.dreamchain.skeleton.dao.RolesDao;
 import com.dreamchain.skeleton.model.RoleRight;
 import com.dreamchain.skeleton.model.Roles;
-import com.dreamchain.skeleton.model.ProductSubCategory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;

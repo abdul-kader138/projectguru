@@ -39,6 +39,7 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
     private static String INVALID_INPUT = "Invalid input";
     private static String INVALID_TEAM_ALLOCATION = "Team allocation not exists";
     private static String BACK_DATED_DATA = "Team allocation data is old.Please try again with updated data";
+    private static String SAME_ALLOCATED_USER = "Checked By and Requester name can't be same";
     private static String ASSOCIATED_REQUEST = "Team is allocated with request.First remove tagging and try again";
 
     @Transactional(readOnly = true)
@@ -59,6 +60,7 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
                 teamAllocation.getProductId(),teamAllocation.getCategoryId());
 //                userAllocation.getDepartmentId(),userAllocation.getProductId(),userAllocation.getCategoryId());
         if (existingTeamAllocation.getCategoryName() != null && validationMsg == "") validationMsg = TEAM_ALLOCATION_EXISTS;
+        if(teamAllocation.getCheckedById() == teamAllocation.getRequestById() ) validationMsg=SAME_ALLOCATED_USER;
         if ("".equals(validationMsg)) {
             SimpleDateFormat dateFormat = new SimpleDateFormat();
             Date date = dateFormat.parse(dateFormat.format(new Date()));
@@ -81,6 +83,7 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
         TeamAllocation teamAllocation=createObjForSave(teamAllocationObj);
         validationMsg = checkInput(teamAllocation);
         if (teamAllocation.getId() == 0l && validationMsg == "") validationMsg = INVALID_INPUT;
+        if(teamAllocation.getCheckedById() == teamAllocation.getRequestById() ) validationMsg=SAME_ALLOCATED_USER;
         if ("".equals(validationMsg)) existingTeamAllocation = teamAllocationDao.get(teamAllocation.getId());
         if (existingTeamAllocation == null && validationMsg == "") validationMsg = INVALID_TEAM_ALLOCATION;
         if (teamAllocation.getVersion() != existingTeamAllocation.getVersion() && validationMsg == "") validationMsg = BACK_DATED_DATA;
