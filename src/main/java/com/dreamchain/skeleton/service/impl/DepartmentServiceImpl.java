@@ -57,7 +57,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         if ("".equals(validationMsg)) {
             SimpleDateFormat dateFormat = new SimpleDateFormat();
             Date date = dateFormat.parse(dateFormat.format(new Date()));
-            department.setCreatedBy(getUserId());
+            department.setCreatedBy(getUserId().getEmail());
             department.setCreatedOn(date);
             long departmentId= departmentDao.save(department);
             newDepartment=departmentDao.get(departmentId);
@@ -139,6 +139,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         department.setId(Long.parseLong((String) departmentObj.get("id")));
         department.setVersion(Long.parseLong((String) departmentObj.get("version")));
         department.setCompanyId(Long.parseLong((String) departmentObj.get("companyId")));
+        department.setClientId(getUserId().getClientId());
         return department;
 
     }
@@ -155,16 +156,17 @@ public class DepartmentServiceImpl implements DepartmentService {
         departmentObj.setCompanyName(objFromUI.getCompanyName());
         departmentObj.setCreatedBy(existingDepartment.getCreatedBy());
         departmentObj.setCreatedOn(existingDepartment.getCreatedOn());
+        departmentObj.setClientId(getUserId().getClientId());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        departmentObj.setUpdatedBy(getUserId());
+        departmentObj.setUpdatedBy(getUserId().getEmail());
         departmentObj.setUpdatedOn(date);
         return departmentObj;
     }
 
-    private String getUserId(){
+    private User getUserId(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user=(User)auth.getPrincipal();
-        return user.getEmail();
+        return user;
     }
 }

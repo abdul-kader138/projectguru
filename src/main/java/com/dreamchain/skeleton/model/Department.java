@@ -39,7 +39,9 @@ public class Department implements Serializable {
     @NotNull
     private long companyId;
 
-
+    @Column
+    @NotEmpty
+    private String clientId;
 
     @Column
     private String createdBy;
@@ -59,6 +61,14 @@ public class Department implements Serializable {
     public Department() {
     }
 
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
 
     public String getCompanyName() {
         return companyName;

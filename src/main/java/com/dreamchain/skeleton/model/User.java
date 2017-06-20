@@ -90,6 +90,10 @@ public class User extends org.springframework.security.core.userdetails.User imp
 	@NotNull
 	private String userType;
 
+	@Column
+	@NotEmpty
+	private String clientId;
+
 
 
 	public User(){
@@ -101,7 +105,7 @@ public class User extends org.springframework.security.core.userdetails.User imp
 					Collection authorities,
 					String name,String email, String role,
 					String phone, String imagePath,String designation,Long roleRightsId,
-				RoleRight roleRight,Long companyId,String companyName,String userType,String createdBy,
+				RoleRight roleRight,Long companyId,String companyName,String userType,String clientId,String createdBy,
 				String updatedBy,Date createdOn,Date updatedOn) {
 		super(username, password, enabled, accountNonExpired,
 				credentialsNonExpired, accountNonLocked, authorities);
@@ -119,6 +123,7 @@ public class User extends org.springframework.security.core.userdetails.User imp
 		this.companyId=companyId;
 		this.companyName=companyName;
 		this.userType=userType;
+		this.clientId=clientId;
 		this.createdBy = createdBy;
 		this.updatedBy=updatedBy;
 		this.createdOn=createdOn;
@@ -276,6 +281,14 @@ public class User extends org.springframework.security.core.userdetails.User imp
 
 	public void setUserType(String userType) {
 		this.userType = userType;
+	}
+
+	public String getClientId() {
+		return clientId;
+	}
+
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
 	}
 
 	public static ArrayList<GrantedAuthority> getALLAuthority() {

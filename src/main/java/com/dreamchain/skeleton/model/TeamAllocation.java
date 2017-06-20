@@ -10,7 +10,7 @@ import java.util.Date;
 @Entity
 @Table(name="team_allocation",
         uniqueConstraints=
-        @UniqueConstraint(columnNames={"companyId","productId","categoryId"}))
+        @UniqueConstraint(columnNames={"companyId","productId","categoryId","clientId"}))
 public class TeamAllocation implements Serializable {
 
     private static final long serialVersionUID = 8633415080370876715L;
@@ -67,6 +67,10 @@ public class TeamAllocation implements Serializable {
     private String userType;
 
     @Column
+    @NotEmpty
+    private String clientId;
+
+    @Column
     private String createdBy;
 
     @Column
@@ -83,6 +87,13 @@ public class TeamAllocation implements Serializable {
     public TeamAllocation() {
     }
 
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

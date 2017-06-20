@@ -155,7 +155,7 @@ public class RoleRightServiceImpl implements RoleRightService {
             rights.add((String)roleObj.get("DELETE_PRIVILEGE"));
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        roleRight.setCreatedBy(getUserId());
+        roleRight.setCreatedBy(getUserId().getEmail());
         roleRight.setCreatedOn(date);
         roleRight.setRights(rights);
         return roleRight;
@@ -172,15 +172,15 @@ public class RoleRightServiceImpl implements RoleRightService {
         roleRightObj.setCreatedOn(existingRoleRight.getCreatedOn());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        roleRightObj.setUpdatedBy(getUserId());
+        roleRightObj.setUpdatedBy(getUserId().getEmail());
         roleRightObj.setUpdatedOn(date);
         return roleRightObj;
     }
 
 
-    private String getUserId(){
+    private User getUserId(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user=(User)auth.getPrincipal();
-        return user.getEmail();
+        return user;
     }
 }

@@ -54,7 +54,7 @@ public class RolesServiceImpl implements RolesService {
         if ("".equals(validationMsg)) {
             SimpleDateFormat dateFormat = new SimpleDateFormat();
             Date date = dateFormat.parse(dateFormat.format(new Date()));
-            roles.setCreatedBy(getUserId());
+            roles.setCreatedBy(getUserId().getEmail());
             roles.setCreatedOn(date);
             long rolesId= rolesDao.save(roles);
             newRoles=rolesDao.get(rolesId);
@@ -146,15 +146,15 @@ public class RolesServiceImpl implements RolesService {
         rolesObj.setCreatedOn(existingRoles.getCreatedOn());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        rolesObj.setUpdatedBy(getUserId());
+        rolesObj.setUpdatedBy(getUserId().getEmail());
         rolesObj.setUpdatedOn(date);
         return rolesObj;
     }
 
-    private String getUserId(){
+    private User getUserId(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user=(User)auth.getPrincipal();
-        return user.getEmail();
+        return user;
     }
 
 }

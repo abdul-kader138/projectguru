@@ -1,8 +1,6 @@
 package com.dreamchain.skeleton.service;
 
 import com.dreamchain.skeleton.model.User;
-import com.dreamchain.skeleton.web.UserCommand;
-import com.dreamchain.skeleton.web.UserGrid;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;

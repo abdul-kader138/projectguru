@@ -39,7 +39,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 		return new User(user.getName(),user.getPassword(),true,true,true,true,grantedAuthorities,
 				user.getName(),user.getEmail(),user.getRole(),user.getPhone(),user.getImagePath(),
 				user.getDesignation(),user.getRoleRightsId(),user.getRoleRight(),user.getCompanyId(),
-				user.getCompanyName(),user.getUserType(),user.getCreatedBy(),user.getUpdatedBy(),
+				user.getCompanyName(),user.getUserType(),user.getClientId(),user.getCreatedBy(),user.getUpdatedBy(),
 				user.getCreatedOn(),user.getUpdatedOn());
 	}
 	

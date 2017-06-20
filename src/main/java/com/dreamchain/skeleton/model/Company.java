@@ -8,14 +8,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class Company implements Serializable
-{
+public class Company implements Serializable {
 
 
     private static final long serialVersionUID = 8633415090390966715L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO )
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @Version
@@ -30,6 +29,10 @@ public class Company implements Serializable
     @NotEmpty
     @Length(max = 150)
     private String address;
+
+    @Column
+    @NotEmpty
+    private String clientId;
 
     @NotEmpty
     @Length(max = 150)
@@ -53,6 +56,14 @@ public class Company implements Serializable
     public Company() {
     }
 
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
 
     public String getImagePath() {
         return imagePath;

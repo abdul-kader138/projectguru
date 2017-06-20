@@ -61,7 +61,7 @@ public class ProductServiceImpl implements ProductService {
         if ("".equals(validationMsg)) {
             SimpleDateFormat dateFormat = new SimpleDateFormat();
             Date date = dateFormat.parse(dateFormat.format(new Date()));
-            product.setCreatedBy(getUserId());
+            product.setCreatedBy(getUserId().getEmail());
             product.setCreatedOn(date);
             long productId= productDao.save(product);
             newProduct=productDao.get(productId);
@@ -126,10 +126,12 @@ public class ProductServiceImpl implements ProductService {
         Company company=companyDao.get(Long.parseLong((String) productObj.get("companyId")));
         product.setId(Long.parseLong((String) productObj.get("id")));
         product.setVersion(Long.parseLong((String) productObj.get("version")));
-        product.setCompanyId(Long.parseLong((String)productObj.get("companyId")));
-        product.setName(((String)productObj.get("name")).trim());
-        product.setDescription(((String)productObj.get("description")).trim());
+        product.setCompanyId(Long.parseLong((String) productObj.get("companyId")));
+        product.setName(((String) productObj.get("name")).trim());
+        product.setDescription(((String) productObj.get("description")).trim());
+        product.setClientId(getUserId().getClientId());
         product.setCompanyName(company.getName());
+        product.setClientId(getUserId().getClientId());
         return product;
 
     }
@@ -155,19 +157,20 @@ public class ProductServiceImpl implements ProductService {
         productObj.setDescription(objFromUI.getDescription().trim());
         productObj.setCompanyId(objFromUI.getCompanyId());
         productObj.setCompanyName(company.getName());
+        productObj.setClientId(getUserId().getClientId());
         productObj.setCreatedBy(existingProduct.getCreatedBy());
         productObj.setCreatedOn(existingProduct.getCreatedOn());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        productObj.setUpdatedBy(getUserId());
+        productObj.setUpdatedBy(getUserId().getEmail());
         productObj.setUpdatedOn(date);
         return productObj;
     }
 
-    private String getUserId(){
+    private User getUserId(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user=(User)auth.getPrincipal();
-        return user.getEmail();
+        return user;
     }
 
 

@@ -64,7 +64,7 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
         if ("".equals(validationMsg)) {
             SimpleDateFormat dateFormat = new SimpleDateFormat();
             Date date = dateFormat.parse(dateFormat.format(new Date()));
-            teamAllocation.setCreatedBy(getUserId());
+            teamAllocation.setCreatedBy(getUserId().getEmail());
             teamAllocation.setCreatedOn(date);
             long id= teamAllocationDao.save(teamAllocation);
             newTeamAllocation=teamAllocationDao.get(id);
@@ -145,9 +145,10 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
         teamAllocation.setCheckedBy(checkedByUser.getName());
         teamAllocation.setRequestById(requestByUser.getId());
         teamAllocation.setRequestedBy(requestByUser.getName());
+        teamAllocation.setClientId(getUserId().getClientId());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        teamAllocation.setUpdatedBy(getUserId());
+        teamAllocation.setUpdatedBy(getUserId().getEmail());
         teamAllocation.setUpdatedOn(date);
         return teamAllocation;
 
@@ -182,19 +183,20 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
         teamAllocation.setRequestedBy(objFromUI.getRequestedBy());
         teamAllocation.setCheckedById(objFromUI.getCheckedById());
         teamAllocation.setCheckedBy(objFromUI.getCheckedBy());
+        teamAllocation.setClientId(getUserId().getClientId());
         teamAllocation.setCreatedBy(existingTeamAllocation.getCreatedBy());
         teamAllocation.setCreatedOn(existingTeamAllocation.getCreatedOn());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        teamAllocation.setUpdatedBy(getUserId());
+        teamAllocation.setUpdatedBy(getUserId().getEmail());
         teamAllocation.setUpdatedOn(date);
         return teamAllocation;
     }
 
-    private String getUserId(){
+    private User getUserId(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user=(User)auth.getPrincipal();
-        return user.getEmail();
+        return user;
     }
 
 

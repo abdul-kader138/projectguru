@@ -61,7 +61,7 @@ public class CategoryServiceImpl implements CategoryService{
         if ("".equals(validationMsg)) {
             SimpleDateFormat dateFormat = new SimpleDateFormat();
             Date date = dateFormat.parse(dateFormat.format(new Date()));
-            category.setCreatedBy(getUserId());
+            category.setCreatedBy(getUserId().getEmail());
             category.setCreatedOn(date);
             long productId= categoryDao.save(category);
             newCategory=categoryDao.get(productId);
@@ -138,6 +138,7 @@ public class CategoryServiceImpl implements CategoryService{
         category.setCompanyName(department.getCompanyName());
         category.setDepartmentName(department.getName());
         category.setProductName(product.getName());
+        category.setClientId(getUserId().getClientId());
         return category;
 
     }
@@ -168,19 +169,20 @@ public class CategoryServiceImpl implements CategoryService{
         categoryObj.setDepartmentName(department.getName());
         categoryObj.setProductId(objFromUI.getProductId());
         categoryObj.setProductName(product.getName());
+        categoryObj.setClientId(getUserId().getClientId());
         categoryObj.setCreatedBy(existingCategory.getCreatedBy());
         categoryObj.setCreatedOn(existingCategory.getCreatedOn());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        categoryObj.setUpdatedBy(getUserId());
+        categoryObj.setUpdatedBy(getUserId().getEmail());
         categoryObj.setUpdatedOn(date);
         return categoryObj;
     }
 
-    private String getUserId(){
+    private User getUserId(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user=(User)auth.getPrincipal();
-        return user.getEmail();
+        return user;
     }
 
 

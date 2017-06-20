@@ -53,8 +53,8 @@ public class UserAllocationDaoImpl implements UserAllocationDao {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user=(User)auth.getPrincipal();
         DetachedCriteria dcr= DetachedCriteria.forClass(UserAllocation.class);
-        Criterion cr = Restrictions.eq("companyId", user.getCompanyId());
-        if (environment.getProperty("user.type.client").equals(user.getUserType())) dcr.add(cr);
+        Criterion cr = Restrictions.eq("clientId", user.getClientId());
+        if (environment.getProperty("company.client.id").equals(user.getClientId())) dcr.add(cr);
         Criterion cr1 = Restrictions.eq("userType", user.getUserType());
         dcr.add(cr1).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);

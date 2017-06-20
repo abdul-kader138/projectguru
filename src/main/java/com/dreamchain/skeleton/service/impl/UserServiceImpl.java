@@ -86,8 +86,12 @@ public class UserServiceImpl implements UserService {
         if ("".equals(validationMsg) && "team_member".equals(usersType)) msg = fileSave(request, PHOTO_TEAM_PATH);
         if (msg.get("validationMsg") == "") user.setImagePath((String) msg.get("path"));
         if ("".equals(validationMsg)) {
-            if("user".equals(usersType)) user.setUserType("vendor");
-            if("team_member".equals(usersType)) user.setUserType("client");
+            if("user".equals(usersType)){
+            user.setClientId(environment.getProperty("user.vendor.id"));
+            user.setUserType(environment.getProperty("user.type.vendor"));}
+            if("team_member".equals(usersType)) {
+                user.setClientId(environment.getProperty("user.client.id"));
+                user.setUserType(environment.getProperty("user.type.client"));}
             long companyId = userDao.save(user);
             newUser = userDao.get(companyId);
         }
@@ -121,8 +125,12 @@ public class UserServiceImpl implements UserService {
             if ("".equals(validationMsg)) existingUser.setImagePath((String) msg.get("path"));
         }
         if ("".equals(validationMsg)) {
-            if("user".equals(usersType)) user.setUserType("vendor");
-            if("team_member".equals(usersType)) user.setUserType("client");
+            if("user".equals(usersType)){
+                user.setClientId(environment.getProperty("user.vendor.id"));
+                user.setUserType(environment.getProperty("user.type.vendor"));}
+            if("team_member".equals(usersType)) {
+                user.setClientId(environment.getProperty("user.client.id"));
+                user.setUserType(environment.getProperty("user.type.client"));}
             newUser = setUpdateUserValue(user, existingUser);
             userDao.update(newUser);
         }
@@ -245,6 +253,7 @@ public class UserServiceImpl implements UserService {
         user.setPhone(request.getParameter("phone").trim());
         user.setDesignation(request.getParameter("designation").trim());
         user.setUserType("client");
+        user.setClientId(environment.getProperty("user.vendor.id"));
         user.setRoleRight(roleRight);
         user.setRoleRightsId(roleRight.getId());
         user.setCompanyId(company.getId());
@@ -252,7 +261,7 @@ public class UserServiceImpl implements UserService {
         user.setRole(roleName);
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        user.setCreatedBy(getUserId());
+        user.setCreatedBy(getUserId().getEmail());
         user.setCreatedOn(date);
         return user;
 
@@ -273,13 +282,14 @@ public class UserServiceImpl implements UserService {
         userObj.setCompanyId(objFromUI.getCompanyId());
         userObj.setImagePath(existingUser.getImagePath());
         userObj.setUserType(objFromUI.getUserType());
+        userObj.setClientId(getUserId().getClientId());
         userObj.setEmail(existingUser.getEmail());
         userObj.setCreatedBy(existingUser.getCreatedBy());
         userObj.setCreatedOn(existingUser.getCreatedOn());
         userObj.setPassword(existingUser.getPassword());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        userObj.setUpdatedBy(getUserId());
+        userObj.setUpdatedBy(getUserId().getEmail());
         userObj.setUpdatedOn(date);
         return userObj;
     }
@@ -331,13 +341,12 @@ public class UserServiceImpl implements UserService {
         return msg;
     }
 
-    // create company object for updating
 
 
-    private String getUserId() {
+    private User getUserId(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) auth.getPrincipal();
-        return user.getEmail();
+        User user=(User)auth.getPrincipal();
+        return user;
     }
 
 

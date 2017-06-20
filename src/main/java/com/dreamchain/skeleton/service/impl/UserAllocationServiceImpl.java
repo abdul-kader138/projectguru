@@ -60,7 +60,7 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         if ("".equals(validationMsg)) {
             SimpleDateFormat dateFormat = new SimpleDateFormat();
             Date date = dateFormat.parse(dateFormat.format(new Date()));
-            userAllocation.setCreatedBy(getUserId());
+            userAllocation.setCreatedBy(getUserId().getEmail());
             userAllocation.setCreatedOn(date);
             long id= userAllocationDao.save(userAllocation);
             newUserAllocation=userAllocationDao.get(id);
@@ -142,9 +142,10 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         userAllocation.setItCoordinator(itCoordinator.getName());
         userAllocation.setApprovedById(approvedBy.getId());
         userAllocation.setApprovedBy(approvedBy.getName());
+        userAllocation.setClientId(getUserId().getClientId());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        userAllocation.setUpdatedBy(getUserId());
+        userAllocation.setUpdatedBy(getUserId().getEmail());
         userAllocation.setUpdatedOn(date);
         return userAllocation;
 
@@ -179,20 +180,22 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         userAllocation.setItCoordinator(objFromUI.getItCoordinator());
         userAllocation.setApprovedById(objFromUI.getApprovedById());
         userAllocation.setApprovedBy(objFromUI.getApprovedBy());
+        userAllocation.setClientId(getUserId().getClientId());
         userAllocation.setCreatedBy(existingUserAllocation.getCreatedBy());
         userAllocation.setCreatedOn(existingUserAllocation.getCreatedOn());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        userAllocation.setUpdatedBy(getUserId());
+        userAllocation.setUpdatedBy(getUserId().getEmail());
         userAllocation.setUpdatedOn(date);
         return userAllocation;
     }
 
-    private String getUserId(){
+    private User getUserId(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user=(User)auth.getPrincipal();
-        return user.getEmail();
+        return user;
     }
+
 
 
 }

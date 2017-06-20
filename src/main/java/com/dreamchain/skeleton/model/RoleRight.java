@@ -14,6 +14,9 @@ import java.util.Set;
 
 
 @Entity
+@Table(name="role_right",
+        uniqueConstraints=
+        @UniqueConstraint(columnNames={"roleId","roleName"}))
 public class RoleRight implements Serializable
 {
 

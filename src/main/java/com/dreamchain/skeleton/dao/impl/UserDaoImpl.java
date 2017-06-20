@@ -8,6 +8,8 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,7 +19,11 @@ import com.dreamchain.skeleton.dao.UserDao;
 import com.dreamchain.skeleton.model.User;
 
 @Repository
+@PropertySource("classpath:config.properties")
 public class UserDaoImpl implements UserDao {
+
+	@Autowired
+	Environment environment;
 
 	@Autowired
 	private HibernateTemplate hibernateTemplate;
@@ -54,7 +60,8 @@ public class UserDaoImpl implements UserDao {
 		User user=(User)auth.getPrincipal();
 		DetachedCriteria dcr= DetachedCriteria.forClass(User.class);
 		Criterion cr1 = Restrictions.eq("userType", user.getUserType());
-		Criterion cr2 = Restrictions.eq("companyId", user.getCompanyId());
+		Criterion cr2 = Restrictions.eq("clientId", user.getClientId());
+		if (environment.getProperty("company.client.id").equals(user.getClientId())) dcr.add(cr2);
 		Criterion cr = Restrictions.ne("email", user.getEmail());
 //		dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		dcr.add(cr1).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

@@ -145,9 +145,10 @@ public class CompanyServiceImpl implements CompanyService {
         company.setName(name.trim());
         company.setAddress(address.trim());
         company.setImagePath(fileName.trim());
+        company.setClientId(getUserId().getClientId());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        company.setCreatedBy(getUserId());
+        company.setCreatedBy(getUserId().getEmail());
         company.setCreatedOn(date);
         return company;
 
@@ -162,9 +163,10 @@ public class CompanyServiceImpl implements CompanyService {
         companyObj.setImagePath(existingCompany.getImagePath());
         companyObj.setCreatedBy(existingCompany.getCreatedBy());
         companyObj.setCreatedOn(existingCompany.getCreatedOn());
+        companyObj.setClientId(getUserId().getClientId());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
-        companyObj.setUpdatedBy(getUserId());
+        companyObj.setUpdatedBy(getUserId().getEmail());
         companyObj.setUpdatedOn(date);
         return companyObj;
     }
@@ -225,15 +227,16 @@ public class CompanyServiceImpl implements CompanyService {
         company.setImagePath("test");
         company.setId(Long.parseLong(request.getParameter("id")));
         company.setVersion(Long.parseLong(request.getParameter("version")));
+        company.setClientId(getUserId().getClientId());
         return company;
 
     }
 
 
-    private String getUserId(){
+    private User getUserId(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user=(User)auth.getPrincipal();
-        return user.getEmail();
+        return user;
     }
 
 }

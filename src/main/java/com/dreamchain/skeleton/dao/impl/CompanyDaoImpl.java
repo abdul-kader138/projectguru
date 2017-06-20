@@ -52,8 +52,8 @@ public class CompanyDaoImpl implements CompanyDao {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) auth.getPrincipal();
         DetachedCriteria dcr = DetachedCriteria.forClass(Company.class);
-        Criterion cr = Restrictions.eq("id", user.getCompanyId());
-        if (environment.getProperty("user.type.client").equals(user.getUserType())) dcr.add(cr);
+        Criterion cr = Restrictions.eq("clientId", user.getClientId());
+        if (environment.getProperty("company.client.id").equals(user.getClientId())) dcr.add(cr);
         List<Object> lst = hibernateTemplate.findByCriteria(dcr);
         return createCompanyList(lst);
     }

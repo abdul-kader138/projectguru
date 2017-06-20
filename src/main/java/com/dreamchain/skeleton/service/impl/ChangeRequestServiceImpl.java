@@ -120,7 +120,7 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
             changeRequest.setStatus(environment.getProperty("request.status.open"));
             changeRequest.setWipStatus(environment.getProperty("request.wip.status")+teamAllocation.getCheckedBy());
             Date date = dateFormat.parse(dateFormat.format(new Date()));
-            changeRequest.setCreatedBy(getUserId());
+            changeRequest.setCreatedBy(getUserId().getEmail());
             changeRequest.setCreatedOn(date);
         }
 
@@ -177,14 +177,6 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
         return msg;
     }
 
-
-
-    private String getUserId(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user=(User)auth.getPrincipal();
-        return user.getEmail();
-    }
-
     // check for invalid data
     private String checkInput(ChangeRequest changeRequest) {
         String msg = "";
@@ -196,5 +188,13 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
 
         return msg;
     }
+
+
+    private User getUserId(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user=(User)auth.getPrincipal();
+        return user;
+    }
+
 
 }
