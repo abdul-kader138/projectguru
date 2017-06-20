@@ -1,6 +1,5 @@
 package com.dreamchain.skeleton.service.impl;
 
-import com.dreamchain.skeleton.dao.CategoryDao;
 import com.dreamchain.skeleton.dao.CompanyDao;
 import com.dreamchain.skeleton.dao.DepartmentDao;
 import com.dreamchain.skeleton.model.Company;

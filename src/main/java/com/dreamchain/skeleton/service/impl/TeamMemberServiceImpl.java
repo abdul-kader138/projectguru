@@ -1,11 +1,11 @@
 package com.dreamchain.skeleton.service.impl;
 
-import com.dreamchain.skeleton.dao.CompanyDao;
-import com.dreamchain.skeleton.dao.RoleRightDao;
-import com.dreamchain.skeleton.dao.RolesDao;
+import com.dreamchain.skeleton.dao.*;
 import com.dreamchain.skeleton.model.Company;
 import com.dreamchain.skeleton.model.RoleRight;
 import com.dreamchain.skeleton.model.Roles;
+import com.dreamchain.skeleton.model.User;
+import com.dreamchain.skeleton.service.TeamMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -14,10 +14,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.dreamchain.skeleton.dao.UserDao;
-import com.dreamchain.skeleton.model.User;
-import com.dreamchain.skeleton.service.UserService;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -30,15 +26,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-
-@Service(value = "userService")
+@Service
 @PropertySource("classpath:config.properties")
-public class UserServiceImpl implements UserService {
 
+public class TeamMemberServiceImpl implements TeamMemberService {
     @Autowired
     CompanyDao companyDao;
     @Autowired
-    UserDao userDao;
+    TeamMemberDao teamMemberDao;
     @Autowired
     RoleRightDao roleRightDao;
     @Autowired
@@ -47,28 +42,25 @@ public class UserServiceImpl implements UserService {
     Environment environment;
 
     private static String EMAIL_EXISTS = "This email address already used.Please try again with new one!!!";
-    private static String PASSWORD_IS_SAME = "New password matched with previous one.Please try again with new one!!!";
-    private static String OLD_PASSWORD_NOT_MATCHED = "Your previous password not matched!!";
     private static String INVALID_INPUT = "Invalid input";
-    private static String INVALID_USER = "User not exists";
-    private static String BACK_DATED_DATA = "User data is old.Please try again with updated data";
-    private static String PHOTO_USER_PATH = "/resources/images/user_photo/";
+    private static String INVALID_USER = "Team Member not exists";
+    private static String BACK_DATED_DATA = "This data is old.Please try again with updated data";
     private static String PHOTO_TEAM_PATH = "/resources/images/team_member_photo/";
 
     @Transactional(readOnly = true)
     public User get(Long id) {
-        return userDao.get(id);
+        return teamMemberDao.get(id);
     }
 
     @Transactional
     public void delete(User user) {
-        userDao.delete(user);
+        teamMemberDao.delete(user);
     }
 
 
     @Transactional(readOnly = true)
     public List<User> findAll(String userName) {
-        return userDao.findAll(userName);
+        return teamMemberDao.findAll(userName);
     }
 
     @Transactional
@@ -80,16 +72,15 @@ public class UserServiceImpl implements UserService {
         User existingUser = new User();
         User user = createObjForSave(request, "save");
         validationMsg = checkInput(user);
-        if ("".equals(validationMsg)) existingUser = userDao.findByUserName(user.getEmail());
+        if ("".equals(validationMsg)) existingUser = teamMemberDao.findByUserName(user.getEmail());
         if (existingUser != null && validationMsg == "") validationMsg = EMAIL_EXISTS;
-        if ("".equals(validationMsg) && "user".equals(usersType)) msg = fileSave(request, PHOTO_USER_PATH);
-        if ("".equals(validationMsg) && "team_member".equals(usersType)) msg = fileSave(request, PHOTO_TEAM_PATH);
+        msg = fileSave(request, PHOTO_TEAM_PATH);
         if (msg.get("validationMsg") == "") user.setImagePath((String) msg.get("path"));
         if ("".equals(validationMsg)) {
-            user.setClientId(environment.getProperty("user.vendor.id"));
-            user.setUserType(environment.getProperty("user.type.vendor"));
-            long companyId = userDao.save(user);
-            newUser = userDao.get(companyId);
+            user.setClientId(environment.getProperty("user.client.id"));
+            user.setUserType(environment.getProperty("user.type.client"));
+            long companyId = teamMemberDao.save(user);
+            newUser = teamMemberDao.get(companyId);
         }
         obj.put("user", newUser);
         obj.put("validationError", validationMsg);
@@ -107,24 +98,23 @@ public class UserServiceImpl implements UserService {
         User existingUser = new User();
         User user = createObjForSave(request, "update");
         validationMsg = checkInput(user);
-        if ("".equals(validationMsg)) existingUser = userDao.get(user.getId());
+        if ("".equals(validationMsg)) existingUser = teamMemberDao.get(user.getId());
         if (existingUser.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_USER;
         if (user.getVersion() != existingUser.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
-        if ("".equals(validationMsg)) newUser = userDao.findByNewName(existingUser.getEmail(), user.getEmail());
+        if ("".equals(validationMsg)) newUser = teamMemberDao.findByNewName(existingUser.getEmail(), user.getEmail());
         if (newUser.getName() != null && "".equals(validationMsg)) validationMsg = EMAIL_EXISTS;
         String fileName = request.getFile("photo").getOriginalFilename();
         if (!("".equals(fileName))) {
             validationMsg = deletePhoto(request.getRealPath(
                     "/"), existingUser.getImagePath());
-            if ("".equals(validationMsg) && "user".equals(usersType)) msg = fileSave(request, PHOTO_USER_PATH);
-            if ("".equals(validationMsg) && "team_member".equals(usersType)) msg = fileSave(request, PHOTO_TEAM_PATH);
+            if ("".equals(validationMsg)) msg = fileSave(request, PHOTO_TEAM_PATH);
             if ("".equals(validationMsg)) existingUser.setImagePath((String) msg.get("path"));
         }
         if ("".equals(validationMsg)) {
-                user.setClientId(environment.getProperty("user.vendor.id"));
-                user.setUserType(environment.getProperty("user.type.vendor"));
+            user.setClientId(environment.getProperty("user.client.id"));
+            user.setUserType(environment.getProperty("user.type.client"));
             newUser = setUpdateUserValue(user, existingUser);
-            userDao.update(newUser);
+            teamMemberDao.update(newUser);
         }
         obj.put("user", newUser);
         obj.put("validationError", validationMsg);
@@ -137,7 +127,7 @@ public class UserServiceImpl implements UserService {
         String validationMsg = "";
         String fileName = "";
         if (userId == 0l) validationMsg = INVALID_INPUT;
-        User user = userDao.get(userId);
+        User user = teamMemberDao.get(userId);
         if (user == null && "".equals(validationMsg)) validationMsg = INVALID_USER;
 
         // later implementation
@@ -146,45 +136,19 @@ public class UserServiceImpl implements UserService {
         if (user != null) fileName = user.getImagePath();
         if ("".equals(validationMsg)) validationMsg = deletePhoto(request.getRealPath("/"), fileName);
         if ("".equals(validationMsg)) {
-            userDao.delete(user);
+            teamMemberDao.delete(user);
         }
         return validationMsg;
     }
 
 
-    @Transactional
-    public Map changePassword(String oldPassword, String newPassword) throws Exception {
-        String validationMsg = "";
-        Map<String, Object> obj = new HashMap<>();
-        //check for valid input
-        validationMsg = checkPasswordInput(oldPassword, newPassword);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User loggedUser = (User) auth.getPrincipal();
-        User user = userDao.findByUserName(loggedUser.getEmail());
-        if (user == null) validationMsg = INVALID_USER;
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String encodedPassword = encoder.encode(newPassword);
-        //check previous password matched or not
-        if (!encoder.matches(oldPassword, user.getPassword()) && validationMsg == "")
-            validationMsg = OLD_PASSWORD_NOT_MATCHED;
-        //check new password
-        if (encoder.matches(newPassword, user.getPassword()) && validationMsg == "") validationMsg = PASSWORD_IS_SAME;
-        if ("".equals(validationMsg)) {
-            user.setPassword(encodedPassword);
-            userDao.update(user);
-        }
-        obj.put("validationError", validationMsg);
-        return obj;
-    }
-
-    @Override
     public User findByUserName(String username) {
-        return userDao.findByUserName(username);
+        return teamMemberDao.findByUserName(username);
     }
 
     @Override
     public List<User> findAll() {
-        return userDao.findAll();
+        return teamMemberDao.findAll();
     }
 
     private String checkInput(User user) {
@@ -228,9 +192,9 @@ public class UserServiceImpl implements UserService {
     // create user object for saving
 
     private User createObjForSave(MultipartHttpServletRequest request, String operationName) throws Exception {
-        String roleName = request.getParameter("roleName");
-        Long roleId = Long.parseLong(request.getParameter("roleId"));
-        RoleRight roleRight = roleRightDao.findByRolesName(roleId);
+        String roleName = environment.getProperty("team.default.role");
+        Roles roles = rolesDao.findByRolesName(roleName);
+        RoleRight roleRight = roleRightDao.findByRolesName(roles.getId());
         Company company = companyDao.get(Long.parseLong(request.getParameter("companyId")));
         User user = setEditorInfo(operationName, request);
         user.setId(Long.parseLong(request.getParameter("id")));
@@ -261,18 +225,20 @@ public class UserServiceImpl implements UserService {
         userObj.setName(objFromUI.getName().trim());
         userObj.setPhone(objFromUI.getPhone().trim());
         userObj.setDesignation(objFromUI.getDesignation().trim());
-        userObj.setRole(objFromUI.getRole());
-        userObj.setRoleRight(objFromUI.getRoleRight());
-        userObj.setRoleRightsId(objFromUI.getRoleRightsId());
         userObj.setCompanyName(objFromUI.getCompanyName());
         userObj.setCompanyId(objFromUI.getCompanyId());
         userObj.setImagePath(existingUser.getImagePath());
         userObj.setUserType(objFromUI.getUserType());
         userObj.setClientId(getUserId().getClientId());
+
+        userObj.setRole(existingUser.getRole());
+        userObj.setRoleRight(existingUser.getRoleRight());
+        userObj.setRoleRightsId(existingUser.getRoleRightsId());
         userObj.setEmail(existingUser.getEmail());
         userObj.setCreatedBy(existingUser.getCreatedBy());
         userObj.setCreatedOn(existingUser.getCreatedOn());
         userObj.setPassword(existingUser.getPassword());
+
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
         userObj.setUpdatedBy(getUserId().getEmail());
@@ -328,10 +294,9 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
-    private User getUserId(){
+    private User getUserId() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user=(User)auth.getPrincipal();
+        User user = (User) auth.getPrincipal();
         return user;
     }
 
