@@ -23,17 +23,14 @@ public class UserAllocation implements Serializable {
     @Version
     private long version;
 
-    @NotEmpty
-    private String companyName;
 
 //    @NotEmpty
 //    private String departmentName;
 
-    @NotEmpty
-    private String productName;
 
     @NotEmpty
-    private String categoryName;
+    @OneToOne
+    private Category category;
 
 
     @NotNull
@@ -190,13 +187,7 @@ public class UserAllocation implements Serializable {
         this.userType = userType;
     }
 
-    public String getCompanyName() {
-        return companyName;
-    }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
 
 //    public String getDepartmentName() {
 //        return departmentName;
@@ -206,20 +197,13 @@ public class UserAllocation implements Serializable {
 //        this.departmentName = departmentName;
 //    }
 
-    public String getProductName() {
-        return productName;
+
+    public Category getCategory() {
+        return category;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public long getItCoordinatorId() {

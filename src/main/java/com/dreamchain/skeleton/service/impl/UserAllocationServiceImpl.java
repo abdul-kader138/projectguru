@@ -55,7 +55,7 @@ public class UserAllocationServiceImpl implements UserAllocationService {
                 userAllocation.getApprovedById(),userAllocation.getCompanyId(),
                 userAllocation.getProductId(),userAllocation.getCategoryId());
 //                userAllocation.getDepartmentId(),userAllocation.getProductId(),userAllocation.getCategoryId());
-        if (existingUserAllocation.getCategoryName() != null && validationMsg == "") validationMsg = USER_ALLOCATION_EXISTS;
+        if (existingUserAllocation.getClientId() != "" && validationMsg == "") validationMsg = USER_ALLOCATION_EXISTS;
         if(userAllocation.getApprovedById() == userAllocation.getItCoordinatorId() ) validationMsg=SAME_ALLOCATED_USER;
         if ("".equals(validationMsg)) {
             SimpleDateFormat dateFormat = new SimpleDateFormat();
@@ -128,13 +128,11 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         userAllocation.setId(Long.parseLong((String) userAllocationObj.get("id")));
         userAllocation.setVersion(Long.parseLong((String) userAllocationObj.get("version")));
         userAllocation.setCompanyId(category.getCompanyId());
-        userAllocation.setCompanyName(category.getCompanyName());
 //        userAllocation.setDepartmentId(category.getDepartmentId());
 //        userAllocation.setDepartmentName(category.getDepartment().getName());
         userAllocation.setProductId(category.getProductId());
-        userAllocation.setProductName(category.getProductName());
         userAllocation.setCategoryId(category.getId());
-        userAllocation.setCategoryName(category.getName());
+        userAllocation.setCategory(category);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User loggedUser=(User) auth.getPrincipal();
         userAllocation.setUserType(loggedUser.getUserType());
@@ -169,13 +167,11 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         userAllocation.setVersion(objFromUI.getVersion());
         userAllocation.setUserType(objFromUI.getUserType().trim());
         userAllocation.setCompanyId(objFromUI.getCompanyId());
-        userAllocation.setCompanyName(objFromUI.getCompanyName());
 //        userAllocation.setDepartmentId(objFromUI.getDepartmentId());
 //        userAllocation.setDepartmentName(objFromUI.getDepartmentName());
         userAllocation.setProductId(objFromUI.getProductId());
-        userAllocation.setProductName(objFromUI.getProductName());
         userAllocation.setCategoryId(objFromUI.getCategoryId());
-        userAllocation.setCategoryName(objFromUI.getCategoryName());
+        userAllocation.setCategory(objFromUI.getCategory());
         userAllocation.setItCoordinatorId(objFromUI.getItCoordinatorId());
         userAllocation.setItCoordinator(objFromUI.getItCoordinator());
         userAllocation.setApprovedById(objFromUI.getApprovedById());

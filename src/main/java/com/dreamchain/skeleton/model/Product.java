@@ -35,8 +35,8 @@ public class Product implements Serializable{
     private String description;
 
     @NotNull
-    @Column
-    private String companyName;
+    @OneToOne
+    private Company company;
 
     @NotNull
     private long companyId;
@@ -99,12 +99,12 @@ public class Product implements Serializable{
         this.description = description;
     }
 
-    public String getCompanyName() {
-        return companyName;
+    public Company getCompany() {
+        return company;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     public long getCompanyId() {

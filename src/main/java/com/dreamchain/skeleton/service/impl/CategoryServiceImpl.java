@@ -135,9 +135,9 @@ public class CategoryServiceImpl implements CategoryService{
         category.setProductId(Long.parseLong((String) categoryObj.get("productId")));
         category.setName(((String)categoryObj.get("name")).trim());
         category.setDescription(((String)categoryObj.get("description")).trim());
-        category.setCompanyName(department.getCompanyName());
-        category.setDepartmentName(department.getName());
-        category.setProductName(product.getName());
+        category.setCompany(department.getCompany());
+        category.setDepartment(department);
+        category.setProduct(product);
         category.setClientId(getUserId().getClientId());
         return category;
 
@@ -164,11 +164,11 @@ public class CategoryServiceImpl implements CategoryService{
         categoryObj.setName(objFromUI.getName().trim());
         categoryObj.setDescription(objFromUI.getDescription().trim());
         categoryObj.setCompanyId(objFromUI.getCompanyId());
-        categoryObj.setCompanyName(department.getCompanyName());
+        categoryObj.setCompany(department.getCompany());
         categoryObj.setDepartmentId(objFromUI.getDepartmentId());
-        categoryObj.setDepartmentName(department.getName());
+        categoryObj.setDepartment(department);
         categoryObj.setProductId(objFromUI.getProductId());
-        categoryObj.setProductName(product.getName());
+        categoryObj.setProduct(product);
         categoryObj.setClientId(getUserId().getClientId());
         categoryObj.setCreatedBy(existingCategory.getCreatedBy());
         categoryObj.setCreatedOn(existingCategory.getCreatedOn());

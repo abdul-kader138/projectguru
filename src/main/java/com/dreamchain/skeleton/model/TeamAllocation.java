@@ -22,17 +22,14 @@ public class TeamAllocation implements Serializable {
     @Version
     private long version;
 
-    @NotEmpty
-    private String companyName;
 
 //    @NotEmpty
 //    private String departmentName;
 
-    @NotEmpty
-    private String productName;
 
-    @NotEmpty
-    private String categoryName;
+    @NotNull
+    @OneToOne
+    private Category category;
 
 
     @NotNull
@@ -85,6 +82,16 @@ public class TeamAllocation implements Serializable {
     private Date updatedOn;
 
     public TeamAllocation() {
+    }
+
+
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getClientId() {
@@ -189,13 +196,6 @@ public class TeamAllocation implements Serializable {
         this.userType = userType;
     }
 
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
 
 //    public String getDepartmentName() {
 //        return departmentName;
@@ -204,23 +204,6 @@ public class TeamAllocation implements Serializable {
 //    public void setDepartmentName(String departmentName) {
 //        this.departmentName = departmentName;
 //    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
 
     public long getRequestById() {
         return requestById;

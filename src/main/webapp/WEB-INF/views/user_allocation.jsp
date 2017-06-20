@@ -237,10 +237,10 @@
                             'sWidth': '15px',
                             'bSortable': false
                         },
-                        {"mData": "companyName", 'sWidth': '200px'},
+                        {"mData": "category.company.name", 'sWidth': '200px'},
 //                        {"mData": "departmentName", 'sWidth': '100px'},
-                        {"mData": "productName", 'sWidth': '200px'},
-                        {"mData": "categoryName", 'sWidth': '200px'},
+                        {"mData": "category.product.name", 'sWidth': '200px'},
+                        {"mData": "category.name", 'sWidth': '200px'},
                         {"mData": "itCoordinator", 'sWidth': '250px'},
                         {"mData": "approvedBy", 'sWidth': '250px'}
                     ],
@@ -608,21 +608,13 @@
                     table.row.add({
                         "id": allocation.id,
                         "version": allocation.version,
-                        "companyName": allocation.companyName,
-//                        "departmentName": allocation.departmentName,
-                        "productName": allocation.productName,
-                        "categoryName": allocation.categoryName,
+                        "category": allocation.category,
                         "itCoordinator": allocation.itCoordinator,
                         "approvedBy": allocation.approvedBy,
-                        "companyId": allocation.companyId,
-                        "departmentId": allocation.departmentId,
-                        "productId": allocation.productId,
-                        "categoryId": allocation.categoryId,
                         "approvedById": allocation.approvedById,
                         "itCoordinatorId": allocation.itCoordinatorId
                     }).draw();
-
-                };
+                }
 
 
                 /* Load Department data to select box data using ajax */
@@ -720,7 +712,7 @@
                     $("#saveAllocation").hide();
                     $("#id").val(newAllocation.id);
                     $("#version").val(newAllocation.version);
-                    $('#listOfCompany option:contains("' + newAllocation.companyName + '")').prop('selected', 'selected');
+                    $('#listOfCompany option:contains("' + newAllocation.category.company.name + '")').prop('selected', 'selected');
                     $('#listOfCoordinator option:contains("' + newAllocation.itCoordinator+ '")').prop('selected', 'selected');
                     $('#listOfApprovedBy option:contains("' + newAllocation.approvedBy + '")').prop('selected', 'selected');
                     var company = new Object();
@@ -729,8 +721,8 @@
                     id = parseInt(id);
                     productId = parseInt(productId);
 //                    getSelectedDepartment(id, newAllocation.departmentName);
-                    getSelectedProduct(id, newAllocation.productName);
-                    getSelectedCategory(productId,newAllocation.categoryName);
+                    getSelectedProduct(id, newAllocation.category.product.name);
+                    getSelectedCategory(productId,newAllocation.category.name);
                     window.location.href = "#allocationForm";
                 }
 

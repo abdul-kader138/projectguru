@@ -179,7 +179,7 @@
             },
             {"mData": "name", 'sWidth': '200px'},
             {"mData": "description", 'sWidth': '300px'},
-            {"mData": "companyName", 'sWidth': '200px'}
+            {"mData": "company.name", 'sWidth': '200px'}
           ],
           'aaSorting': [[0, 'asc']],
           "columnDefs": [{}],
@@ -512,7 +512,7 @@
             "name": product.name,
             "description": product.description,
             "version": product.version,
-            "companyName": product.companyName
+            "company": product.company
           }).draw();
 
         };
@@ -528,7 +528,7 @@
           $("#name").val(newProduct.name);
           $("#description").val(newProduct.description);
           $("#version").val(newProduct.version);
-          $('#listOfCompany option:contains("' + newProduct.companyName + '")').prop('selected', 'selected');
+          $('#listOfCompany option:contains("' + newProduct.company.name + '")').prop('selected', 'selected');
           window.location.href = "#productForm";
         }
 

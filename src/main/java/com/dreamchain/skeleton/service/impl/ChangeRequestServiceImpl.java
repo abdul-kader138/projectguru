@@ -110,10 +110,10 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
             changeRequest.setName(request.getParameter("name").trim());
             changeRequest.setCategoryName(category.getName());
             changeRequest.setCategoryId(category.getId());
-            changeRequest.setCompanyName(category.getCompanyName());
+//            changeRequest.setCompanyName(category.getCompanyName());
             changeRequest.setCompanyId(category.getCompanyId());
             changeRequest.setProductId(category.getProductId());
-            changeRequest.setProductName(category.getProductName());
+//            changeRequest.setProductName(category.getProductName());
             changeRequest.setDescription(request.getParameter("description").trim());
             changeRequest.setDocPath(DOC_PATH+fileName.trim());
             SimpleDateFormat dateFormat = new SimpleDateFormat();

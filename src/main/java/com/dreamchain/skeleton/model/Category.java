@@ -34,16 +34,16 @@ public class Category implements Serializable {
     private String description;
 
     @NotNull
-    @Column
-    private String companyName;
+    @OneToOne
+    private Company company;
 
     @NotNull
-    @Column
-    private String departmentName;
+    @OneToOne
+    private Department department;
 
     @NotNull
-    @Column
-    private String productName;
+    @OneToOne
+    private Product product;
 
     @NotNull
     private long companyId;
@@ -120,28 +120,28 @@ public class Category implements Serializable {
         this.description = description;
     }
 
-    public String getCompanyName() {
-        return companyName;
+    public Company getCompany() {
+        return company;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
-    public String getDepartmentName() {
-        return departmentName;
+    public Department getDepartment() {
+        return department;
     }
 
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 
-    public String getProductName() {
-        return productName;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public long getCompanyId() {

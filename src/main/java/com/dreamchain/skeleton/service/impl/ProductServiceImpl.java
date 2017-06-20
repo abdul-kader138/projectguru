@@ -130,7 +130,7 @@ public class ProductServiceImpl implements ProductService {
         product.setName(((String) productObj.get("name")).trim());
         product.setDescription(((String) productObj.get("description")).trim());
         product.setClientId(getUserId().getClientId());
-        product.setCompanyName(company.getName());
+        product.setCompany(company);
         product.setClientId(getUserId().getClientId());
         return product;
 
@@ -156,7 +156,7 @@ public class ProductServiceImpl implements ProductService {
         productObj.setName(objFromUI.getName().trim());
         productObj.setDescription(objFromUI.getDescription().trim());
         productObj.setCompanyId(objFromUI.getCompanyId());
-        productObj.setCompanyName(company.getName());
+        productObj.setCompany(company);
         productObj.setClientId(getUserId().getClientId());
         productObj.setCreatedBy(existingProduct.getCreatedBy());
         productObj.setCreatedOn(existingProduct.getCreatedOn());

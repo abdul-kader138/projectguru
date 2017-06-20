@@ -32,8 +32,8 @@ public class Department implements Serializable {
 
 
     @NotNull
-    @Column
-    private String companyName;
+    @OneToOne
+    private Company company;
 
     @Column
     @NotNull
@@ -70,12 +70,12 @@ public class Department implements Serializable {
         this.clientId = clientId;
     }
 
-    public String getCompanyName() {
-        return companyName;
+    public Company getCompany() {
+        return company;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     public long getCompanyId() {
