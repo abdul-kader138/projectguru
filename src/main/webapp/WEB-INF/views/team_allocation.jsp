@@ -240,8 +240,8 @@
 //                        {"mData": "departmentName", 'sWidth': '100px'},
                         {"mData": "category.product.name", 'sWidth': '200px'},
                         {"mData": "category.name", 'sWidth': '200px'},
-                        {"mData": "requestedBy", 'sWidth': '250px'},
-                        {"mData": "checkedBy", 'sWidth': '250px'}
+                        {"mData": "requestedBy.name", 'sWidth': '250px'},
+                        {"mData": "checkedBy.name", 'sWidth': '250px'}
 
                     ],
                     'aaSorting': [[0, 'asc']],
@@ -716,8 +716,8 @@
                     $("#id").val(newAllocation.id);
                     $("#version").val(newAllocation.version);
                     $('#listOfCompany option:contains("' + newAllocation.category.company.name + '")').prop('selected', 'selected');
-                    $('#listOfRequestBy option:contains("' + newAllocation.requestedBy + '")').prop('selected', 'selected');
-                    $('#listOfCheckedBy option:contains("' + newAllocation.checkedBy + '")').prop('selected', 'selected');
+                    $('#listOfRequestBy option:contains("' + newAllocation.requestedBy.name + '")').prop('selected', 'selected');
+                    $('#listOfCheckedBy option:contains("' + newAllocation.checkedBy.name + '")').prop('selected', 'selected');
                     var company = new Object();
                     var id = newAllocation.companyId;
                     var productId = newAllocation.productId;
@@ -760,7 +760,7 @@
                     $('#listOfcheckedBy').empty();
                     $.ajax({
                         type: "GET",
-                        url: 'http://localhost:8080/user/userList',
+                        url: 'http://localhost:8080/team/teamList',
                         success: function (data) {
                             var collaborationRequest;
                             var collaborationChecked;

@@ -1,9 +1,6 @@
 package com.dreamchain.skeleton.service.impl;
 
-import com.dreamchain.skeleton.dao.CategoryDao;
-import com.dreamchain.skeleton.dao.CompanyDao;
-import com.dreamchain.skeleton.dao.DepartmentDao;
-import com.dreamchain.skeleton.dao.ProductDao;
+import com.dreamchain.skeleton.dao.*;
 import com.dreamchain.skeleton.model.*;
 import com.dreamchain.skeleton.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +30,17 @@ public class CategoryServiceImpl implements CategoryService{
     @Autowired
     CategoryDao categoryDao ;
     @Autowired
+    TeamAllocationDao teamAllocationDao;
+    @Autowired
+    UserAllocationDao userAllocationDao;
+    @Autowired
     Environment environment;
 
     private static String CATEGORY_EXISTS = "This category name is already used.Please try again with new one!!!";
     private static String INVALID_INPUT = "Invalid input";
     private static String INVALID_CATEGORY = "Category not exists";
     private static String BACK_DATED_DATA = "Category data is old.Please try again with updated data";
-    private static String ASSOCIATED_REQUEST = "Category is tagged with request.First remove tagging and try again";
+    private static String ASSOCIATED_ALLOCATION = "Category is tagged with allocation.First remove tagging and try again";
 
 
 
@@ -100,11 +101,10 @@ public class CategoryServiceImpl implements CategoryService{
         if (categoryId == 0l) validationMsg = INVALID_INPUT;
         Category category = categoryDao.get(categoryId);
         if (category == null && validationMsg == "") validationMsg = INVALID_CATEGORY;
-
-        //@todo need implement after Request implementation
-//        List<Object> obj=departmentDao.countOfDepartment(departmentId);
-//        if (obj.size() > 0 && validationMsg == "") validationMsg = ASSOCIATED_COMPANY;
-
+        List<Object> obj=teamAllocationDao.countOfAllocation(categoryId);
+        if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_ALLOCATION;
+        if("".equals(validationMsg) && obj.size() == 0) obj=userAllocationDao.countOfAllocation(categoryId);
+        if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_ALLOCATION;
         if ("".equals(validationMsg)) {
             categoryDao.delete(category);
         }

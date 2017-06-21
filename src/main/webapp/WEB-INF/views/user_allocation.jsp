@@ -241,8 +241,8 @@
 //                        {"mData": "departmentName", 'sWidth': '100px'},
                         {"mData": "category.product.name", 'sWidth': '200px'},
                         {"mData": "category.name", 'sWidth': '200px'},
-                        {"mData": "itCoordinator", 'sWidth': '250px'},
-                        {"mData": "approvedBy", 'sWidth': '250px'}
+                        {"mData": "itCoordinator.name", 'sWidth': '250px'},
+                        {"mData": "approvedBy.name", 'sWidth': '250px'}
                     ],
                     'aaSorting': [[0, 'asc']],
                     "columnDefs": [{}],
@@ -713,8 +713,8 @@
                     $("#id").val(newAllocation.id);
                     $("#version").val(newAllocation.version);
                     $('#listOfCompany option:contains("' + newAllocation.category.company.name + '")').prop('selected', 'selected');
-                    $('#listOfCoordinator option:contains("' + newAllocation.itCoordinator+ '")').prop('selected', 'selected');
-                    $('#listOfApprovedBy option:contains("' + newAllocation.approvedBy + '")').prop('selected', 'selected');
+                    $('#listOfCoordinator option:contains("' + newAllocation.itCoordinator.name+ '")').prop('selected', 'selected');
+                    $('#listOfApprovedBy option:contains("' + newAllocation.approvedBy.name + '")').prop('selected', 'selected');
                     var company = new Object();
                     var id = newAllocation.companyId;
                     var productId = newAllocation.productId;

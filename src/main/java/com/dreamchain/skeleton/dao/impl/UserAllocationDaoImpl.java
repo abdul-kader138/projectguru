@@ -62,21 +62,14 @@ public class UserAllocationDaoImpl implements UserAllocationDao {
     }
 
     @Override
-//    public UserAllocation findByUserId(long requestById, long checkedById, long companyId, long departmentId, long productId,long categoryId) {
-    public UserAllocation findByUserId (long itCoordinatorId, long approvedById, long companyId, long productId,long categoryId) {
+    public UserAllocation findByProductAndCategory(long companyId, long productId,long categoryId) {
         DetachedCriteria dcr= DetachedCriteria.forClass(UserAllocation.class);
-        Criterion cr =  Restrictions.eq("itCoordinatorId", itCoordinatorId);
-        Criterion cr1 =  Restrictions.eq("approvedById", approvedById);
-        Criterion cr2 = Restrictions.eq("companyId", companyId);
-//        Criterion cr3 = Restrictions.eq("departmentId", departmentId);
-        Criterion cr4 = Restrictions.eq("productId", productId);
-        Criterion cr5 = Restrictions.eq("categoryId", categoryId);
+        Criterion cr = Restrictions.eq("companyId", companyId);
+        Criterion cr1 = Restrictions.eq("productId", productId);
+        Criterion cr2 = Restrictions.eq("categoryId", categoryId);
         dcr.add(cr);
         dcr.add(cr1);
         dcr.add(cr2);
-//        dcr.add(cr3);
-        dcr.add(cr4);
-        dcr.add(cr5);
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         if(lst.size()==0)return new UserAllocation();
         return (UserAllocation)lst.get(0);
@@ -84,8 +77,13 @@ public class UserAllocationDaoImpl implements UserAllocationDao {
 
 
     @Override
-    public List<Object> countOfAllocation(long allocationId) {
-        return null;
+    public List<Object> countOfAllocation(long categoryId) {
+        DetachedCriteria dcr= DetachedCriteria.forClass(UserAllocation.class);//Category
+        Criterion cr = Restrictions.eq("categoryId", categoryId);
+        dcr.add(cr);
+        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
+        if(lst.size()==0)return new ArrayList<Object>();
+        return lst;
     }
 
     private List<UserAllocation> createUserAllocationList(List<Object> userAllocationList){

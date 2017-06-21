@@ -10,7 +10,7 @@ import java.util.Date;
 @Entity
 @Table(name="team_allocation",
         uniqueConstraints=
-        @UniqueConstraint(columnNames={"companyId","productId","categoryId","clientId"}))
+        @UniqueConstraint(columnNames={"companyId","productId","categoryId"}))
 public class TeamAllocation implements Serializable {
 
     private static final long serialVersionUID = 8633415080370876715L;
@@ -52,12 +52,12 @@ public class TeamAllocation implements Serializable {
     private long checkedById;
 
     @NotNull
-    @Column
-    private String requestedBy;
+    @OneToOne
+    private User requestedBy;
 
     @NotNull
-    @Column
-    private String checkedBy;
+    @OneToOne
+    private User checkedBy;
 
     @Column
     @NotNull
@@ -221,19 +221,19 @@ public class TeamAllocation implements Serializable {
         this.checkedById = checkedById;
     }
 
-    public String getRequestedBy() {
+    public User getRequestedBy() {
         return requestedBy;
     }
 
-    public void setRequestedBy(String requestedBy) {
+    public void setRequestedBy(User requestedBy) {
         this.requestedBy = requestedBy;
     }
 
-    public String getCheckedBy() {
+    public User getCheckedBy() {
         return checkedBy;
     }
 
-    public void setCheckedBy(String checkedBy) {
+    public void setCheckedBy(User checkedBy) {
         this.checkedBy = checkedBy;
     }
 }

@@ -31,7 +31,7 @@ public class UserAllocationServiceImpl implements UserAllocationService {
     Environment environment;
 
 
-    private static String USER_ALLOCATION_EXISTS = "This users already used.Please try again with new one!!!";
+    private static String USER_ALLOCATION_EXISTS = "This Product and users are already allocated.Please try again with new one!!!";
     private static String INVALID_INPUT = "Invalid input";
     private static String INVALID_USER_ALLOCATION = "User allocation not exists";
     private static String BACK_DATED_DATA = "User allocation data is old.Please try again with updated data";
@@ -51,11 +51,9 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         UserAllocation existingUserAllocation=new UserAllocation();
         UserAllocation userAllocation=createObjForSave(userAllocationObj);
         validationMsg = checkInput(userAllocation);
-        if ("".equals(validationMsg)) existingUserAllocation = userAllocationDao.findByUserId(userAllocation.getItCoordinatorId(),
-                userAllocation.getApprovedById(),userAllocation.getCompanyId(),
+        if ("".equals(validationMsg)) existingUserAllocation = userAllocationDao.findByProductAndCategory(userAllocation.getCompanyId(),
                 userAllocation.getProductId(),userAllocation.getCategoryId());
-//                userAllocation.getDepartmentId(),userAllocation.getProductId(),userAllocation.getCategoryId());
-        if (existingUserAllocation.getClientId() != "" && validationMsg == "") validationMsg = USER_ALLOCATION_EXISTS;
+        if (existingUserAllocation.getApprovedBy() != null && validationMsg == "") validationMsg = USER_ALLOCATION_EXISTS;
         if(userAllocation.getApprovedById() == userAllocation.getItCoordinatorId() ) validationMsg=SAME_ALLOCATED_USER;
         if ("".equals(validationMsg)) {
             SimpleDateFormat dateFormat = new SimpleDateFormat();
@@ -83,8 +81,6 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         if ("".equals(validationMsg)) existingUserAllocation = userAllocationDao.get(userAllocation.getId());
         if (existingUserAllocation == null && validationMsg == "") validationMsg = INVALID_USER_ALLOCATION;
         if (userAllocation.getVersion() != existingUserAllocation.getVersion() && validationMsg == "") validationMsg = BACK_DATED_DATA;
-//        if ("".equals(validationMsg)) newObj = categoryDao.findByNewName(existingUserAllocation.getName(),category.getName(),category.getCompanyId(),category.getDepartmentId(),category.getProductId());
-//        if (newObj.getName() != null && "".equals(validationMsg)) validationMsg = CATEGORY_EXISTS;
         if ("".equals(validationMsg)) {
             newObj=setUpdateCategoryValue(userAllocation, existingUserAllocation);
             userAllocationDao.update(newObj);
@@ -128,8 +124,6 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         userAllocation.setId(Long.parseLong((String) userAllocationObj.get("id")));
         userAllocation.setVersion(Long.parseLong((String) userAllocationObj.get("version")));
         userAllocation.setCompanyId(category.getCompanyId());
-//        userAllocation.setDepartmentId(category.getDepartmentId());
-//        userAllocation.setDepartmentName(category.getDepartment().getName());
         userAllocation.setProductId(category.getProductId());
         userAllocation.setCategoryId(category.getId());
         userAllocation.setCategory(category);
@@ -137,9 +131,9 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         User loggedUser=(User) auth.getPrincipal();
         userAllocation.setUserType(loggedUser.getUserType());
         userAllocation.setItCoordinatorId(itCoordinator.getId());
-        userAllocation.setItCoordinator(itCoordinator.getName());
+        userAllocation.setItCoordinator(itCoordinator);
         userAllocation.setApprovedById(approvedBy.getId());
-        userAllocation.setApprovedBy(approvedBy.getName());
+        userAllocation.setApprovedBy(approvedBy);
         userAllocation.setClientId(getUserId().getClientId());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
@@ -167,8 +161,6 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         userAllocation.setVersion(objFromUI.getVersion());
         userAllocation.setUserType(objFromUI.getUserType().trim());
         userAllocation.setCompanyId(objFromUI.getCompanyId());
-//        userAllocation.setDepartmentId(objFromUI.getDepartmentId());
-//        userAllocation.setDepartmentName(objFromUI.getDepartmentName());
         userAllocation.setProductId(objFromUI.getProductId());
         userAllocation.setCategoryId(objFromUI.getCategoryId());
         userAllocation.setCategory(objFromUI.getCategory());

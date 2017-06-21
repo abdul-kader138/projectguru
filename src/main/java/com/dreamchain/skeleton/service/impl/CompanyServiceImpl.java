@@ -37,6 +37,7 @@ public class CompanyServiceImpl implements CompanyService {
     private static String INVALID_COMPANY = "Company not exists";
     private static String BACK_DATED_DATA = "Company data is old.Please try again with updated data";
     private static String ASSOCIATED_COMPANY = "Company is tagged with Department.First remove tagging and try again";
+    private static String ASSOCIATED_COMPANY_PRODUCT = "Company is tagged with Product.First remove tagging and try again";
     private static String LOGO_PATH = "/resources/images/company_logo/";
 
 
@@ -111,6 +112,8 @@ public class CompanyServiceImpl implements CompanyService {
         List<Object> obj = companyDao.countOfCompany(companyId);
         if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_COMPANY;
         if (company != null) fileName = company.getImagePath();
+        if("".equals(validationMsg) && obj.size() == 0) obj=companyDao.countOfCompanyForProduct(companyId);
+        if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_COMPANY_PRODUCT;
         if ("".equals(validationMsg)) validationMsg = deleteLogo(request.getRealPath("/"),fileName);
         if ("".equals(validationMsg)) {
             companyDao.delete(company);

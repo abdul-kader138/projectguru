@@ -19,8 +19,9 @@
             <th width="15px">id</th>
             <th width="200px">Name</th>
             <th width="200px">Email</th>
-            <th width="200px">Phone</th>
+            <%--<th width="200px">Phone</th>--%>
             <th width="200px">Designation</th>
+            <th width="200px">Role</th>
             <th width="200px">Photo</th>
             <th width="200px">Company name</th>
 
@@ -272,15 +273,16 @@
             },
             {"mData": "name", 'sWidth': '200px'},
             {"mData": "email", 'sWidth': '200px'},
-            {"mData": "phone", 'sWidth': '200px'},
+//            {"mData": "phone", 'sWidth': '200px'},
             {"mData": "designation", 'sWidth': '200px'},
+            {"mData": "roleRight.roleName", 'sWidth': '200px'},
             {
               "mData": "path",
               "render": function (url, type, full) {
                 return '<img src="' + mainPath + full.imagePath + '" width="30" height="30" />';
               }
             },
-            {"mData": "companyName",'sWidth': '200px'}
+            {"mData": "company.name",'sWidth': '200px'}
           ],
           'aaSorting': [[0, 'asc']],
           "columnDefs": [{}],
@@ -687,7 +689,7 @@
           $("#phone").val(newUser.phone);
           $("#designation").val(newUser.designation);
           $("#uploadedPhotoSrc").attr("src", mainPath + newUser.imagePath);
-          $('#listOfCompany option:contains("' + newUser.companyName + '")').prop('selected', 'selected');
+          $('#listOfCompany option:contains("' + newUser.company.name + '")').prop('selected', 'selected');
           window.location.href = "#userForm";
         }
 
@@ -721,6 +723,7 @@
             "name": user.name,
             "email": user.email,
             "phone": user.phone,
+            "roleRight": user.roleRight,
             "designation": user.designation,
             "version": user.version,
             "path": user.imagePath,

@@ -77,8 +77,6 @@ public class TeamMemberServiceImpl implements TeamMemberService {
         msg = fileSave(request, PHOTO_TEAM_PATH);
         if (msg.get("validationMsg") == "") user.setImagePath((String) msg.get("path"));
         if ("".equals(validationMsg)) {
-            user.setClientId(environment.getProperty("user.client.id"));
-            user.setUserType(environment.getProperty("user.type.client"));
             long companyId = teamMemberDao.save(user);
             newUser = teamMemberDao.get(companyId);
         }
@@ -202,12 +200,12 @@ public class TeamMemberServiceImpl implements TeamMemberService {
         user.setName(request.getParameter("name").trim());
         user.setPhone(request.getParameter("phone").trim());
         user.setDesignation(request.getParameter("designation").trim());
-        user.setUserType("client");
-        user.setClientId(environment.getProperty("user.vendor.id"));
+        user.setUserType(getUserId().getUserType());
+        user.setClientId(getUserId().getClientId());
         user.setRoleRight(roleRight);
         user.setRoleRightsId(roleRight.getId());
         user.setCompanyId(company.getId());
-        user.setCompanyName(company.getName());
+        user.setCompany(company);
         user.setRole(roleName);
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
@@ -225,7 +223,7 @@ public class TeamMemberServiceImpl implements TeamMemberService {
         userObj.setName(objFromUI.getName().trim());
         userObj.setPhone(objFromUI.getPhone().trim());
         userObj.setDesignation(objFromUI.getDesignation().trim());
-        userObj.setCompanyName(objFromUI.getCompanyName());
+        userObj.setCompany(objFromUI.getCompany());
         userObj.setCompanyId(objFromUI.getCompanyId());
         userObj.setImagePath(existingUser.getImagePath());
         userObj.setUserType(objFromUI.getUserType());

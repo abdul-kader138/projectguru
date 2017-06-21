@@ -214,7 +214,7 @@
                         },
                         {"mData": "name", 'sWidth': '150px'},
                         {"mData": "description", 'sWidth': '250px'},
-                        {"mData": "category.company.name", 'sWidth': '200px'},
+                        {"mData": "company.name", 'sWidth': '200px'},
                         {"mData": "department.name", 'sWidth': '100px'},
                         {"mData": "product.name", 'sWidth': '200px'}
                     ],

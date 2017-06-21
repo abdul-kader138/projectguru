@@ -106,9 +106,10 @@
                 <!-- #END# Call Search -->
                 <!-- Notifications -->
                 <li class="dropdown">
-                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                    <a href="approval_details">
+                    <%--<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">--%>
                         <i class="material-icons">notifications</i>
-                        <span class="label-count" id="notificationCount">7</span>
+                        <span class="label-count" id="notificationCount">${notificationCount}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <li class="header">NOTIFICATIONS</li>

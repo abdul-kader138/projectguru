@@ -12,10 +12,6 @@ public interface TeamAllocationDao {
     void update(TeamAllocation teamAllocation);
     void delete(TeamAllocation teamAllocation);
     List<TeamAllocation> findAll();
-    TeamAllocation findByUserId(long requestById, long checkedById, long companyId, long productId,long categoryId);
     TeamAllocation findByProductAndCategory(long companyId, long productId,long categoryId);
-    //    UserAllocation findByUserId(long requestById, long checkedById, long companyId, long departmentId, long productId,long categoryId);
-//    UserAllocation findByUserIdAtUpdate(long requestById, long checkedById,
-//                                        long companyId, long departmentId, long productId,long categoryId);
-    List<Object> countOfAllocation(long allocationId); // request class
+    List<Object> countOfAllocation(long categoryId); // request class
 }

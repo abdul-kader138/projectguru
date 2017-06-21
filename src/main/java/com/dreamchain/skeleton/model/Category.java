@@ -12,7 +12,7 @@ import java.util.Date;
 @Entity
 @Table(name="category",
         uniqueConstraints=
-        @UniqueConstraint(columnNames={"companyId","departmentId","productId", "name","clientId"}))
+        @UniqueConstraint(columnNames={"companyId","departmentId","productId", "name"}))
 public class Category implements Serializable {
 
     private static final long serialVersionUID = 8633415080380776715L;

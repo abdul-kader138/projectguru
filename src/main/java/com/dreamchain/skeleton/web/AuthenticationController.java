@@ -1,7 +1,12 @@
 package com.dreamchain.skeleton.web;
 
 import com.dreamchain.skeleton.model.User;
+import com.dreamchain.skeleton.service.AuthenticationService;
+import com.dreamchain.skeleton.service.RolesService;
 import org.apache.commons.logging.Log;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -32,8 +37,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 @Controller
+@PropertySource("classpath:config.properties")
 public class AuthenticationController {
-
+    @Autowired
+    AuthenticationService authenticationService;
+    @Autowired
+    Environment environment;
 
     @RequestMapping("/login")
     public ModelAndView login(@RequestParam(value = "failed", required = false) String failed,
@@ -52,22 +61,14 @@ public class AuthenticationController {
     }
 
     @RequestMapping("/home")
-    public ModelAndView main(HttpServletRequest request, HttpServletResponse response) throws FileNotFoundException, TransformerException, ParserConfigurationException {
+    public ModelAndView main(HttpServletRequest request) throws FileNotFoundException, TransformerException, ParserConfigurationException {
         ModelAndView model = new ModelAndView();
         String pageName = "main";
         String userName = "";
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user=(User)auth.getPrincipal();
-        HttpSession httpSession=request.getSession();
         model.setViewName(pageName);
-        httpSession.setAttribute("passwordMsg",null);
-        httpSession.setAttribute("isPasswordChanged",null);
-        httpSession.setAttribute("name",user.getName());
-        httpSession.setAttribute("email",user.getEmail());
-        httpSession.setAttribute("role",user.getRole());
-        httpSession.setAttribute("path",user.getImagePath());
-        httpSession.setAttribute("userType",user.getUserType());
-        httpSession.setAttribute("imagePath",user.getImagePath());
+        authenticationService.setSessionValue(request,user);
         return model;
 
     }

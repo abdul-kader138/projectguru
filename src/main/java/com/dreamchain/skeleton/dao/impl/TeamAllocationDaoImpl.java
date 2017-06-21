@@ -62,26 +62,6 @@ public class TeamAllocationDaoImpl implements TeamAllocationDao {
         return createTeamAllocationList(lst);
     }
 
-    @Override
-//    public UserAllocation findByUserId(long requestById, long checkedById, long companyId, long departmentId, long productId,long categoryId) {
-    public TeamAllocation findByUserId (long requestById, long checkedById, long companyId, long productId,long categoryId) {
-        DetachedCriteria dcr= DetachedCriteria.forClass(TeamAllocation.class);
-        Criterion cr =  Restrictions.eq("requestById", requestById);
-        Criterion cr1 =  Restrictions.eq("checkedById", checkedById);
-        Criterion cr2 = Restrictions.eq("companyId", companyId);
-//        Criterion cr3 = Restrictions.eq("departmentId", departmentId);
-        Criterion cr4 = Restrictions.eq("productId", productId);
-        Criterion cr5 = Restrictions.eq("categoryId", categoryId);
-        dcr.add(cr);
-        dcr.add(cr1);
-        dcr.add(cr2);
-//        dcr.add(cr3);
-        dcr.add(cr4);
-        dcr.add(cr5);
-        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
-        if(lst.size()==0)return new TeamAllocation();
-        return (TeamAllocation)lst.get(0);
-    }
 
     @Override
     public TeamAllocation findByProductAndCategory(long companyId, long productId, long categoryId) {
@@ -99,8 +79,13 @@ public class TeamAllocationDaoImpl implements TeamAllocationDao {
 
 
     @Override
-    public List<Object> countOfAllocation(long allocationId) {
-        return null;
+    public List<Object> countOfAllocation(long categoryId) {
+        DetachedCriteria dcr= DetachedCriteria.forClass(TeamAllocation.class);//Category
+        Criterion cr = Restrictions.eq("categoryId", categoryId);
+        dcr.add(cr);
+        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
+        if(lst.size()==0)return new ArrayList<Object>();
+        return lst;
     }
 
     private List<TeamAllocation> createTeamAllocationList(List<Object> teamAllocationList){

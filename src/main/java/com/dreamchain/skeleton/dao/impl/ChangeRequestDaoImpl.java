@@ -50,12 +50,9 @@ public class ChangeRequestDaoImpl implements ChangeRequestDao {
 
     @Override
     public List<ChangeRequest> findAll() {
-
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user=(User)auth.getPrincipal();
         DetachedCriteria dcr= DetachedCriteria.forClass(ChangeRequest.class);
-        Criterion cr = Restrictions.eq("companyId", user.getCompanyId());
-        if (environment.getProperty("user.type.client").equals(user.getUserType())) dcr.add(cr);
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         return createChangeRequestList(lst);
     }
@@ -79,6 +76,22 @@ public class ChangeRequestDaoImpl implements ChangeRequestDao {
     @Override
     public List<Object> countOfCategory(long categoryId) {
         return null;
+    }
+
+    @Override
+    public ChangeRequest findByName(String name, long companyId, long productId, long categoryId) {
+        DetachedCriteria dcr= DetachedCriteria.forClass(ChangeRequest.class);
+        Criterion cr = Restrictions.eq("name", name.trim()).ignoreCase();
+        Criterion cr1 = Restrictions.eq("companyId", companyId);
+        Criterion cr2 = Restrictions.eq("productId", productId);
+        Criterion cr3 = Restrictions.eq("categoryId", categoryId);
+        dcr.add(cr);
+        dcr.add(cr1);
+        dcr.add(cr2);
+        dcr.add(cr3);
+        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
+        if(lst.size()==0)return new ChangeRequest();
+        return (ChangeRequest)lst.get(0);
     }
 
     private List<ChangeRequest> createChangeRequestList(List<Object> changeRequestList){

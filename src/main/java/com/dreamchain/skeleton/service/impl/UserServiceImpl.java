@@ -243,7 +243,7 @@ public class UserServiceImpl implements UserService {
         user.setRoleRight(roleRight);
         user.setRoleRightsId(roleRight.getId());
         user.setCompanyId(company.getId());
-        user.setCompanyName(company.getName());
+        user.setCompany(company);
         user.setRole(roleName);
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
@@ -264,15 +264,15 @@ public class UserServiceImpl implements UserService {
         userObj.setRole(objFromUI.getRole());
         userObj.setRoleRight(objFromUI.getRoleRight());
         userObj.setRoleRightsId(objFromUI.getRoleRightsId());
-        userObj.setCompanyName(objFromUI.getCompanyName());
+        userObj.setCompany(objFromUI.getCompany());
         userObj.setCompanyId(objFromUI.getCompanyId());
         userObj.setImagePath(existingUser.getImagePath());
-        userObj.setUserType(objFromUI.getUserType());
-        userObj.setClientId(getUserId().getClientId());
         userObj.setEmail(existingUser.getEmail());
         userObj.setCreatedBy(existingUser.getCreatedBy());
         userObj.setCreatedOn(existingUser.getCreatedOn());
         userObj.setPassword(existingUser.getPassword());
+        userObj.setClientId(existingUser.getClientId());
+        userObj.setUserType(existingUser.getUserType());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
         userObj.setUpdatedBy(getUserId().getEmail());

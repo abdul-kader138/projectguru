@@ -11,7 +11,7 @@ import java.util.Date;
 @Entity
 @Table(name="user_allocation",
         uniqueConstraints=
-        @UniqueConstraint(columnNames={"companyId","productId","categoryId","clientId"}))
+        @UniqueConstraint(columnNames={"companyId","productId","categoryId"}))
 public class UserAllocation implements Serializable {
 
     private static final long serialVersionUID = 8633415080370876715L;
@@ -28,7 +28,7 @@ public class UserAllocation implements Serializable {
 //    private String departmentName;
 
 
-    @NotEmpty
+    @NotNull
     @OneToOne
     private Category category;
 
@@ -54,12 +54,12 @@ public class UserAllocation implements Serializable {
     private long approvedById;
 
     @NotNull
-    @Column
-    private String approvedBy;
+    @OneToOne
+    private User approvedBy;
 
     @NotNull
-    @Column
-    private String itCoordinator;
+    @OneToOne
+    private User itCoordinator;
 
 
     @Column
@@ -222,19 +222,19 @@ public class UserAllocation implements Serializable {
         this.approvedById = approvedById;
     }
 
-    public String getApprovedBy() {
+    public User getApprovedBy() {
         return approvedBy;
     }
 
-    public void setApprovedBy(String approvedBy) {
+    public void setApprovedBy(User approvedBy) {
         this.approvedBy = approvedBy;
     }
 
-    public String getItCoordinator() {
+    public User getItCoordinator() {
         return itCoordinator;
     }
 
-    public void setItCoordinator(String itCoordinator) {
+    public void setItCoordinator(User itCoordinator) {
         this.itCoordinator = itCoordinator;
     }
 }

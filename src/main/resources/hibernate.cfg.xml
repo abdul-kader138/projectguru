@@ -14,6 +14,7 @@
         <mapping class="com.dreamchain.skeleton.model.UserAllocation"></mapping>
         <mapping class="com.dreamchain.skeleton.model.TeamAllocation"></mapping>
         <mapping class="com.dreamchain.skeleton.model.ChangeRequest"></mapping>
+        <mapping class="com.dreamchain.skeleton.model.ApprovalStatus"></mapping>
     </session-factory>
 </hibernate-configuration>
 

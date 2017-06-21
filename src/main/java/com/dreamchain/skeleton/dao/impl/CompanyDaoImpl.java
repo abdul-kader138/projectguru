@@ -3,6 +3,7 @@ package com.dreamchain.skeleton.dao.impl;
 import com.dreamchain.skeleton.dao.CompanyDao;
 import com.dreamchain.skeleton.model.Company;
 import com.dreamchain.skeleton.model.Department;
+import com.dreamchain.skeleton.model.Product;
 import com.dreamchain.skeleton.model.User;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
@@ -79,6 +80,17 @@ public class CompanyDaoImpl implements CompanyDao {
 
     }
 
+
+    @Override
+    public List<Object> countOfCompanyForProduct(long companyID) {
+        DetachedCriteria dcr = DetachedCriteria.forClass(Product.class);
+        Criterion cr = Restrictions.eq("companyId", companyID);
+        dcr.add(cr);
+        List<Object> lst = hibernateTemplate.findByCriteria(dcr);
+        if (lst.size() == 0) return new ArrayList<Object>();
+        return lst;
+
+    }
 
     @Override
     public Company findByNewName(String CurrentName, String newName) {

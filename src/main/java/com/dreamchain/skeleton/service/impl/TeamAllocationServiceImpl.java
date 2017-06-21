@@ -35,7 +35,7 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
     Environment environment;
 
 
-    private static String TEAM_ALLOCATION_EXISTS = "This member already used.Please try again with new one!!!";
+    private static String TEAM_ALLOCATION_EXISTS = "This Product and Team members are already allocated.Please try again with new one!!!";
     private static String INVALID_INPUT = "Invalid input";
     private static String INVALID_TEAM_ALLOCATION = "Team allocation not exists";
     private static String BACK_DATED_DATA = "Team allocation data is old.Please try again with updated data";
@@ -55,11 +55,9 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
         TeamAllocation existingTeamAllocation=new TeamAllocation();
         TeamAllocation teamAllocation=createObjForSave(teamAllocationObj);
         validationMsg = checkInput(teamAllocation);
-        if ("".equals(validationMsg)) existingTeamAllocation = teamAllocationDao.findByUserId(teamAllocation.getRequestById(),
-                teamAllocation.getCheckedById(),teamAllocation.getCompanyId(),
+        if ("".equals(validationMsg)) existingTeamAllocation = teamAllocationDao.findByProductAndCategory(teamAllocation.getCompanyId(),
                 teamAllocation.getProductId(),teamAllocation.getCategoryId());
-//                userAllocation.getDepartmentId(),userAllocation.getProductId(),userAllocation.getCategoryId());
-        if (existingTeamAllocation.getClientId() != "" && validationMsg == "") validationMsg = TEAM_ALLOCATION_EXISTS;
+        if (existingTeamAllocation.getCheckedBy() != null && validationMsg == "") validationMsg = TEAM_ALLOCATION_EXISTS;
         if(teamAllocation.getCheckedById() == teamAllocation.getRequestById() ) validationMsg=SAME_ALLOCATED_USER;
         if ("".equals(validationMsg)) {
             SimpleDateFormat dateFormat = new SimpleDateFormat();
@@ -87,8 +85,6 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
         if ("".equals(validationMsg)) existingTeamAllocation = teamAllocationDao.get(teamAllocation.getId());
         if (existingTeamAllocation == null && validationMsg == "") validationMsg = INVALID_TEAM_ALLOCATION;
         if (teamAllocation.getVersion() != existingTeamAllocation.getVersion() && validationMsg == "") validationMsg = BACK_DATED_DATA;
-//        if ("".equals(validationMsg)) newObj = categoryDao.findByNewName(existingUserAllocation.getName(),category.getName(),category.getCompanyId(),category.getDepartmentId(),category.getProductId());
-//        if (newObj.getName() != null && "".equals(validationMsg)) validationMsg = CATEGORY_EXISTS;
         if ("".equals(validationMsg)) {
             newObj=setUpdateCategoryValue(teamAllocation, existingTeamAllocation);
             teamAllocationDao.update(newObj);
@@ -131,8 +127,6 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
         teamAllocation.setId(Long.parseLong((String) teamAllocationObj.get("id")));
         teamAllocation.setVersion(Long.parseLong((String) teamAllocationObj.get("version")));
         teamAllocation.setCompanyId(category.getCompanyId());
-//        userAllocation.setDepartmentId(category.getDepartmentId());
-//        userAllocation.setDepartmentName(category.getDepartment().getName());
         teamAllocation.setProductId(category.getProductId());
         teamAllocation.setCategoryId(category.getId());
         teamAllocation.setCategory(category);
@@ -140,9 +134,9 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
         User loggedUser=(User) auth.getPrincipal();
         teamAllocation.setUserType(loggedUser.getUserType());
         teamAllocation.setCheckedById(checkedByUser.getId());
-        teamAllocation.setCheckedBy(checkedByUser.getName());
+        teamAllocation.setCheckedBy(checkedByUser);
         teamAllocation.setRequestById(requestByUser.getId());
-        teamAllocation.setRequestedBy(requestByUser.getName());
+        teamAllocation.setRequestedBy(requestByUser);
         teamAllocation.setClientId(getUserId().getClientId());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
@@ -170,8 +164,6 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
         teamAllocation.setVersion(objFromUI.getVersion());
         teamAllocation.setUserType(objFromUI.getUserType().trim());
         teamAllocation.setCompanyId(objFromUI.getCompanyId());
-//        userAllocation.setDepartmentId(objFromUI.getDepartmentId());
-//        userAllocation.setDepartmentName(objFromUI.getDepartmentName());
         teamAllocation.setProductId(objFromUI.getProductId());
         teamAllocation.setCategoryId(objFromUI.getCategoryId());
         teamAllocation.setCategory(objFromUI.getCategory());

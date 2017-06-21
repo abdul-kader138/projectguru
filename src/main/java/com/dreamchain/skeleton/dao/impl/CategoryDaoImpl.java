@@ -77,13 +77,13 @@ public class CategoryDaoImpl implements CategoryDao {
 
     @Override
     public List<Object> countOfProduct(long productID) {
-        DetachedCriteria dcr= DetachedCriteria.forClass(Product.class);//Category
-        Criterion cr = Restrictions.eq("id", productID);
+        DetachedCriteria dcr= DetachedCriteria.forClass(Category.class);//Category
+        Criterion cr = Restrictions.eq("productId", productID);
         dcr.add(cr);
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         if(lst.size()==0)return new ArrayList<Object>();
-//        return lst;
-        return null;
+        return lst;
+//        return null;
     }
 
 

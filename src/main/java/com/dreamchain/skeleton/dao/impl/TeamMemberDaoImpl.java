@@ -44,7 +44,7 @@ public class TeamMemberDaoImpl implements TeamMemberDao {
         List<User> userList=new ArrayList<>();
         DetachedCriteria dcr= DetachedCriteria.forClass(User.class);
         Criterion cr = Restrictions.ne("email", userName);
-        dcr.add(cr);
+        dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         for(Object user:lst){
             userList.add((User) user);
@@ -59,9 +59,11 @@ public class TeamMemberDaoImpl implements TeamMemberDao {
         DetachedCriteria dcr= DetachedCriteria.forClass(User.class);
         Criterion cr1 = Restrictions.eq("userType", user.getUserType());
         Criterion cr2 = Restrictions.eq("clientId", user.getClientId());
+        Criterion cr3 = Restrictions.ne("email", user.getEmail());
         if (environment.getProperty("company.client.id").equals(user.getClientId())) dcr.add(cr2);
         dcr.add(cr1).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         dcr.add(cr2);
+        dcr.add(cr3);
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         return createProductList(lst);
     }

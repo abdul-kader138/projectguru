@@ -14,5 +14,6 @@ public interface ChangeRequestDao {
     ChangeRequest findByChangeRequestName(String changeRequestName);
     ChangeRequest findByNewName(String CurrentChangeRequestName,String newChangeRequestName);
     List<Object> countOfCategory(long categoryId);
+    ChangeRequest findByName(String name, long companyId,long productId,long categoryId);
 
 }

@@ -48,7 +48,6 @@ public class TeamAllocationController {
     public
     @ResponseBody
     List<TeamAllocation> loadTeamAllocationList() {
-
         List<TeamAllocation> teamAllocationList = new ArrayList();
         logger.info("Loading all allocation info: >> ");
         teamAllocationList = teamAllocationService.findAll();

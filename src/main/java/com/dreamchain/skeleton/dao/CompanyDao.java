@@ -15,6 +15,7 @@ public interface CompanyDao   {
     Company findByCompanyName(String companyName);
     Company findByNewName(String CurrentName,String newName);
     List<Object> countOfCompany(long companyID);
+    List<Object> countOfCompanyForProduct(long companyID);
 
 
 
