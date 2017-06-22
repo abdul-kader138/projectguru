@@ -18,6 +18,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import java.io.*;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -218,7 +219,7 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
         return changeRequest;
     }
 
-    private ApprovalStatus setApprovalStatusValue(ChangeRequest changeRequest,User user,String status,String userType){
+    private ApprovalStatus setApprovalStatusValue(ChangeRequest changeRequest,User user,String status,String userType) throws ParseException {
         ApprovalStatus approvalStatus=new ApprovalStatus();
         approvalStatus.setCompanyId(changeRequest.getCompanyId());
         approvalStatus.setCompany(changeRequest.getCompany());
@@ -232,6 +233,10 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
         approvalStatus.setRequestName(changeRequest.getName());
         approvalStatus.setRequestDetails(changeRequest.getDescription());
         approvalStatus.setUserType(userType);
+        SimpleDateFormat dateFormat = new SimpleDateFormat();
+        Date date = dateFormat.parse(dateFormat.format(new Date()));
+        approvalStatus.setCreatedBy(getUserId().getEmail());
+        approvalStatus.setCreatedOn(date);
         return approvalStatus;
     }
 
@@ -249,7 +254,7 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
     }
 
 
-    private void saveApprovalObj(Map<String,User> userLst,ChangeRequest changeRequest){
+    private void saveApprovalObj(Map<String,User> userLst,ChangeRequest changeRequest) throws ParseException {
         ApprovalStatus approvalStatus=null;
         User user=null;
         for(Map.Entry<String,User> entry: userLst.entrySet()){

@@ -10,4 +10,6 @@ public interface ApprovalStatusDao {
     Long save(ApprovalStatus approvalStatus);
     void update(ApprovalStatus approvalStatus);
     List<ApprovalStatus> findByUserId(long userId);
+    ApprovalStatus findByCompanyAndProductAndCategory(long companyId,long productId,long categoryId,String name,String UserType);
+    ApprovalStatus findById(long id);
 }

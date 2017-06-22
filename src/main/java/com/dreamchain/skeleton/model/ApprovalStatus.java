@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Entity
 @Table(name="approve_status",
@@ -61,6 +62,20 @@ public class ApprovalStatus {
 
     @NotEmpty
     private String userType;
+
+    @Column
+    private String createdBy;
+
+    @Column
+    private String updatedBy;
+
+
+    @Column
+    private Date createdOn;
+
+
+    @Column
+    private Date updatedOn;
 
     public ApprovalStatus() {
     }
@@ -179,5 +194,37 @@ public class ApprovalStatus {
 
     public void setUserType(String userType) {
         this.userType = userType;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public Date getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public Date getUpdatedOn() {
+        return updatedOn;
+    }
+
+    public void setUpdatedOn(Date updatedOn) {
+        this.updatedOn = updatedOn;
     }
 }
