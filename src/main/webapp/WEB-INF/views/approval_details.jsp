@@ -65,9 +65,10 @@
                     },
 
                     {
-                        "mData": "category.id",
-                        "render": function () {
-                            return '<button type="button" class="delete btn bg-red waves-war"  value="1" title="Delete Request" >&nbsp;Delete</button>';
+                        "mData": "userType",
+                        "render": function (userType) {
+                            if(userType == messageResource.get('approve.user.type', 'configMessageForUI')) return '<button type="button" class="delete btn bg-red waves-war"  value="1" title="Delete Request" >&nbsp;Delete</button>';
+                            else return "";
                         }
                     }
 
