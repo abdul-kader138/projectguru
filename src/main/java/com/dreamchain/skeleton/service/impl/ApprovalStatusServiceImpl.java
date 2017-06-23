@@ -43,23 +43,23 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
     }
 
     @Transactional
-    public Map<String, Object> update(Map<String, Object> approvalObj,HttpServletRequest request) throws ParseException {
-        Map<String, Object> obj=new HashMap<>();
+    public Map<String, Object> update(Map<String, Object> approvalObj, HttpServletRequest request) throws ParseException {
+        Map<String, Object> obj = new HashMap<>();
         String validationMsg = "";
-        List<ApprovalStatus> ObjList=new ArrayList<>();
-        Integer approvedBy = (Integer)approvalObj.get("id");
-        Integer versionId = (Integer)approvalObj.get("version");
+        List<ApprovalStatus> ObjList = new ArrayList<>();
+        Integer approvedBy = (Integer) approvalObj.get("id");
+        Integer versionId = (Integer) approvalObj.get("version");
         long version = versionId.longValue();
         long approvedById = approvedBy.longValue();
-        ApprovalStatus approvalStatus = approvalStatusDao.findById(approvedById);
+        ApprovalStatus approvalStatus = approvalStatusDao.get(approvedById);
         if (approvalStatus.getId() == 0l && validationMsg == "") validationMsg = INVALID_INPUT;
         if (approvalStatus.getVersion() != version && validationMsg == "") validationMsg = BACK_DATED_DATA;
-        if("".equals(validationMsg)) ObjList =saveApprovalObj(approvalStatus);
-        if("".equals(validationMsg)) UpdateApprovalObj(ObjList);
-        obj.put("approval_details",ObjList.get(0));
-        obj.put("validationError",validationMsg);
-        if("".equals(validationMsg)) ObjList=findByUserId(request);
-        obj.put("notificationCount",ObjList.size());
+        if ("".equals(validationMsg)) ObjList = saveApprovalObj(approvalStatus);
+        if ("".equals(validationMsg)) UpdateApprovalObj(ObjList);
+        obj.put("approval_details", ObjList.get(0));
+        obj.put("validationError", validationMsg);
+        if ("".equals(validationMsg)) ObjList = findByUserId(request);
+        obj.put("notificationCount", ObjList.size());
         return obj;
     }
 
@@ -70,8 +70,8 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) auth.getPrincipal();
         User existingUser = userDao.findByUserName(user.getEmail());
-        List<ApprovalStatus> approvalStatusList=approvalStatusDao.findByUserId(existingUser.getId());
-        httpSession.setAttribute("notificationCount",approvalStatusList.size());
+        List<ApprovalStatus> approvalStatusList = approvalStatusDao.findByUserId(existingUser.getId());
+        httpSession.setAttribute("notificationCount", approvalStatusList.size());
         return approvalStatusList;
     }
 
@@ -80,27 +80,27 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
 
         if (environment.getProperty("approval.user.checkedBy").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.waiting").equals(approvalStatus.getStatus())) {
             approvalStatusList.add(setApprovalStatusValue(approvalStatus, environment.getProperty("approval.status.done")));
-            ApprovalStatus itCoordinatorStatus = approvalStatusDao.findByCompanyAndProductAndCategory(approvalStatus.getCompanyId(), approvalStatus.getProductId(), approvalStatus.getCategoryId(), approvalStatus.getRequestName(), environment.getProperty("approval.user.itCoordinator"));
+            ApprovalStatus itCoordinatorStatus = approvalStatusDao.findByRequestIdAndUserType(approvalStatus.getRequestId(), environment.getProperty("approval.user.itCoordinator"));
             approvalStatusList.add(setApprovalStatusValue(itCoordinatorStatus, environment.getProperty("approval.status.waiting")));
         }
         if (environment.getProperty("approval.user.itCoordinator").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.waiting").equals(approvalStatus.getStatus())) {
             approvalStatusList.add(setApprovalStatusValue(approvalStatus, environment.getProperty("approval.status.done")));
-            ApprovalStatus approvedByStatus = approvalStatusDao.findByCompanyAndProductAndCategory(approvalStatus.getCompanyId(), approvalStatus.getProductId(), approvalStatus.getCategoryId(), approvalStatus.getRequestName(), environment.getProperty("approval.user.approvedBy"));
+            ApprovalStatus approvedByStatus = approvalStatusDao.findByRequestIdAndUserType(approvalStatus.getRequestId(), environment.getProperty("approval.user.approvedBy"));
             approvalStatusList.add(setApprovalStatusValue(approvedByStatus, environment.getProperty("approval.status.waiting")));
         }
         if (environment.getProperty("approval.user.approvedBy").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.waiting").equals(approvalStatus.getStatus())) {
             approvalStatusList.add(setApprovalStatusValue(approvalStatus, environment.getProperty("approval.status.done")));
-            ApprovalStatus acknowledgementITStatus = approvalStatusDao.findByCompanyAndProductAndCategory(approvalStatus.getCompanyId(), approvalStatus.getProductId(), approvalStatus.getCategoryId(), approvalStatus.getRequestName(), environment.getProperty("approval.user.acknowledgementIT"));
+            ApprovalStatus acknowledgementITStatus = approvalStatusDao.findByRequestIdAndUserType(approvalStatus.getRequestId(), environment.getProperty("approval.user.acknowledgementIT"));
             approvalStatusList.add(setApprovalStatusValue(acknowledgementITStatus, environment.getProperty("approval.status.waiting")));
         }
         if (environment.getProperty("approval.user.acknowledgementIT").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.waiting").equals(approvalStatus.getStatus())) {
             approvalStatusList.add(setApprovalStatusValue(approvalStatus, environment.getProperty("approval.status.done")));
-            ApprovalStatus acknowledgeCheckedByStatus = approvalStatusDao.findByCompanyAndProductAndCategory(approvalStatus.getCompanyId(), approvalStatus.getProductId(), approvalStatus.getCategoryId(), approvalStatus.getRequestName(), environment.getProperty("approval.user.acknowledgeCheckedBy"));
+            ApprovalStatus acknowledgeCheckedByStatus = approvalStatusDao.findByRequestIdAndUserType(approvalStatus.getRequestId(), environment.getProperty("approval.user.acknowledgeCheckedBy"));
             approvalStatusList.add(setApprovalStatusValue(acknowledgeCheckedByStatus, environment.getProperty("approval.status.waiting")));
         }
         if (environment.getProperty("approval.user.acknowledgeCheckedBy").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.waiting").equals(approvalStatus.getStatus())) {
             approvalStatusList.add(setApprovalStatusValue(approvalStatus, environment.getProperty("approval.status.done")));
-            ApprovalStatus acknowledgementStatus = approvalStatusDao.findByCompanyAndProductAndCategory(approvalStatus.getCompanyId(), approvalStatus.getProductId(), approvalStatus.getCategoryId(), approvalStatus.getRequestName(), environment.getProperty("approval.user.acknowledgement"));
+            ApprovalStatus acknowledgementStatus = approvalStatusDao.findByRequestIdAndUserType(approvalStatus.getRequestId(), environment.getProperty("approval.user.acknowledgement"));
             approvalStatusList.add(setApprovalStatusValue(acknowledgementStatus, environment.getProperty("approval.status.waiting")));
         }
         if (environment.getProperty("approval.user.acknowledgement").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.waiting").equals(approvalStatus.getStatus())) {
@@ -124,15 +124,39 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
         return (User) auth.getPrincipal();
     }
 
-    private void UpdateApprovalObj(List<ApprovalStatus> statusList){
-        for(ApprovalStatus approvalStatus:statusList){
-            approvalStatusDao.save(approvalStatus);
-            if(environment.getProperty("approval.user.acknowledgement").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.done").equals(approvalStatus.getStatus())) {
-                ChangeRequest changeRequest=changeRequestDao.findByName(approvalStatus.getRequestName(),approvalStatus.getCompanyId(),approvalStatus.getProductId(),approvalStatus.getCategoryId());
+    private void UpdateApprovalObj(List<ApprovalStatus> statusList) {
+        for (ApprovalStatus approvalStatus : statusList) {
+            if (environment.getProperty("approval.user.acknowledgement").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.done").equals(approvalStatus.getStatus())) {
+                ChangeRequest changeRequest = changeRequestDao.get(approvalStatus.getRequestId());
+                changeRequest.setWipStatus(environment.getProperty("approval.wip.status.done"));
                 changeRequest.setStatus(environment.getProperty("approval.status.done"));
+                approvalStatusDao.save(approvalStatus);
+
+            } else if (environment.getProperty("approval.user.checkedBy").equals(approvalStatus.getUserType())
+                    && environment.getProperty("approval.status.done").equals(approvalStatus.getStatus())) {
+                ChangeRequest changeRequest = changeRequestDao.get(approvalStatus.getRequestId());
+                changeRequest.setCheckedByStatus(environment.getProperty("approval.user.checkedBy"));
+                changeRequest.setWipStatus(environment.getProperty("approval.status.approve.type.itCoordinatorBy"));
+                approvalStatusDao.save(approvalStatus);
+            } else if (environment.getProperty("approval.user.itCoordinator").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.done").equals(approvalStatus.getStatus())) {
+                ChangeRequest changeRequest = changeRequestDao.get(approvalStatus.getRequestId());
+                changeRequest.setWipStatus(environment.getProperty("approval.status.approve.type.approvedBy"));
+                approvalStatusDao.save(approvalStatus);
+            } else if (environment.getProperty("approval.user.approvedBy").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.done").equals(approvalStatus.getStatus())) {
+                ChangeRequest changeRequest = changeRequestDao.get(approvalStatus.getRequestId());
+                changeRequest.setWipStatus(environment.getProperty("approval.status.approve.type.acknowledgeBy.itCoordinator"));
+                approvalStatusDao.save(approvalStatus);
+            } else if (environment.getProperty("approval.user.acknowledgementIT").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.done").equals(approvalStatus.getStatus())) {
+                ChangeRequest changeRequest = changeRequestDao.get(approvalStatus.getRequestId());
+                changeRequest.setWipStatus(environment.getProperty("approval.status.approve.type.acknowledgeBy.checkedBy"));
+                approvalStatusDao.save(approvalStatus);
+            } else if (environment.getProperty("approval.user.acknowledgeCheckedBy").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.done").equals(approvalStatus.getStatus())) {
+                ChangeRequest changeRequest = changeRequestDao.get(approvalStatus.getRequestId());
+                changeRequest.setWipStatus(environment.getProperty("approval.status.approve.type.acknowledgeBy.requestBy"));
                 changeRequestDao.save(changeRequest);
             }
-        }
-    }
 
+        }
+
+    }
 }

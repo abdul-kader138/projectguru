@@ -13,7 +13,9 @@ import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 @PropertySource("classpath:config.properties")
@@ -46,39 +48,35 @@ public class ApprovalStatusDaoImpl implements ApprovalStatusDao {
         DetachedCriteria dcr = DetachedCriteria.forClass(ApprovalStatus.class);
         Criterion cr = Restrictions.eq("approvedById", userId);
         Criterion cr1 = Restrictions.eq("status", environment.getProperty("approval.status.waiting"));
-        dcr.add(cr);
+        dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         dcr.add(cr1).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List<Object> lst = hibernateTemplate.findByCriteria(dcr);
         return createApprovalList(lst);
     }
 
     @Override
-    public ApprovalStatus findByCompanyAndProductAndCategory(long companyId, long productId, long categoryId, String name, String UserType) {
+    public List<ApprovalStatus> findByUserIdAndRequestId(long userId, long requestId) {
         DetachedCriteria dcr = DetachedCriteria.forClass(ApprovalStatus.class);
-        Criterion cr = Restrictions.eq("requestName", name.trim()).ignoreCase();
-        Criterion cr1 = Restrictions.eq("userType", UserType.trim()).ignoreCase();
-        Criterion cr2 = Restrictions.eq("companyId", companyId);
-        Criterion cr3 = Restrictions.eq("productId", productId);
-        Criterion cr4 = Restrictions.eq("categoryId", categoryId);
+        Criterion cr = Restrictions.eq("requestId", requestId);
+        Criterion cr1 = Restrictions.eq("approvedById", userId);
+        dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        dcr.add(cr1).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        List<Object> lst = hibernateTemplate.findByCriteria(dcr);
+        return createApprovalList(lst);
+    }
+
+    @Override
+    public ApprovalStatus findByRequestIdAndUserType(long requestId,String UserType) {
+        DetachedCriteria dcr = DetachedCriteria.forClass(ApprovalStatus.class);
+        Criterion cr = Restrictions.eq("userType", UserType.trim()).ignoreCase();
+        Criterion cr1 = Restrictions.eq("requestId", requestId);
         dcr.add(cr);
         dcr.add(cr1);
-        dcr.add(cr2);
-        dcr.add(cr3);
-        dcr.add(cr4);
         List<Object> lst = hibernateTemplate.findByCriteria(dcr);
         if (lst.size() == 0) return new ApprovalStatus();
         return (ApprovalStatus) lst.get(0);
     }
 
-    @Override
-    public ApprovalStatus findById(long id) {
-        DetachedCriteria dcr = DetachedCriteria.forClass(ApprovalStatus.class);
-        Criterion cr = Restrictions.eq("id", id);
-        dcr.add(cr);
-        List<Object> lst = hibernateTemplate.findByCriteria(dcr);
-        if (lst.size() == 0) return new ApprovalStatus();
-        return (ApprovalStatus) lst.get(0);
-    }
 
 
     public List<ApprovalStatus> createApprovalList(List<Object> approvalStatusList) {
@@ -88,4 +86,19 @@ public class ApprovalStatusDaoImpl implements ApprovalStatusDao {
         }
         return list;
     }
+
+
+
+
+    @Override
+    public Set<ApprovalStatus> findByApprovedId(long approvedId) {
+        DetachedCriteria dcr = DetachedCriteria.forClass(ApprovalStatus.class);
+        Criterion cr = Restrictions.eq("approvedById", approvedId);
+        dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        List<Object> lst = hibernateTemplate.findByCriteria(dcr);
+        List<ApprovalStatus> approvalStatuses=createApprovalList(lst);
+        Set approvalStatusSet = new HashSet(approvalStatuses);
+        return approvalStatusSet;
+    }
+
 }

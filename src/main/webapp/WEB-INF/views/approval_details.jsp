@@ -21,6 +21,7 @@
                         <th width="200px">Company</th>
                         <th width="200px">Product</th>
                         <th width="200px">Category</th>
+                        <th width="350px">Approve Type</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -57,6 +58,7 @@
                     {"mData": "company.name", 'sWidth': '250px'},
                     {"mData": "product.name", 'sWidth': '250px'},
                     {"mData": "category.name", 'sWidth': '250px'},
+                    {"mData": "approveType", 'sWidth': '350px'},
                     {
                         "mData": "id",
                         "render": function (id, type) {
@@ -180,7 +182,7 @@
                             part1 = d.successMsg;
                             showServerSideMessage(part1, part2, icn, msg);
                             table.ajax.url(messageResource.get('approval_details.list.load.url', 'configMessageForUI')).load();
-                            $("#notificationCount").val(d.notificationCount);
+                            $("#notificationCount").html(d.notificationCount);
                         }
                         if (d.validationError) {
                             icn = 0;

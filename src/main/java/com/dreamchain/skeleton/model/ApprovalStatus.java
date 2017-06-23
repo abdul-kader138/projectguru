@@ -63,6 +63,13 @@ public class ApprovalStatus {
     @NotEmpty
     private String userType;
 
+    @NotEmpty
+    private String approveType;
+
+
+    @NotNull
+    private long requestId;
+
     @Column
     private String createdBy;
 
@@ -226,5 +233,21 @@ public class ApprovalStatus {
 
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
+    }
+
+    public String getApproveType() {
+        return approveType;
+    }
+
+    public long getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(long requestId) {
+        this.requestId = requestId;
+    }
+
+    public void setApproveType(String approveType) {
+        this.approveType = approveType;
     }
 }

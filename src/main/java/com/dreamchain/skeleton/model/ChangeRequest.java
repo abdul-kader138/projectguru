@@ -110,12 +110,15 @@ public class ChangeRequest implements Serializable {
     @Length(max = 150)
     private String docPath;
 
-
+    @NotEmpty
     private String wipStatus;
 
 
     @NotEmpty
     private String status;
+
+    @NotEmpty
+    private String checkedByStatus;
 
 
     @Column
@@ -383,6 +386,14 @@ public class ChangeRequest implements Serializable {
 
     public void setAcknowledgedItCoordinatorId(long acknowledgedItCoordinatorId) {
         this.acknowledgedItCoordinatorId = acknowledgedItCoordinatorId;
+    }
+
+    public String getCheckedByStatus() {
+        return checkedByStatus;
+    }
+
+    public void setCheckedByStatus(String checkedByStatus) {
+        this.checkedByStatus = checkedByStatus;
     }
 
     public ChangeRequest() {
