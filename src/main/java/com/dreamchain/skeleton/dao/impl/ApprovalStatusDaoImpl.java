@@ -12,6 +12,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -66,7 +67,7 @@ public class ApprovalStatusDaoImpl implements ApprovalStatusDao {
     }
 
     @Override
-    public ApprovalStatus findByRequestIdAndUserType(long requestId,String UserType) {
+    public ApprovalStatus findByRequestIdAndUserType(long requestId, String UserType) {
         DetachedCriteria dcr = DetachedCriteria.forClass(ApprovalStatus.class);
         Criterion cr = Restrictions.eq("userType", UserType.trim()).ignoreCase();
         Criterion cr1 = Restrictions.eq("requestId", requestId);
@@ -78,7 +79,6 @@ public class ApprovalStatusDaoImpl implements ApprovalStatusDao {
     }
 
 
-
     public List<ApprovalStatus> createApprovalList(List<Object> approvalStatusList) {
         List<ApprovalStatus> list = new ArrayList<>();
         for (final Object o : approvalStatusList) {
@@ -88,17 +88,25 @@ public class ApprovalStatusDaoImpl implements ApprovalStatusDao {
     }
 
 
-
-
     @Override
     public Set<ApprovalStatus> findByApprovedId(long approvedId) {
         DetachedCriteria dcr = DetachedCriteria.forClass(ApprovalStatus.class);
         Criterion cr = Restrictions.eq("approvedById", approvedId);
         dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List<Object> lst = hibernateTemplate.findByCriteria(dcr);
-        List<ApprovalStatus> approvalStatuses=createApprovalList(lst);
+        List<ApprovalStatus> approvalStatuses = createApprovalList(lst);
         Set approvalStatusSet = new HashSet(approvalStatuses);
         return approvalStatusSet;
+    }
+
+    @Override
+    public void delete(Long id) {
+        DetachedCriteria dcr = DetachedCriteria.forClass(ApprovalStatus.class);
+        Criterion cr = Restrictions.eq("requestId", id);
+        dcr.add(cr);
+        List<Object> lst = hibernateTemplate.findByCriteria(dcr);
+        List<ApprovalStatus> approvalStatusList = createApprovalList(lst);
+        hibernateTemplate.deleteAll(approvalStatusList);
     }
 
 }

@@ -70,4 +70,21 @@ public class ApprovalStatusController {
         logger.info("Updating approval list:  << " + successMsg + validationError);
         return objList;
     }
+
+    @RequestMapping(value = "approval_details/delete", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    Map deleteCategory(@RequestBody String Id) throws ParseException {
+        HashMap serverResponse = new HashMap();
+        String successMsg = "";
+        String validationError = "";
+        logger.info("Delete approval list:  >> ");
+        validationError = approvalStatusService.delete(Long.parseLong(Id));
+        if (validationError.length() == 0) successMsg = environment.getProperty("approval.delete.success.msg");
+        logger.info("Delete approval list:  << " + successMsg + validationError);
+        serverResponse.put("successMsg", successMsg);
+        serverResponse.put("validationError", validationError);
+        return serverResponse;
+    }
+
 }

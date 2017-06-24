@@ -120,6 +120,9 @@ public class ChangeRequest implements Serializable {
     @NotEmpty
     private String checkedByStatus;
 
+    @Column
+    private Date deliverDate;
+
 
     @Column
     private String createdBy;
@@ -394,6 +397,15 @@ public class ChangeRequest implements Serializable {
 
     public void setCheckedByStatus(String checkedByStatus) {
         this.checkedByStatus = checkedByStatus;
+    }
+
+
+    public Date getDeliverDate() {
+        return deliverDate;
+    }
+
+    public void setDeliverDate(Date deliverDate) {
+        this.deliverDate = deliverDate;
     }
 
     public ChangeRequest() {

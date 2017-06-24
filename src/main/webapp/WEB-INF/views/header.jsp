@@ -26,10 +26,6 @@
     <!-- Animation Css -->
     <link href="resources/node_modules/adminbsb/animate-css/animate.css" rel="stylesheet"/>
 
-    <link href="resources/node_modules/adminbsb/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
-          rel="stylesheet"/>
-
-
     <!-- Morris Chart Css-->
     <link href="resources/node_modules/adminbsb/morrisjs/morris.css" rel="stylesheet"/>
 
@@ -48,6 +44,7 @@
     <link href="resources/node_modules/imageloader/loadimg.min.css" rel="stylesheet"/>
 
     <link href="resources/node_modules/custom-css/app.css" rel="stylesheet"/>
+    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet"/>
     <link type="text/css" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css"
           rel="stylesheet"/>
 

@@ -46,7 +46,7 @@
 <script src="resources/node_modules/imageloader/loadimg.min.js"></script>
 
 
-<script src="resources/node_modules/adminbsb/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <%--<!-- Flot Charts Plugin Js -->--%>
 <script src="resources/node_modules/adminbsb/flot-charts/jquery.flot.js"></script>
@@ -71,7 +71,6 @@
 
 
 <!-- Demo Js -->
-<%--<script type="text/javascript" src="resources/node_modules/message/messageResource.js"></script>--%>
 <script src="resources/node_modules/adminbsb/js/demo.js"></script>
 
 <script src="resources/node_modules/custom-js/custom.js"></script>

@@ -71,6 +71,10 @@ public class ApprovalStatus {
     private long requestId;
 
     @Column
+    private Date deliverDate;
+
+
+    @Column
     private String createdBy;
 
     @Column
@@ -249,5 +253,13 @@ public class ApprovalStatus {
 
     public void setApproveType(String approveType) {
         this.approveType = approveType;
+    }
+
+    public Date getDeliverDate() {
+        return deliverDate;
+    }
+
+    public void setDeliverDate(Date deliverDate) {
+        this.deliverDate = deliverDate;
     }
 }
