@@ -74,12 +74,16 @@ public class ApprovalStatusController {
     @RequestMapping(value = "approval_details/delete", method = RequestMethod.POST)
     public
     @ResponseBody
-    Map deleteCategory(@RequestBody String Id) throws ParseException {
+    Map deleteCategory(@RequestBody Map<String, Object> approvalObj) throws ParseException {
         HashMap serverResponse = new HashMap();
         String successMsg = "";
         String validationError = "";
         logger.info("Delete approval list:  >> ");
-        validationError = approvalStatusService.delete(Long.parseLong(Id));
+        Integer approvedId = (Integer) approvalObj.get("id");
+        Integer ChangeRequestId = (Integer) approvalObj.get("requestId");
+        long id=approvedId.longValue();
+        long requestId=ChangeRequestId.longValue();
+        validationError = approvalStatusService.delete(requestId,id);
         if (validationError.length() == 0) successMsg = environment.getProperty("approval.delete.success.msg");
         logger.info("Delete approval list:  << " + successMsg + validationError);
         serverResponse.put("successMsg", successMsg);

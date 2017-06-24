@@ -54,7 +54,7 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
         Integer versionId = (Integer) approvalObj.get("version");
         String date=(String) approvalObj.get("date");
         SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
-        if(!"".equals(date)) deliveryDate = sdf.parse(date);
+        if(!"".equals(date) && date !=null) deliveryDate = sdf.parse(date);
         long version = versionId.longValue();
         long approvedById = approvedBy.longValue();
         ApprovalStatus approvalStatus = approvalStatusDao.get(approvedById);

@@ -140,6 +140,7 @@
                 var msg = "Message";
                 var version = data.version;
                 approvalObj.id = data.id;
+                approvalObj.requestId = data.requestId;
                 approvalObj.version = version;
                 approvalObj.date = blankDeliveryDate;
                 var date = $('#deliveryDate' + data.id).val();
