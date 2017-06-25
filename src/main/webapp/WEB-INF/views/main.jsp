@@ -198,7 +198,7 @@
 
         <div class="row clearfix">
             <!-- Task Info -->
-            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+            <div class="col-xs-12">
                 <div class="card">
                     <div class="header">
                         <%--<h2>TASK INFOS</h2>--%>
@@ -297,7 +297,8 @@
                                         <th width="250px">Company</th>
                                         <th width="250px">Product</th>
                                         <th width="250px">Category</th>
-                                        <th width="300px">Status</th>
+                                        <th width="400px">Status (Waiting)</th>
+                                        <th width="400px">Status (Done)</th>
                                     </tr>
                                     </thead>
                                 </table>
@@ -309,29 +310,31 @@
             </div>
             <!-- #END# Task Info -->
             <!-- Browser Usage -->
-            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                <div class="card">
-                    <div class="header">
-                        <h2>BROWSER USAGE</h2>
-                        <ul class="header-dropdown m-r--5">
-                            <li class="dropdown">
-                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
-                                   role="button" aria-haspopup="true" aria-expanded="false">
-                                    <i class="material-icons">more_vert</i>
-                                </a>
-                                <ul class="dropdown-menu pull-right">
-                                    <li><a href="javascript:void(0);">Action</a></li>
-                                    <li><a href="javascript:void(0);">Another action</a></li>
-                                    <li><a href="javascript:void(0);">Something else here</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="body">
-                        <div id="donut_chart" class="dashboard-donut-chart"></div>
-                    </div>
-                </div>
-            </div>
+
+
+            <%--<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">--%>
+                <%--<div class="card">--%>
+                    <%--<div class="header">--%>
+                        <%--<h2>BROWSER USAGE</h2>--%>
+                        <%--<ul class="header-dropdown m-r--5">--%>
+                            <%--<li class="dropdown">--%>
+                                <%--<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"--%>
+                                   <%--role="button" aria-haspopup="true" aria-expanded="false">--%>
+                                    <%--<i class="material-icons">more_vert</i>--%>
+                                <%--</a>--%>
+                                <%--<ul class="dropdown-menu pull-right">--%>
+                                    <%--<li><a href="javascript:void(0);">Action</a></li>--%>
+                                    <%--<li><a href="javascript:void(0);">Another action</a></li>--%>
+                                    <%--<li><a href="javascript:void(0);">Something else here</a></li>--%>
+                                <%--</ul>--%>
+                            <%--</li>--%>
+                        <%--</ul>--%>
+                    <%--</div>--%>
+                    <%--<div class="body">--%>
+                        <%--<div id="donut_chart" class="dashboard-donut-chart"></div>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+            <%--</div>--%>
             <!-- #END# Browser Usage -->
         </div>
     </div>
@@ -348,7 +351,25 @@
                     {"mData": "company.name", 'sWidth': '250px'},
                     {"mData": "product.name", 'sWidth': '250px'},
                     {"mData": "category.name", 'sWidth': '250px'},
-                    {"mData": "wipStatus", 'sWidth': '3000px'}
+                    {
+                        "mData": "wipStatus",
+                        "render": function (data, type, row, id) {
+                            if (row.wipStatus == messageResource.get('approval.status.approve.type.checkedBy', 'configMessageForUI')) return messageResource.get('request.status.wait.checkedBy.approval', 'configMessageForUI');
+                            if (row.wipStatus == messageResource.get('approval.status.approve.type.itCoordinatorBy', 'configMessageForUI')) return messageResource.get('request.status.wait.IT.acknowledgement', 'configMessageForUI');
+                            if (row.wipStatus == messageResource.get('approval.status.approve.type.approvedBy', 'configMessageForUI')) return messageResource.get('request.status.wait.ApprovedBy.approval', 'configMessageForUI');
+                            if (row.wipStatus == messageResource.get('approval.status.approve.type.acknowledgeBy.itCoordinator', 'configMessageForUI')) return messageResource.get('request.status.wait.IT.deploy', 'configMessageForUI');
+                            if (row.wipStatus == messageResource.get('approval.status.approve.type.acknowledgeBy.checkedBy', 'configMessageForUI')) return messageResource.get('request.status.wait.checkedBy.acknowledgement', 'configMessageForUI');
+                            if (row.wipStatus == messageResource.get('approval.status.approve.type.acknowledgeBy.requestBy', 'configMessageForUI')) return messageResource.get('request.status.wait.requestBy.acknowledgement', 'configMessageForUI');
+                            return " ";
+                        }
+                    },
+                    {
+                        "mData": "wipStatus",
+                        "render": function (data, type, row, id) {
+                            if (row.wipStatus == messageResource.get('approval.status.approve.done', 'configMessageForUI')) return messageResource.get('request.status.wait.done', 'configMessageForUI');
+                            return " ";
+                        }
+                    }
                 ],
                 'aaSorting': [[0, 'asc']],
                 "columnDefs": [{}],
