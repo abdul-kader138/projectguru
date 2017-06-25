@@ -425,12 +425,6 @@
                     </a>
                 </li>
                 </c:if>
-                <li>
-                    <a href="javascript:void(0);">
-                        <i class="material-icons col-amber">donut_large</i>
-                        <span>Other</span>
-                    </a>
-                </li>
                 <br/>
                 <br/>
             </ul>

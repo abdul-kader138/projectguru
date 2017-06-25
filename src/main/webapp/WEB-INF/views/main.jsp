@@ -299,6 +299,7 @@
                                         <th width="250px">Category</th>
                                         <th width="400px">Status (Waiting)</th>
                                         <th width="400px">Status (Done)</th>
+                                        <th width="400px">Attachment</th>
                                     </tr>
                                     </thead>
                                 </table>
@@ -368,6 +369,13 @@
                         "render": function (data, type, row, id) {
                             if (row.wipStatus == messageResource.get('approval.status.approve.done', 'configMessageForUI')) return messageResource.get('request.status.wait.done', 'configMessageForUI');
                             return " ";
+                        }
+                    },
+                    {
+                        "mData": "docPath",
+                        "render": function (data, type, row, id) {
+                            var mainPath=document.origin+"/PG";
+                            return '<a href="'+mainPath+row.docPath+'" download>'+'Download</a>'
                         }
                     }
                 ],
