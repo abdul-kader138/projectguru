@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -85,7 +86,7 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
 
 
     @Transactional
-    public String delete(long requestId,long id) {
+    public String delete(long requestId,long id,HttpServletRequest request) {
         String validationMsg = "";
         if (requestId == 0l) validationMsg = INVALID_INPUT;
         ApprovalStatus  approvalStatus = approvalStatusDao.get(id);
@@ -96,6 +97,8 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
 //        List<Object> obj=departmentDao.countOfDepartment(departmentId);
 //        if (obj.size() > 0 && validationMsg == "") validationMsg = ASSOCIATED_DEPARTMENT;
         if ("".equals(validationMsg)) {
+            String filePath=changeRequest.getDocPath();
+            deleteDoc(filePath,request);
             changeRequestDao.delete(changeRequest);
             approvalStatusDao.delete(requestId);
         }
@@ -202,8 +205,21 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
                 changeRequestDao.save(changeRequest);
                 approvalStatusDao.save(approvalStatus);
             }
-
         }
-
     }
+
+    private String deleteDoc(String realPathFetch,HttpServletRequest request) {
+        String msg = "";
+        try {
+            String realPath = request.getRealPath("/");
+            File newFile = new File(realPath + realPathFetch);
+            newFile.setWritable(true);
+            if (newFile.delete()) msg = "";
+            else msg = environment.getProperty("request.file.delete.success.msg");
+        } catch (Exception e) {
+            msg = e.getMessage();
+        }
+        return msg;
+    }
+
 }

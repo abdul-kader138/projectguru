@@ -34,6 +34,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     private static String DEPARTMENT_EXISTS = "This department name is already used.Please try again with new one!!!";
     private static String INVALID_INPUT = "Invalid input";
     private static String INVALID_DEPARTMENT = "Department not exists";
+    private static String INVALID_PRIVILEGE_UPDATE = "You have not enough privilege to update client department info.Please contact with System Admin!!!";
+    private static String INVALID_PRIVILEGE_CREATE = "You have not enough privilege to create department for client.Please contact with System Admin!!!";
     private static String BACK_DATED_DATA = "Department data is old.Please try again with updated data";
     private static String ASSOCIATED_DEPARTMENT = "Department is tagged with product category.First remove tagging and try again";
 
@@ -52,7 +54,8 @@ public class DepartmentServiceImpl implements DepartmentService {
         Department department=createObjForSave(departmentObj);
         validationMsg = checkInput(department);
         if ("".equals(validationMsg)) existingDepartment = departmentDao.findByDepartmentName(department.getName(),department.getCompanyId());
-        if (existingDepartment.getName() != null && validationMsg == "") validationMsg = DEPARTMENT_EXISTS;
+        if (existingDepartment.getName() != null && "".equals(validationMsg)) validationMsg = DEPARTMENT_EXISTS;
+        if (!getUserId().getClientId().equals(department.getCompany().getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_CREATE;
         if ("".equals(validationMsg)) {
             SimpleDateFormat dateFormat = new SimpleDateFormat();
             Date date = dateFormat.parse(dateFormat.format(new Date()));
@@ -74,10 +77,11 @@ public class DepartmentServiceImpl implements DepartmentService {
         Department existingDepartment=new Department();
         Department department=createObjForSave(departmentObj);
         validationMsg = checkInput(department);
-        if (department.getId() == 0l && validationMsg == "") validationMsg = INVALID_INPUT;
+        if (department.getId() == 0l && "".equals(validationMsg)) validationMsg = INVALID_INPUT;
         if ("".equals(validationMsg)) existingDepartment = departmentDao.get(department.getId());
-        if (existingDepartment.getName() == null && validationMsg == "") validationMsg = INVALID_DEPARTMENT;
-        if (department.getVersion() != existingDepartment.getVersion() && validationMsg == "") validationMsg = BACK_DATED_DATA;
+        if (existingDepartment.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_DEPARTMENT;
+        if (!getUserId().getClientId().equals(existingDepartment.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_UPDATE;
+        if (department.getVersion() != existingDepartment.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg)) newObj = departmentDao.findByNewName(existingDepartment.getName(),department.getName(),department.getCompanyId());
         if (newObj.getName() != null && "".equals(validationMsg)) validationMsg = DEPARTMENT_EXISTS;
         if ("".equals(validationMsg)) {
@@ -94,9 +98,9 @@ public class DepartmentServiceImpl implements DepartmentService {
         String validationMsg = "";
         if (departmentId == 0l) validationMsg = INVALID_INPUT;
         Department department = departmentDao.get(departmentId);
-        if (department == null && validationMsg == "") validationMsg = INVALID_DEPARTMENT;
+        if (department == null && "".equals(validationMsg)) validationMsg = INVALID_DEPARTMENT;
         List<Object> obj=departmentDao.countOfDepartment(departmentId);
-        if (obj.size() > 0 && validationMsg == "") validationMsg = ASSOCIATED_DEPARTMENT;
+        if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_DEPARTMENT;
         if ("".equals(validationMsg)) {
             departmentDao.delete(department);
         }
@@ -122,7 +126,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         //server side validation check
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Set<ConstraintViolation<Department>> constraintViolations = validator.validate(department);
-        if (constraintViolations.size() > 0 && msg == "") msg = INVALID_INPUT;
+        if (constraintViolations.size() > 0 && "".equals(msg)) msg = INVALID_INPUT;
 
         return msg;
     }
@@ -165,7 +169,6 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     private User getUserId(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user=(User)auth.getPrincipal();
-        return user;
+        return (User)auth.getPrincipal();
     }
 }

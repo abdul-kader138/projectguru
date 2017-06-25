@@ -36,6 +36,7 @@ public class CompanyServiceImpl implements CompanyService {
     private static String INVALID_INPUT = "Invalid input";
     private static String INVALID_COMPANY = "Company not exists";
     private static String BACK_DATED_DATA = "Company data is old.Please try again with updated data";
+    private static String INVALID_PRIVILEGE_UPDATE = "You have not enough privilege to update client company info.Please contact with System Admin!!!";
     private static String ASSOCIATED_COMPANY = "Company is tagged with Department.First remove tagging and try again";
     private static String ASSOCIATED_COMPANY_PRODUCT = "Company is tagged with Product.First remove tagging and try again";
     private static String LOGO_PATH = "/resources/images/company_logo/";
@@ -57,9 +58,9 @@ public class CompanyServiceImpl implements CompanyService {
         Company company = createObjForSave(request.getParameter("name"), request.getParameter("address"), request.getFile("logo").getOriginalFilename());
         validationMsg = checkInput(company);
         if ("".equals(validationMsg)) existingCompany = companyDao.findByCompanyName(company.getName());
-        if (existingCompany.getName() != null && validationMsg == "") validationMsg = COMPANY_EXISTS;
+        if (existingCompany.getName() != null && "".equals(validationMsg)) validationMsg = COMPANY_EXISTS;
         if ("".equals(validationMsg)) msg = fileSave(request);
-        if (msg.get("validationMsg") == "") company.setImagePath((String) msg.get("path"));
+        if ("".equals(msg.get("validationMsg"))) company.setImagePath((String) msg.get("path"));
         if ("".equals(validationMsg)) {
             long companyId = companyDao.save(company);
             newCompany = companyDao.get(companyId);
@@ -82,6 +83,7 @@ public class CompanyServiceImpl implements CompanyService {
         validationMsg = checkInput(company);
         if ("".equals(validationMsg)) existingCompany = companyDao.get(company.getId());
         if (existingCompany.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_COMPANY;
+        if (!getUserId().getClientId().equals(existingCompany.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_UPDATE;
         if (company.getVersion() != existingCompany.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg)) newCompany = companyDao.findByNewName(existingCompany.getName(),company.getName());
         if (newCompany.getName() != null && "".equals(validationMsg)) validationMsg = COMPANY_EXISTS;

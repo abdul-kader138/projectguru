@@ -129,12 +129,12 @@
 
                 var loading = $.loading();
                 initFormValidationMsg();
-                initializeRequestForm();
-
+                resetChangeRequestForm();
                 getAllCompany();
 
 
                 /*Based on company Selection load Product data */
+
                 $("#listOfCompany").change(function () {
                     var id = $(this).val();
                     id = parseInt(id);
@@ -143,7 +143,10 @@
                     getSelectedProduct(company.id, "Select Product");
                 });
 
+
+
                 /*Based on product Selection load category data */
+
                 $("#listOfProduct").change(function () {
                     var id = $(this).val();
                     id = parseInt(id);
@@ -153,12 +156,23 @@
                 });
 
 
+
                 /* Initialize html form value  based on reset button*/
 
-                $('#resetCategory').on('click', function () {
-                    initializeRequestForm();
+                $('#resetRequest').on('click', function () {
                     initFormValidationMsg();
+                    resetChangeRequestForm();
                 });
+
+
+
+                /* Reset Upload file selection */
+
+                $("#docClear").click(function (event) {
+                    $("#doc").val("");
+                });
+
+
 
                 /* Save request data using ajax */
 
@@ -173,16 +187,6 @@
                 });
 
 
-                /* Initialize html form value */
-
-                function initializeRequestForm() {
-                    $("#name").val("");
-                    $("#description").val("");
-                    $("#doc").val("");
-                    $('#defaultOpt').val('0').prop('selected', true);
-                    $('#defaultOptProduct').val('0').prop('selected', true);
-                    $('#defaultOptcategory').val('0').prop('selected', true);
-                }
 
 
                 /* html form Validation */
@@ -220,6 +224,8 @@
                 }
 
 
+
+
                 /* Initialize html form validation error field*/
 
                 function initFormValidationMsg() {
@@ -231,6 +237,9 @@
                     $("#docNameValidation").text("");
 
                 }
+
+
+
 
                 /*  Ajax call for save operation */
 
@@ -250,6 +259,8 @@
                                     msg = "";
                                     part1 = d.successMsg;
                                     showServerSideMessage(part1, part2, icn, msg);
+                                    initFormValidationMsg();
+                                    resetChangeRequestForm();
                                 }
                                 if (d.validationError) {
                                     icn = 0;
@@ -267,10 +278,11 @@
                 }
 
 
+
                 /* Load Category data to select box data using ajax */
 
                 function getSelectedCategory(productId, obj) {
-                    $('#listOfDepartment').empty();
+                    $('#listOfCategory').empty();
                     $.ajax({
                         headers: {
                             'Accept': 'application/json',
@@ -282,7 +294,7 @@
                         'dataType': 'json',
                         success: function (data) {
                             var collaboration;
-                            collaboration += '<option id="defaultOptDepartment" value="0">Select Category</option>';
+                            collaboration += '<option id="defaultOptCategory" value="0">Select Category</option>';
                             $.each(data, function (i, d) {
                                 collaboration += "<option value=" + d.id + ">" + d.name + "</option>";
                             });
@@ -297,6 +309,9 @@
                 }
 
 
+
+
+
                 /*  prepare request object to save */
 
                 function setRequestData() {
@@ -309,6 +324,8 @@
                     request.append('productId', productId);
                     return request;
                 }
+
+
 
 
                 /* Load Product data to select box data using ajax */
@@ -340,6 +357,8 @@
                 }
 
 
+
+
                 /* Load Company data to select box data using ajax */
 
                 function getAllCompany() {
@@ -361,7 +380,24 @@
                     });
                 }
 
+
+
+
+                /* Reset Request Form  */
+
+                function resetChangeRequestForm(){
+                    $("#id").val("0");
+                    $("#version").val("0");
+                    $("#name").val("");
+                    $("#doc").val("");
+                    $("#description").val("");
+                    $('#defaultOpt').val('0').prop('selected', true);
+                    $('#defaultOptProduct').val('0').prop('selected', true);
+                    $('#defaultOptCategory').val('0').prop('selected', true);
+                }
+
             });
+
             //
 
         </script>

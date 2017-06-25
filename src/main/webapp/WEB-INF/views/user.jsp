@@ -789,6 +789,13 @@
                     });
                 }
 
+
+                /* Reset Upload file selection */
+
+                $("#photoClear").click(function (event) {
+                    $("#photo").val("");
+                });
+
             });
             //
 

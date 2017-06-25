@@ -154,7 +154,7 @@
                         callAjaxForEditOperation(part1, part2, icn, msg, approvalObj);
                     }
                 }
-                if (obj.className.split(' ')[0] == messageResource.get('button.name.delete', 'configMessageForUI')) deleteApproval(part1, part2, icn, msg, approvalObj.id);
+                if (obj.className.split(' ')[0] == messageResource.get('button.name.delete', 'configMessageForUI')) deleteApproval(part1, part2, icn, msg, approvalObj);
             });
 
 

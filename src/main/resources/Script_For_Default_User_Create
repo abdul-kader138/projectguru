@@ -5,7 +5,7 @@
 
 INSERT INTO company(
             id, address, created_by,image_path, name,version,client_id)
-    VALUES (9999999993, 'Dhaka', 'admin@domain.com', '/resources/images/company_logo/default.jpg','Test Company', 0,'TEST-001');
+    VALUES (9999999993, 'Dhaka', 'admin@domain.com', '/resources/images/company_logo/default.jpg','Test Company', 0,'PG');
 
 
 2) Insert to roles table
@@ -94,12 +94,15 @@ INSERT INTO role_right(
    INSERT INTO rights(id, rights) VALUES (9999999982, 'Edit');
 
 
+4) INSERT INTO company(
+               id, address, created_by,image_path, name,version,client_id)
+       VALUES (9999999989, 'Dhaka', 'admin@domain.com', '/resources/images/company_logo/default1.jpg','Test-2', 0,'TEST-001');
 
    // Create for team member
 
-   INSERT INTO users(
+ 5)  INSERT INTO users(
                id,  email, name, password, phone, role, version,image_path,designation,role_right,role_rights_id,company_id,company,user_type,client_id)
-       VALUES (9999999998,'admin@client.com', 'Admin User','$2a$10$8ftimfEd8fCvG/cxprK80.1ksGmcMKqCiYAv5doFz5hIipMwn3u16','09876543211', 'ROLE_ADMIN',0,'/resources/images/team_member_photo/client.png','SD',9999999982,9999999982,9999999993,9999999993,'client','TEST-001');
+       VALUES (9999999998,'admin@client.com', 'Admin User','$2a$10$8ftimfEd8fCvG/cxprK80.1ksGmcMKqCiYAv5doFz5hIipMwn3u16','09876543211', 'ROLE_ADMIN',0,'/resources/images/team_member_photo/client.png','SD',9999999982,9999999982,9999999989,9999999989,'client','TEST-001');
 
     Email-admin@client.com
     password-12345678

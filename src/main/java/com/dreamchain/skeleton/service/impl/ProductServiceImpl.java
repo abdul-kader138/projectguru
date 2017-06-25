@@ -41,6 +41,8 @@ public class ProductServiceImpl implements ProductService {
     private static String INVALID_PRODUCT = "Product not exists";
     private static String BACK_DATED_DATA = "Product data is old.Please try again with updated data";
     private static String ASSOCIATED_PRODUCT = "Product is tagged with category.First remove tagging and try again";
+    private static String INVALID_PRIVILEGE_UPDATE = "You have not enough privilege to update client product info.Please contact with System Admin!!!";
+    private static String INVALID_PRIVILEGE_CREATE = "You have not enough privilege to create product for client.Please contact with System Admin!!!";
 
 
     @Transactional(readOnly = true)
@@ -57,7 +59,8 @@ public class ProductServiceImpl implements ProductService {
         Product product=createObjForSave(productObj);
         validationMsg = checkInput(product);
         if ("".equals(validationMsg)) existingProduct = productDao.findByProductName(product.getName(), product.getCompanyId());
-        if (existingProduct.getName() != null && validationMsg == "") validationMsg = PRODUCT_EXISTS;
+        if (existingProduct.getName() != null && "".equals(validationMsg)) validationMsg = PRODUCT_EXISTS;
+        if (!getUserId().getClientId().equals(product.getCompany().getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_CREATE;
         if ("".equals(validationMsg)) {
             SimpleDateFormat dateFormat = new SimpleDateFormat();
             Date date = dateFormat.parse(dateFormat.format(new Date()));
@@ -79,10 +82,11 @@ public class ProductServiceImpl implements ProductService {
         Product existingProduct=new Product();
         Product product=createObjForSave(productObj);
         validationMsg = checkInput(product);
-        if (product.getId() == 0l && validationMsg == "") validationMsg = INVALID_INPUT;
+        if (product.getId() == 0l && "".equals(validationMsg)) validationMsg = INVALID_INPUT;
         if ("".equals(validationMsg)) existingProduct = productDao.get(product.getId());
-        if (existingProduct.getName() == null && validationMsg == "") validationMsg = INVALID_PRODUCT;
-        if (product.getVersion() != existingProduct.getVersion() && validationMsg == "") validationMsg = BACK_DATED_DATA;
+        if (existingProduct.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_PRODUCT;
+        if (!getUserId().getClientId().equals(existingProduct.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_UPDATE;
+        if (product.getVersion() != existingProduct.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg)) newObj = productDao.findByNewName(existingProduct.getName(),product.getName(),product.getCompanyId());
         if (newObj.getName() != null && "".equals(validationMsg)) validationMsg = PRODUCT_EXISTS;
         if ("".equals(validationMsg)) {
@@ -99,9 +103,9 @@ public class ProductServiceImpl implements ProductService {
         String validationMsg = "";
         if (productId == 0l) validationMsg = INVALID_INPUT;
         Product product = productDao.get(productId);
-        if (product == null && validationMsg == "") validationMsg = INVALID_PRODUCT;
+        if (product == null && "".equals(validationMsg)) validationMsg = INVALID_PRODUCT;
         List<Object> obj=categoryDao.countOfProduct(productId);
-        if (obj.size() > 0 && validationMsg == "") validationMsg = ASSOCIATED_PRODUCT;
+        if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_PRODUCT;
         if ("".equals(validationMsg)) {
             productDao.delete(product);
         }
@@ -143,7 +147,7 @@ public class ProductServiceImpl implements ProductService {
         //server side validation check
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Set<ConstraintViolation<Product>> constraintViolations = validator.validate(product);
-        if (constraintViolations.size() > 0 && msg == "") msg = INVALID_INPUT;
+        if (constraintViolations.size() > 0 && "".equals(msg)) msg = INVALID_INPUT;
 
         return msg;
     }
@@ -169,8 +173,7 @@ public class ProductServiceImpl implements ProductService {
 
     private User getUserId(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user=(User)auth.getPrincipal();
-        return user;
+        return (User)auth.getPrincipal();
     }
 
 

@@ -41,6 +41,8 @@ public class CategoryServiceImpl implements CategoryService{
     private static String INVALID_CATEGORY = "Category not exists";
     private static String BACK_DATED_DATA = "Category data is old.Please try again with updated data";
     private static String ASSOCIATED_ALLOCATION = "Category is tagged with allocation.First remove tagging and try again";
+    private static String INVALID_PRIVILEGE_UPDATE = "You have not enough privilege to update client category info.Please contact with System Admin!!!";
+    private static String INVALID_PRIVILEGE_CREATE = "You have not enough privilege to create category for client.Please contact with System Admin!!!";
 
 
 
@@ -58,7 +60,8 @@ public class CategoryServiceImpl implements CategoryService{
         Category category=createObjForSave(categoryObj);
         validationMsg = checkInput(category);
         if ("".equals(validationMsg)) existingCategory = categoryDao.findByProductName(category.getName(), category.getCompanyId(),category.getDepartmentId(),category.getProductId());
-        if (existingCategory.getName() != null && validationMsg == "") validationMsg = CATEGORY_EXISTS;
+        if (existingCategory.getName() != null && "".equals(validationMsg)) validationMsg = CATEGORY_EXISTS;
+        if (!getUserId().getClientId().equals(category.getCompany().getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_CREATE;
         if ("".equals(validationMsg)) {
             SimpleDateFormat dateFormat = new SimpleDateFormat();
             Date date = dateFormat.parse(dateFormat.format(new Date()));
@@ -80,10 +83,11 @@ public class CategoryServiceImpl implements CategoryService{
         Category existingCategory=new Category();
         Category category=createObjForSave(categoryObj);
         validationMsg = checkInput(category);
-        if (category.getId() == 0l && validationMsg == "") validationMsg = INVALID_INPUT;
+        if (category.getId() == 0l && "".equals(validationMsg)) validationMsg = INVALID_INPUT;
         if ("".equals(validationMsg)) existingCategory = categoryDao.get(category.getId());
-        if (existingCategory.getName() == null && validationMsg == "") validationMsg = INVALID_CATEGORY;
-        if (category.getVersion() != existingCategory.getVersion() && validationMsg == "") validationMsg = BACK_DATED_DATA;
+        if (existingCategory.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_CATEGORY;
+        if (!getUserId().getClientId().equals(existingCategory.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_UPDATE;
+        if (category.getVersion() != existingCategory.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg)) newObj = categoryDao.findByNewName(existingCategory.getName(),category.getName(),category.getCompanyId(),category.getDepartmentId(),category.getProductId());
         if (newObj.getName() != null && "".equals(validationMsg)) validationMsg = CATEGORY_EXISTS;
         if ("".equals(validationMsg)) {
@@ -181,8 +185,7 @@ public class CategoryServiceImpl implements CategoryService{
 
     private User getUserId(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user=(User)auth.getPrincipal();
-        return user;
+        return (User)auth.getPrincipal();
     }
 
 

@@ -169,20 +169,6 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
 
     }
 
-
-    private String deleteDoc(String realPathFetch, String fileName) {
-        String msg = "";
-        try {
-            File file = new File(realPathFetch + fileName);
-            file.setWritable(true);
-            if (file.delete()) msg = "";
-            else msg = environment.getProperty("request.file.delete.success.msg");
-        } catch (Exception e) {
-            msg = e.getMessage();
-        }
-        return msg;
-    }
-
     // check for invalid data
     private String checkInput(ChangeRequest changeRequest) {
         String msg = "";

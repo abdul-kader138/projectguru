@@ -44,12 +44,16 @@ public class UserDaoImpl implements UserDao {
 	@SuppressWarnings("unchecked")
 	public List<User> findAll(String userName) {
 		List<User> userList=new ArrayList<>();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user=(User)auth.getPrincipal();
 		DetachedCriteria dcr= DetachedCriteria.forClass(User.class);
 		Criterion cr = Restrictions.ne("email", userName);
+		Criterion cr1 = Restrictions.eq("clientId", user.getClientId());
 		dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		dcr.add(cr1);
 		List<Object> lst= hibernateTemplate.findByCriteria(dcr);
-		for(Object user:lst){
-			userList.add((User) user);
+		for(Object userObj:lst){
+			userList.add((User) userObj);
 		}
 		return userList;
 	}
@@ -60,7 +64,9 @@ public class UserDaoImpl implements UserDao {
 		User user=(User)auth.getPrincipal();
 		DetachedCriteria dcr= DetachedCriteria.forClass(User.class);
 		Criterion cr = Restrictions.ne("email", user.getEmail());
+		Criterion cr1 = Restrictions.eq("clientId", user.getClientId());
 		dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		dcr.add(cr1);
 		List<Object> lst= hibernateTemplate.findByCriteria(dcr);
 		return createProductList(lst);
 	}
