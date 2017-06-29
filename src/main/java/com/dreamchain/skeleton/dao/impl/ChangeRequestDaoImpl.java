@@ -80,6 +80,12 @@ public class ChangeRequestDaoImpl implements ChangeRequestDao {
     }
 
     @Override
+    public List<Object> findAllStatus() {
+        List<Object> list=hibernateTemplate.find("select distinct(status), count(*) as number from ChangeRequest group by status order by status desc");
+        return list;
+    }
+
+    @Override
     public ChangeRequest findByName(String name, long companyId, long productId, long categoryId) {
         DetachedCriteria dcr= DetachedCriteria.forClass(ChangeRequest.class);
         Criterion cr = Restrictions.eq("name", name.trim()).ignoreCase();

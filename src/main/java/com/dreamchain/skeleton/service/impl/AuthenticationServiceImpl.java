@@ -36,6 +36,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String hasChangeRequest="No";
         List<ApprovalStatus> list=approvalStatusDao.findByUserId(existingUser.getId());
         ChangeRequest changeRequest=changeRequestDao.findByRequestById(existingUser.getId());
+        List<Object> list1=changeRequestDao.findAllStatus();
         if(changeRequest.getRequestBy() !=null) hasChangeRequest="Yes";
         HttpSession httpSession = request.getSession();
         httpSession.setAttribute("passwordMsg", null);
