@@ -24,6 +24,7 @@
                         <th width="350px">Approve Type</th>
                         <th width="300px">Request Date</th>
                         <th width="350px">Delivery Date</th>
+                        <th width="350px">Attachment</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -91,6 +92,13 @@
                                     }
                                     else return messageResource.get('approve.delivery.date.column.msg', 'configMessageForUI');
                                 }
+                            }
+                        },
+                        {
+                            "mData": "docPath",
+                            "render": function (data, type, row, id) {
+                                var mainPath=document.origin+"/PG";
+                                return '<a href="'+mainPath+row.docPath+'" download>'+'Download</a>'
                             }
                         },
                         {

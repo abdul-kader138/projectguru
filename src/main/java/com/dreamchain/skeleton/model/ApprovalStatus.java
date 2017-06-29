@@ -1,5 +1,6 @@
 package com.dreamchain.skeleton.model;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -73,6 +74,10 @@ public class ApprovalStatus {
     @Column
     private Date deliverDate;
 
+    @NotEmpty
+    @Length(max = 150)
+    private String docPath;
+
 
     @Column
     private String createdBy;
@@ -87,6 +92,8 @@ public class ApprovalStatus {
 
     @Column
     private Date updatedOn;
+
+
 
     public ApprovalStatus() {
     }
@@ -261,5 +268,13 @@ public class ApprovalStatus {
 
     public void setDeliverDate(Date deliverDate) {
         this.deliverDate = deliverDate;
+    }
+
+    public String getDocPath() {
+        return docPath;
+    }
+
+    public void setDocPath(String docPath) {
+        this.docPath = docPath;
     }
 }

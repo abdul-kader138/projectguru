@@ -236,6 +236,7 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
         approvalStatus.setCreatedOn(date);
         approvalStatus.setApproveType(approveType);
         approvalStatus.setRequestId(changeRequest.getId());
+        approvalStatus.setDocPath(changeRequest.getDocPath());
         return approvalStatus;
     }
 
