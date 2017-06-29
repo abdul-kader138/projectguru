@@ -416,7 +416,7 @@
                     </li>
                     <br/>
                 </c:if>
-                <c:if test="${userType == 'client'}">
+                <c:if test="${userType == 'client' && hasChangeRequest=='Yes'}">
                 <li class="header">Request</li>
                 <li>
                     <a href="change_request">

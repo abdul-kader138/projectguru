@@ -397,6 +397,7 @@
                 "scrollX": true
 
             });
+
         });
     </script>
 </section>

@@ -1,8 +1,10 @@
 package com.dreamchain.skeleton.service.impl;
 
 import com.dreamchain.skeleton.dao.ApprovalStatusDao;
+import com.dreamchain.skeleton.dao.ChangeRequestDao;
 import com.dreamchain.skeleton.dao.UserDao;
 import com.dreamchain.skeleton.model.ApprovalStatus;
+import com.dreamchain.skeleton.model.ChangeRequest;
 import com.dreamchain.skeleton.model.User;
 import com.dreamchain.skeleton.service.AuthenticationService;
 import com.dreamchain.skeleton.service.UserService;
@@ -23,12 +25,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     ApprovalStatusDao approvalStatusDao;
 
+    @Autowired
+    ChangeRequestDao changeRequestDao;
+
 
 
     @Override
     public void setSessionValue(HttpServletRequest request, User user) {
         User existingUser=userDao.findByUserName(user.getEmail());
+        String hasChangeRequest="No";
         List<ApprovalStatus> list=approvalStatusDao.findByUserId(existingUser.getId());
+        ChangeRequest changeRequest=changeRequestDao.findByRequestById(existingUser.getId());
+        if(changeRequest.getRequestBy() !=null) hasChangeRequest="Yes";
         HttpSession httpSession = request.getSession();
         httpSession.setAttribute("passwordMsg", null);
         httpSession.setAttribute("isPasswordChanged", null);
@@ -39,5 +47,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         httpSession.setAttribute("userType", user.getUserType());
         httpSession.setAttribute("imagePath", user.getImagePath());
         httpSession.setAttribute("notificationCount", list.size());
+        httpSession.setAttribute("hasChangeRequest", hasChangeRequest);
     }
 }

@@ -185,7 +185,7 @@
                             part1 = d.successMsg;
                             showServerSideMessage(part1, part2, icn, msg);
                             table.ajax.url(messageResource.get('approval_details.list.load.url', 'configMessageForUI')).load();
-                            $("#notificationCount").val(d.notificationCount);
+                            $("#notificationCount").html(d.notificationCount);
                         }
                         if (d.validationError) {
                             icn = 0;
