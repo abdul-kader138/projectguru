@@ -102,7 +102,6 @@ public class TeamMemberDaoImpl implements TeamMemberDao {
         return (User)lst.get(0);
     }
 
-
     private List<User> createProductList(List<Object> userList){
         List<User> list = new ArrayList<>();
         for(final Object o : userList) {
@@ -110,5 +109,4 @@ public class TeamMemberDaoImpl implements TeamMemberDao {
         }
         return list;
     }
-
 }

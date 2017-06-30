@@ -17,6 +17,6 @@ public interface ChangeRequestDao {
     List<Object> countOfCategory(long categoryId);
     List<Object> findAllStatus();
     ChangeRequest findByName(String name, long companyId,long productId,long categoryId);
-    ChangeRequest findByRequestById(long requestById);
+
 
 }

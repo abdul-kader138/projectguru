@@ -14,7 +14,7 @@
                     </div>
                     <div class="content">
                         <div class="text">TOTAL USER REQUEST</div>
-                        <div class="number count-to" data-from="0" data-to="10" data-speed="15"
+                        <div class="number count-to"  id="requestAll" data-from="0" data-to="${totalRequest}" data-speed="15"
                              data-fresh-interval="20"></div>
                     </div>
                 </div>
@@ -26,7 +26,7 @@
                     </div>
                     <div class="content">
                         <div class="text">REQUEST WORK IN PROGRESS</div>
-                        <div class="number count-to" data-from="0" data-to="7" data-speed="1000"
+                        <div class="number count-to" id="requestOpen" data-from="0" data-to="${totalRequestOpen}" data-speed="20"
                              data-fresh-interval="20"></div>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                     </div>
                     <div class="content">
                         <div class="text">REQUEST COMPLETED</div>
-                        <div class="number count-to" data-from="0" data-to="2" data-speed="1000"
+                        <div class="number count-to" id="requestDone" data-from="0" data-to="${totalRequestDone}" data-speed="20"
                              data-fresh-interval="20"></div>
                     </div>
                 </div>
