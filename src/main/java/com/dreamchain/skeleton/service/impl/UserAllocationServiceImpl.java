@@ -53,7 +53,7 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         validationMsg = checkInput(userAllocation);
         if ("".equals(validationMsg)) existingUserAllocation = userAllocationDao.findByProductAndCategory(userAllocation.getCompanyId(),
                 userAllocation.getProductId(),userAllocation.getCategoryId());
-        if (existingUserAllocation.getApprovedBy() != null && validationMsg == "") validationMsg = USER_ALLOCATION_EXISTS;
+        if (existingUserAllocation.getApprovedBy() != null && "".equals(validationMsg)) validationMsg = USER_ALLOCATION_EXISTS;
         if(userAllocation.getApprovedById() == userAllocation.getItCoordinatorId() ) validationMsg=SAME_ALLOCATED_USER;
         if ("".equals(validationMsg)) {
             SimpleDateFormat dateFormat = new SimpleDateFormat();
@@ -76,11 +76,11 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         UserAllocation existingUserAllocation=new UserAllocation();
         UserAllocation userAllocation=createObjForSave(userAllocationObj);
         validationMsg = checkInput(userAllocation);
-        if (userAllocation.getId() == 0l && validationMsg == "") validationMsg = INVALID_INPUT;
+        if (userAllocation.getId() == 0l && "".equals(validationMsg)) validationMsg = INVALID_INPUT;
         if(userAllocation.getApprovedById() == userAllocation.getItCoordinatorId() ) validationMsg=SAME_ALLOCATED_USER;
         if ("".equals(validationMsg)) existingUserAllocation = userAllocationDao.get(userAllocation.getId());
-        if (existingUserAllocation == null && validationMsg == "") validationMsg = INVALID_USER_ALLOCATION;
-        if (userAllocation.getVersion() != existingUserAllocation.getVersion() && validationMsg == "") validationMsg = BACK_DATED_DATA;
+        if (existingUserAllocation == null && "".equals(validationMsg)) validationMsg = INVALID_USER_ALLOCATION;
+        if (userAllocation.getVersion() != existingUserAllocation.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg)) {
             newObj=setUpdateCategoryValue(userAllocation, existingUserAllocation);
             userAllocationDao.update(newObj);
@@ -95,7 +95,7 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         String validationMsg = "";
         if (userAllocationId == 0l) validationMsg = INVALID_INPUT;
         UserAllocation userAllocation = userAllocationDao.get(userAllocationId);
-        if (userAllocation == null && validationMsg == "") validationMsg = INVALID_USER_ALLOCATION;
+        if (userAllocation == null && "".equals(validationMsg)) validationMsg = INVALID_USER_ALLOCATION;
 
         //@todo need implement after Request implementation
 //        List<Object> obj=departmentDao.countOfDepartment(departmentId);
@@ -150,8 +150,7 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         //server side validation check
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Set<ConstraintViolation<UserAllocation>> constraintViolations = validator.validate(userAllocation);
-        if (constraintViolations.size() > 0 && msg == "") msg = INVALID_INPUT;
-
+        if (constraintViolations.size() > 0 && "".equals(msg)) msg = INVALID_INPUT;
         return msg;
     }
 
@@ -180,8 +179,7 @@ public class UserAllocationServiceImpl implements UserAllocationService {
 
     private User getUserId(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user=(User)auth.getPrincipal();
-        return user;
+        return (User)auth.getPrincipal();
     }
 
 

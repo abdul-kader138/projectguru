@@ -104,7 +104,7 @@ public class CategoryServiceImpl implements CategoryService{
         String validationMsg = "";
         if (categoryId == 0l) validationMsg = INVALID_INPUT;
         Category category = categoryDao.get(categoryId);
-        if (category == null && validationMsg == "") validationMsg = INVALID_CATEGORY;
+        if (category == null && "".equals(validationMsg)) validationMsg = INVALID_CATEGORY;
         List<Object> obj=teamAllocationDao.countOfAllocation(categoryId);
         if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_ALLOCATION;
         if("".equals(validationMsg) && obj.size() == 0) obj=userAllocationDao.countOfAllocation(categoryId);
@@ -154,7 +154,7 @@ public class CategoryServiceImpl implements CategoryService{
         //server side validation check
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Set<ConstraintViolation<Category>> constraintViolations = validator.validate(category);
-        if (constraintViolations.size() > 0 && msg == "") msg = INVALID_INPUT;
+        if (constraintViolations.size() > 0 && "".equals(msg)) msg = INVALID_INPUT;
 
         return msg;
     }

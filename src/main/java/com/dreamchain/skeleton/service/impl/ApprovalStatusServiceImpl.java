@@ -60,8 +60,8 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
         long approvedById = approvedBy.longValue();
         ApprovalStatus approvalStatus = approvalStatusDao.get(approvedById);
         approvalStatus.setDeliverDate(deliveryDate);
-        if (approvalStatus.getId() == 0l && validationMsg == "") validationMsg = INVALID_INPUT;
-        if (approvalStatus.getVersion() != version && validationMsg == "") validationMsg = BACK_DATED_DATA;
+        if (approvalStatus.getId() == 0l && "".equals(validationMsg)) validationMsg = INVALID_INPUT;
+        if (approvalStatus.getVersion() != version && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg)) ObjList = saveApprovalObj(approvalStatus);
         if ("".equals(validationMsg)) UpdateApprovalObj(ObjList);
         obj.put("approval_details", ObjList.get(0));

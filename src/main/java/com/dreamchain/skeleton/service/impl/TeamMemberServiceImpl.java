@@ -73,7 +73,7 @@ public class TeamMemberServiceImpl implements TeamMemberService {
         User user = createObjForSave(request, "save");
         validationMsg = checkInput(user);
         if ("".equals(validationMsg)) existingUser = teamMemberDao.findByUserName(user.getEmail());
-        if (existingUser != null && validationMsg == "") validationMsg = EMAIL_EXISTS;
+        if (existingUser != null && "".equals(validationMsg)) validationMsg = EMAIL_EXISTS;
         msg = fileSave(request, PHOTO_TEAM_PATH);
         if (msg.get("validationMsg") == "") user.setImagePath((String) msg.get("path"));
         if ("".equals(validationMsg)) {
@@ -155,7 +155,7 @@ public class TeamMemberServiceImpl implements TeamMemberService {
         //server side validation check
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
-        if (constraintViolations.size() > 0 && msg == "") msg = INVALID_INPUT;
+        if (constraintViolations.size() > 0 && "".equals(msg)) msg = INVALID_INPUT;
 
         return msg;
     }
@@ -294,8 +294,7 @@ public class TeamMemberServiceImpl implements TeamMemberService {
 
     private User getUserId() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) auth.getPrincipal();
-        return user;
+        return (User) auth.getPrincipal();
     }
 
 

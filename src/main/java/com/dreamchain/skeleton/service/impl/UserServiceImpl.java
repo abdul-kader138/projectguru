@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
         User user = createObjForSave(request, "save");
         validationMsg = checkInput(user);
         if ("".equals(validationMsg)) existingUser = userDao.findByUserName(user.getEmail());
-        if (existingUser != null && validationMsg == "") validationMsg = EMAIL_EXISTS;
+        if (existingUser != null && "".equals(validationMsg)) validationMsg = EMAIL_EXISTS;
         if ("".equals(validationMsg) && "user".equals(usersType)) msg = fileSave(request, PHOTO_USER_PATH);
         if ("".equals(validationMsg) && "team_member".equals(usersType)) msg = fileSave(request, PHOTO_TEAM_PATH);
         if (msg.get("validationMsg") == "") user.setImagePath((String) msg.get("path"));
@@ -165,10 +165,10 @@ public class UserServiceImpl implements UserService {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(newPassword);
         //check previous password matched or not
-        if (!encoder.matches(oldPassword, user.getPassword()) && validationMsg == "")
+        if (!encoder.matches(oldPassword, user.getPassword()) && "".equals(validationMsg))
             validationMsg = OLD_PASSWORD_NOT_MATCHED;
         //check new password
-        if (encoder.matches(newPassword, user.getPassword()) && validationMsg == "") validationMsg = PASSWORD_IS_SAME;
+        if (encoder.matches(newPassword, user.getPassword()) && "".equals(validationMsg)) validationMsg = PASSWORD_IS_SAME;
         if ("".equals(validationMsg)) {
             user.setPassword(encodedPassword);
             userDao.update(user);
@@ -193,7 +193,7 @@ public class UserServiceImpl implements UserService {
         //server side validation check
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
-        if (constraintViolations.size() > 0 && msg == "") msg = INVALID_INPUT;
+        if (constraintViolations.size() > 0 && "".equals(msg)) msg = INVALID_INPUT;
 
         return msg;
     }
@@ -331,8 +331,7 @@ public class UserServiceImpl implements UserService {
 
     private User getUserId(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user=(User)auth.getPrincipal();
-        return user;
+        return (User)auth.getPrincipal();
     }
 
 

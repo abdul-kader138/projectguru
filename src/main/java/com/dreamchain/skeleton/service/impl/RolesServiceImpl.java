@@ -50,7 +50,7 @@ public class RolesServiceImpl implements RolesService {
         Roles roles=createObjForSave(rolesObj);
         validationMsg = checkInput(roles);
         if ("".equals(validationMsg)) existingRoles = rolesDao.findByRolesName(roles.getName());
-        if (existingRoles.getName() != null && validationMsg == "") validationMsg = ROLES_EXISTS;
+        if (existingRoles.getName() != null && "".equals(validationMsg)) validationMsg = ROLES_EXISTS;
         if ("".equals(validationMsg)) {
             SimpleDateFormat dateFormat = new SimpleDateFormat();
             Date date = dateFormat.parse(dateFormat.format(new Date()));
@@ -72,10 +72,10 @@ public class RolesServiceImpl implements RolesService {
         Roles existingRoles=new Roles();
         Roles roles=createObjForSave(rolesObj);
         validationMsg = checkInput(roles);
-        if (roles.getId() == 0l && validationMsg == "") validationMsg = INVALID_INPUT;
+        if (roles.getId() == 0l && "".equals(validationMsg)) validationMsg = INVALID_INPUT;
         if ("".equals(validationMsg)) existingRoles = rolesDao.get(roles.getId());
-        if (existingRoles.getName() == null && validationMsg == "") validationMsg = INVALID_ROLES;
-        if (roles.getVersion() != existingRoles.getVersion() && validationMsg == "") validationMsg = BACK_DATED_DATA;
+        if (existingRoles.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_ROLES;
+        if (roles.getVersion() != existingRoles.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg)) newObj = rolesDao.findByNewName(existingRoles.getName(),roles.getName());
         if (newObj.getName() != null && "".equals(validationMsg)) validationMsg = ROLES_EXISTS;
         if ("".equals(validationMsg)) {
@@ -92,9 +92,9 @@ public class RolesServiceImpl implements RolesService {
         String validationMsg = "";
         if (rolesId == 0l) validationMsg = INVALID_INPUT;
         Roles roles = rolesDao.get(rolesId);
-        if (roles == null && validationMsg == "") validationMsg = INVALID_ROLES;
+        if (roles == null && "".equals(validationMsg)) validationMsg = INVALID_ROLES;
         List<Object> obj=rolesDao.countOfRoles(rolesId);
-        if (obj.size() > 0 && validationMsg == "") validationMsg = ASSOCIATED_ROLES;
+        if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_ROLES;
 
         if ("".equals(validationMsg)) {
             rolesDao.delete(roles);
@@ -115,7 +115,7 @@ public class RolesServiceImpl implements RolesService {
         //server side validation check
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Set<ConstraintViolation<Roles>> constraintViolations = validator.validate(roles);
-        if (constraintViolations.size() > 0 && msg == "") msg = INVALID_INPUT;
+        if (constraintViolations.size() > 0 && "".equals(msg)) msg = INVALID_INPUT;
 
         return msg;
     }
@@ -153,8 +153,7 @@ public class RolesServiceImpl implements RolesService {
 
     private User getUserId(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user=(User)auth.getPrincipal();
-        return user;
+        return (User)auth.getPrincipal();
     }
 
 }

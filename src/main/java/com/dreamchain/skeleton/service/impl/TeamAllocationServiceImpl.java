@@ -57,7 +57,7 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
         validationMsg = checkInput(teamAllocation);
         if ("".equals(validationMsg)) existingTeamAllocation = teamAllocationDao.findByProductAndCategory(teamAllocation.getCompanyId(),
                 teamAllocation.getProductId(),teamAllocation.getCategoryId());
-        if (existingTeamAllocation.getCheckedBy() != null && validationMsg == "") validationMsg = TEAM_ALLOCATION_EXISTS;
+        if (existingTeamAllocation.getCheckedBy() != null && "".equals(validationMsg)) validationMsg = TEAM_ALLOCATION_EXISTS;
         if(teamAllocation.getCheckedById() == teamAllocation.getRequestById() ) validationMsg=SAME_ALLOCATED_USER;
         if ("".equals(validationMsg)) {
             SimpleDateFormat dateFormat = new SimpleDateFormat();
@@ -80,11 +80,11 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
         TeamAllocation existingTeamAllocation=new TeamAllocation();
         TeamAllocation teamAllocation=createObjForSave(teamAllocationObj);
         validationMsg = checkInput(teamAllocation);
-        if (teamAllocation.getId() == 0l && validationMsg == "") validationMsg = INVALID_INPUT;
+        if (teamAllocation.getId() == 0l && "".equals(validationMsg)) validationMsg = INVALID_INPUT;
         if(teamAllocation.getCheckedById() == teamAllocation.getRequestById() ) validationMsg=SAME_ALLOCATED_USER;
         if ("".equals(validationMsg)) existingTeamAllocation = teamAllocationDao.get(teamAllocation.getId());
-        if (existingTeamAllocation == null && validationMsg == "") validationMsg = INVALID_TEAM_ALLOCATION;
-        if (teamAllocation.getVersion() != existingTeamAllocation.getVersion() && validationMsg == "") validationMsg = BACK_DATED_DATA;
+        if (existingTeamAllocation == null && "".equals(validationMsg)) validationMsg = INVALID_TEAM_ALLOCATION;
+        if (teamAllocation.getVersion() != existingTeamAllocation.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg)) {
             newObj=setUpdateCategoryValue(teamAllocation, existingTeamAllocation);
             teamAllocationDao.update(newObj);
@@ -99,7 +99,7 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
         String validationMsg = "";
         if (teamAllocationId == 0l) validationMsg = INVALID_INPUT;
         TeamAllocation teamAllocation = teamAllocationDao.get(teamAllocationId);
-        if (teamAllocation == null && validationMsg == "") validationMsg = INVALID_TEAM_ALLOCATION;
+        if (teamAllocation == null && "".equals(validationMsg)) validationMsg = INVALID_TEAM_ALLOCATION;
 
         //@todo need implement after Request implementation
 //        List<Object> obj=departmentDao.countOfDepartment(departmentId);
@@ -153,7 +153,7 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
         //server side validation check
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Set<ConstraintViolation<TeamAllocation>> constraintViolations = validator.validate(teamAllocation);
-        if (constraintViolations.size() > 0 && msg == "") msg = INVALID_INPUT;
+        if (constraintViolations.size() > 0 && "".equals(msg)) msg = INVALID_INPUT;
 
         return msg;
     }
@@ -183,8 +183,7 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
 
     private User getUserId(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user=(User)auth.getPrincipal();
-        return user;
+        return (User)auth.getPrincipal();
     }
 
 

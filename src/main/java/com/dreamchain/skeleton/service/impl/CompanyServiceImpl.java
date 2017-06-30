@@ -240,8 +240,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     private User getUserId(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user=(User)auth.getPrincipal();
-        return user;
+        return (User)auth.getPrincipal();
     }
 
 }

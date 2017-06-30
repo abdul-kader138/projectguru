@@ -98,35 +98,3 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
 }
-
-
-//        Map<String, Long> objList = new HashMap<>();
-//        Object open;
-//        Object done;
-//        if(obj.size() !=0)  open =  obj.get(0);
-//        if(obj.size() !=0)  done =  obj.get(1);
-//        Long totalRequest = 0l;
-//        if (done.size() == 0) objList.put(environment.getProperty("request.status.open"), 0l);
-//        if (open.size() != 0) {
-//            String openStatus = (String) open.get(0);
-//            if (openStatus.equals(environment.getProperty("request.status.open"))) {
-//                objList.put(environment.getProperty("request.status.open"), (Long) open.get(1));
-//                totalRequest += (Long) open.get(1);
-//            }
-//        }
-//        if (done.size() == 0) objList.put(environment.getProperty("request.status.done"), 0l);
-//        if (done.size() != 0) {
-//            String doneStatus = (String) open.get(0);
-//            if (doneStatus.equals(environment.getProperty("request.status.done"))) {
-//                objList.put(environment.getProperty("request.status.done"), (Long) open.get(1));
-//                totalRequest += (Long) open.get(1);
-//            }
-//        }
-//        if(obj.size()==0){
-//            objList.put(environment.getProperty("request.status.open"), 0l);
-//            objList.put(environment.getProperty("request.status.done"), 0l);
-//        }
-//        objList.put(environment.getProperty("request.status.all"), totalRequest);
-//        return objList;
-//    }
-//}

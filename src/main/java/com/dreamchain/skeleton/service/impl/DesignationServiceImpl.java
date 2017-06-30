@@ -45,7 +45,7 @@ public class DesignationServiceImpl implements DesignationService{
         Designation designation=createObjForSave(designationName);
         validationMsg = checkInput(designation);
         Designation existingDesignation = designationDao.findByDesignationName(designation.getName());
-        if (existingDesignation.getName() != null && validationMsg == "") validationMsg = DESIGNATION_EXISTS;
+        if (existingDesignation.getName() != null && "".equals(validationMsg)) validationMsg = DESIGNATION_EXISTS;
         if ("".equals(validationMsg)) {
             long designationId= designationDao.save(designation);
             newDesignation=designationDao.get(designationId);
@@ -66,9 +66,9 @@ public class DesignationServiceImpl implements DesignationService{
         designation.setName(designationObj.get("name"));
         validationMsg = checkInput(designation);
         Designation existingDesignation = designationDao.get(designation.getId());
-        if (designation.getId() == 0l && validationMsg == "") validationMsg = INVALID_INPUT;
-        if (existingDesignation.getName() == null && validationMsg == "") validationMsg = INVALID_DESIGNATION;
-        if (designation.getVersion() != existingDesignation.getVersion() && validationMsg == "") validationMsg = BACK_DATED_DATA;
+        if (designation.getId() == 0l && "".equals(validationMsg)) validationMsg = INVALID_INPUT;
+        if (existingDesignation.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_DESIGNATION;
+        if (designation.getVersion() != existingDesignation.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg)) {
             newObj=setUpdateDesignationValue(designation, existingDesignation);
             designationDao.update(newObj);
@@ -83,7 +83,7 @@ public class DesignationServiceImpl implements DesignationService{
         String validationMsg = "";
         if (designationId == 0l) validationMsg = INVALID_INPUT;
         Designation designation = designationDao.get(designationId);
-        if (designation == null && validationMsg == "") validationMsg = INVALID_DESIGNATION;
+        if (designation == null && "".equals(validationMsg)) validationMsg = INVALID_DESIGNATION;
 
         //@todo need implement after user implementation
 //        List<Object> obj=designationDao.countOfDesignation(designationId);
@@ -109,7 +109,7 @@ public class DesignationServiceImpl implements DesignationService{
         //server side validation check
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Set<ConstraintViolation<Designation>> constraintViolations = validator.validate(designation);
-        if (constraintViolations.size() > 0 && msg == "") msg = INVALID_INPUT;
+        if (constraintViolations.size() > 0 && "".equals(msg)) msg = INVALID_INPUT;
 
         return msg;
     }

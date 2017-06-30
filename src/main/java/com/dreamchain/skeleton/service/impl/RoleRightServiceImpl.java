@@ -50,12 +50,12 @@ public class RoleRightServiceImpl implements RoleRightService {
         Map<String, Object> obj = new HashMap<>();
         String validationMsg = "";
         RoleRight newRoleRight = new RoleRight();
-        RoleRight roleRight=new RoleRight();
-        RoleRight existingRoleRight=new RoleRight();
+        RoleRight roleRight = new RoleRight();
+        RoleRight existingRoleRight = new RoleRight();
         validationMsg = checkInput(roleObj);
         if ("".equals(validationMsg)) roleRight = createRoleObj(roleObj);
         if ("".equals(validationMsg)) existingRoleRight = roleRightDao.findByRolesName(roleRight.getRoleId());
-        if (existingRoleRight.getRoleName() != null && validationMsg == "") validationMsg = ROLE_EXISTS;
+        if (existingRoleRight.getRoleName() != null && "".equals(validationMsg)) validationMsg = ROLE_EXISTS;
         if ("".equals(validationMsg)) {
             long roleId = roleRightDao.save(roleRight);
             newRoleRight = roleRightDao.get(roleId);
@@ -67,22 +67,24 @@ public class RoleRightServiceImpl implements RoleRightService {
 
     @Transactional
     public Map<String, Object> update(Map<String, Object> roleObj) throws ParseException {
-        Map<String,Object> obj=new HashMap<>();
+        Map<String, Object> obj = new HashMap<>();
         String validationMsg = "";
-        RoleRight newObj=new RoleRight();
+        RoleRight newObj = new RoleRight();
         validationMsg = checkInput(roleObj);
         RoleRight roleRight = createRoleObj(roleObj);
         RoleRight existingRoleRight = roleRightDao.get(roleRight.getId());
-        if (roleRight.getId() == 0l && validationMsg == "") validationMsg = INVALID_INPUT;
-        if (roleRight.getVersion() != existingRoleRight.getVersion() && validationMsg == "") validationMsg = BACK_DATED_DATA;
-        if ("".equals(validationMsg)) newObj = roleRightDao.findByNewName(existingRoleRight.getRoleId(),roleRight.getRoleId());
+        if (roleRight.getId() == 0l && "".equals(validationMsg)) validationMsg = INVALID_INPUT;
+        if (roleRight.getVersion() != existingRoleRight.getVersion() && "".equals(validationMsg))
+            validationMsg = BACK_DATED_DATA;
+        if ("".equals(validationMsg))
+            newObj = roleRightDao.findByNewName(existingRoleRight.getRoleId(), roleRight.getRoleId());
         if (newObj.getRoleName() != null && "".equals(validationMsg)) validationMsg = ROLE_EXISTS;
         if ("".equals(validationMsg)) {
-            newObj=setUpdateCompanyValue(roleRight, existingRoleRight);
+            newObj = setUpdateCompanyValue(roleRight, existingRoleRight);
             roleRightDao.update(newObj);
         }
-        obj.put("role",newObj);
-        obj.put("validationError",validationMsg);
+        obj.put("role", newObj);
+        obj.put("validationError", validationMsg);
         return obj;
     }
 
@@ -91,9 +93,9 @@ public class RoleRightServiceImpl implements RoleRightService {
         String validationMsg = "";
         if (roleId == 0l) validationMsg = INVALID_INPUT;
         RoleRight roleRight = roleRightDao.get(roleId);
-        if (roleRight == null && validationMsg == "") validationMsg = INVALID_ROLE;
-        List<Object> obj=roleRightDao.countOfRights(roleId);
-        if (obj.size() > 0 && validationMsg == "") validationMsg = ASSOCIATED_RIGHTS;
+        if (roleRight == null && "".equals(validationMsg)) validationMsg = INVALID_ROLE;
+        List<Object> obj = roleRightDao.countOfRights(roleId);
+        if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_RIGHTS;
 
         if ("".equals(validationMsg)) {
             roleRightDao.delete(roleRight);
@@ -112,47 +114,48 @@ public class RoleRightServiceImpl implements RoleRightService {
     private String checkInput(Map<String, Object> roleObj) throws ParseException {
         String msg = "";
 
-        RoleRight roleRight =createRoleObj(roleObj);
+        RoleRight roleRight = createRoleObj(roleObj);
         //server side validation check
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Set<ConstraintViolation<RoleRight>> constraintViolations = validator.validate(roleRight);
-        if (constraintViolations.size() > 0 && msg == "") msg = INVALID_INPUT;
+        if (constraintViolations.size() > 0 && "".equals(msg)) msg = INVALID_INPUT;
 
         return msg;
     }
 
 
-    private int isRightSelected(Map<String,String> roleObj) {
-        int counter= 0;
-        if(roleObj.get("VIEW_PRIVILEGE") == null || roleObj.get("VIEW_PRIVILEGE") =="")  counter++;
-        if(roleObj.get("WRITE_PRIVILEGE") == null || roleObj.get("WRITE_PRIVILEGE") =="")  counter++;
-        if(roleObj.get("EDIT_PRIVILEGE") == null || roleObj.get("EDIT_PRIVILEGE") =="")  counter++;
-        if(roleObj.get("DELETE_PRIVILEGE") == null || roleObj.get("DELETE_PRIVILEGE") =="")  counter++;
+    private int isRightSelected(Map<String, String> roleObj) {
+        int counter = 0;
+        if (roleObj.get("VIEW_PRIVILEGE") == null || "".equals(roleObj.get("VIEW_PRIVILEGE"))) counter++;
+        if (roleObj.get("WRITE_PRIVILEGE") == null || "".equals(roleObj.get("WRITE_PRIVILEGE"))) counter++;
+        if (roleObj.get("EDIT_PRIVILEGE") == null || "".equals(roleObj.get("EDIT_PRIVILEGE"))) counter++;
+        if (roleObj.get("DELETE_PRIVILEGE") == null || "".equals(roleObj.get("DELETE_PRIVILEGE"))) counter++;
         return counter;
     }
 
     private RoleRight createRoleObj(Map<String, Object> roleObj) throws ParseException {
         RoleRight roleRight = new RoleRight();
-        Roles roles=rolesDao.get(Long.parseLong((String) roleObj.get("roleId")));
+        Roles roles = rolesDao.get(Long.parseLong((String) roleObj.get("roleId")));
         Set<String> rights = new HashSet<>();
         roleRight.setId(Long.parseLong((String) roleObj.get("id")));
         roleRight.setVersion(Long.parseLong((String) roleObj.get("version")));
         roleRight.setRoleId(roles.getId());
         roleRight.setRoleName(roles.getName());
-        if ((String)roleObj.get("VIEW_PRIVILEGE") != ""){
-            rights.add((String)roleObj.get("VIEW_PRIVILEGE"));
+        if ("".equals((String) roleObj.get("VIEW_PRIVILEGE"))) {
+            rights.add((String) roleObj.get("VIEW_PRIVILEGE"));
         }
 
-        if ((String)roleObj.get("WRITE_PRIVILEGE") != ""){
-            rights.add((String)roleObj.get("WRITE_PRIVILEGE"));
+        if ("".equals((String) roleObj.get("WRITE_PRIVILEGE"))) {
+            rights.add((String) roleObj.get("WRITE_PRIVILEGE"));
         }
 
-        if ((String)roleObj.get("EDIT_PRIVILEGE") != ""){
-            rights.add((String)roleObj.get("EDIT_PRIVILEGE"));
+        if ("".equals((String) roleObj.get("EDIT_PRIVILEGE"))) {
+            rights.add((String) roleObj.get("EDIT_PRIVILEGE"));
         }
 
-        if ((String)roleObj.get("DELETE_PRIVILEGE") != "")
-            rights.add((String)roleObj.get("DELETE_PRIVILEGE"));
+        if ("".equals((String) roleObj.get("DELETE_PRIVILEGE") )) {
+            rights.add((String) roleObj.get("DELETE_PRIVILEGE"));
+        }
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
         roleRight.setCreatedBy(getUserId().getEmail());
@@ -161,7 +164,7 @@ public class RoleRightServiceImpl implements RoleRightService {
         return roleRight;
     }
 
-    private RoleRight setUpdateCompanyValue(RoleRight objFromUI,RoleRight existingRoleRight) throws ParseException {
+    private RoleRight setUpdateCompanyValue(RoleRight objFromUI, RoleRight existingRoleRight) throws ParseException {
         RoleRight roleRightObj = new RoleRight();
         roleRightObj.setId(objFromUI.getId());
         roleRightObj.setVersion(objFromUI.getVersion());
@@ -178,9 +181,8 @@ public class RoleRightServiceImpl implements RoleRightService {
     }
 
 
-    private User getUserId(){
+    private User getUserId() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user=(User)auth.getPrincipal();
-        return user;
+        return (User) auth.getPrincipal();
     }
 }
