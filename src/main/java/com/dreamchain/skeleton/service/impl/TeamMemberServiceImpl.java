@@ -75,7 +75,7 @@ public class TeamMemberServiceImpl implements TeamMemberService {
         if ("".equals(validationMsg)) existingUser = teamMemberDao.findByUserName(user.getEmail());
         if (existingUser != null && "".equals(validationMsg)) validationMsg = EMAIL_EXISTS;
         msg = fileSave(request, PHOTO_TEAM_PATH);
-        if (msg.get("validationMsg") == "") user.setImagePath((String) msg.get("path"));
+        if ("".equals(msg.get("validationMsg"))) user.setImagePath((String) msg.get("path"));
         if ("".equals(validationMsg)) {
             long companyId = teamMemberDao.save(user);
             newUser = teamMemberDao.get(companyId);

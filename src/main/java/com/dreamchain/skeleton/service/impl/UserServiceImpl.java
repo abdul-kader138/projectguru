@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
         if (existingUser != null && "".equals(validationMsg)) validationMsg = EMAIL_EXISTS;
         if ("".equals(validationMsg) && "user".equals(usersType)) msg = fileSave(request, PHOTO_USER_PATH);
         if ("".equals(validationMsg) && "team_member".equals(usersType)) msg = fileSave(request, PHOTO_TEAM_PATH);
-        if (msg.get("validationMsg") == "") user.setImagePath((String) msg.get("path"));
+        if ("".equals(msg.get("validationMsg"))) user.setImagePath((String) msg.get("path"));
         if ("".equals(validationMsg)) {
             user.setClientId(environment.getProperty("user.vendor.id"));
             user.setUserType(environment.getProperty("user.type.vendor"));
