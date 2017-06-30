@@ -1,11 +1,7 @@
 package com.dreamchain.skeleton.service.impl;
 
-import com.dreamchain.skeleton.dao.CompanyDao;
-import com.dreamchain.skeleton.dao.RoleRightDao;
-import com.dreamchain.skeleton.dao.RolesDao;
-import com.dreamchain.skeleton.model.Company;
-import com.dreamchain.skeleton.model.RoleRight;
-import com.dreamchain.skeleton.model.Roles;
+import com.dreamchain.skeleton.dao.*;
+import com.dreamchain.skeleton.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -15,8 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dreamchain.skeleton.dao.UserDao;
-import com.dreamchain.skeleton.model.User;
 import com.dreamchain.skeleton.service.UserService;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -44,6 +38,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     RolesDao rolesDao;
     @Autowired
+    ApprovalStatusDao approvalStatusDao;
+    @Autowired
     Environment environment;
 
     private static String EMAIL_EXISTS = "This email address already used.Please try again with new one!!!";
@@ -51,6 +47,8 @@ public class UserServiceImpl implements UserService {
     private static String OLD_PASSWORD_NOT_MATCHED = "Your previous password not matched!!";
     private static String INVALID_INPUT = "Invalid input";
     private static String INVALID_USER = "User not exists";
+    private static String USER_ASSOCIATED_APPROVAL_UPDATE = "User can't update due to association with request";
+    private static String USER_ASSOCIATED_APPROVAL_DELETE = "User can't update due to association with request";
     private static String BACK_DATED_DATA = "User data is old.Please try again with updated data";
     private static String PHOTO_USER_PATH = "/resources/images/user_photo/";
     private static String PHOTO_TEAM_PATH = "/resources/images/team_member_photo/";
@@ -102,11 +100,14 @@ public class UserServiceImpl implements UserService {
     public Map<String, Object> updateUser(MultipartHttpServletRequest request, String usersType) throws Exception {
         Map<String, Object> obj = new HashMap<>();
         Map<String, Object> msg = new HashMap<>();
+        List<ApprovalStatus> approvalStatuses=new ArrayList<>();
         String validationMsg = "";
         User newUser = new User();
         User existingUser = new User();
         User user = createObjForSave(request, "update");
         validationMsg = checkInput(user);
+        if ("".equals(validationMsg)) approvalStatuses= approvalStatusDao.findByApprovedById(user.getId());
+        if(approvalStatuses.size() !=0 && "".equals(validationMsg)) validationMsg=USER_ASSOCIATED_APPROVAL_UPDATE;
         if ("".equals(validationMsg)) existingUser = userDao.get(user.getId());
         if (existingUser.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_USER;
         if (user.getVersion() != existingUser.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
@@ -136,13 +137,12 @@ public class UserServiceImpl implements UserService {
     public String delete(Long userId, HttpServletRequest request) {
         String validationMsg = "";
         String fileName = "";
+        List<ApprovalStatus> approvalStatuses=new ArrayList<>();
         if (userId == 0l) validationMsg = INVALID_INPUT;
         User user = userDao.get(userId);
         if (user == null && "".equals(validationMsg)) validationMsg = INVALID_USER;
-
-        // later implementation
-//        List<Object> obj = userDao.countOfCompany(companyId);
-//        if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_COMPANY;
+        if ("".equals(validationMsg)) approvalStatuses= approvalStatusDao.findByApprovedById(user.getId());
+        if(approvalStatuses.size() !=0 && "".equals(validationMsg)) validationMsg=USER_ASSOCIATED_APPROVAL_DELETE;
         if (user != null) fileName = user.getImagePath();
         if ("".equals(validationMsg)) validationMsg = deletePhoto(request.getRealPath("/"), fileName);
         if ("".equals(validationMsg)) {

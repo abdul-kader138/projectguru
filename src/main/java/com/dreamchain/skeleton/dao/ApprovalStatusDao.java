@@ -14,5 +14,6 @@ public interface ApprovalStatusDao {
     List<ApprovalStatus> findByUserIdAndRequestId(long userId,long requestId);
     ApprovalStatus findByRequestIdAndUserType(long requestId,String UserType);
     Set<ApprovalStatus> findByApprovedId(long userId);
+    List<ApprovalStatus> findByApprovedById(long userId);
     void delete(Long id);
 }

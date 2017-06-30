@@ -1,10 +1,7 @@
 package com.dreamchain.skeleton.service.impl;
 
 import com.dreamchain.skeleton.dao.*;
-import com.dreamchain.skeleton.model.Company;
-import com.dreamchain.skeleton.model.RoleRight;
-import com.dreamchain.skeleton.model.Roles;
-import com.dreamchain.skeleton.model.User;
+import com.dreamchain.skeleton.model.*;
 import com.dreamchain.skeleton.service.TeamMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
@@ -39,6 +36,8 @@ public class TeamMemberServiceImpl implements TeamMemberService {
     @Autowired
     RolesDao rolesDao;
     @Autowired
+    ApprovalStatusDao approvalStatusDao;
+    @Autowired
     Environment environment;
 
     private static String EMAIL_EXISTS = "This email address already used.Please try again with new one!!!";
@@ -46,6 +45,8 @@ public class TeamMemberServiceImpl implements TeamMemberService {
     private static String INVALID_USER = "Team Member not exists";
     private static String BACK_DATED_DATA = "This data is old.Please try again with updated data";
     private static String PHOTO_TEAM_PATH = "/resources/images/team_member_photo/";
+    private static String USER_ASSOCIATED_APPROVAL_UPDATE = "Team member can't update due to association with request";
+    private static String USER_ASSOCIATED_APPROVAL_DELETE = "Team member can't update due to association with request";
 
     @Transactional(readOnly = true)
     public User get(Long id) {
@@ -91,11 +92,14 @@ public class TeamMemberServiceImpl implements TeamMemberService {
     public Map<String, Object> updateUser(MultipartHttpServletRequest request, String usersType) throws Exception {
         Map<String, Object> obj = new HashMap<>();
         Map<String, Object> msg = new HashMap<>();
+        List<ApprovalStatus> approvalStatuses=new ArrayList<>();
         String validationMsg = "";
         User newUser = new User();
         User existingUser = new User();
         User user = createObjForSave(request, "update");
         validationMsg = checkInput(user);
+        if ("".equals(validationMsg)) approvalStatuses= approvalStatusDao.findByApprovedById(user.getId());
+        if(approvalStatuses.size() !=0 && "".equals(validationMsg)) validationMsg=USER_ASSOCIATED_APPROVAL_UPDATE;
         if ("".equals(validationMsg)) existingUser = teamMemberDao.get(user.getId());
         if (existingUser.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_USER;
         if (user.getVersion() != existingUser.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
@@ -124,6 +128,7 @@ public class TeamMemberServiceImpl implements TeamMemberService {
     public String delete(Long userId, HttpServletRequest request) {
         String validationMsg = "";
         String fileName = "";
+        List<ApprovalStatus> approvalStatuses=new ArrayList<>();
         if (userId == 0l) validationMsg = INVALID_INPUT;
         User user = teamMemberDao.get(userId);
         if (user == null && "".equals(validationMsg)) validationMsg = INVALID_USER;
@@ -131,6 +136,8 @@ public class TeamMemberServiceImpl implements TeamMemberService {
         // later implementation
 //        List<Object> obj = userDao.countOfCompany(companyId);
 //        if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_COMPANY;
+        if ("".equals(validationMsg)) approvalStatuses= approvalStatusDao.findByApprovedById(user.getId());
+        if(approvalStatuses.size() !=0 && "".equals(validationMsg)) validationMsg=USER_ASSOCIATED_APPROVAL_DELETE;
         if (user != null) fileName = user.getImagePath();
         if ("".equals(validationMsg)) validationMsg = deletePhoto(request.getRealPath("/"), fileName);
         if ("".equals(validationMsg)) {

@@ -109,4 +109,13 @@ public class ApprovalStatusDaoImpl implements ApprovalStatusDao {
         hibernateTemplate.deleteAll(approvalStatusList);
     }
 
+    @Override
+    public List<ApprovalStatus> findByApprovedById(long userId) {
+        DetachedCriteria dcr = DetachedCriteria.forClass(ApprovalStatus.class);
+        Criterion cr = Restrictions.eq("approvedById", userId);
+        dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        List<Object> lst = hibernateTemplate.findByCriteria(dcr);
+        return createApprovalList(lst);
+    }
+
 }
