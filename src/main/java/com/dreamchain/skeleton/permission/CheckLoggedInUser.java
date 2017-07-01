@@ -1,7 +1,6 @@
 package com.dreamchain.skeleton.permission;
 
 import com.dreamchain.skeleton.model.User;
-import com.dreamchain.skeleton.service.CustomerService;
 import com.dreamchain.skeleton.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

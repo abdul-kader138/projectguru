@@ -1,0 +1,55 @@
+INSERT INTO company(
+            id, address, created_by,image_path, name,version,client_id)
+    VALUES (9999999993, 'Dhaka', 'admin@domain.com', '/resources/images/company_logo/default.jpg','Test Company', 0,'PG');
+
+INSERT INTO roles(
+            id, created_by, description, name,version)
+    VALUES (9999999991, 'admin@domain.com', 'ROLE_SUPER_ADMIN', 'ROLE_SUPER_ADMIN',0);
+
+INSERT INTO role_right(
+            id, created_by,role_id,version, role_name)
+    VALUES (9999999992, 'admin@domain.com', 9999999991,0, 'ROLE_SUPER_ADMIN');
+
+   INSERT INTO rights(id, rights) VALUES (9999999992, 'View');
+   INSERT INTO rights(id, rights) VALUES (9999999992, 'Write');
+   INSERT INTO rights(id, rights) VALUES (9999999992, 'Edit');
+   INSERT INTO rights(id, rights) VALUES (9999999992, 'Delete');
+
+
+INSERT INTO users(
+            id,  email, name, password, phone, role, version,image_path,designation,role_right,role_rights_id,company_id,company,user_type,client_id)
+    VALUES (9999999999,'admin@domain.com', 'Admin User','$2a$10$8ftimfEd8fCvG/cxprK80.1ksGmcMKqCiYAv5doFz5hIipMwn3u16','09876543211', 'ROLE_SUPER_ADMIN',0,'/resources/images/user_photo/user.png','SD',9999999992,9999999992,9999999993,9999999993,'vendor','PG');
+
+
+INSERT INTO roles(
+            id, created_by, description, name,version)
+    VALUES (9999999994, 'admin@domain.com', 'ROLE_USER', 'ROLE_USER',0);
+
+INSERT INTO role_right(
+            id, created_by,role_id,version, role_name)
+    VALUES (9999999995, 'admin@domain.com', 9999999994,0, 'ROLE_USER');
+
+   INSERT INTO rights(id, rights) VALUES (9999999995, 'View');
+   INSERT INTO rights(id, rights) VALUES (9999999995, 'Write');
+
+INSERT INTO roles(
+            id, created_by, description, name,version)
+    VALUES (9999999981, 'admin@domain.com', 'ROLE_ADMIN', 'ROLE_ADMIN',0);
+
+INSERT INTO role_right(
+            id, created_by,role_id,version, role_name)
+    VALUES (9999999982, 'admin@domain.com', 9999999981,0, 'ROLE_ADMIN');
+
+   INSERT INTO rights(id, rights) VALUES (9999999982, 'View');
+   INSERT INTO rights(id, rights) VALUES (9999999982, 'Write');
+   INSERT INTO rights(id, rights) VALUES (9999999982, 'Edit');
+
+
+ INSERT INTO company(
+               id, address, created_by,image_path, name,version,client_id)
+       VALUES (9999999989, 'Dhaka', 'admin@domain.com', '/resources/images/company_logo/default1.jpg','Test-2', 0,'TEST-001');
+
+
+ INSERT INTO users(
+               id,  email, name, password, phone, role, version,image_path,designation,role_right,role_rights_id,company_id,company,user_type,client_id)
+       VALUES (9999999998,'admin@client.com', 'Admin User','$2a$10$8ftimfEd8fCvG/cxprK80.1ksGmcMKqCiYAv5doFz5hIipMwn3u16','09876543211', 'ROLE_ADMIN',0,'/resources/images/team_member_photo/client.png','SD',9999999982,9999999982,9999999989,9999999989,'client','TEST-001');

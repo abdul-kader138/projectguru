@@ -18,14 +18,4 @@
 
 	<bean class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
 
-	<!--<wss:binding url="/customer">-->
-		<!--<wss:service>-->
-			<!--<ws:service bean="#ApplicationWSEndpoint" />-->
-		<!--</wss:service>-->
-	<!--</wss:binding>-->
-
-
-	<!--<bean id="ApplicationWSEndpoint" class="com.dreamchain.skeleton.WS.ApplicationWS" autowire="byType">-->
-	<!--</bean>-->
-
 </beans>
