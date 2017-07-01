@@ -7,6 +7,7 @@ import com.dreamchain.skeleton.model.ApprovalStatus;
 import com.dreamchain.skeleton.model.ChangeRequest;
 import com.dreamchain.skeleton.model.User;
 import com.dreamchain.skeleton.service.ApprovalStatusService;
+import com.dreamchain.skeleton.utility.EmailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -15,6 +16,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.Authenticator;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
@@ -39,6 +43,12 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
     private static String INVALID_APPROVAL_DATA = "Data not exists";
     private static String INVALID_REQUEST_DATA = "Data not exists";
     private static String BACK_DATED_DATA = "Approval data is old.Please try again with updated data";
+    private static String EMAIL_HEADER_SAVE = "Request is waiting for approval!!!!";
+    private static String EMAIL_HEADER_DELETE = "Request Delete !!!!";
+    private static String EMAIL_BODY_DELETE = "your asking request is delete.Request Name ##";
+    private static String EMAIL_BODY_SAVE= "Request is waiting at your Approval Explorer for approve.Request Name ##";
+
+
 
     @Override
     public ApprovalStatus get(Long id) {
@@ -49,17 +59,23 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
     public Map<String, Object> update(Map<String, Object> approvalObj, HttpServletRequest request) throws ParseException {
         Map<String, Object> obj = new HashMap<>();
         String validationMsg = "";
-        Date deliveryDate=null;
+        Date deliveryDate = null;
+        Integer days;
         List<ApprovalStatus> ObjList = new ArrayList<>();
         Integer approvedBy = (Integer) approvalObj.get("id");
         Integer versionId = (Integer) approvalObj.get("version");
-        String date=(String) approvalObj.get("date");
-        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
-        if(!"".equals(date) && date !=null) deliveryDate = sdf.parse(date);
+        String date = (String) approvalObj.get("date");
+        String day = (String) approvalObj.get("day");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if (!"".equals(date) && date != null) deliveryDate = sdf.parse(date);
         long version = versionId.longValue();
         long approvedById = approvedBy.longValue();
         ApprovalStatus approvalStatus = approvalStatusDao.get(approvedById);
-        approvalStatus.setDeliverDate(deliveryDate);
+        days = approvalStatus.getRequiredDay();
+        if (!"".equals(day) && day != null) days = Integer.parseInt(day);
+        if (approvalStatus.getUserType().equals(environment.getProperty("approval.user.approvedBy")))
+            approvalStatus.setDeliverDate(setDeliveryDate(days));
+        if (!"".equals(day) && day != null) approvalStatus.setRequiredDay(days);
         if (approvalStatus.getId() == 0l && "".equals(validationMsg)) validationMsg = INVALID_INPUT;
         if (approvalStatus.getVersion() != version && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg)) ObjList = saveApprovalObj(approvalStatus);
@@ -84,23 +100,23 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
     }
 
 
-
     @Transactional
-    public String delete(long requestId,long id,HttpServletRequest request) {
+    public String delete(long requestId, long id, HttpServletRequest request) {
         String validationMsg = "";
         if (requestId == 0l) validationMsg = INVALID_INPUT;
-        ApprovalStatus  approvalStatus = approvalStatusDao.get(id);
-        ChangeRequest changeRequest=changeRequestDao.get(requestId);
-        if ("".equals(approvalStatus.getStatus())  && "".equals(validationMsg)) validationMsg = INVALID_APPROVAL_DATA;
-        if ("".equals(changeRequest.getStatus())  && "".equals(validationMsg)) validationMsg = INVALID_REQUEST_DATA;
+        ApprovalStatus approvalStatus = approvalStatusDao.get(id);
+        ChangeRequest changeRequest = changeRequestDao.get(requestId);
+        if ("".equals(approvalStatus.getStatus()) && "".equals(validationMsg)) validationMsg = INVALID_APPROVAL_DATA;
+        if ("".equals(changeRequest.getStatus()) && "".equals(validationMsg)) validationMsg = INVALID_REQUEST_DATA;
         //@todo
 //        List<Object> obj=departmentDao.countOfDepartment(departmentId);
 //        if (obj.size() > 0 && validationMsg == "") validationMsg = ASSOCIATED_DEPARTMENT;
         if ("".equals(validationMsg)) {
-            String filePath=changeRequest.getDocPath();
-            deleteDoc(filePath,request);
+            String filePath = changeRequest.getDocPath();
+            deleteDoc(filePath, request);
             changeRequestDao.delete(changeRequest);
             approvalStatusDao.delete(requestId);
+            sendEmail(changeRequest.getRequestBy().getEmail(), EMAIL_HEADER_DELETE, EMAIL_BODY_DELETE + changeRequest.getName());
         }
         return validationMsg;
     }
@@ -118,30 +134,35 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
             approvalStatusList.add(setApprovalStatusValue(approvalStatus, environment.getProperty("approval.status.done")));
             ApprovalStatus approvedByStatus = approvalStatusDao.findByRequestIdAndUserType(approvalStatus.getRequestId(), environment.getProperty("approval.user.approvedBy"));
             approvalStatusList.add(setApprovalStatusValue(approvedByStatus, environment.getProperty("approval.status.waiting")));
-            approvedByStatus.setDeliverDate(approvalStatus.getDeliverDate());
+//            approvedByStatus.setDeliverDate(approvalStatus.getDeliverDate());
+            approvedByStatus.setRequiredDay(approvalStatus.getRequiredDay()); // set required Days for developer
         }
         if (environment.getProperty("approval.user.approvedBy").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.waiting").equals(approvalStatus.getStatus())) {
             approvalStatusList.add(setApprovalStatusValue(approvalStatus, environment.getProperty("approval.status.done")));
             ApprovalStatus acknowledgementITStatus = approvalStatusDao.findByRequestIdAndUserType(approvalStatus.getRequestId(), environment.getProperty("approval.user.acknowledgementIT"));
             approvalStatusList.add(setApprovalStatusValue(acknowledgementITStatus, environment.getProperty("approval.status.waiting")));
             acknowledgementITStatus.setDeliverDate(approvalStatus.getDeliverDate());
+            acknowledgementITStatus.setRequiredDay(approvalStatus.getRequiredDay());
         }
         if (environment.getProperty("approval.user.acknowledgementIT").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.waiting").equals(approvalStatus.getStatus())) {
             approvalStatusList.add(setApprovalStatusValue(approvalStatus, environment.getProperty("approval.status.done")));
             ApprovalStatus acknowledgeCheckedByStatus = approvalStatusDao.findByRequestIdAndUserType(approvalStatus.getRequestId(), environment.getProperty("approval.user.acknowledgeCheckedBy"));
             approvalStatusList.add(setApprovalStatusValue(acknowledgeCheckedByStatus, environment.getProperty("approval.status.waiting")));
             acknowledgeCheckedByStatus.setDeliverDate(approvalStatus.getDeliverDate());
+            acknowledgeCheckedByStatus.setRequiredDay(approvalStatus.getRequiredDay());
         }
         if (environment.getProperty("approval.user.acknowledgeCheckedBy").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.waiting").equals(approvalStatus.getStatus())) {
             approvalStatusList.add(setApprovalStatusValue(approvalStatus, environment.getProperty("approval.status.done")));
             ApprovalStatus acknowledgementStatus = approvalStatusDao.findByRequestIdAndUserType(approvalStatus.getRequestId(), environment.getProperty("approval.user.acknowledgement"));
             approvalStatusList.add(setApprovalStatusValue(acknowledgementStatus, environment.getProperty("approval.status.waiting")));
             acknowledgementStatus.setDeliverDate(approvalStatus.getDeliverDate());
+            acknowledgementStatus.setRequiredDay(approvalStatus.getRequiredDay());
         }
         if (environment.getProperty("approval.user.acknowledgement").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.waiting").equals(approvalStatus.getStatus())) {
             approvalStatusList.add(setApprovalStatusValue(approvalStatus, environment.getProperty("approval.status.done")));
-            ChangeRequest changeRequest=changeRequestDao.get(approvalStatus.getRequestId());
+            ChangeRequest changeRequest = changeRequestDao.get(approvalStatus.getRequestId());
             approvalStatus.setDeliverDate(changeRequest.getDeliverDate());
+            approvalStatus.setRequiredDay(changeRequest.getRequiredDay());
         }
         return approvalStatusList;
     }
@@ -170,6 +191,7 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
                 changeRequest.setWipStatus(environment.getProperty("approval.wip.status.done"));
                 changeRequest.setStatus(environment.getProperty("approval.status.done"));
                 approvalStatus.setDeliverDate(changeRequest.getDeliverDate());
+                approvalStatus.setRequiredDay(changeRequest.getRequiredDay());
                 approvalStatusDao.save(approvalStatus);
                 changeRequestDao.save(changeRequest);
 
@@ -180,35 +202,42 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
                 changeRequest.setWipStatus(environment.getProperty("approval.status.approve.type.itCoordinatorBy"));
                 approvalStatusDao.save(approvalStatus);
                 changeRequestDao.save(changeRequest);
+                sendEmail(changeRequest.getItCoordinator().getEmail(), EMAIL_HEADER_SAVE, EMAIL_BODY_SAVE + changeRequest.getName());
             } else if (environment.getProperty("approval.user.itCoordinator").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.done").equals(approvalStatus.getStatus())) {
                 ChangeRequest changeRequest = changeRequestDao.get(approvalStatus.getRequestId());
                 changeRequest.setWipStatus(environment.getProperty("approval.status.approve.type.approvedBy"));
-                changeRequest.setDeliverDate(approvalStatus.getDeliverDate());
+                changeRequest.setRequiredDay(approvalStatus.getRequiredDay());
                 approvalStatusDao.save(approvalStatus);
                 changeRequestDao.save(changeRequest);
+                sendEmail(changeRequest.getApprovedBy().getEmail(), EMAIL_HEADER_SAVE, EMAIL_BODY_SAVE + changeRequest.getName());
             } else if (environment.getProperty("approval.user.approvedBy").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.done").equals(approvalStatus.getStatus())) {
                 ChangeRequest changeRequest = changeRequestDao.get(approvalStatus.getRequestId());
                 changeRequest.setWipStatus(environment.getProperty("approval.status.approve.type.acknowledgeBy.itCoordinator"));
-                approvalStatus.setDeliverDate(changeRequest.getDeliverDate());
+                changeRequest.setDeliverDate(approvalStatus.getDeliverDate());
                 approvalStatusDao.save(approvalStatus);
                 changeRequestDao.save(changeRequest);
+                sendEmail(changeRequest.getAcknowledgedItCoordinator().getEmail(), EMAIL_HEADER_SAVE, EMAIL_BODY_SAVE + changeRequest.getName());
             } else if (environment.getProperty("approval.user.acknowledgementIT").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.done").equals(approvalStatus.getStatus())) {
                 ChangeRequest changeRequest = changeRequestDao.get(approvalStatus.getRequestId());
                 changeRequest.setWipStatus(environment.getProperty("approval.status.approve.type.acknowledgeBy.checkedBy"));
                 approvalStatus.setDeliverDate(changeRequest.getDeliverDate());
+                approvalStatus.setRequiredDay(changeRequest.getRequiredDay());
                 approvalStatusDao.save(approvalStatus);
                 changeRequestDao.save(changeRequest);
+                sendEmail(changeRequest.getAcknowledgeChecked().getEmail(), EMAIL_HEADER_SAVE, EMAIL_BODY_SAVE + changeRequest.getName());
             } else if (environment.getProperty("approval.user.acknowledgeCheckedBy").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.done").equals(approvalStatus.getStatus())) {
                 ChangeRequest changeRequest = changeRequestDao.get(approvalStatus.getRequestId());
                 changeRequest.setWipStatus(environment.getProperty("approval.status.approve.type.acknowledgeBy.requestBy"));
                 approvalStatus.setDeliverDate(changeRequest.getDeliverDate());
+                approvalStatus.setRequiredDay(changeRequest.getRequiredDay());
                 changeRequestDao.save(changeRequest);
                 approvalStatusDao.save(approvalStatus);
+                sendEmail(changeRequest.getAcknowledgement().getEmail(), EMAIL_HEADER_SAVE, EMAIL_BODY_SAVE + changeRequest.getName());
             }
         }
     }
 
-    private String deleteDoc(String realPathFetch,HttpServletRequest request) {
+    private String deleteDoc(String realPathFetch, HttpServletRequest request) {
         String msg = "";
         try {
             String realPath = request.getRealPath("/");
@@ -220,6 +249,36 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
             msg = e.getMessage();
         }
         return msg;
+    }
+
+    private Date setDeliveryDate(int requiredDays) {
+        Date date = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.DATE, requiredDays);
+        date = c.getTime();
+        return date;
+    }
+
+
+    private void sendEmail(String toEmail, String header, String body) {
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class",
+                "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "465");
+
+        Authenticator auth = new Authenticator() {
+            //override the getPasswordAuthentication method
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(environment.getProperty("approval.send.email.from.id"), environment.getProperty("approval.send.email.from.password"));
+            }
+        };
+        Session session = Session.getDefaultInstance(props, auth);
+        EmailUtil.sendEmail(session, toEmail, header, body);
+
     }
 
 }

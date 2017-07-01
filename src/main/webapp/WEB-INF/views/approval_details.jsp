@@ -16,13 +16,14 @@
                 <table id="approveTable" class="display nowrap" cellspacing="0" width="100%">
                     <thead>
                     <tr>
-                        <th width="2px"></th>
+                        <%--<th width="2px"></th>--%>
                         <th width="200px">Name</th>
                         <th width="200px">Description</th>
                         <th width="200px">Product</th>
                         <th width="200px">Category</th>
                         <th width="350px">Approve Type</th>
                         <th width="300px">Request Date</th>
+                        <th width="300px">Require Days</th>
                         <th width="350px">Delivery Date</th>
                         <th width="350px">Attachment</th>
                         <th></th>
@@ -56,17 +57,6 @@
                     "sAjaxDataProp": "",
                     "order": [[0, "asc"]],
                     'aoColumns': [
-                        {
-                            "mData": "deliverDate",
-                            "render": function (data, type, row) {
-                                if (row.deliverDate != null) {
-                                    var date = new Date(row.deliverDate);
-                                    var dateFormat = date.toISOString("mm").substr(0, 10);
-                                return '<input type="hidden" id=deliveryDate' + row.id + ' value='+dateFormat+'>';
-                                }
-                                else return '<input  type="hidden" id=deliveryDate' + row.id + ' value="">';
-                            }
-                        },
                         {"mData": "requestName", 'sWidth': '150px'},
                         {"mData": "requestDetails", 'sWidth': '250px'},
                         {"mData": "product.name", 'sWidth': '250px'},
@@ -81,10 +71,20 @@
                             }
                         },
                         {
-                            "mData": "id",
+                            "mData": "requiredDay",
                             "render": function (data, type, row, id) {
-                                if (row.userType == messageResource.get('approve.user.type.itCoordinator', 'configMessageForUI')) return '<input class="deliveryDate" type="text" id=' + row.id + ' >';
+                                console.log(row);
+                                console.log(row.requiredDay);
+                                if (row.userType == messageResource.get('approve.user.type.itCoordinator', 'configMessageForUI')) return '<input class="requiredDay" type="number" step="any"  id=requiredDay' + row.id + ' >';
                                 else {
+                                    if (row.requiredDay != null) return row.requiredDay;
+                                    else return messageResource.get('approve.delivery.day.column.msg', 'configMessageForUI');
+                                }
+                            }
+                        },
+                        {
+                            "mData": "deliverDate",
+                            "render": function (data, type, row, id) {
                                     if (row.deliverDate != null) {
                                         var date = new Date(row.deliverDate);
                                         var dateFormat = date.toISOString("mm").substr(0, 10);
@@ -92,7 +92,6 @@
                                     }
                                     else return messageResource.get('approve.delivery.date.column.msg', 'configMessageForUI');
                                 }
-                            }
                         },
                         {
                             "mData": "docPath",
@@ -150,14 +149,13 @@
                 approvalObj.id = data.id;
                 approvalObj.requestId = data.requestId;
                 approvalObj.version = version;
-                approvalObj.date = blankDeliveryDate;
-                var date = $('#deliveryDate' + data.id).val();
-                var deliveryDate = $('#' + data.id).val();
-                if(deliveryDate !="") approvalObj.date = deliveryDate;
-                if(date !="") approvalObj.date = date;
+                var day = $('#requiredDay' + data.id).val();
+                console.log(day);
+                if(day !="") approvalObj.day = day;
+                console.log(approvalObj);
                 if (obj.className.split(' ')[0] == messageResource.get('button.name.approve', 'configMessageForUI')) {
                     if (data.userType == messageResource.get('approve.user.type.itCoordinator', 'configMessageForUI')) {
-                        if (checkApproveDate(approvalObj.date)) callAjaxForEditOperation(part1, part2, icn, msg, approvalObj);
+                        if (checkApproveDate(approvalObj.day)) callAjaxForEditOperation(part1, part2, icn, msg, approvalObj);
                     } else {
                         callAjaxForEditOperation(part1, part2, icn, msg, approvalObj);
                     }
@@ -272,25 +270,18 @@
 //        if()
 
             function checkApproveDate(obj) {
+                console.log(obj);
                 var isValid = true;
                 if (obj == null || obj.length == 0 || obj == undefined) {
-                    showServerSideMessage(messageResource.get('approve.delivery.date.msg', 'configMessageForUI'), "", 0, "Message");
+                    showServerSideMessage(messageResource.get('approve.delivery.day.msg', 'configMessageForUI'), "", 0, "Message");
                     isValid = false;
                 }
+
+                var valid = /^\d{0,3}?$/.test(obj);
+                if(!valid) isValid = false;
                 return isValid;
             }
 
-            function renderValue(obj) {
-                var data = "";
-                if (obj != null || obj != undefined) {
-                    var date = new Date(obj);
-                    var dateFormat = date.toISOString("mm").substr(0, 10);
-                    data = dateFormat;
-                    return data;
-                } else {
-                    return data;
-                }
-            }
         });
 
     </script>

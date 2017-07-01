@@ -31,7 +31,6 @@
 
     <link href="resources/node_modules/adminbsb/waitme/waitMe.css" rel="stylesheet"/>
 
-    <%--<link href="resources/node_modules/adminbsb/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>--%>
 
     <!-- Custom Css -->
     <link href="resources/node_modules/adminbsb/css/style.css" rel="stylesheet">
@@ -44,9 +43,6 @@
     <link href="resources/node_modules/imageloader/loadimg.min.css" rel="stylesheet"/>
 
     <link href="resources/node_modules/custom-css/app.css" rel="stylesheet"/>
-    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet"/>
-    <link type="text/css" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css"
-          rel="stylesheet"/>
 
     <script src="resources/node_modules/datatable/jquery.js"></script>
 

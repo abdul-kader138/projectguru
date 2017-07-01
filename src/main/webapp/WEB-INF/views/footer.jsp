@@ -1,10 +1,4 @@
 
-<!-- Jquery Core Js -->
-<%--<script src="resources/node_modules/adminbsb/jquery/jquery.min.js"></script>--%>
-
-
-
-
 <script type="text/javascript" src="resources/node_modules/message/messageResource.js"></script>
 <script type="text/ecmascript" src="resources/node_modules/datatable/jquery.dataTables.min.js"></script>
 <script src="resources/node_modules/adminbsb/dialog/js/dialogbox.js"></script>
@@ -46,7 +40,6 @@
 <script src="resources/node_modules/imageloader/loadimg.min.js"></script>
 
 
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <%--<!-- Flot Charts Plugin Js -->--%>
 <script src="resources/node_modules/adminbsb/flot-charts/jquery.flot.js"></script>
@@ -62,12 +55,10 @@
 <script src="resources/node_modules/adminbsb/js/admin.js"></script>
 <script src="resources/node_modules/adminbsb/js/pages/index.js"></script>
 
-<%--<script src="resources/node_modules/adminbsb/js/pages/forms/basic-form-elements.js"></script>--%>
 
 <script src="resources/node_modules/adminbsb/js/pages/ui/dialogs.js"></script>
 <script src="resources/node_modules/adminbsb/js/pages/ui/modals.js"></script>
 
-<%--<script src="resources/node_modules/adminbsb/dialog/js/jquery.dialogBox.js"></script>--%>
 
 
 <!-- Demo Js -->
@@ -75,15 +66,7 @@
 
 <script src="resources/node_modules/custom-js/custom.js"></script>
 
-
-<%--<script src="resources/node_modules/custom-js/app.js"></script>--%>
-<%--<script src="resources/node_modules/custom-js/controller.js"></script>--%>
-
-<%--<script src="resources/node_modules/materialize/js/materialize.min.js"></script>--%>
-
-
 <script type="text/javascript" src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
-<%--<script type="text/javascript" src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>--%>
 
 
 

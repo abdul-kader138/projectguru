@@ -123,6 +123,8 @@ public class ChangeRequest implements Serializable {
     @Column
     private Date deliverDate;
 
+    @Column
+    private Integer requiredDay;
 
     @Column
     private String createdBy;
@@ -406,6 +408,14 @@ public class ChangeRequest implements Serializable {
 
     public void setDeliverDate(Date deliverDate) {
         this.deliverDate = deliverDate;
+    }
+
+    public Integer getRequiredDay() {
+        return requiredDay;
+    }
+
+    public void setRequiredDay(Integer requiredDay) {
+        this.requiredDay = requiredDay;
     }
 
     public ChangeRequest() {

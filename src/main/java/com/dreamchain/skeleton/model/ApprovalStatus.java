@@ -74,6 +74,10 @@ public class ApprovalStatus {
     @Column
     private Date deliverDate;
 
+    @Column
+    private Integer requiredDay;
+
+
     @NotEmpty
     @Length(max = 150)
     private String docPath;
@@ -276,5 +280,13 @@ public class ApprovalStatus {
 
     public void setDocPath(String docPath) {
         this.docPath = docPath;
+    }
+
+    public Integer getRequiredDay() {
+        return requiredDay;
+    }
+
+    public void setRequiredDay(Integer requiredDay) {
+        this.requiredDay = requiredDay;
     }
 }
