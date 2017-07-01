@@ -88,7 +88,7 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
             newChangeRequest = changeRequestDao.get(companyId);
             userLst = createApprovalList(newChangeRequest);
             saveApprovalObj(userLst, newChangeRequest);
-            sendEmail(newChangeRequest.getCheckedBy().getEmail(),EMAIL_HEADER_SAVE,EMAIL_BODY_SAVE+changeRequest.getName()); //mail sent to notify user for approving
+//            sendEmail(newChangeRequest.getCheckedBy().getEmail(),EMAIL_HEADER_SAVE,EMAIL_BODY_SAVE+changeRequest.getName()); //mail sent to notify user for approving
         }
         obj.put("changeRequest", newChangeRequest);
         obj.put("validationError", validationMsg);

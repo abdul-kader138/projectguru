@@ -14,7 +14,8 @@
                     </div>
                     <div class="content">
                         <div class="text">TOTAL USER REQUEST</div>
-                        <div class="number count-to"  id="requestAll" data-from="0" data-to="${totalRequest}" data-speed="15"
+                        <div class="number count-to" id="requestAll" data-from="0" data-to="${totalRequest}"
+                             data-speed="15"
                              data-fresh-interval="20"></div>
                     </div>
                 </div>
@@ -26,7 +27,8 @@
                     </div>
                     <div class="content">
                         <div class="text">REQUEST WORK IN PROGRESS</div>
-                        <div class="number count-to" id="requestOpen" data-from="0" data-to="${totalRequestOpen}" data-speed="20"
+                        <div class="number count-to" id="requestOpen" data-from="0" data-to="${totalRequestOpen}"
+                             data-speed="20"
                              data-fresh-interval="20"></div>
                     </div>
                 </div>
@@ -38,7 +40,8 @@
                     </div>
                     <div class="content">
                         <div class="text">REQUEST COMPLETED</div>
-                        <div class="number count-to" id="requestDone" data-from="0" data-to="${totalRequestDone}" data-speed="20"
+                        <div class="number count-to" id="requestDone" data-from="0" data-to="${totalRequestDone}"
+                             data-speed="20"
                              data-fresh-interval="20"></div>
                     </div>
                 </div>
@@ -160,7 +163,9 @@
                                         <th width="250px">Product</th>
                                         <th width="250px">Category</th>
                                         <th width="400px">Status (Waiting)</th>
+                                        <th width="100px">Days(Asking)</th>
                                         <th width="400px">Status (Done)</th>
+                                        <th width="100px">Days(Required)</th>
                                         <th width="400px">Attachment</th>
                                     </tr>
                                     </thead>
@@ -204,104 +209,104 @@
 
 
         <%--<div class="row clearfix">--%>
-            <%--<!-- Visitors -->--%>
-            <%--<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">--%>
-                <%--<div class="card">--%>
-                    <%--<div class="body bg-pink">--%>
-                        <%--<div class="sparkline" data-type="line" data-spot-Radius="4"--%>
-                             <%--data-highlight-Spot-Color="rgb(233, 30, 99)" data-highlight-Line-Color="#fff"--%>
-                             <%--data-min-Spot-Color="rgb(255,255,255)" data-max-Spot-Color="rgb(255,255,255)"--%>
-                             <%--data-spot-Color="rgb(255,255,255)"--%>
-                             <%--data-offset="90" data-width="100%" data-height="92px" data-line-Width="2"--%>
-                             <%--data-line-Color="rgba(255,255,255,0.7)"--%>
-                             <%--data-fill-Color="rgba(0, 188, 212, 0)">--%>
-                            <%--12,10,9,6,5,6,10,5,7,5,12,13,7,12,11--%>
-                        <%--</div>--%>
-                        <%--<ul class="dashboard-stat-list">--%>
-                            <%--<li>--%>
-                                <%--TODAY--%>
-                                <%--<span class="pull-right"><b>1 200</b> <small>USERS</small></span>--%>
-                            <%--</li>--%>
-                            <%--<li>--%>
-                                <%--YESTERDAY--%>
-                                <%--<span class="pull-right"><b>3 872</b> <small>USERS</small></span>--%>
-                            <%--</li>--%>
-                            <%--<li>--%>
-                                <%--LAST WEEK--%>
-                                <%--<span class="pull-right"><b>26 582</b> <small>USERS</small></span>--%>
-                            <%--</li>--%>
-                        <%--</ul>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-            <%--<!-- #END# Visitors -->--%>
-            <%--<!-- Latest Social Trends -->--%>
-            <%--<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">--%>
-                <%--<div class="card">--%>
-                    <%--<div class="body bg-cyan">--%>
-                        <%--<div class="m-b--35 font-bold">LATEST SOCIAL TRENDS</div>--%>
-                        <%--<ul class="dashboard-stat-list">--%>
-                            <%--<li>--%>
-                                <%--#socialtrends--%>
-                                    <%--<span class="pull-right">--%>
-                                        <%--<i class="material-icons">trending_up</i>--%>
-                                    <%--</span>--%>
-                            <%--</li>--%>
-                            <%--<li>--%>
-                                <%--#materialdesign--%>
-                                    <%--<span class="pull-right">--%>
-                                        <%--<i class="material-icons">trending_up</i>--%>
-                                    <%--</span>--%>
-                            <%--</li>--%>
-                            <%--<li>#adminbsb</li>--%>
-                            <%--<li>#freeadmintemplate</li>--%>
-                            <%--<li>#bootstraptemplate</li>--%>
-                            <%--<li>--%>
-                                <%--#freehtmltemplate--%>
-                                    <%--<span class="pull-right">--%>
-                                        <%--<i class="material-icons">trending_up</i>--%>
-                                    <%--</span>--%>
-                            <%--</li>--%>
-                        <%--</ul>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-            <%--<!-- #END# Latest Social Trends -->--%>
-            <%--<!-- Answered Tickets -->--%>
-            <%--<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">--%>
-                <%--<div class="card">--%>
-                    <%--<div class="body bg-teal">--%>
-                        <%--<div class="font-bold m-b--35">ANSWERED TICKETS</div>--%>
-                        <%--<ul class="dashboard-stat-list">--%>
-                            <%--<li>--%>
-                                <%--TODAY--%>
-                                <%--<span class="pull-right"><b>12</b> <small>TICKETS</small></span>--%>
-                            <%--</li>--%>
-                            <%--<li>--%>
-                                <%--YESTERDAY--%>
-                                <%--<span class="pull-right"><b>15</b> <small>TICKETS</small></span>--%>
-                            <%--</li>--%>
-                            <%--<li>--%>
-                                <%--LAST WEEK--%>
-                                <%--<span class="pull-right"><b>90</b> <small>TICKETS</small></span>--%>
-                            <%--</li>--%>
-                            <%--<li>--%>
-                                <%--LAST MONTH--%>
-                                <%--<span class="pull-right"><b>342</b> <small>TICKETS</small></span>--%>
-                            <%--</li>--%>
-                            <%--<li>--%>
-                                <%--LAST YEAR--%>
-                                <%--<span class="pull-right"><b>4 225</b> <small>TICKETS</small></span>--%>
-                            <%--</li>--%>
-                            <%--<li>--%>
-                                <%--ALL--%>
-                                <%--<span class="pull-right"><b>8 752</b> <small>TICKETS</small></span>--%>
-                            <%--</li>--%>
-                        <%--</ul>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-            <%--<!-- #END# Answered Tickets -->--%>
+        <%--<!-- Visitors -->--%>
+        <%--<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">--%>
+        <%--<div class="card">--%>
+        <%--<div class="body bg-pink">--%>
+        <%--<div class="sparkline" data-type="line" data-spot-Radius="4"--%>
+        <%--data-highlight-Spot-Color="rgb(233, 30, 99)" data-highlight-Line-Color="#fff"--%>
+        <%--data-min-Spot-Color="rgb(255,255,255)" data-max-Spot-Color="rgb(255,255,255)"--%>
+        <%--data-spot-Color="rgb(255,255,255)"--%>
+        <%--data-offset="90" data-width="100%" data-height="92px" data-line-Width="2"--%>
+        <%--data-line-Color="rgba(255,255,255,0.7)"--%>
+        <%--data-fill-Color="rgba(0, 188, 212, 0)">--%>
+        <%--12,10,9,6,5,6,10,5,7,5,12,13,7,12,11--%>
+        <%--</div>--%>
+        <%--<ul class="dashboard-stat-list">--%>
+        <%--<li>--%>
+        <%--TODAY--%>
+        <%--<span class="pull-right"><b>1 200</b> <small>USERS</small></span>--%>
+        <%--</li>--%>
+        <%--<li>--%>
+        <%--YESTERDAY--%>
+        <%--<span class="pull-right"><b>3 872</b> <small>USERS</small></span>--%>
+        <%--</li>--%>
+        <%--<li>--%>
+        <%--LAST WEEK--%>
+        <%--<span class="pull-right"><b>26 582</b> <small>USERS</small></span>--%>
+        <%--</li>--%>
+        <%--</ul>--%>
+        <%--</div>--%>
+        <%--</div>--%>
+        <%--</div>--%>
+        <%--<!-- #END# Visitors -->--%>
+        <%--<!-- Latest Social Trends -->--%>
+        <%--<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">--%>
+        <%--<div class="card">--%>
+        <%--<div class="body bg-cyan">--%>
+        <%--<div class="m-b--35 font-bold">LATEST SOCIAL TRENDS</div>--%>
+        <%--<ul class="dashboard-stat-list">--%>
+        <%--<li>--%>
+        <%--#socialtrends--%>
+        <%--<span class="pull-right">--%>
+        <%--<i class="material-icons">trending_up</i>--%>
+        <%--</span>--%>
+        <%--</li>--%>
+        <%--<li>--%>
+        <%--#materialdesign--%>
+        <%--<span class="pull-right">--%>
+        <%--<i class="material-icons">trending_up</i>--%>
+        <%--</span>--%>
+        <%--</li>--%>
+        <%--<li>#adminbsb</li>--%>
+        <%--<li>#freeadmintemplate</li>--%>
+        <%--<li>#bootstraptemplate</li>--%>
+        <%--<li>--%>
+        <%--#freehtmltemplate--%>
+        <%--<span class="pull-right">--%>
+        <%--<i class="material-icons">trending_up</i>--%>
+        <%--</span>--%>
+        <%--</li>--%>
+        <%--</ul>--%>
+        <%--</div>--%>
+        <%--</div>--%>
+        <%--</div>--%>
+        <%--<!-- #END# Latest Social Trends -->--%>
+        <%--<!-- Answered Tickets -->--%>
+        <%--<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">--%>
+        <%--<div class="card">--%>
+        <%--<div class="body bg-teal">--%>
+        <%--<div class="font-bold m-b--35">ANSWERED TICKETS</div>--%>
+        <%--<ul class="dashboard-stat-list">--%>
+        <%--<li>--%>
+        <%--TODAY--%>
+        <%--<span class="pull-right"><b>12</b> <small>TICKETS</small></span>--%>
+        <%--</li>--%>
+        <%--<li>--%>
+        <%--YESTERDAY--%>
+        <%--<span class="pull-right"><b>15</b> <small>TICKETS</small></span>--%>
+        <%--</li>--%>
+        <%--<li>--%>
+        <%--LAST WEEK--%>
+        <%--<span class="pull-right"><b>90</b> <small>TICKETS</small></span>--%>
+        <%--</li>--%>
+        <%--<li>--%>
+        <%--LAST MONTH--%>
+        <%--<span class="pull-right"><b>342</b> <small>TICKETS</small></span>--%>
+        <%--</li>--%>
+        <%--<li>--%>
+        <%--LAST YEAR--%>
+        <%--<span class="pull-right"><b>4 225</b> <small>TICKETS</small></span>--%>
+        <%--</li>--%>
+        <%--<li>--%>
+        <%--ALL--%>
+        <%--<span class="pull-right"><b>8 752</b> <small>TICKETS</small></span>--%>
+        <%--</li>--%>
+        <%--</ul>--%>
+        <%--</div>--%>
+        <%--</div>--%>
+        <%--</div>--%>
+        <%--<!-- #END# Answered Tickets -->--%>
         <%--</div>--%>
 
 
@@ -371,6 +376,13 @@
                         }
                     },
                     {
+                        "mData": "requiredDay", 'sWidth': '100px',
+                        "render": function (data, type, row, id) {
+                            if (row.requiredDay != null) return row.requiredDay;
+                            return messageResource.get('approve.delivery.day.column.msg', 'configMessageForUI');
+                        }
+                    },
+                    {
                         "mData": "wipStatus",
                         "render": function (data, type, row, id) {
                             if (row.wipStatus == messageResource.get('approval.status.approve.done', 'configMessageForUI')) return messageResource.get('request.status.wait.done', 'configMessageForUI');
@@ -378,10 +390,17 @@
                         }
                     },
                     {
+                        "mData": "deliverDate",
+                        "render": function (data, type, row, id) {
+                            if (row.deliverDate != null && row.status == messageResource.get('approval.status.approve.done', 'configMessageForUI')) return requiredDays(row.deliverDate,row.updatedOn);
+                            return  messageResource.get('approve.delivery.day.column.msg', 'configMessageForUI');
+                        }
+                    },
+                    {
                         "mData": "docPath",
                         "render": function (data, type, row, id) {
-                            var mainPath=document.origin+"/PG";
-                            return '<a href="'+mainPath+row.docPath+'" download>'+'Download</a>'
+                            var mainPath = document.origin + "/PG";
+                            return '<a href="' + mainPath + row.docPath + '" download>' + 'Download</a>'
                         }
                     }
                 ],
@@ -397,6 +416,13 @@
                 "scrollX": true
 
             });
+
+
+            function requiredDays (startDate,Enddate){
+                    var ONE_DAY = 1000 * 60 * 60 * 24
+                    var difference_ms = Math.abs(Enddate - startDate)
+                    return Math.round(difference_ms/ONE_DAY)
+            }
 
         });
     </script>

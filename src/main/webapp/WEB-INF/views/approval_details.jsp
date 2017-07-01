@@ -272,12 +272,12 @@
             function checkApproveDate(obj) {
                 console.log(obj);
                 var isValid = true;
-                if (obj == null || obj.length == 0 || obj == undefined) {
+                if (obj == null || obj == 0 || obj == undefined) {
                     showServerSideMessage(messageResource.get('approve.delivery.day.msg', 'configMessageForUI'), "", 0, "Message");
                     isValid = false;
                 }
 
-                var valid = /^\d{0,3}?$/.test(obj);
+                var valid = /^\d{1,3}?$/.test(obj);
                 if(!valid) isValid = false;
                 return isValid;
             }
