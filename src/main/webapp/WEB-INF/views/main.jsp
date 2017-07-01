@@ -158,15 +158,15 @@
                                     <thead>
                                     <tr>
                                         <th width="200px">Name</th>
-                                        <th width="300px">Description</th>
+                                        <th width="420px">Description</th>
                                         <th width="250px">Company</th>
                                         <th width="250px">Product</th>
                                         <th width="250px">Category</th>
-                                        <th width="400px">Status (Waiting)</th>
-                                        <th width="100px">Days(Asking)</th>
-                                        <th width="400px">Status (Done)</th>
-                                        <th width="100px">Days(Required)</th>
-                                        <th width="400px">Attachment</th>
+                                        <th width="420px"> Status</br>(Waiting)</th>
+                                        <th width="200px"> Status</br>(Done)</th>
+                                        <th width="40px"> Days</br>(Asking)</th>
+                                        <th width="40px"> Days</br>(Required)</th>
+                                        <th width="100px">Attachment</th>
                                     </tr>
                                     </thead>
                                 </table>
@@ -358,13 +358,13 @@
                 "sAjaxDataProp": "",
                 "order": [[0, "asc"]],
                 'aoColumns': [
-                    {"mData": "name", 'sWidth': '200px'},
-                    {"mData": "description", 'sWidth': '300px'},
-                    {"mData": "company.name", 'sWidth': '250px'},
-                    {"mData": "product.name", 'sWidth': '250px'},
-                    {"mData": "category.name", 'sWidth': '250px'},
+                    {"mData": "name", 'sWidth': '180px'},
+                    {"mData": "description", 'sWidth': '380px'},
+                    {"mData": "company.name", 'sWidth': '200px'},
+                    {"mData": "product.name", 'sWidth': '200px'},
+                    {"mData": "category.name", 'sWidth': '200px'},
                     {
-                        "mData": "wipStatus",
+                        "mData": "wipStatus",'sWidth': '380px',
                         "render": function (data, type, row, id) {
                             if (row.wipStatus == messageResource.get('approval.status.approve.type.checkedBy', 'configMessageForUI')) return messageResource.get('request.status.wait.checkedBy.approval', 'configMessageForUI');
                             if (row.wipStatus == messageResource.get('approval.status.approve.type.itCoordinatorBy', 'configMessageForUI')) return messageResource.get('request.status.wait.IT.acknowledgement', 'configMessageForUI');
@@ -376,28 +376,28 @@
                         }
                     },
                     {
-                        "mData": "requiredDay", 'sWidth': '100px',
-                        "render": function (data, type, row, id) {
-                            if (row.requiredDay != null) return row.requiredDay;
-                            return messageResource.get('approve.delivery.day.column.msg', 'configMessageForUI');
-                        }
-                    },
-                    {
-                        "mData": "wipStatus",
+                        "mData": "wipStatus",'sWidth': '180px',
                         "render": function (data, type, row, id) {
                             if (row.wipStatus == messageResource.get('approval.status.approve.done', 'configMessageForUI')) return messageResource.get('request.status.wait.done', 'configMessageForUI');
                             return " ";
                         }
                     },
                     {
-                        "mData": "deliverDate",
+                        "mData": "requiredDay", 'sWidth': '30px',
                         "render": function (data, type, row, id) {
-                            if (row.deliverDate != null && row.status == messageResource.get('approval.status.approve.done', 'configMessageForUI')) return requiredDays(row.deliverDate,row.updatedOn);
-                            return  messageResource.get('approve.delivery.day.column.msg', 'configMessageForUI');
+                            if (row.requiredDay != null) return row.requiredDay;
+                            return messageResource.get('approve.delivery.day.column.msg', 'configMessageForUI');
+                        }
+                    },
+                   {
+                        "mData": "deliverDate",'sWidth': '30px',
+                        "render": function (data, type, row, id) {
+                            if (row.deliverDate != null && row.status == messageResource.get('approval.status.approve.done', 'configMessageForUI')) return requiredDays(row.deliverDate, row.updatedOn);
+                            return messageResource.get('approve.delivery.day.column.msg', 'configMessageForUI');
                         }
                     },
                     {
-                        "mData": "docPath",
+                        "mData": "docPath",'sWidth': '80px',
                         "render": function (data, type, row, id) {
                             var mainPath = document.origin + "/PG";
                             return '<a href="' + mainPath + row.docPath + '" download>' + 'Download</a>'
@@ -418,10 +418,14 @@
             });
 
 
-            function requiredDays (startDate,Enddate){
-                    var ONE_DAY = 1000 * 60 * 60 * 24
-                    var difference_ms = Math.abs(Enddate - startDate)
-                    return Math.round(difference_ms/ONE_DAY)
+            function requiredDays(startDate, Enddate) {
+                var ONE_DAY = 1000 * 60 * 60 * 24;
+                var difference_ms = Math.abs(Enddate - startDate);
+                console.log(startDate);
+                console.log(Enddate);
+                console.log(difference_ms);
+                console.log(Math.round(difference_ms / ONE_DAY));
+                return Math.round(difference_ms / ONE_DAY);
             }
 
         });
