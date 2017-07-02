@@ -16,14 +16,13 @@
         <table id="userTable" class="display nowrap" cellspacing="0" width="100%">
           <thead>
           <tr>
-            <th width="15px">id</th>
-            <th width="200px">Name</th>
-            <th width="200px">Email</th>
-            <%--<th width="200px">Phone</th>--%>
-            <th width="200px">Designation</th>
-            <th width="200px">Role</th>
-            <th width="200px">Photo</th>
-            <th width="200px">Company name</th>
+              <th width="15px">id</th>
+              <th width="100px">Name</th>
+              <th width="100px">Email</th>
+              <th width="100px">Designation</th>
+              <th width="100px">Role</th>
+              <th width="50px">Photo</th>
+              <th width="100px">Company name</th>
 
           </tr>
           </thead>
@@ -271,18 +270,57 @@
               'sWidth': '15px',
               'bSortable': false
             },
-            {"mData": "name", 'sWidth': '200px'},
-            {"mData": "email", 'sWidth': '200px'},
-//            {"mData": "phone", 'sWidth': '200px'},
-            {"mData": "designation", 'sWidth': '200px'},
-            {"mData": "roleRight.roleName", 'sWidth': '200px'},
-            {
-              "mData": "path",
-              "render": function (url, type, full) {
-                return '<img src="' + mainPath + full.imagePath + '" width="30" height="30" />';
+              {
+                  "mData": "name", 'sWidth': '100px', "render": function (data, type, row, id) {
+                  if (row.name != null) {
+                      var name = row.name.substr(0, 25);
+                      return name;
+                  }
+                  return "";
               }
-            },
-            {"mData": "company.name",'sWidth': '200px'}
+              },
+              {
+                  "mData": "email", 'sWidth': '100px', "render": function (data, type, row, id) {
+                  if (row.email != null) {
+                      var email = row.email.substr(0, 25);
+                      return email;
+                  }
+                  return "";
+              }
+              },
+              {
+                  "mData": "designation", 'sWidth': '100px', "render": function (data, type, row, id) {
+                  if (row.designation != null) {
+                      var designation = row.designation.substr(0, 20);
+                      return designation;
+                  }
+                  return "";
+              }
+              },
+              {
+                  "mData": "roleRight.roleName", 'sWidth': '100px', "render": function (data, type, row, id) {
+                  if (row.roleRight.roleName != null) {
+                      var roleRight = row.roleRight.roleName.substr(0, 25);
+                      return roleRight;
+                  }
+                  return "";
+              }
+              },
+              {
+                  "mData": "path",'sWidth': '50px',
+                  "render": function (url, type, full) {
+                      return '<img src="' + mainPath + full.imagePath + '" width="30" height="30" />';
+                  }
+              },
+              {
+                  "mData": "company.name", 'sWidth': '100px', "render": function (data, type, row, id) {
+                  if (row.company.name != null) {
+                      var companyName = row.company.name.substr(0, 25);
+                      return companyName;
+                  }
+                  return "";
+              }
+              }
           ],
           'aaSorting': [[0, 'asc']],
           "columnDefs": [{}],

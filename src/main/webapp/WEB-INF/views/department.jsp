@@ -9,6 +9,7 @@
         <div class="row clearfix">
             <div class="col-xs-10 col-xs-offset-1 card">
                 <br/>
+
                 <div><h4>Department List</h4></div>
                 <hr/>
                 <br/><br/>
@@ -39,8 +40,9 @@
                 </button>
                 &nbsp;
                 &nbsp;
-                <button type="button" class="btn bg-grey waves-war" id="refreshDepartment" value="1" title="Refresh"><img
-                        src="resources/images/refresh.png" width="16" height="16" border="0">&nbsp;Refresh
+                <button type="button" class="btn bg-grey waves-war" id="refreshDepartment" value="1" title="Refresh">
+                    <img
+                            src="resources/images/refresh.png" width="16" height="16" border="0">&nbsp;Refresh
                 </button>
                 &nbsp;<br/><br/>
                 &nbsp;<br/><br/>
@@ -159,8 +161,24 @@
                             'sWidth': '15px',
                             'bSortable': false
                         },
-                        {"mData": "name", 'sWidth': '200px'},
-                        {"mData": "company.name",'sWidth': '200px'}
+                        {
+                            "mData": "name", 'sWidth': '200px', "render": function (data, type, row, id) {
+                            if (row.name != null) {
+                                var name = row.name.substr(0, 20);
+                                return name;
+                            }
+                            return "";
+                        }
+                        },
+                        {
+                            "mData": "company.name", 'sWidth': '200px', "render": function (data, type, row, id) {
+                            if (row.company.name != null) {
+                                var companyName = row.company.name.substr(0, 25);
+                                return companyName;
+                            }
+                            return "";
+                        }
+                        }
                     ],
                     'aaSorting': [[0, 'asc']],
                     "columnDefs": [{}],
@@ -203,7 +221,6 @@
                     newDepartment = companyGb;
                     companyGb = null;
                     var data = messageResource.get('department.edit.validation.msg', 'configMessageForUI');
-
                     if (checkForMultipleRowSelect()) showServerSideMessage(data, "", 0, "Message");
                     else if (newDepartment == null)showServerSideMessage(data, "", 0, "Message");
                     else setDataToDepartmentForm(newDepartment);
@@ -499,7 +516,7 @@
 
                 /* set selected row data to department form for edit */
 
-                function setDataToDepartmentForm(newDepartment){
+                function setDataToDepartmentForm(newDepartment) {
                     document.getElementById('departmentForm').style.display = "block";
                     $("#updateDepartment").show();
                     $("#saveDepartment").hide();

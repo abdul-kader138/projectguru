@@ -17,12 +17,11 @@
                     <thead>
                     <tr>
                         <th width="15px">id</th>
-                        <th width="200px">Company</th>
-                        <%--<th width="100px">Department</th>--%>
-                        <th width="200px">Product</th>
-                        <th width="200px">Category</th>
-                        <th width="250px">IT Coordinator</th>
-                        <th width="250px">Approved By</th>
+                        <th width="100px">Company</th>
+                        <th width="100px">Product</th>
+                        <th width="100px">Category</th>
+                        <th width="100px">IT Coordinator</th>
+                        <th width="100px">Approved By</th>
                     </tr>
                     </thead>
                 </table>
@@ -91,17 +90,6 @@
                                     </div>
                                 </div>
 
-                                <!-- select Box for Department-->
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="col-md-4 control-label" for="listOfCompany">Department Name</label>--%>
-
-                                    <%--<div class="col-md-4">--%>
-                                        <%--<select id="listOfDepartment" class="form-control"--%>
-                                                <%--style="border-color:#808080; border-width:1px; border-style:solid;"></select>--%>
-                                        <%--<label id="departmentNameValidation" style="color:red; font-size: 11px;"--%>
-                                               <%--class="form-control"></label>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
 
                                 <!-- select Box for Product-->
                                 <div class="form-group">
@@ -204,7 +192,6 @@
                     id = parseInt(id);
                     var company = new Object();
                     company.id = id;
-//                    getSelectedDepartment(company.id, "Select Department");
                     getSelectedProduct(company.id, "Select Product");
                 });
 
@@ -223,7 +210,6 @@
 
                 $('#allocationTable').DataTable({
                     "sAjaxSource": "http://localhost:8080/user_allocation/user_allocationList",
-//                    "sAjaxSource": messageResource.get('company.list.load.url', 'configMessageForUI'),
                     "sAjaxDataProp": "",
                     "order": [[0, "asc"]],
                     'aoColumns': [
@@ -237,12 +223,51 @@
                             'sWidth': '15px',
                             'bSortable': false
                         },
-                        {"mData": "category.company.name", 'sWidth': '200px'},
-//                        {"mData": "departmentName", 'sWidth': '100px'},
-                        {"mData": "category.product.name", 'sWidth': '200px'},
-                        {"mData": "category.name", 'sWidth': '200px'},
-                        {"mData": "itCoordinator.name", 'sWidth': '250px'},
-                        {"mData": "approvedBy.name", 'sWidth': '250px'}
+                        {
+                            "mData": "category.company.name", 'sWidth': '100px', "render": function (data, type, row, id) {
+                            if (row.category.company.name != null) {
+                                var companyName = row.category.company.name.substr(0, 20);
+                                return companyName;
+                            }
+                            return "";
+                        }
+                        },
+                        {
+                            "mData": "category.product.name", 'sWidth': '100px', "render": function (data, type, row, id) {
+                            if (row.category.product.name != null) {
+                                var productName = row.category.product.name.substr(0, 20);
+                                return productName;
+                            }
+                            return "";
+                        }
+                        },
+                        {
+                            "mData": "category.name", 'sWidth': '100px', "render": function (data, type, row, id) {
+                            if (row.category.name != null) {
+                                var categoryName = row.category.name.substr(0, 20);
+                                return categoryName;
+                            }
+                            return "";
+                        }
+                        },
+                        {
+                            "mData": "itCoordinator.name", 'sWidth': '100px', "render": function (data, type, row, id) {
+                            if (row.itCoordinator.name != null) {
+                                var itCoordinatorName = row.itCoordinator.name.substr(0, 20);
+                                return itCoordinatorName;
+                            }
+                            return "";
+                        }
+                        },
+                        {
+                            "mData": "approvedBy.name", 'sWidth': '100px', "render": function (data, type, row, id) {
+                            if (row.approvedBy.name != null) {
+                                var approvedByName = row.approvedBy.name.substr(0, 20);
+                                return approvedByName;
+                            }
+                            return "";
+                        }
+                        }
                     ],
                     'aaSorting': [[0, 'asc']],
                     "columnDefs": [{}],
@@ -270,7 +295,6 @@
                     allocation.id = $("#id").val();
                     allocation.version = $("#version").val();
                     allocation.companyId = $("#listOfCompany option:selected").val();
-//                    allocation.departmentId = $("#listOfDepartment option:selected").val();
                     allocation.productId = $("#listOfProduct option:selected").val();
                     allocation.categoryId = $("#listOfCategory option:selected").val();
                     allocation.itCoordinatorId = $("#listOfCoordinator option:selected").val();
@@ -306,7 +330,6 @@
                     newAllocation.id = $("#id").val();
                     newAllocation.version = $("#version").val();
                     newAllocation.companyId = $("#listOfCompany option:selected").val();
-//                    newAllocation.departmentId = $("#listOfDepartment option:selected").val();
                     newAllocation.productId = $("#listOfProduct option:selected").val();
                     newAllocation.categoryId = $("#listOfCategory option:selected").val();
                     newAllocation.itCoordinatorId = $("#listOfCoordinator option:selected").val();
@@ -521,7 +544,6 @@
                     $("#id").val("0");
                     $("#version").val("0");
                     $('#defaultOpt').val('0').prop('selected', true);
-//                    $('#defaultOptDepartment').val('0').prop('selected', true);
                     $('#defaultOptProduct').val('0').prop('selected', true);
                     $('#defaultOptCategory').val('0').prop('selected', true);
                     $('#defaultOptCoordinator').val('0').prop('selected', true);
@@ -534,7 +556,6 @@
                 function formValidation() {
                     var isValid = true;
                     var companyId = $("#listOfCompany option:selected").val();
-//                    var departmentId = $("#listOfDepartment option:selected").val();
                     var productId = $("#listOfProduct option:selected").val();
                     var categoryId = $("#listOfCategory option:selected").val();
                     var itCoordinatorId = $("#listOfCoordinator option:selected").val();
@@ -545,10 +566,6 @@
                         isValid = false;
                     }
 
-//                    if ((departmentId == null) || (departmentId == "0")) {
-//                        $("#departmentNameValidation").text("Department name is required");
-//                        isValid = false;
-//                    }
                     if ((productId == null) || (productId == "0")) {
                         $("#productNameValidation").text("Product name is required");
                         isValid = false;
@@ -580,7 +597,6 @@
 
                 function initFormValidationMsg() {
                     $("#companyNameValidation").text("");
-//                    $("#departmentNameValidation").text("");
                     $("#productNameValidation").text("");
                     $("#categoryNameValidation").text("");
                     $("#coordinatorNameValidation").text("");
@@ -720,7 +736,6 @@
                     var productId = newAllocation.productId;
                     id = parseInt(id);
                     productId = parseInt(productId);
-//                    getSelectedDepartment(id, newAllocation.departmentName);
                     getSelectedProduct(id, newAllocation.category.product.name);
                     getSelectedCategory(productId,newAllocation.category.name);
                     window.location.href = "#allocationForm";

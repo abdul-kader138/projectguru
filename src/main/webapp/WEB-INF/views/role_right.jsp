@@ -173,8 +173,24 @@
                             'sWidth': '15px',
                             'bSortable': false
                         },
-                        {"mData": "roleName", 'sWidth': '200px'},
-                        {"mData": "rights"}
+                        {
+                            "mData": "roleName", 'sWidth': '200px', "render": function (data, type, row, id) {
+                            if (row.roleName != null) {
+                                var roleName = row.roleName.substr(0, 25);
+                                return roleName;
+                            }
+                            return "";
+                        }
+                        },
+                        {
+                            "mData": "rights", 'sWidth': '300px', "render": function (data, type, row, id) {
+                            if (row.rights != null) {
+                                var rights = row.rights;
+                                return rights;
+                            }
+                            return "";
+                        }
+                        }
                     ],
                     'aaSorting': [[0, 'asc']],
                     "columnDefs": [

@@ -163,7 +163,6 @@
 
         $('#productTable').DataTable({
           "sAjaxSource": "http://localhost:8080/product/productList",
-//                    "sAjaxSource": messageResource.get('company.list.load.url', 'configMessageForUI'),
           "sAjaxDataProp": "",
           "order": [[0, "asc"]],
           'aoColumns': [
@@ -177,9 +176,33 @@
               'sWidth': '15px',
               'bSortable': false
             },
-            {"mData": "name", 'sWidth': '200px'},
-            {"mData": "description", 'sWidth': '300px'},
-            {"mData": "company.name", 'sWidth': '200px'}
+            {
+              "mData": "name", 'sWidth': '200px', "render": function (data, type, row, id) {
+              if (row.name != null) {
+                var name = row.name.substr(0, 25);
+                return name;
+              }
+              return "";
+            }
+            },
+            {
+              "mData": "description", 'sWidth': '300px', "render": function (data, type, row, id) {
+              if (row.description != null) {
+                var description = row.description.substr(0, 30);
+                return description;
+              }
+              return "";
+            }
+            },
+            {
+              "mData": "company.name", 'sWidth': '200px', "render": function (data, type, row, id) {
+              if (row.company.name != null) {
+                var companyName = row.company.name.substr(0, 25);
+                return companyName;
+              }
+              return "";
+            }
+            }
           ],
           'aaSorting': [[0, 'asc']],
           "columnDefs": [{}],

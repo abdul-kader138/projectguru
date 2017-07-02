@@ -9,16 +9,17 @@
         <div class="row clearfix">
             <div class="col-xs-10 col-xs-offset-1 card">
                 <br/>
+
                 <div><h4>Company List</h4></div>
                 <hr/>
                 <br/><br/>
                 <table id="companyTable" class="display nowrap" cellspacing="0" width="100%">
                     <thead>
                     <tr>
-                        <th>id</th>
-                        <th>Name</th>
-                        <th>Address</th>
-                        <th>Logo</th>
+                        <th width="25px">id</th>
+                        <th width="250px">Name</th>
+                        <th width="450px">Address</th>
+                        <th width="150px">Logo</th>
                     </tr>
                     </thead>
                 </table>
@@ -164,7 +165,7 @@
                 $("saveCompany").show();
                 $("#updateCompany").hide();
                 var companyGb;
-                var mainPath=document.origin+"/PG";
+                var mainPath = document.origin + "/PG";
 
 
                 /* populate Company list when page load */
@@ -185,8 +186,24 @@
                             'sWidth': '15px',
                             'bSortable': false
                         },
-                        {"mData": "name", 'sWidth': '200px'},
-                        {"mData": "address", 'sWidth': '400px'},
+                        {
+                            "mData": "name", 'sWidth': '200px', "render": function (data, type, row, id) {
+                            if (row.name != null) {
+                                var name = row.name.substr(0,30);
+                                return name;
+                            }
+                            return "";
+                        }
+                        },
+                        {
+                            "mData": "address", 'sWidth': '400px', "render": function (data, type, row, id) {
+                            if (row.address != null) {
+                                var address = row.address.substr(0,50);
+                                return address;
+                            }
+                            return "";
+                        }
+                        },
                         {
                             "mData": "path",
                             "render": function (url, type, full) {
@@ -196,13 +213,7 @@
 
                     ],
                     'aaSorting': [[0, 'asc']],
-                    "columnDefs": [
-                        {
-//                            "targets": [0],
-//                            "visible": false,
-//                            "searchable": false
-                        }
-                    ],
+                    "columnDefs": [{}],
                     "cache": false,
                     "bPaginate": true,
                     "bLengthChange": true,

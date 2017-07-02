@@ -17,11 +17,11 @@
                     <thead>
                     <tr>
                         <th width="15px">id</th>
-                        <th width="100px">Category Name</th>
-                        <th width="200px">Description</th>
-                        <th>Company</th>
+                        <th width="200px">Category Name</th>
+                        <th width="300px">Description</th>
+                        <th width="200px">Company</th>
                         <th width="100px">Department</th>
-                        <th>Product</th>
+                        <th width="200px">Product</th>
                     </tr>
                     </thead>
                 </table>
@@ -212,11 +212,51 @@
                             'sWidth': '15px',
                             'bSortable': false
                         },
-                        {"mData": "name", 'sWidth': '150px'},
-                        {"mData": "description", 'sWidth': '250px'},
-                        {"mData": "company.name", 'sWidth': '200px'},
-                        {"mData": "department.name", 'sWidth': '100px'},
-                        {"mData": "product.name", 'sWidth': '200px'}
+                        {
+                            "mData": "name", 'sWidth': '200px', "render": function (data, type, row, id) {
+                            if (row.name != null) {
+                                var name = row.name.substr(0, 25);
+                                return name;
+                            }
+                            return "";
+                        }
+                        },
+                        {
+                            "mData": "description", 'sWidth': '300px', "render": function (data, type, row, id) {
+                            if (row.description != null) {
+                                var description = row.description.substr(0, 30);
+                                return description;
+                            }
+                            return "";
+                        }
+                        },
+                        {
+                            "mData": "company.name", 'sWidth': '200px', "render": function (data, type, row, id) {
+                            if (row.company.name != null) {
+                                var companyName = row.company.name.substr(0, 25);
+                                return companyName;
+                            }
+                            return "";
+                        }
+                        },
+                        {
+                            "mData": "department.name", 'sWidth': '200px', "render": function (data, type, row, id) {
+                            if (row.department.name != null) {
+                                var departmentName = row.department.name.substr(0, 25);
+                                return departmentName;
+                            }
+                            return "";
+                        }
+                        },
+                        {
+                            "mData": "product.name", 'sWidth': '200px', "render": function (data, type, row, id) {
+                            if (row.product.name != null) {
+                                var productName = row.product.name.substr(0, 25);
+                                return productName;
+                            }
+                            return "";
+                        }
+                        }
                     ],
                     'aaSorting': [[0, 'asc']],
                     "columnDefs": [{}],

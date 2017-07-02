@@ -16,16 +16,16 @@
                 <table id="approveTable" class="display nowrap" cellspacing="0" width="100%">
                     <thead>
                     <tr>
-                        <%--<th width="2px"></th>--%>
-                        <th width="200px">Name</th>
-                        <th width="200px">Description</th>
-                        <th width="200px">Product</th>
-                        <th width="200px">Category</th>
-                        <th width="350px">Approve Type</th>
-                        <th width="300px">Request Date</th>
-                        <th width="300px">Require Days</th>
-                        <th width="350px">Delivery Date</th>
-                        <th width="350px">Attachment</th>
+                        <th width="100px">Name</th>
+                        <th width="100px">company</th>
+                        <th width="100px">Product</th>
+                        <th width="100px">Category</th>
+                        <th width="120px">Approve Type</th>
+                        <th width="30px">Request </br>Date</th>
+                        <th width="30px">Require </br> Days</th>
+                        <th width="30px">Delivery </br>Date</th>
+                        <th width="80px">Attachment</th>
+                        <th></th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -57,11 +57,43 @@
                     "sAjaxDataProp": "",
                     "order": [[0, "asc"]],
                     'aoColumns': [
-                        {"mData": "requestName", 'sWidth': '150px'},
-                        {"mData": "requestDetails", 'sWidth': '250px'},
-                        {"mData": "product.name", 'sWidth': '250px'},
-                        {"mData": "category.name", 'sWidth': '250px'},
-                        {"mData": "approveType", 'sWidth': '350px'},
+                        {
+                            "mData": "requestName", 'sWidth': '100px', "render": function (data, type, row, id) {
+                            if (row.requestName != null) {
+                                var name = row.requestName.substr(0, 20);
+                                return name;
+                            }
+                            return "";
+                        }
+                        },
+                        {
+                            "mData": "company.name", 'sWidth': '100px', "render": function (data, type, row, id) {
+                            if (row.company.name != null) {
+                                var companyName = row.company.name.substr(0, 20);
+                                return companyName;
+                            }
+                            return "";
+                        }
+                        },
+                        {
+                            "mData": "product.name", 'sWidth': '100px', "render": function (data, type, row, id) {
+                            if (row.product.name != null) {
+                                var productName = row.product.name.substr(0, 20);
+                                return productName;
+                            }
+                            return "";
+                        }
+                        },
+                        {
+                            "mData": "category.name", 'sWidth': '100px', "render": function (data, type, row, id) {
+                            if (row.category.name != null) {
+                                var categoryName = row.category.name.substr(0, 20);
+                                return categoryName;
+                            }
+                            return "";
+                        }
+                        },
+                        {"mData": "approveType", 'sWidth': '30px'},
                         {
                             "mData": "createdOn",
                             "render": function (data, type, row) {
@@ -71,10 +103,8 @@
                             }
                         },
                         {
-                            "mData": "requiredDay",
+                            "mData": "requiredDay",'sWidth': '30px',
                             "render": function (data, type, row, id) {
-                                console.log(row);
-                                console.log(row.requiredDay);
                                 if (row.userType == messageResource.get('approve.user.type.itCoordinator', 'configMessageForUI')) return '<input class="requiredDay" type="number" step="any"  id=requiredDay' + row.id + ' >';
                                 else {
                                     if (row.requiredDay != null) return row.requiredDay;
@@ -83,7 +113,7 @@
                             }
                         },
                         {
-                            "mData": "deliverDate",
+                            "mData": "deliverDate",'sWidth': '30px',
                             "render": function (data, type, row, id) {
                                     if (row.deliverDate != null) {
                                         var date = new Date(row.deliverDate);
@@ -94,7 +124,7 @@
                                 }
                         },
                         {
-                            "mData": "docPath",
+                            "mData": "docPath",'sWidth': '80px',
                             "render": function (data, type, row, id) {
                                 var mainPath=document.origin+"/PG";
                                 return '<a href="'+mainPath+row.docPath+'" download>'+'Download</a>'
@@ -111,6 +141,13 @@
                             "mData": "userType",
                             "render": function (userType) {
                                 if (userType == messageResource.get('approve.user.type.checked', 'configMessageForUI') || userType == messageResource.get('approve.user.type.approve', 'configMessageForUI')) return '<button type="button" class="delete btn bg-red waves-war"  value="1" title="Delete Request" >&nbsp;Delete</button>';
+                                else return "";
+                            }
+                        },
+                        {
+                            "mData": "userType",
+                            "render": function (userType) {
+                                if (userType == messageResource.get('approve.user.type.request.by.acknowledgement', 'configMessageForUI') || userType == messageResource.get('approve.user.type.checked.by.acknowledgement', 'configMessageForUI')) return '<button type="button" class="decline btn bg-red waves-war"  value="1" title="Decline Request" >&nbsp;Decline</button>';
                                 else return "";
                             }
                         }
@@ -150,9 +187,7 @@
                 approvalObj.requestId = data.requestId;
                 approvalObj.version = version;
                 var day = $('#requiredDay' + data.id).val();
-                console.log(day);
                 if(day !="") approvalObj.day = day;
-                console.log(approvalObj);
                 if (obj.className.split(' ')[0] == messageResource.get('button.name.approve', 'configMessageForUI')) {
                     if (data.userType == messageResource.get('approve.user.type.itCoordinator', 'configMessageForUI')) {
                         if (checkApproveDate(approvalObj.day)) callAjaxForEditOperation(part1, part2, icn, msg, approvalObj);
@@ -270,7 +305,6 @@
 //        if()
 
             function checkApproveDate(obj) {
-                console.log(obj);
                 var isValid = true;
                 if (obj == null || obj == 0 || obj == undefined) {
                     showServerSideMessage(messageResource.get('approve.delivery.day.msg', 'configMessageForUI'), "", 0, "Message");

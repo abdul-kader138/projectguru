@@ -159,8 +159,24 @@
               'sWidth': '15px',
               'bSortable': false
             },
-            {"mData": "name", 'sWidth': '200px'},
-            {"mData": "description",'sWidth': '300px'}
+            {
+              "mData": "name", 'sWidth': '200px', "render": function (data, type, row, id) {
+              if (row.name != null) {
+                var name = row.name.substr(0, 25);
+                return name;
+              }
+              return "";
+            }
+            },
+            {
+              "mData": "description", 'sWidth': '300px', "render": function (data, type, row, id) {
+              if (row.description != null) {
+                var description = row.description.substr(0, 30);
+                return description;
+              }
+              return "";
+            }
+            }
           ],
           'aaSorting': [[0, 'asc']],
           "columnDefs": [{}],

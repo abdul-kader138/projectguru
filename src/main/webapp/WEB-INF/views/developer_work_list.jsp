@@ -60,14 +60,14 @@
                                 <table id="requestTable" class="display nowrap" cellspacing="0" width="100%">
                                     <thead>
                                     <tr>
-                                        <th width="200px">Name</th>
-                                        <th width="500px">Description</th>
-                                        <th width="250px">Company</th>
-                                        <th width="250px">Product</th>
-                                        <th width="250px">Category</th>
-                                        <th width="120px"> Status</th>
-                                        <th width="200px"> Delivery Date</th>
-                                        <th width="100px">Attachment</th>
+                                        <th width="100px">Name</th>
+                                        <th width="200px">Description</th>
+                                        <th width="100px">Company</th>
+                                        <th width="100px">Product</th>
+                                        <th width="100px">Category</th>
+                                        <th width="80px"> Status</th>
+                                        <th width="30px"> Delivery</br> Date</th>
+                                        <th width="80px">Attachment</th>
                                     </tr>
                                     </thead>
                                 </table>
@@ -127,19 +127,60 @@
                 "sAjaxDataProp": "",
                 "order": [[0, "asc"]],
                 'aoColumns': [
-                    {"mData": "name", 'sWidth': '180px'},
-                    {"mData": "description", 'sWidth': '480px'},
-                    {"mData": "company.name", 'sWidth': '200px'},
-                    {"mData": "product.name", 'sWidth': '200px'},
-                    {"mData": "category.name", 'sWidth': '200px'},
                     {
-                        "mData": "wipStatus", 'sWidth': '100px',
+                        "mData": "name", 'sWidth': '100px', "render": function (data, type, row, id) {
+                        if (row.name != null) {
+                            var name = row.name.substr(0, 25);
+                            return name;
+                        }
+                        return "";
+                    }
+                    },
+                    {
+                        "mData": "description", 'sWidth': '100px', "render": function (data, type, row, id) {
+                        if (row.description != null) {
+                            var description = row.description.substr(0, 30);
+                            return description;
+                        }
+                        return "";
+                    }
+                    },
+                    {
+                        "mData": "company.name", 'sWidth': '100px', "render": function (data, type, row, id) {
+                        if (row.company.name != null) {
+                            var companyName = row.company.name.substr(0, 25);
+                            return companyName;
+                        }
+                        return "";
+                    }
+                    },
+
+                    {
+                        "mData": "product.name", 'sWidth': '100px', "render": function (data, type, row, id) {
+                        if (row.product.name != null) {
+                            var productName = row.product.name.substr(0, 25);
+                            return productName;
+                        }
+                        return "";
+                    }
+                    },
+                    {
+                        "mData": "category.name", 'sWidth': '100px', "render": function (data, type, row, id) {
+                        if (row.category.name != null) {
+                            var categoryName = row.category.name.substr(0, 25);
+                            return categoryName;
+                        }
+                        return "";
+                    }
+                    },
+                    {
+                        "mData": "wipStatus", 'sWidth': '80px',
                         "render": function (data, type, row, id) {
                             return "Waiting For Deployment";
                         }
                     },
                     {
-                        "mData": "deliverDate", 'sWidth': '180px',
+                        "mData": "deliverDate", 'sWidth': '30px',
                         "render": function (data, type, row, id) {
                             var date = new Date(row.deliverDate);
                             var dateFormat = date.toISOString("mm").substr(0, 10);
@@ -171,10 +212,6 @@
             function requiredDays(startDate, Enddate) {
                 var ONE_DAY = 1000 * 60 * 60 * 24;
                 var difference_ms = Math.abs(Enddate - startDate);
-                console.log(startDate);
-                console.log(Enddate);
-                console.log(difference_ms);
-                console.log(Math.round(difference_ms / ONE_DAY));
                 return Math.round(difference_ms / ONE_DAY);
             }
 
