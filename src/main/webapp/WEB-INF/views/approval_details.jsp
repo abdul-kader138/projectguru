@@ -174,7 +174,6 @@
             /* Create object for update Approval */
 
             $('#approveTable tbody').on('click', 'button', function () {
-                showPromptMessage();
                 var blankDeliveryDate="";
                 var obj = this;
                 var data = table.row($(this).parents('tr')).data();

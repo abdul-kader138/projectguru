@@ -22,7 +22,7 @@
               <th width="100px">Designation</th>
               <th width="100px">Role</th>
               <th width="50px">Photo</th>
-              <th width="100px">Company name</th>
+              <th width="100px">Company</br> Name</th>
 
           </tr>
           </thead>
