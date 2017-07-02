@@ -60,6 +60,15 @@ public class UserController {
     }
 
 
+    @RequestMapping("/profile")
+    public ModelAndView profile()  {
+        ModelAndView model = new ModelAndView();
+        String pageName = "profile";
+        model.setViewName(pageName);
+        return model;
+
+    }
+
     @RequestMapping(value = "/user/save", method = RequestMethod.POST)
     public
     @ResponseBody

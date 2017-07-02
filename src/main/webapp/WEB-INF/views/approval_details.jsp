@@ -78,7 +78,7 @@
                                 if (row.userType == messageResource.get('approve.user.type.itCoordinator', 'configMessageForUI')) return '<input class="requiredDay" type="number" step="any"  id=requiredDay' + row.id + ' >';
                                 else {
                                     if (row.requiredDay != null) return row.requiredDay;
-                                    else return messageResource.get('approve.delivery.day.column.msg', 'configMessageForUI');
+                                    else return "";
                                 }
                             }
                         },

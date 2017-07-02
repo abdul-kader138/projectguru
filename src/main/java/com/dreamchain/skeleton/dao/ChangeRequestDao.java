@@ -12,6 +12,7 @@ public interface ChangeRequestDao {
     void update(ChangeRequest changeRequest);
     void delete(ChangeRequest changeRequest);
     List<ChangeRequest> findAll(Set<Long> requestId);
+    List<ChangeRequest> findAllForDeveloper();
     ChangeRequest findByChangeRequestName(String changeRequestName);
     ChangeRequest findByNewName(String CurrentChangeRequestName,String newChangeRequestName);
     List<Object> countOfCategory(long categoryId);

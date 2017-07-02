@@ -47,10 +47,10 @@ public class AuthenticationController {
     @RequestMapping("/login")
     public ModelAndView login(@RequestParam(value = "failed", required = false) String failed,
                               @RequestParam(value = "error", required = false) String error,
-                              @RequestParam(value = "logout", required = false) String logout,HttpServletRequest request) {
+                              @RequestParam(value = "logout", required = false) String logout, HttpServletRequest request) {
 
         ModelAndView model = new ModelAndView();
-        HttpSession httpSession=request.getSession();
+        HttpSession httpSession = request.getSession();
         String pageName = "main";
         if (error != null) {
             model.addObject("error", "Invalid username or password!");
@@ -66,16 +66,13 @@ public class AuthenticationController {
         String pageName = "main";
         String userName = "";
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user=(User)auth.getPrincipal();
-        model.setViewName(pageName);
-        authenticationService.setSessionValue(request,user);
+        User user = (User) auth.getPrincipal();
+        if(environment.getProperty("user.type.developer").equals(user.getUserType())) model.setViewName("developer_work_list");
+        else model.setViewName(pageName);
+        authenticationService.setSessionValue(request, user);
         return model;
 
     }
-
-
-
-
 
 }
 

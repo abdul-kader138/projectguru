@@ -114,6 +114,11 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
         return changeRequestDao.findAll(requestId);
     }
 
+    @Override
+    public List<ChangeRequest> findAllForDeveloper() {
+        return changeRequestDao.findAllForDeveloper();
+    }
+
     // create user object for saving
 
     private Map createObjForSave(MultipartHttpServletRequest request, String fileName) throws Exception {

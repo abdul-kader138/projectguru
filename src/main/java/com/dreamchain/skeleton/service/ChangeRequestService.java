@@ -13,4 +13,5 @@ public interface ChangeRequestService {
     Map<String,Object> update(MultipartHttpServletRequest multipartHttpServletRequest) throws Exception;
     String delete(Long companyId,HttpServletRequest request);
     List<ChangeRequest> findAll();
+    List<ChangeRequest> findAllForDeveloper();
 }

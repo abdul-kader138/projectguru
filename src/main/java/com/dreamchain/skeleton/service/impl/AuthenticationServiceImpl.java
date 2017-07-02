@@ -49,12 +49,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         HttpSession httpSession = request.getSession();
         httpSession.setAttribute("passwordMsg", null);
         httpSession.setAttribute("isPasswordChanged", null);
-        httpSession.setAttribute("name", user.getName());
-        httpSession.setAttribute("email", user.getEmail());
-        httpSession.setAttribute("role", user.getRole());
-        httpSession.setAttribute("path", user.getImagePath());
-        httpSession.setAttribute("userType", user.getUserType());
-        httpSession.setAttribute("imagePath", user.getImagePath());
+        httpSession.setAttribute("user", existingUser);
         httpSession.setAttribute("notificationCount", list.size());
         httpSession.setAttribute("hasChangeRequest", hasChangeRequest);
         httpSession.setAttribute("totalRequest", totalRequest.get(environment.getProperty("request.status.all")));

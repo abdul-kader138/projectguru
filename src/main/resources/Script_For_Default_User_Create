@@ -114,3 +114,9 @@ INSERT INTO role_right(
 
        2) Need to set client_id value based on client at both place xml and sql inset.
 
+
+// Create for Developer
+
+INSERT INTO users(
+               id,  email, name, password, phone, role, version,image_path,designation,role_right,role_rights_id,company_id,company,user_type,client_id)
+       VALUES (9999999900,'test@dev.com', 'User','$2a$10$8ftimfEd8fCvG/cxprK80.1ksGmcMKqCiYAv5doFz5hIipMwn3u16','09876543211', 'ROLE_USER',0,'/resources/images/team_member_photo/developer.png','Developer',9999999982,9999999982,9999999989,9999999989,'developer','TEST-001');

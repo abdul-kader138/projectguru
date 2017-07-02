@@ -59,6 +59,17 @@ public class ChangeRequestDaoImpl implements ChangeRequestDao {
     }
 
     @Override
+    public List<ChangeRequest> findAllForDeveloper() {
+        DetachedCriteria dcr= DetachedCriteria.forClass(ChangeRequest.class);
+        Criterion cr = Restrictions.eq("status", environment.getProperty("request.status.open"));
+        Criterion cr1 = Restrictions.isNotNull("deliverDate");
+        dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        dcr.add(cr1);
+        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
+        return createChangeRequestList(lst);
+    }
+
+    @Override
     public ChangeRequest findByChangeRequestName(String changeRequestName) {
         DetachedCriteria dcr= DetachedCriteria.forClass(ChangeRequest.class);
         Criterion cr = Restrictions.eq("name", changeRequestName.trim()).ignoreCase();
