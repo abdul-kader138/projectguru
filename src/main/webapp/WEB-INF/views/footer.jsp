@@ -56,17 +56,17 @@
 <script src="resources/node_modules/adminbsb/js/pages/index.js"></script>
 
 
-<script src="resources/node_modules/adminbsb/js/pages/ui/dialogs.js"></script>
-<script src="resources/node_modules/adminbsb/js/pages/ui/modals.js"></script>
+<%--<script src="resources/node_modules/adminbsb/js/pages/ui/dialogs.js"></script>--%>
+<%--<script src="resources/node_modules/adminbsb/js/pages/ui/modals.js"></script>--%>
 
 
 
 <!-- Demo Js -->
-<script src="resources/node_modules/adminbsb/js/demo.js"></script>
+<%--<script src="resources/node_modules/adminbsb/js/demo.js"></script>--%>
 
 <script src="resources/node_modules/custom-js/custom.js"></script>
 
-<script type="text/javascript" src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
+<%--<script type="text/javascript" src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>--%>
 
 
 

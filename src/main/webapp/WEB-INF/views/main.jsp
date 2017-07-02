@@ -246,6 +246,8 @@
                 console.log(Math.round(difference_ms / ONE_DAY));
                 return Math.round(difference_ms / ONE_DAY);
             }
+
+
         });
 
     </script>

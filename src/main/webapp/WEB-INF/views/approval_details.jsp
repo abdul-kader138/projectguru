@@ -147,7 +147,7 @@
                         {
                             "mData": "userType",
                             "render": function (userType) {
-                                if (userType == messageResource.get('approve.user.type.request.by.acknowledgement', 'configMessageForUI') || userType == messageResource.get('approve.user.type.checked.by.acknowledgement', 'configMessageForUI')) return '<button type="button" class="decline btn bg-red waves-war"  value="1" title="Decline Request" >&nbsp;Decline</button>';
+                                if (userType == messageResource.get('approve.user.type.request.by.acknowledgement', 'configMessageForUI') || userType == messageResource.get('approve.user.type.checked.by.acknowledgement', 'configMessageForUI')) return '<a type="button" class="decline btn bg-red waves-war"  value="1" title="Decline Request" >&nbsp;Decline</button>';
                                 else return "";
                             }
                         }
@@ -174,6 +174,7 @@
             /* Create object for update Approval */
 
             $('#approveTable tbody').on('click', 'button', function () {
+                showPromptMessage();
                 var blankDeliveryDate="";
                 var obj = this;
                 var data = table.row($(this).parents('tr')).data();
@@ -196,6 +197,7 @@
                     }
                 }
                 if (obj.className.split(' ')[0] == messageResource.get('button.name.delete', 'configMessageForUI')) deleteApproval(part1, part2, icn, msg, approvalObj);
+                if (obj.className.split(' ')[0] == messageResource.get('button.name.decline', 'configMessageForUI')) redirectToDeclineRequest(approvalObj);
             });
 
 
@@ -295,14 +297,9 @@
                 });
             }
 
-            /* Enable Date Picker  */
-
-            $('#approveTable tbody').on('click', 'input', function () {
-                if (this.className == messageResource.get('input.class.name.delivery.date', 'configMessageForUI')) $('.' + this.className).datepicker({dateFormat: 'yy-mm-dd'});
-            });
 
 
-//        if()
+            /* check for valid no of required days */
 
             function checkApproveDate(obj) {
                 var isValid = true;
@@ -314,6 +311,11 @@
                 var valid = /^\d{1,3}?$/.test(obj);
                 if(!valid) isValid = false;
                 return isValid;
+            }
+
+
+            function redirectToDeclineRequest(obj){
+
             }
 
         });
