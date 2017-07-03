@@ -200,7 +200,7 @@
                    {
                         "mData": "deliverDate",'sWidth': '30px',
                         "render": function (data, type, row, id) {
-                            if (row.deliverDate != null && row.status == messageResource.get('approval.status.approve.done', 'configMessageForUI')) return requiredDays(row.deliverDate, row.updatedOn);
+                            if (row.deliverDate != null && row.status == messageResource.get('approval.status.approve.done', 'configMessageForUI')) return requiredDays(row.deliverDate, row.updatedOn,row);
                             return "";
                         }
                     },
@@ -237,17 +237,12 @@
             });
 
 
-            function requiredDays(startDate, Enddate) {
+            function requiredDays(newDate, Enddate,obj) {
+                var startDate = new Date( newDate - (obj.requiredDay * 24 * 60 * 60 * 1000) );
                 var ONE_DAY = 1000 * 60 * 60 * 24;
                 var difference_ms = Math.abs(Enddate - startDate);
-                console.log(startDate);
-                console.log(Enddate);
-                console.log(difference_ms);
-                console.log(Math.round(difference_ms / ONE_DAY));
                 return Math.round(difference_ms / ONE_DAY);
             }
-
-
         });
 
     </script>
