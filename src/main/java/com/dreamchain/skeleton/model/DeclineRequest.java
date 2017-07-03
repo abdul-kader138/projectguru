@@ -22,15 +22,13 @@ public class DeclineRequest implements Serializable {
     private long version;
 
     @NotNull
-    @OneToOne
-    private ApprovalStatus approvalStatus;
-
-
-    @NotNull
     private long approvalStatusId;
 
+    @NotNull
+    private long requestsId;
+
     @NotEmpty
-    @Length(max = 150)
+    @Length(max = 500)
     private String declineCause;
 
     @Column
@@ -75,12 +73,12 @@ public class DeclineRequest implements Serializable {
         this.approvalStatusId = approvalStatusId;
     }
 
-    public ApprovalStatus getApprovalStatus() {
-        return approvalStatus;
+    public long getRequestsId() {
+        return requestsId;
     }
 
-    public void setApprovalStatus(ApprovalStatus approvalStatus) {
-        this.approvalStatus = approvalStatus;
+    public void setRequestsId(long requestsId) {
+        this.requestsId = requestsId;
     }
 
     public String getDeclineCause() {

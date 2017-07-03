@@ -140,6 +140,8 @@ public class ChangeRequest implements Serializable {
     @Column
     private Date updatedOn;
 
+    private String declineCause;
+
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -416,6 +418,14 @@ public class ChangeRequest implements Serializable {
 
     public void setRequiredDay(Integer requiredDay) {
         this.requiredDay = requiredDay;
+    }
+
+    public String getDeclineCause() {
+        return declineCause;
+    }
+
+    public void setDeclineCause(String declineCause) {
+        this.declineCause = declineCause;
     }
 
     public ChangeRequest() {

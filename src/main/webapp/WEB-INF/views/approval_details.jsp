@@ -146,8 +146,10 @@
                         },
                         {
                             "mData": "userType",
-                            "render": function (userType) {
-                                if (userType == messageResource.get('approve.user.type.request.by.acknowledgement', 'configMessageForUI') || userType == messageResource.get('approve.user.type.checked.by.acknowledgement', 'configMessageForUI')) return '<a type="button" class="decline btn bg-red waves-war"  value="1" title="Decline Request" >&nbsp;Decline</button>';
+                            "render": function (data, type, row, id) {
+                                console.log(row.id);
+                                console.log(row);
+                                if (row.userType == messageResource.get('approve.user.type.request.by.acknowledgement', 'configMessageForUI') || row.userType == messageResource.get('approve.user.type.checked.by.acknowledgement', 'configMessageForUI')) return '<a class="decline btn bg-red waves-war"  href="/decline?a_id='+row.id +'&r_id='+row.requestId+'&ver='+row.version +'" title="Decline Request"> Decline </a>';
                                 else return "";
                             }
                         }
@@ -184,6 +186,7 @@
                 var msg = "Message";
                 var version = data.version;
                 approvalObj.id = data.id;
+                approvalObj.name = data.requestName;
                 approvalObj.requestId = data.requestId;
                 approvalObj.version = version;
                 var day = $('#requiredDay' + data.id).val();
@@ -196,7 +199,7 @@
                     }
                 }
                 if (obj.className.split(' ')[0] == messageResource.get('button.name.delete', 'configMessageForUI')) deleteApproval(part1, part2, icn, msg, approvalObj);
-                if (obj.className.split(' ')[0] == messageResource.get('button.name.decline', 'configMessageForUI')) redirectToDeclineRequest(approvalObj);
+//                if (obj.className.split(' ')[0] == messageResource.get('button.name.decline', 'configMessageForUI')) redirectToDeclineRequest(approvalObj);
             });
 
 
@@ -314,7 +317,10 @@
 
 
             function redirectToDeclineRequest(obj){
-
+//                var mainPath = document.origin + "/PG";
+                var mainPath='http://localhost:8080/'+'decline/'+obj.id;
+                window.location=mainPath;
+//                console.log(developmentServerMainPath);
             }
 
         });

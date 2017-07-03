@@ -14,12 +14,43 @@
                                 <!-- Form Name -->
                                 <legend><strong>Decline Request</strong></legend>
 
-                                <!-- Select input-->
+                                <!-- Text Label-->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="company">Company Name:</label>
+                                    <input id="approveId" type="hidden" value="${approveId}"/>
+                                    <input id="requestedId" type="hidden" value="${requestedId}"/>
+                                    <input id="version" type="hidden" value="${version}"/>
+
+                                    <div class="col-md-4">
+                                        <label id="companyName" class="form-control">${companyName}</label>
+                                    </div>
+                                </div>
+
+                                <!-- Text Label-->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="company">Product Name:</label>
+
+                                    <div class="col-md-4">
+                                        <label id="productName" class="form-control">${productName}</label>
+                                    </div>
+                                </div>
+
+                                <!-- Text Label-->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="company">Category Name:</label>
+
+                                    <div class="col-md-4">
+                                        <label id="categoryName" class="form-control">${categoryName}</label>
+                                    </div>
+                                </div>
+
+
+                                <!-- Text Label-->
                                 <div class="form-group">
                                     <label class="col-md-4 control-label" for="company">Request Name:</label>
 
                                     <div class="col-md-4">
-                                        <label id="company" class="form-control">${request.name}</label>
+                                        <label id="company" class="form-control">${name}</label>
                                     </div>
                                 </div>
 
@@ -36,6 +67,22 @@
 
                                     </div>
                                 </div>
+
+
+                                <!-- Button -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="decline"></label>
+
+                                    <div class="col-md-4">
+                                        <button id="decline" name="decline" class="btn btn-primary"
+                                                type="button">Decline
+                                        </button>
+                                        <button style="position: static" id="cancel" name="cancel"
+                                                class="btn bg-grey"
+                                                type="button">Cancel
+                                        </button>
+                                    </div>
+                                </div>
                             </fieldset>
                         </form>
 
@@ -48,6 +95,72 @@
 
     <script>
         $(document).ready(function () {
+            $("#cause").val("");
+            $("#causeValidation").text("");
+
+            $("#saveCategory").click(function () {
+                $("#causeValidation").text("");
+                /*  Ajax call for save operation */
+                var obj = new Object();
+                obj.approveId = $('#approveId').val();
+                obj.requestedId = $('#requestedId').val();
+                obj.cause = $('#cause').val();
+
+                if (formValidation())callAjaxForAddOperation("", "", 0, "Message");
+
+
+            });
+
+            /*  Ajax call for add operation */
+
+            function callAjaxForAddOperation(part1, part2, icn, msg, obj) {
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    'type': 'POST',
+                    'url': messageResource.get('decline.save.url', 'configMessageForUI'),
+                    'data': JSON.stringify(obj),
+                    'dataType': 'json',
+                    'success': function (d) {
+                        if (d.successMsg) {
+                            icn = 1;
+                            msg = "";
+                            part1 = d.successMsg;
+                            showServerSideMessage(part1, part2, icn, msg);
+                            $("#cause").val("");
+                            $("#causeValidation").text("");
+                        }
+                        if (d.validationError) {
+                            icn = 0;
+                            msg = '<strong style="color: red">Error</strong>';
+                            part2 = d.validationError;
+                            showServerSideMessage(part1, part2, icn, msg);
+                        }
+                    },
+                    'error': function (error) {
+                        icn = 0;
+                        msg = '<strong style="color: red">Error</strong>';
+                        showServerSideMessage(part1, getErrorMessage(error), icn, msg);
+                    }
+                });
+
+            }
+
+
+            /* html form Validation */
+
+            function formValidation() {
+                var isValid = true;
+                var cause = $("#cause").val();
+                if (cause == null || cause.trim().length == 0) {
+                    $("#causeValidation").text("Decline cause is required");
+                    isValid = false;
+                }
+                return isValid;
+            }
+
         });
 
     </script>
