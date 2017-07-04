@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.*;
 
 @Entity
 @Table(name="change_request",
@@ -101,9 +101,15 @@ public class ChangeRequest implements Serializable {
     @Length(max = 60)
     private String name;
 
-    @NotEmpty
-    @Length(max = 150)
-    private String description;
+    @com.sun.istack.NotNull
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "change_request_description",
+            joinColumns=@JoinColumn(name = "id", referencedColumnName = "id")
+    )
+    @Column(name="description")
+    private Set<String> description = new HashSet<>();
+
 
 
     @NotEmpty
@@ -315,11 +321,11 @@ public class ChangeRequest implements Serializable {
         this.name = name;
     }
 
-    public String getDescription() {
+    public Set<String> getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(Set<String> description) {
         this.description = description;
     }
 

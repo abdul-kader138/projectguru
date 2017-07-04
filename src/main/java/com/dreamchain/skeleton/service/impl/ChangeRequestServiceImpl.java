@@ -125,6 +125,9 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
         String validationMsg = "";
         Map<String, Object> objList = new HashMap<>();
         Category category = categoryDao.get(Long.parseLong(request.getParameter("categoryId")));
+        String[] descriptionObj=request.getParameterValues("description[]");
+        List<String> descriptionList= Arrays.asList(descriptionObj);
+        Set<String> descriptions=new HashSet<>(descriptionList);
         TeamAllocation teamAllocation = teamAllocationDao.findByProductAndCategory(category.getCompanyId(), category.getProductId(), category.getId());
         UserAllocation userAllocation = userAllocationDao.findByProductAndCategory(category.getCompanyId(), category.getProductId(), category.getId());
         ChangeRequest changeRequest = setChangeRequestValue(category, teamAllocation, userAllocation);
@@ -133,7 +136,7 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
         if (userAllocation.getApprovedBy() == null && "".equals(validationMsg)) validationMsg = USER_ALLOCATION;
         if ("".equals(validationMsg)) {
             changeRequest.setName(request.getParameter("name").trim());
-            changeRequest.setDescription(request.getParameter("description").trim());
+            changeRequest.setDescription(descriptions);
             changeRequest.setDocPath(DOC_PATH + fileName.trim());
             SimpleDateFormat dateFormat = new SimpleDateFormat();
             changeRequest.setStatus(environment.getProperty("request.status.open"));
@@ -240,7 +243,6 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
         approvalStatus.setApprovedBy(user);
         approvalStatus.setStatus(status);
         approvalStatus.setRequestName(changeRequest.getName());
-        approvalStatus.setRequestDetails(changeRequest.getDescription());
         approvalStatus.setUserType(userType);
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
@@ -352,6 +354,7 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
         EmailUtil.sendEmail(session, toEmail, header, body);
 
     }
+
 
 
 }

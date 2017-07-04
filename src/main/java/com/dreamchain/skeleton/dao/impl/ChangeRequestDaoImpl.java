@@ -30,7 +30,12 @@ public class ChangeRequestDaoImpl implements ChangeRequestDao {
 
     @Override
     public ChangeRequest get(Long id) {
-        return hibernateTemplate.get(ChangeRequest.class, id);
+        DetachedCriteria dcr= DetachedCriteria.forClass(ChangeRequest.class);
+        Criterion cr = Restrictions.eq("id", id);
+        dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
+        if(lst.size()==0)return new ChangeRequest();
+        return (ChangeRequest)lst.get(0);
     }
 
     @Override

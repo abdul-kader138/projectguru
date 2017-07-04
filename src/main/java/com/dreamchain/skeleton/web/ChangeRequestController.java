@@ -10,6 +10,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -67,6 +68,18 @@ public class ChangeRequestController {
         }
         logger.info("creating new change request: << " + successMsg + validationError);
         return objList;
+    }
+
+
+    @RequestMapping(value="/change_request_view")
+    public ModelAndView main(@RequestParam("r_id") String requestId)  {
+        String pageName = "change_request_view";
+        ModelAndView modelAndView = new ModelAndView(pageName);
+        Long requestedId=Long.parseLong(requestId);
+        ChangeRequest changeRequest=changeRequestService.get(requestedId);
+        modelAndView.addObject("changeRequest", changeRequest);
+        return modelAndView;
+
     }
 
 }

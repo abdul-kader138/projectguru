@@ -1,6 +1,5 @@
 package com.dreamchain.skeleton.web;
 
-import com.dreamchain.skeleton.dao.ApprovalStatusDao;
 import com.dreamchain.skeleton.model.ApprovalStatus;
 import com.dreamchain.skeleton.service.ApprovalStatusService;
 import com.dreamchain.skeleton.service.DeclineRequestService;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 

@@ -139,7 +139,7 @@
                         "mData": "name", 'sWidth': '100px', "render": function (data, type, row, id) {
                         if (row.name != null) {
                             var name = row.name.substr(0, 20);
-                            return name;
+                            return '<a href="/change_request_view?r_id='+row.id +'" title="View Request">'+name+'</a>';
                         }
                         return "";
                     }

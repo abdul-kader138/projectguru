@@ -48,9 +48,6 @@ public class ApprovalStatus {
     @NotEmpty
     private String requestName;
 
-    @NotEmpty
-    private String requestDetails;
-
     @NotNull
     @OneToOne
     private User approvedBy;
@@ -120,14 +117,6 @@ public class ApprovalStatus {
 
     public void setApprovedBy(User approvedBy) {
         this.approvedBy = approvedBy;
-    }
-
-    public String getRequestDetails() {
-        return requestDetails;
-    }
-
-    public void setRequestDetails(String requestDetails) {
-        this.requestDetails = requestDetails;
     }
 
     public String getRequestName() {

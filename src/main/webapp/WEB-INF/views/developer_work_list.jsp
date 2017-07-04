@@ -61,7 +61,6 @@
                                     <thead>
                                     <tr>
                                         <th width="100px">Name</th>
-                                        <th width="200px">Description</th>
                                         <th width="100px">Company</th>
                                         <th width="100px">Product</th>
                                         <th width="100px">Category</th>
@@ -132,15 +131,6 @@
                         if (row.name != null) {
                             var name = row.name.substr(0, 25);
                             return name;
-                        }
-                        return "";
-                    }
-                    },
-                    {
-                        "mData": "description", 'sWidth': '100px', "render": function (data, type, row, id) {
-                        if (row.description != null) {
-                            var description = row.description.substr(0, 30);
-                            return description;
                         }
                         return "";
                     }

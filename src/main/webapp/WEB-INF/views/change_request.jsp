@@ -87,15 +87,23 @@
 
                                 <!-- Textarea -->
                                 <div class="form-group">
+                                    <%--<button class="add_field_button">Add More Description</button>--%>
                                     <label class="col-md-4 control-label" for="description">Description :</label>
 
-                                    <div class="col-md-6">
-                                        <textarea id="description" class="form-control input-md"
+
+                                    <div class="col-md-6 input_fields_wrap">
+                                        <textarea id="description" name="description[]" class="form-control input-md description"
                                                   style="border-color:#808080; border-width:1px; border-style:solid;"
-                                                  name="description" rows="6" cols="20"></textarea>
+                                                  rows="6" cols="20"></textarea>
                                         <label id="descriptionValidation" style="color:red; font-size: 11px;"
                                                class="form-control"></label>
                                     </div>
+
+                                    <button type="button" class="btn bg-grey waves-war add_field_button col-md-2"
+                                            id="moveToAdd" value="1" title="Add"><img
+                                            src="resources/images/add.png" width="16" height="16" border="0">&nbsp;Add
+                                        More
+                                    </button>
                                 </div>
 
 
@@ -110,6 +118,10 @@
                                         <button style="position: static" id="resetRequest" name="resetRequest"
                                                 class="btn bg-grey"
                                                 type="button">Cancel
+                                        </button>
+                                        <button style="position: static" id="testButton" name="testButton"
+                                                class="btn bg-grey"
+                                                type="button">Test
                                         </button>
                                     </div>
                                 </div>
@@ -144,7 +156,6 @@
                 });
 
 
-
                 /*Based on product Selection load category data */
 
                 $("#listOfProduct").change(function () {
@@ -156,7 +167,6 @@
                 });
 
 
-
                 /* Initialize html form value  based on reset button*/
 
                 $('#resetRequest').on('click', function () {
@@ -165,13 +175,11 @@
                 });
 
 
-
                 /* Reset Upload file selection */
 
                 $("#docClear").click(function (event) {
                     $("#doc").val("");
                 });
-
 
 
                 /* Save request data using ajax */
@@ -185,8 +193,6 @@
                     var request = setRequestData();
                     if (formValidation()) callAjaxForAddOperation(part1, part2, icn, msg, request);
                 });
-
-
 
 
                 /* html form Validation */
@@ -224,8 +230,6 @@
                 }
 
 
-
-
                 /* Initialize html form validation error field*/
 
                 function initFormValidationMsg() {
@@ -239,16 +243,13 @@
                 }
 
 
-
-
                 /*  Ajax call for save operation */
 
                 function callAjaxForAddOperation(part1, part2, icn, msg, request) {
-                    console.log(request);
                     $.ajax({
                         url: messageResource.get('request.save.url', 'configMessageForUI'),
                         type: "POST",
-                        data:request,
+                        data: request,
                         enctype: 'multipart/form-data',
                         processData: false,
                         contentType: false
@@ -276,7 +277,6 @@
                             });
 
                 }
-
 
 
                 /* Load Category data to select box data using ajax */
@@ -309,9 +309,6 @@
                 }
 
 
-
-
-
                 /*  prepare request object to save */
 
                 function setRequestData() {
@@ -319,13 +316,20 @@
                     var companyId = $("#listOfCompany option:selected").val();
                     var productId = $("#listOfProduct option:selected").val();
                     var request = new FormData(document.getElementById("requestDetails"));
+                    var descriptionListObj={};
+                    var descriptionList=$('.description');
+                    for(i=0; i<descriptionList.length;i++){
+                        descriptionListObj['Key'+i] =descriptionList[i].value;
+                    }
+                    console.log(descriptionListObj);
+                    console.log(request);
+//                    request.append('descriptionListObj', descriptionListObj);
                     request.append('categoryId', categoryId);
                     request.append('companyId', companyId);
                     request.append('productId', productId);
+                    console.log(request);
                     return request;
                 }
-
-
 
 
                 /* Load Product data to select box data using ajax */
@@ -357,8 +361,6 @@
                 }
 
 
-
-
                 /* Load Company data to select box data using ajax */
 
                 function getAllCompany() {
@@ -381,11 +383,9 @@
                 }
 
 
-
-
                 /* Reset Request Form  */
 
-                function resetChangeRequestForm(){
+                function resetChangeRequestForm() {
                     $("#id").val("0");
                     $("#version").val("0");
                     $("#name").val("");
@@ -396,6 +396,34 @@
                     $('#defaultOptCategory').val('0').prop('selected', true);
                 }
 
+
+                var max_fields = 10; //maximum input boxes allowed
+                var wrapper = $(".input_fields_wrap"); //Fields wrapper
+                var add_button = $(".add_field_button"); //Add button ID
+
+                var x = 1; //initlal text box count
+                $(add_button).click(function (e) { //on add input button click
+                    e.preventDefault();
+                    if (x < max_fields) { //max input box allowed
+                        x++; //text box increment
+                        $(wrapper).append('<div><textarea id="description" name="description[]" class="form-control input-md description"style="border-color:#808080; border-width:1px; border-style:solid;"rows="6" cols="20"></textarea><a href="#" class="remove_field" style="font-size:12px;color: red">Remove</a></div>'); //add input box
+                    }
+                });
+
+                $(wrapper).on("click", ".remove_field", function (e) { //user click on remove text
+                    e.preventDefault();
+                    $(this).parent('div').remove();
+                    x--;
+                });
+
+                $('#testButton').click(function(){
+                    var descriptionListObj={};
+                    var descriptionList=$('.description');
+                    for(i=0; i<descriptionList.length;i++){
+                        descriptionListObj['Key'+i] =descriptionList[i].value;
+                    }
+                    console.log(descriptionListObj);
+                })
             });
 
             //
