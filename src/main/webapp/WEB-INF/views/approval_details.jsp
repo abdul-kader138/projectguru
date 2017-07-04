@@ -17,7 +17,7 @@
                     <thead>
                     <tr>
                         <th width="100px">Name</th>
-                        <th width="100px">company</th>
+                        <th width="100px">Company</th>
                         <th width="100px">Product</th>
                         <th width="100px">Category</th>
                         <th width="120px">Approve Type</th>
@@ -198,9 +198,36 @@
                         callAjaxForEditOperation(part1, part2, icn, msg, approvalObj);
                     }
                 }
-                if (obj.className.split(' ')[0] == messageResource.get('button.name.delete', 'configMessageForUI')) deleteApproval(part1, part2, icn, msg, approvalObj);
-//                if (obj.className.split(' ')[0] == messageResource.get('button.name.decline', 'configMessageForUI')) redirectToDeclineRequest(approvalObj);
+                if (obj.className.split(' ')[0] == messageResource.get('button.name.delete', 'configMessageForUI')) deleteApprovalRequest(approvalObj);
             });
+
+
+
+            /* delete operation */
+
+            function deleteApprovalRequest(approvalObj) {
+                var part1 = "";
+                var part2 = "";
+                var icn = 0;
+                var msg = "Message";
+                    $.dialogbox({
+                        type: 'msg',
+                        title: 'Confirm Title',
+                        content: messageResource.get('approval.delete.confirm.msg', 'configMessageForUI'),
+                        closeBtn: true,
+                        btn: ['Confirm', 'Cancel'],
+                        call: [
+                            function () {
+                                $.dialogbox.close();
+                                callAjaxForDeleteOperation(part1, part2, icn, msg, approvalObj);
+
+                            },
+                            function () {
+                                $.dialogbox.close();
+                            }
+                        ]
+                    });
+            }
 
 
 
@@ -242,25 +269,9 @@
             }
 
 
-            function deleteApproval(part1, part2, icn, msg, approvalObj) {
-                $.dialogbox({
-                    type: 'msg',
-                    title: 'Confirm Title',
-                    content: messageResource.get('approval_details.delete.confirm.msg', 'configMessageForUI'),
-                    closeBtn: true,
-                    btn: ['Confirm', 'Cancel'],
-                    call: [
-                        function () {
-                            $.dialogbox.close();
-                            callAjaxForDeleteOperation(part1, part2, icn, msg, approvalObj);
 
-                        },
-                        function () {
-                            $.dialogbox.close();
-                        }
-                    ]
-                });
-            }
+
+
 
             /*  Ajax call for delete operation */
 
@@ -315,13 +326,6 @@
                 return isValid;
             }
 
-
-            function redirectToDeclineRequest(obj){
-//                var mainPath = document.origin + "/PG";
-                var mainPath='http://localhost:8080/'+'decline/'+obj.id;
-                window.location=mainPath;
-//                console.log(developmentServerMainPath);
-            }
 
         });
 

@@ -10,6 +10,7 @@ import com.dreamchain.skeleton.model.DeclineRequest;
 import com.dreamchain.skeleton.model.User;
 import com.dreamchain.skeleton.service.ChangeRequestService;
 import com.dreamchain.skeleton.service.DeclineRequestService;
+import com.dreamchain.skeleton.utility.EmailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -18,15 +19,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.Authenticator;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @PropertySource("classpath:config.properties")
@@ -43,6 +44,9 @@ public class DeclineRequestServiceImpl implements DeclineRequestService {
     private static String INVALID_INPUT = "Invalid input";
     private static String INVALID_REQUEST = "Request not exists";
     private static String BACK_DATED_DATA = "Request data is old.Please try again with updated data";
+    private static String EMAIL_BODY_SAVE = "Your acknowledged by request is decline.Request Name ##";
+    private static String EMAIL_HEADER_SAVE= "Request is declined.Request Name ##";
+
 
 
 
@@ -75,9 +79,13 @@ public class DeclineRequestServiceImpl implements DeclineRequestService {
             changeRequest.setCreatedOn(date);
             changeRequest.setDeclineCause(declineRequest.getDeclineCause());
             changeRequest.setWipStatus(environment.getProperty("approval.status.approve.type.acknowledgeBy.itCoordinator"));
-            // need to get IT cordinator object and set it status waiting
+            ApprovalStatus itCoordinatorObj=approvalStatusDao.findByRequestIdAndUserType(changeRequest.getId(),environment.getProperty("approval.user.acknowledgementIT"));
+            itCoordinatorObj.setStatus(environment.getProperty("approval.status.waiting"));
+            approvalStatus.setStatus(environment.getProperty("approval.status.none"));
             long requestId= changeRequestDao.save(changeRequest);
             long declineId= declineRequestDao.save(declineRequest);
+            long approvalId=approvalStatusDao.save(itCoordinatorObj);
+//            sendEmail(changeRequest.getAcknowledgedItCoordinator().getEmail(), EMAIL_HEADER_SAVE, EMAIL_BODY_SAVE + changeRequest.getName());
         }
         obj.put("validationError",validationMsg);
         return obj;
@@ -108,9 +116,35 @@ public class DeclineRequestServiceImpl implements DeclineRequestService {
 
     }
 
+
+
+
     private User getUserId(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return (User)auth.getPrincipal();
+    }
+
+
+
+
+    private void sendEmail(String toEmail, String header, String body) {
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class",
+                "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "465");
+
+        Authenticator auth = new Authenticator() {
+            //override the getPasswordAuthentication method
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(environment.getProperty("approval.send.email.from.id"), environment.getProperty("approval.send.email.from.password"));
+            }
+        };
+        Session session = Session.getDefaultInstance(props, auth);
+        EmailUtil.sendEmail(session, toEmail, header, body);
+
     }
 
 }

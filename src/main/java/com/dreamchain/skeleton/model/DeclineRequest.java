@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
-
+@Entity
 @Table
 public class DeclineRequest implements Serializable {
 

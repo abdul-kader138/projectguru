@@ -98,15 +98,16 @@
             $("#cause").val("");
             $("#causeValidation").text("");
 
-            $("#saveCategory").click(function () {
+            $("#decline").click(function () {
                 $("#causeValidation").text("");
                 /*  Ajax call for save operation */
                 var obj = new Object();
                 obj.approveId = $('#approveId').val();
                 obj.requestedId = $('#requestedId').val();
                 obj.cause = $('#cause').val();
+                obj.version = $('#version').val();
 
-                if (formValidation())callAjaxForAddOperation("", "", 0, "Message");
+                if (formValidation())callAjaxForAddOperation("", "", 0, "Message",obj);
 
 
             });
@@ -114,6 +115,7 @@
             /*  Ajax call for add operation */
 
             function callAjaxForAddOperation(part1, part2, icn, msg, obj) {
+                console.log(obj);
                 $.ajax({
                     headers: {
                         'Accept': 'application/json',
@@ -131,6 +133,7 @@
                             showServerSideMessage(part1, part2, icn, msg);
                             $("#cause").val("");
                             $("#causeValidation").text("");
+                            window.location=messageResource.get('approval_details.load.url', 'configMessageForUI');
                         }
                         if (d.validationError) {
                             icn = 0;
