@@ -21,6 +21,7 @@ public interface ChangeRequestDao {
     ChangeRequest findByCompanyId(long companyId);
     ChangeRequest findByProductId(long productId);
     ChangeRequest findByCategoryId(long categoryId);
+    ChangeRequest findByTeamAllocationId(long teamAllocationId);
 
 
 }

@@ -1,9 +1,11 @@
 package com.dreamchain.skeleton.service.impl;
 
 import com.dreamchain.skeleton.dao.CategoryDao;
+import com.dreamchain.skeleton.dao.ChangeRequestDao;
 import com.dreamchain.skeleton.dao.TeamAllocationDao;
 import com.dreamchain.skeleton.dao.UserDao;
 import com.dreamchain.skeleton.model.Category;
+import com.dreamchain.skeleton.model.ChangeRequest;
 import com.dreamchain.skeleton.model.TeamAllocation;
 import com.dreamchain.skeleton.model.User;
 import com.dreamchain.skeleton.service.TeamAllocationService;
@@ -32,6 +34,8 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
     @Autowired
     UserDao userDao ;
     @Autowired
+    ChangeRequestDao changeRequestDao;
+    @Autowired
     Environment environment;
 
 
@@ -40,7 +44,7 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
     private static String INVALID_TEAM_ALLOCATION = "Team allocation not exists";
     private static String BACK_DATED_DATA = "Team allocation data is old.Please try again with updated data";
     private static String SAME_ALLOCATED_USER = "Checked By and Requester name can't be same";
-    private static String ASSOCIATED_REQUEST = "Team is allocated with request.First remove tagging and try again";
+    private static String ASSOCIATED_REQUEST = "This allocation is associated with request.First remove tagging and try again";
 
     @Transactional(readOnly = true)
     public TeamAllocation get(Long id) {
@@ -75,6 +79,7 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
     @Transactional
     public Map<String, Object> update(Map<String, Object> teamAllocationObj) throws ParseException {
         Map<String,Object> obj=new HashMap<>();
+        ChangeRequest changeRequest=new ChangeRequest();
         String validationMsg = "";
         TeamAllocation newObj=new TeamAllocation();
         TeamAllocation existingTeamAllocation=new TeamAllocation();
@@ -84,6 +89,8 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
         if(teamAllocation.getCheckedById() == teamAllocation.getRequestById() ) validationMsg=SAME_ALLOCATED_USER;
         if ("".equals(validationMsg)) existingTeamAllocation = teamAllocationDao.get(teamAllocation.getId());
         if (existingTeamAllocation == null && "".equals(validationMsg)) validationMsg = INVALID_TEAM_ALLOCATION;
+        if("".equals(validationMsg)) changeRequest=changeRequestDao.findByTeamAllocationId(teamAllocation.getId());
+        if("".equals(validationMsg) && changeRequest.getName() !=null) validationMsg=ASSOCIATED_REQUEST;
         if (teamAllocation.getVersion() != existingTeamAllocation.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg)) {
             newObj=setUpdateCategoryValue(teamAllocation, existingTeamAllocation);

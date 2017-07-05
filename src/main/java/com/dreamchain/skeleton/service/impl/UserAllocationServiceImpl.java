@@ -26,6 +26,8 @@ public class UserAllocationServiceImpl implements UserAllocationService {
     @Autowired
     CategoryDao categoryDao ;
     @Autowired
+    ChangeRequestDao changeRequestDao;
+    @Autowired
     UserDao userDao ;
     @Autowired
     Environment environment;
@@ -35,7 +37,7 @@ public class UserAllocationServiceImpl implements UserAllocationService {
     private static String INVALID_INPUT = "Invalid input";
     private static String INVALID_USER_ALLOCATION = "User allocation not exists";
     private static String BACK_DATED_DATA = "User allocation data is old.Please try again with updated data";
-    private static String ASSOCIATED_REQUEST = "User is allocated with request.First remove tagging and try again";
+    private static String ASSOCIATED_REQUEST = "This allocation is associated with request.First remove tagging and try again";
     private static String SAME_ALLOCATED_USER = "Approved By and Coordinator name can't be same";
 
     @Transactional(readOnly = true)
@@ -72,6 +74,7 @@ public class UserAllocationServiceImpl implements UserAllocationService {
     public Map<String, Object> update(Map<String, Object> userAllocationObj) throws ParseException {
         Map<String,Object> obj=new HashMap<>();
         String validationMsg = "";
+        ChangeRequest changeRequest=new ChangeRequest();
         UserAllocation newObj=new UserAllocation();
         UserAllocation existingUserAllocation=new UserAllocation();
         UserAllocation userAllocation=createObjForSave(userAllocationObj);
@@ -80,6 +83,8 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         if(userAllocation.getApprovedById() == userAllocation.getItCoordinatorId() ) validationMsg=SAME_ALLOCATED_USER;
         if ("".equals(validationMsg)) existingUserAllocation = userAllocationDao.get(userAllocation.getId());
         if (existingUserAllocation == null && "".equals(validationMsg)) validationMsg = INVALID_USER_ALLOCATION;
+        if("".equals(validationMsg)) changeRequest=changeRequestDao.findByTeamAllocationId(existingUserAllocation.getId());
+        if("".equals(validationMsg) && changeRequest.getName() !=null) validationMsg=ASSOCIATED_REQUEST;
         if (userAllocation.getVersion() != existingUserAllocation.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg)) {
             newObj=setUpdateCategoryValue(userAllocation, existingUserAllocation);

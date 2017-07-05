@@ -75,6 +75,13 @@ public class ChangeRequest implements Serializable {
     @NotNull
     private long approvedById;
 
+    @NotNull
+    private long teamAllocationId;
+
+
+    @NotNull
+    private long userAllocationId;
+
 
     @NotNull
     @OneToOne
@@ -432,6 +439,22 @@ public class ChangeRequest implements Serializable {
 
     public void setDeclineCause(String declineCause) {
         this.declineCause = declineCause;
+    }
+
+    public long getTeamAllocationId() {
+        return teamAllocationId;
+    }
+
+    public void setTeamAllocationId(long teamAllocationId) {
+        this.teamAllocationId = teamAllocationId;
+    }
+
+    public long getUserAllocationId() {
+        return userAllocationId;
+    }
+
+    public void setUserAllocationId(long userAllocationId) {
+        this.userAllocationId = userAllocationId;
     }
 
     public ChangeRequest() {

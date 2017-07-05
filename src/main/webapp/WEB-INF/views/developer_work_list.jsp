@@ -65,8 +65,8 @@
                                         <th width="100px">Product</th>
                                         <th width="100px">Category</th>
                                         <th width="80px"> Status</th>
-                                        <th width="80px"> Decline Cause</th>
-                                        <th width="30px"> Delivery</br> Date</th>
+                                        <th width="80px">Decline Cause</th>
+                                        <th width="30px">Delivery</br> Date</th>
                                         <th width="80px">Attachment</th>
                                     </tr>
                                     </thead>

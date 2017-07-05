@@ -228,6 +228,8 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
         changeRequest.setAcknowledgedItCoordinator(userAllocation.getItCoordinator());
         changeRequest.setCheckedByStatus(environment.getProperty("approval.wip.checkedBy.status.none"));
         changeRequest.setWipStatus(environment.getProperty("approval.status.approve.type.checkedBy"));
+        changeRequest.setTeamAllocationId(teamAllocation.getId());
+        changeRequest.setUserAllocationId(userAllocation.getId());
         return changeRequest;
     }
 
