@@ -11,7 +11,7 @@ import java.util.*;
 @Entity
 @Table(name="change_request",
         uniqueConstraints=
-        @UniqueConstraint(columnNames={"companyId","productId", "categoryId","name"}))
+        @UniqueConstraint(columnNames={"category","name"}))
 public class ChangeRequest implements Serializable {
 
     private static final long serialVersionUID = 8633416055380776715L;
@@ -23,57 +23,45 @@ public class ChangeRequest implements Serializable {
     @Version
     private long version;
 
-    @NotNull
-    @OneToOne
-    private Company company;
 
-    @NotNull
-    @OneToOne
-    private Product product;
-
-
-    @NotNull
     @OneToOne
     private Category category;
 
-
     @NotNull
-    private long companyId;
-
-
-    @NotNull
-    private long productId;
-
-    @NotNull
-    private long categoryId;
+    private long departmentId;
 
     @NotNull
     @OneToOne
     private User requestBy;
 
-    @NotNull
-    private long requestById;
 
     @NotNull
     @OneToOne
     private User checkedBy;
 
-    @NotNull
-    private long checkedById;
 
     @NotNull
     @OneToOne
     private User itCoordinator;
 
-    @NotNull
-    private long itCoordinatorId;
 
     @NotNull
     @OneToOne
     private User approvedBy;
 
+
     @NotNull
-    private long approvedById;
+    @OneToOne
+    private User acknowledgedItCoordinator;
+
+
+    @NotNull
+    @OneToOne
+    private User acknowledgeChecked;
+
+    @NotNull
+    @OneToOne
+    private User acknowledgement;
 
     @NotNull
     private long teamAllocationId;
@@ -82,27 +70,6 @@ public class ChangeRequest implements Serializable {
     @NotNull
     private long userAllocationId;
 
-
-    @NotNull
-    @OneToOne
-    private User acknowledgedItCoordinator;
-
-    @NotNull
-    private long acknowledgedItCoordinatorId;
-
-    @NotNull
-    @OneToOne
-    private User acknowledgeChecked;
-
-    @NotNull
-    private long acknowledgeCheckedId;
-
-    @NotNull
-    @OneToOne
-    private User acknowledgement;
-
-    @NotNull
-    private long acknowledgementId;
 
     @NotEmpty
     @Length(max = 60)
@@ -156,6 +123,10 @@ public class ChangeRequest implements Serializable {
     private String declineCause;
 
 
+
+    public ChangeRequest() {
+    }
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
@@ -176,22 +147,6 @@ public class ChangeRequest implements Serializable {
         this.version = version;
     }
 
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public Company getCompany() {
-        return company;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
-    }
-
     public Category getCategory() {
         return category;
     }
@@ -200,28 +155,12 @@ public class ChangeRequest implements Serializable {
         this.category = category;
     }
 
-    public long getCompanyId() {
-        return companyId;
+    public long getDepartmentId() {
+        return departmentId;
     }
 
-    public void setCompanyId(long companyId) {
-        this.companyId = companyId;
-    }
-
-    public long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(long productId) {
-        this.productId = productId;
-    }
-
-    public long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(long categoryId) {
-        this.categoryId = categoryId;
+    public void setDepartmentId(long departmentId) {
+        this.departmentId = departmentId;
     }
 
     public User getRequestBy() {
@@ -232,28 +171,12 @@ public class ChangeRequest implements Serializable {
         this.requestBy = requestBy;
     }
 
-    public long getRequestById() {
-        return requestById;
-    }
-
-    public void setRequestById(long requestById) {
-        this.requestById = requestById;
-    }
-
     public User getCheckedBy() {
         return checkedBy;
     }
 
     public void setCheckedBy(User checkedBy) {
         this.checkedBy = checkedBy;
-    }
-
-    public long getCheckedById() {
-        return checkedById;
-    }
-
-    public void setCheckedById(long checkedById) {
-        this.checkedById = checkedById;
     }
 
     public User getItCoordinator() {
@@ -264,14 +187,6 @@ public class ChangeRequest implements Serializable {
         this.itCoordinator = itCoordinator;
     }
 
-    public long getItCoordinatorId() {
-        return itCoordinatorId;
-    }
-
-    public void setItCoordinatorId(long itCoordinatorId) {
-        this.itCoordinatorId = itCoordinatorId;
-    }
-
     public User getApprovedBy() {
         return approvedBy;
     }
@@ -280,12 +195,12 @@ public class ChangeRequest implements Serializable {
         this.approvedBy = approvedBy;
     }
 
-    public long getApprovedById() {
-        return approvedById;
+    public User getAcknowledgedItCoordinator() {
+        return acknowledgedItCoordinator;
     }
 
-    public void setApprovedById(long approvedById) {
-        this.approvedById = approvedById;
+    public void setAcknowledgedItCoordinator(User acknowledgedItCoordinator) {
+        this.acknowledgedItCoordinator = acknowledgedItCoordinator;
     }
 
     public User getAcknowledgeChecked() {
@@ -296,14 +211,6 @@ public class ChangeRequest implements Serializable {
         this.acknowledgeChecked = acknowledgeChecked;
     }
 
-    public long getAcknowledgeCheckedId() {
-        return acknowledgeCheckedId;
-    }
-
-    public void setAcknowledgeCheckedId(long acknowledgeCheckedId) {
-        this.acknowledgeCheckedId = acknowledgeCheckedId;
-    }
-
     public User getAcknowledgement() {
         return acknowledgement;
     }
@@ -312,12 +219,20 @@ public class ChangeRequest implements Serializable {
         this.acknowledgement = acknowledgement;
     }
 
-    public long getAcknowledgementId() {
-        return acknowledgementId;
+    public long getTeamAllocationId() {
+        return teamAllocationId;
     }
 
-    public void setAcknowledgementId(long acknowledgementId) {
-        this.acknowledgementId = acknowledgementId;
+    public void setTeamAllocationId(long teamAllocationId) {
+        this.teamAllocationId = teamAllocationId;
+    }
+
+    public long getUserAllocationId() {
+        return userAllocationId;
+    }
+
+    public void setUserAllocationId(long userAllocationId) {
+        this.userAllocationId = userAllocationId;
     }
 
     public String getName() {
@@ -344,6 +259,14 @@ public class ChangeRequest implements Serializable {
         this.docPath = docPath;
     }
 
+    public String getWipStatus() {
+        return wipStatus;
+    }
+
+    public void setWipStatus(String wipStatus) {
+        this.wipStatus = wipStatus;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -352,12 +275,28 @@ public class ChangeRequest implements Serializable {
         this.status = status;
     }
 
-    public String getWipStatus() {
-        return wipStatus;
+    public String getCheckedByStatus() {
+        return checkedByStatus;
     }
 
-    public void setWipStatus(String wipStatus) {
-        this.wipStatus = wipStatus;
+    public void setCheckedByStatus(String checkedByStatus) {
+        this.checkedByStatus = checkedByStatus;
+    }
+
+    public Date getDeliverDate() {
+        return deliverDate;
+    }
+
+    public void setDeliverDate(Date deliverDate) {
+        this.deliverDate = deliverDate;
+    }
+
+    public Integer getRequiredDay() {
+        return requiredDay;
+    }
+
+    public void setRequiredDay(Integer requiredDay) {
+        this.requiredDay = requiredDay;
     }
 
     public String getCreatedBy() {
@@ -392,71 +331,11 @@ public class ChangeRequest implements Serializable {
         this.updatedOn = updatedOn;
     }
 
-    public User getAcknowledgedItCoordinator() {
-        return acknowledgedItCoordinator;
-    }
-
-    public void setAcknowledgedItCoordinator(User acknowledgedItCoordinator) {
-        this.acknowledgedItCoordinator = acknowledgedItCoordinator;
-    }
-
-    public long getAcknowledgedItCoordinatorId() {
-        return acknowledgedItCoordinatorId;
-    }
-
-    public void setAcknowledgedItCoordinatorId(long acknowledgedItCoordinatorId) {
-        this.acknowledgedItCoordinatorId = acknowledgedItCoordinatorId;
-    }
-
-    public String getCheckedByStatus() {
-        return checkedByStatus;
-    }
-
-    public void setCheckedByStatus(String checkedByStatus) {
-        this.checkedByStatus = checkedByStatus;
-    }
-
-
-    public Date getDeliverDate() {
-        return deliverDate;
-    }
-
-    public void setDeliverDate(Date deliverDate) {
-        this.deliverDate = deliverDate;
-    }
-
-    public Integer getRequiredDay() {
-        return requiredDay;
-    }
-
-    public void setRequiredDay(Integer requiredDay) {
-        this.requiredDay = requiredDay;
-    }
-
     public String getDeclineCause() {
         return declineCause;
     }
 
     public void setDeclineCause(String declineCause) {
         this.declineCause = declineCause;
-    }
-
-    public long getTeamAllocationId() {
-        return teamAllocationId;
-    }
-
-    public void setTeamAllocationId(long teamAllocationId) {
-        this.teamAllocationId = teamAllocationId;
-    }
-
-    public long getUserAllocationId() {
-        return userAllocationId;
-    }
-
-    public void setUserAllocationId(long userAllocationId) {
-        this.userAllocationId = userAllocationId;
-    }
-
-    public ChangeRequest() {
     }
 }

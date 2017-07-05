@@ -47,7 +47,7 @@ public class ApprovalStatusDaoImpl implements ApprovalStatusDao {
     @Override
     public List<ApprovalStatus> findByUserId(long userId) {
         DetachedCriteria dcr = DetachedCriteria.forClass(ApprovalStatus.class);
-        Criterion cr = Restrictions.eq("approvedById", userId);
+        Criterion cr = Restrictions.eq("approvedBy.id", userId);
         Criterion cr1 = Restrictions.eq("status", environment.getProperty("approval.status.waiting"));
         dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         dcr.add(cr1).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -59,7 +59,7 @@ public class ApprovalStatusDaoImpl implements ApprovalStatusDao {
     public List<ApprovalStatus> findByUserIdAndRequestId(long userId, long requestId) {
         DetachedCriteria dcr = DetachedCriteria.forClass(ApprovalStatus.class);
         Criterion cr = Restrictions.eq("requestId", requestId);
-        Criterion cr1 = Restrictions.eq("approvedById", userId);
+        Criterion cr1 = Restrictions.eq("approvedBy.id", userId);
         dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         dcr.add(cr1).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List<Object> lst = hibernateTemplate.findByCriteria(dcr);
@@ -91,7 +91,7 @@ public class ApprovalStatusDaoImpl implements ApprovalStatusDao {
     @Override
     public Set<ApprovalStatus> findByApprovedId(long approvedId) {
         DetachedCriteria dcr = DetachedCriteria.forClass(ApprovalStatus.class);
-        Criterion cr = Restrictions.eq("approvedById", approvedId);
+        Criterion cr = Restrictions.eq("approvedBy.id", approvedId);
         dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List<Object> lst = hibernateTemplate.findByCriteria(dcr);
         List<ApprovalStatus> approvalStatuses = createApprovalList(lst);
@@ -112,7 +112,7 @@ public class ApprovalStatusDaoImpl implements ApprovalStatusDao {
     @Override
     public List<ApprovalStatus> findByApprovedById(long userId) {
         DetachedCriteria dcr = DetachedCriteria.forClass(ApprovalStatus.class);
-        Criterion cr = Restrictions.eq("approvedById", userId);
+        Criterion cr = Restrictions.eq("approvedBy.id", userId);
         dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List<Object> lst = hibernateTemplate.findByCriteria(dcr);
         return createApprovalList(lst);

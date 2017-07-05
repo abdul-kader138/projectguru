@@ -10,7 +10,7 @@ import java.util.Date;
 @Entity
 @Table(name="approve_status",
         uniqueConstraints=
-        @UniqueConstraint(columnNames={"companyId","productId", "categoryId","userType","requestName"}))
+        @UniqueConstraint(columnNames={"category","userType","requestName"}))
 public class ApprovalStatus {
     private static final long serialVersionUID = 8633413235380776715L;
 
@@ -21,29 +21,11 @@ public class ApprovalStatus {
     @Version
     private long version;
 
-    @NotNull
-    @OneToOne
-    private Company company;
-
-    @NotNull
-    @OneToOne
-    private Product product;
-
 
     @NotNull
     @OneToOne
     private Category category;
 
-
-    @NotNull
-    private long companyId;
-
-
-    @NotNull
-    private long productId;
-
-    @NotNull
-    private long categoryId;
 
     @NotEmpty
     private String requestName;
@@ -51,9 +33,6 @@ public class ApprovalStatus {
     @NotNull
     @OneToOne
     private User approvedBy;
-
-    @NotNull
-    private long approvedById;
 
     @NotEmpty
     private String status;
@@ -95,7 +74,6 @@ public class ApprovalStatus {
     private Date updatedOn;
 
 
-
     public ApprovalStatus() {
     }
 
@@ -103,76 +81,12 @@ public class ApprovalStatus {
         return serialVersionUID;
     }
 
-    public long getApprovedById() {
-        return approvedById;
+    public long getId() {
+        return id;
     }
 
-    public void setApprovedById(long approvedById) {
-        this.approvedById = approvedById;
-    }
-
-    public User getApprovedBy() {
-        return approvedBy;
-    }
-
-    public void setApprovedBy(User approvedBy) {
-        this.approvedBy = approvedBy;
-    }
-
-    public String getRequestName() {
-        return requestName;
-    }
-
-    public void setRequestName(String requestName) {
-        this.requestName = requestName;
-    }
-
-    public long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(long categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(long productId) {
-        this.productId = productId;
-    }
-
-    public long getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(long companyId) {
-        this.companyId = companyId;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public Company getCompany() {
-        return company;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getVersion() {
@@ -183,12 +97,28 @@ public class ApprovalStatus {
         this.version = version;
     }
 
-    public long getId() {
-        return id;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public String getRequestName() {
+        return requestName;
+    }
+
+    public void setRequestName(String requestName) {
+        this.requestName = requestName;
+    }
+
+    public User getApprovedBy() {
+        return approvedBy;
+    }
+
+    public void setApprovedBy(User approvedBy) {
+        this.approvedBy = approvedBy;
     }
 
     public String getStatus() {
@@ -205,6 +135,46 @@ public class ApprovalStatus {
 
     public void setUserType(String userType) {
         this.userType = userType;
+    }
+
+    public String getApproveType() {
+        return approveType;
+    }
+
+    public void setApproveType(String approveType) {
+        this.approveType = approveType;
+    }
+
+    public long getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(long requestId) {
+        this.requestId = requestId;
+    }
+
+    public Date getDeliverDate() {
+        return deliverDate;
+    }
+
+    public void setDeliverDate(Date deliverDate) {
+        this.deliverDate = deliverDate;
+    }
+
+    public Integer getRequiredDay() {
+        return requiredDay;
+    }
+
+    public void setRequiredDay(Integer requiredDay) {
+        this.requiredDay = requiredDay;
+    }
+
+    public String getDocPath() {
+        return docPath;
+    }
+
+    public void setDocPath(String docPath) {
+        this.docPath = docPath;
     }
 
     public String getCreatedBy() {
@@ -237,45 +207,5 @@ public class ApprovalStatus {
 
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
-    }
-
-    public String getApproveType() {
-        return approveType;
-    }
-
-    public long getRequestId() {
-        return requestId;
-    }
-
-    public void setRequestId(long requestId) {
-        this.requestId = requestId;
-    }
-
-    public void setApproveType(String approveType) {
-        this.approveType = approveType;
-    }
-
-    public Date getDeliverDate() {
-        return deliverDate;
-    }
-
-    public void setDeliverDate(Date deliverDate) {
-        this.deliverDate = deliverDate;
-    }
-
-    public String getDocPath() {
-        return docPath;
-    }
-
-    public void setDocPath(String docPath) {
-        this.docPath = docPath;
-    }
-
-    public Integer getRequiredDay() {
-        return requiredDay;
-    }
-
-    public void setRequiredDay(Integer requiredDay) {
-        this.requiredDay = requiredDay;
     }
 }

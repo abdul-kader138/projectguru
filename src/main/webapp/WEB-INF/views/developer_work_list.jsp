@@ -137,9 +137,9 @@
                     }
                     },
                     {
-                        "mData": "company.name", 'sWidth': '100px', "render": function (data, type, row, id) {
-                        if (row.company.name != null) {
-                            var companyName = row.company.name.substr(0, 25);
+                        "mData": "category.company.name", 'sWidth': '100px', "render": function (data, type, row, id) {
+                        if (row.category.company.name != null) {
+                            var companyName = row.category.company.name.substr(0, 25);
                             return companyName;
                         }
                         return "";
@@ -147,9 +147,9 @@
                     },
 
                     {
-                        "mData": "product.name", 'sWidth': '100px', "render": function (data, type, row, id) {
-                        if (row.product.name != null) {
-                            var productName = row.product.name.substr(0, 25);
+                        "mData": "category.product.name", 'sWidth': '100px', "render": function (data, type, row, id) {
+                        if (row.category.product.name != null) {
+                            var productName = row.category.product.name.substr(0, 25);
                             return productName;
                         }
                         return "";

@@ -78,7 +78,7 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
         if ("".equals(validationMsg)) changeRequest = (ChangeRequest) validationObj.get("changeRequest");
         if ("".equals(validationMsg)) validationMsg = checkInput(changeRequest);
         if ("".equals(validationMsg))
-            existingChangeRequest = changeRequestDao.findByName(changeRequest.getName(), changeRequest.getCompanyId(), changeRequest.getProductId(), changeRequest.getCategoryId());
+            existingChangeRequest = changeRequestDao.findByName(changeRequest.getName(), changeRequest.getCategory().getId());
         if (existingChangeRequest.getCheckedBy() != null && "".equals(validationMsg))
             validationMsg = CHANGED_REQUEST_EXISTS;
         if ("".equals(validationMsg)) msg = fileSave(request);
@@ -207,24 +207,13 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
     private ChangeRequest setChangeRequestValue(Category category, TeamAllocation teamAllocation, UserAllocation userAllocation) {
         ChangeRequest changeRequest = new ChangeRequest();
         changeRequest.setCategory(category);
-        changeRequest.setCategoryId(category.getId());
-        changeRequest.setCompany(category.getCompany());
-        changeRequest.setCompanyId(category.getCompanyId());
-        changeRequest.setProductId(category.getProductId());
-        changeRequest.setProduct(category.getProduct());
-        changeRequest.setRequestById(teamAllocation.getRequestById());
         changeRequest.setRequestBy(teamAllocation.getRequestedBy());
-        changeRequest.setCheckedById(teamAllocation.getCheckedById());
         changeRequest.setCheckedBy(teamAllocation.getCheckedBy());
-        changeRequest.setAcknowledgeCheckedId(teamAllocation.getCheckedById());
         changeRequest.setAcknowledgeChecked(teamAllocation.getCheckedBy());
-        changeRequest.setAcknowledgementId(teamAllocation.getRequestById());
         changeRequest.setAcknowledgement(teamAllocation.getRequestedBy());
-        changeRequest.setItCoordinatorId(userAllocation.getItCoordinatorId());
         changeRequest.setItCoordinator(userAllocation.getItCoordinator());
-        changeRequest.setApprovedById(userAllocation.getApprovedById());
         changeRequest.setApprovedBy(userAllocation.getApprovedBy());
-        changeRequest.setAcknowledgedItCoordinatorId(userAllocation.getItCoordinatorId());
+        changeRequest.setDepartmentId(category.getDepartment().getId());
         changeRequest.setAcknowledgedItCoordinator(userAllocation.getItCoordinator());
         changeRequest.setCheckedByStatus(environment.getProperty("approval.wip.checkedBy.status.none"));
         changeRequest.setWipStatus(environment.getProperty("approval.status.approve.type.checkedBy"));
@@ -235,13 +224,7 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
 
     private ApprovalStatus setApprovalStatusValue(ChangeRequest changeRequest, User user, String status, String userType, String approveType) throws ParseException {
         ApprovalStatus approvalStatus = new ApprovalStatus();
-        approvalStatus.setCompanyId(changeRequest.getCompanyId());
-        approvalStatus.setCompany(changeRequest.getCompany());
-        approvalStatus.setProductId(changeRequest.getProductId());
-        approvalStatus.setProduct(changeRequest.getProduct());
-        approvalStatus.setCategoryId(changeRequest.getCategoryId());
         approvalStatus.setCategory(changeRequest.getCategory());
-        approvalStatus.setApprovedById(user.getId());
         approvalStatus.setApprovedBy(user);
         approvalStatus.setStatus(status);
         approvalStatus.setRequestName(changeRequest.getName());

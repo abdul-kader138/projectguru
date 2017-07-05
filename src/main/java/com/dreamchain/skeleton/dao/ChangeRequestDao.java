@@ -14,10 +14,9 @@ public interface ChangeRequestDao {
     List<ChangeRequest> findAll(Set<Long> requestId);
     List<ChangeRequest> findAllForDeveloper();
     ChangeRequest findByChangeRequestName(String changeRequestName);
-    ChangeRequest findByNewName(String CurrentChangeRequestName,String newChangeRequestName);
     List<Object> countOfCategory(long categoryId);
     List<Object> findAllStatus();
-    ChangeRequest findByName(String name, long companyId,long productId,long categoryId);
+    ChangeRequest findByName(String name, long categoryId);
     ChangeRequest findByCompanyId(long companyId);
     ChangeRequest findByProductId(long productId);
     ChangeRequest findByCategoryId(long categoryId);

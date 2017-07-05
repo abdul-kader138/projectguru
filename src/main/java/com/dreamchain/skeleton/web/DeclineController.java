@@ -43,8 +43,8 @@ public class DeclineController {
         ApprovalStatus approvalStatus=approvalStatusService.get(approveId);
         modelAndView.addObject("approveId", approvalId);
         modelAndView.addObject("requestedId", requestedId);
-        modelAndView.addObject("companyName",approvalStatus.getCompany().getName());
-        modelAndView.addObject("productName",approvalStatus.getProduct().getName());
+        modelAndView.addObject("companyName",approvalStatus.getCategory().getCompany().getName());
+        modelAndView.addObject("productName",approvalStatus.getCategory().getProduct().getName());
         modelAndView.addObject("categoryName",approvalStatus.getCategory().getName());
         modelAndView.addObject("name",approvalStatus.getRequestName());
         modelAndView.addObject("version",version);

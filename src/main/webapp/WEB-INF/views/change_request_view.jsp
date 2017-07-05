@@ -11,11 +11,11 @@
                 <tbody>
                 <tr class="label_color">
                     <td><b>Company Name</b></td>
-                    <td>${changeRequest.company.name}</td>
+                    <td>${changeRequest.category.company.name}</td>
                 </tr>
                 <tr class="label_color">
                     <td><b>Product Name</b></td>
-                    <td>${changeRequest.product.name}</td>
+                    <td>${changeRequest.category.product.name}</td>
                 </tr>
                 <tr class="label_color">
                     <td><b>Category Name</b></td>
