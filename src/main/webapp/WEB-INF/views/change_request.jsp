@@ -117,11 +117,7 @@
                                         </button>
                                         <button style="position: static" id="resetRequest" name="resetRequest"
                                                 class="btn bg-grey"
-                                                type="button">Cancel
-                                        </button>
-                                        <button style="position: static" id="testButton" name="testButton"
-                                                class="btn bg-grey"
-                                                type="button">Test
+                                                type="button">Reset
                                         </button>
                                     </div>
                                 </div>
@@ -394,6 +390,10 @@
                     $('#defaultOpt').val('0').prop('selected', true);
                     $('#defaultOptProduct').val('0').prop('selected', true);
                     $('#defaultOptCategory').val('0').prop('selected', true);
+                    var descriptionList=$('.description');
+                    for(i=0; i<descriptionList.length;i++){
+                        descriptionList[i].value="";
+                    }
                 }
 
 

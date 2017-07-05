@@ -12,7 +12,7 @@
                 <div><h4>Role-Rights List</h4></div>
                 <hr/>
                 <br/><br/>
-                <table id="roleTable" class="display nowrap" cellspacing="0" width="100%">
+                <table id="roleTable" class="display nowrap table table-bordered" cellspacing="0" width="100%">
                     <thead>
                     <tr>
                         <th style="width: 15px"></th>

@@ -13,7 +13,7 @@
                 <div><h4>Team Member Allocation List</h4></div>
                 <hr/>
                 <br/><br/>
-                <table id="allocationTable" class="display nowrap" cellspacing="0" width="100%">
+                <table id="allocationTable" class="display nowrap table table-bordered" cellspacing="0" width="100%">
                     <thead>
                     <tr>
                         <th width="15px">id</th>

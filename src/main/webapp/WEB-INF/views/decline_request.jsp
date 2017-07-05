@@ -16,7 +16,7 @@
 
                                 <!-- Text Label-->
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="company">Company Name:</label>
+                                    <label class="col-md-4 control-label label_color" for="company"><b>Company Name:</b></label>
                                     <input id="approveId" type="hidden" value="${approveId}"/>
                                     <input id="requestedId" type="hidden" value="${requestedId}"/>
                                     <input id="version" type="hidden" value="${version}"/>
@@ -28,7 +28,7 @@
 
                                 <!-- Text Label-->
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="company">Product Name:</label>
+                                    <label class="col-md-4 control-label label_color" for="company"><b>Product Name:</b></label>
 
                                     <div class="col-md-4">
                                         <label id="productName" class="form-control">${productName}</label>
@@ -37,7 +37,7 @@
 
                                 <!-- Text Label-->
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="company">Category Name:</label>
+                                    <label class="col-md-4 control-label label_color" for="company"><b>Category Name:</b></label>
 
                                     <div class="col-md-4">
                                         <label id="categoryName" class="form-control">${categoryName}</label>
@@ -47,7 +47,7 @@
 
                                 <!-- Text Label-->
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="company">Request Name:</label>
+                                    <label class="col-md-4 control-label label_color" for="company"><b>Request Name:</b></label>
 
                                     <div class="col-md-4">
                                         <label id="company" class="form-control">${name}</label>
@@ -56,7 +56,7 @@
 
                                 <!-- Text input-->
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="cause">Decline Cause :</label>
+                                    <label class="col-md-4 control-label label_color" for="cause"><b>Decline Cause :</b></label>
 
                                     <div class="col-md-6">
                                         <textarea id="cause" class="form-control input-md"
@@ -77,9 +77,9 @@
                                         <button id="decline" name="decline" class="btn btn-primary"
                                                 type="button">Decline
                                         </button>
-                                        <button style="position: static" id="cancel" name="cancel"
+                                        <button style="position: static" id="reset" name="reset"
                                                 class="btn bg-grey"
-                                                type="button">Cancel
+                                                type="button">Reset
                                         </button>
                                     </div>
                                 </div>
@@ -111,6 +111,17 @@
 
 
             });
+
+
+
+            /*  Reset all value */
+
+            $("#reset").click(function () {
+                $('#cause').val("");
+                $('#causeValidation').text("");
+            });
+
+
 
             /*  Ajax call for add operation */
 

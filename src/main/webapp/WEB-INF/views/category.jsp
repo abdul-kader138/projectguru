@@ -13,7 +13,7 @@
                 <div><h4>Category List</h4></div>
                 <hr/>
                 <br/><br/>
-                <table id="categoryTable" class="display nowrap" cellspacing="0" width="100%">
+                <table id="categoryTable" class="display nowrap table table-bordered" cellspacing="0" width="100%">
                     <thead>
                     <tr>
                         <th width="15px">id</th>

@@ -1,81 +1,87 @@
 <%@ include file="header.jsp" %>
 <section class="content">
-  <div class="container-fluid">
-    <div class="row clearfix" id="userForm">
-      <div class="col-xs-8 col-xs-offset-2">
-        <div class="card">
-          <div class="header" style="background-color:#a5a5a5">
-            <h2><strong>&nbsp;</strong></h2>
-          </div>
-          <div class="body" style="border:solid; border-width: 1px; border-color:#a5a5a5;">
-            <form class="form-horizontal" id="userDetails">
-              <fieldset>
+    <div id="viewTableData"></div>
+    <div class="row clearfix">
+        <div class="col-xs-8 col-xs-offset-2 card">
+            <br/>
+            <div><h4>Request Details</h4></div>
+            <hr/>
+            <br/>
+            <table class="display nowrap table table-bordered" cellspacing="0" width="100%">
+                <tbody>
+                <tr class="label_color">
+                    <td><b>Company Name</b></td>
+                    <td>${changeRequest.company.name}</td>
+                </tr>
+                <tr class="label_color">
+                    <td><b>Product Name</b></td>
+                    <td>${changeRequest.product.name}</td>
+                </tr>
+                <tr class="label_color">
+                    <td><b>Category Name</b></td>
+                    <td>${changeRequest.category.name}</td>
+                </tr>
+                <tr class="label_color">
+                    <td><b>Name</b></td>
+                    <td>${changeRequest.name}</td>
+                </tr>
+                <tr class="label_color">
+                    <td><b>Description</b></td>
+                    <td>${changeRequest.description}</td>
+                </tr>
+                <c:if test="${changeRequest.declineCause != null}">
+                    <tr class="label_color">
+                        <td><b>Decline Cause</b></td>
+                        <td>${changeRequest.declineCause}</td>
+                    </tr>
+                </c:if>
 
-                <!-- Form Name -->
-                <legend><strong>Request Info</strong></legend>
+                <c:if test="${changeRequest.wipStatus != null}">
+                    <tr class="label_color">
+                        <td><b>Status(Waiting For)</b></td>
+                        <td>${changeRequest.wipStatus}</td>
+                    </tr>
+                </c:if>
 
-                <!-- label-->
-                <div class="form-group label_color">
-                  <label class="col-md-4 control-label" for="company">Company Name:</label>
+                <c:if test="${changeRequest.status != null}">
+                    <tr class="label_color">
+                        <td><b>Status</b></td>
+                        <td>${changeRequest.status}</td>
+                    </tr>
+                </c:if>
+                <c:if test="${changeRequest.requiredDay != null}">
+                    <tr class="label_color">
+                        <td><b>Day Require for change</b></td>
+                        <td>${changeRequest.requiredDay}</td>
+                    </tr>
+                </c:if>
+                <c:if test="${changeRequest.deliverDate != null}">
+                    <tr class="label_color">
+                        <td><b>Delivery Date</b></td>
+                        <td>${changeRequest.deliverDate}</td>
+                    </tr>
+                </c:if>
+                <c:if test="${changeRequest.createdBy != null}">
+                    <tr class="label_color">
+                        <td><b>Created By</b></td>
+                        <td>${changeRequest.createdBy}</td>
+                    </tr>
+                </c:if>
+                </tbody>
+            </table>
 
-                  <div class="col-md-4">
-                    <label id="company" class="form-control label_color">${changeRequest.company.name}</label>
-                  </div>
-                </div>
-
-
-                <!-- label-->
-                <div class="form-group label_color">
-                  <label class="col-md-4 control-label" for="company">Product Name:</label>
-
-                  <div class="col-md-4">
-                    <label id="product" class="form-control label_color">${changeRequest.product.name}</label>
-                  </div>
-                </div>
-
-                <!-- label-->
-                <div class="form-group label_color">
-                  <label class="col-md-4 control-label" for="company">Category Name:</label>
-
-                  <div class="col-md-4">
-                    <label id="category" class="form-control label_color">${changeRequest.category.name}</label>
-                  </div>
-                </div>
-                <!-- label-->
-                <div class="form-group label_color">
-                  <label class="col-md-4 control-label" for="name">Name :</label>
-                  <div class="col-md-6 label_color">
-                    <label id="name" class="form-control label_color">${changeRequest.name}</label>
-                  </div>
-                </div>
-
-                <!-- label-->
-                <div class="form-group label_color">
-                  <label class="col-md-4 control-label" for="name">Description :</label>
-                  <div class="col-md-6 label_color">
-                    <label id="name" class="form-control" style="color:#000000;">${changeRequest.description}</label>
-                  </div>
-                </div>
-              </fieldset>
-            </form>
+            <a class="btn bg-grey waves-war" id="back" value="1" title="Back" href="/home"><img
+                    src="resources/images/back.png" width="16" height="16" border="0">&nbsp;Back to Home
+            </a>
             <br/>
             <br/>
-
-          </div>
         </div>
-
-      </div>
     </div>
-  </div>
+    <script>
+        $(document).ready(function () {
+        });
 
-  <script>
-    $(document).ready(function () {
-//      var imageVal = $("#uploadedPhotoSrc").attr("src");
-//      var mainPath = document.origin + "/PG";
-//      $("#uploadedPhotoSrc").attr("src", mainPath + imageVal);
-    });
-
-  </script>
+    </script>
 </section>
 
 

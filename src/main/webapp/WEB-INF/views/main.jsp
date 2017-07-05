@@ -60,7 +60,7 @@
                             <table class="table table-hover dashboard-task-infos">
 
                                 <%--//--%>
-                                <table id="requestTable" class="display nowrap" cellspacing="0" width="100%">
+                                <table id="requestTable" class="display nowrap table table-bordered" cellspacing="0" width="100%">
                                     <thead>
                                     <tr>
                                         <th width="100px">Name</th>

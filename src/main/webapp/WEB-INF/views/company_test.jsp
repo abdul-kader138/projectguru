@@ -13,7 +13,7 @@
                 <div><h4>Company List</h4></div>
                 <hr/>
                 <br/><br/>
-                <table id="companyTable" class="display nowrap" cellspacing="0" width="100%">
+                <table id="companyTable" class="display nowrap table table-bordered" cellspacing="0" width="100%">
                     <thead>
                     <tr>
                         <th width="25px">id</th>

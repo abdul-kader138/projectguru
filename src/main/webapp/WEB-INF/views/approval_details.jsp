@@ -13,7 +13,7 @@
                 <hr/>
                 <br/><br/>
                 <input type="hidden" value="" id="date"/>
-                <table id="approveTable" class="display nowrap" cellspacing="0" width="100%">
+                <table id="approveTable" class="display nowrap table table-bordered" cellspacing="0" width="100%">
                     <thead>
                     <tr>
                         <th width="100px">Name</th>
@@ -61,7 +61,7 @@
                             "mData": "requestName", 'sWidth': '100px', "render": function (data, type, row, id) {
                             if (row.requestName != null) {
                                 var name = row.requestName.substr(0, 20);
-                                return name;
+                                return '<a href="/change_request_view?r_id='+row.requestId +'" title="View Request">'+name+'</a>';
                             }
                             return "";
                         }
@@ -149,7 +149,7 @@
                             "render": function (data, type, row, id) {
                                 console.log(row.id);
                                 console.log(row);
-                                if (row.userType == messageResource.get('approve.user.type.request.by.acknowledgement', 'configMessageForUI') || row.userType == messageResource.get('approve.user.type.checked.by.acknowledgement', 'configMessageForUI')) return '<a class="decline btn bg-red waves-war"  href="/decline?a_id='+row.id +'&r_id='+row.requestId+'&ver='+row.version +'" title="Decline Request"> Decline </a>';
+                                if (row.userType == messageResource.get('approve.user.type.request.by.acknowledgement', 'configMessageForUI') || row.userType == messageResource.get('approve.user.type.checked.by.acknowledgement', 'configMessageForUI')) return '<a class="decline btn bg-brown waves-war"  href="/decline?a_id='+row.id +'&r_id='+row.requestId+'&ver='+row.version +'" title="Decline Request"> Decline </a>';
                                 else return "";
                             }
                         }

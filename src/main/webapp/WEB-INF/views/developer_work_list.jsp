@@ -57,7 +57,7 @@
                     <div class="body">
                         <div class="table-responsive">
                             <table class="table table-hover dashboard-task-infos">
-                                <table id="requestTable" class="display nowrap" cellspacing="0" width="100%">
+                                <table id="requestTable" class="display nowrap table table-bordered" cellspacing="0" width="100%">
                                     <thead>
                                     <tr>
                                         <th width="100px">Name</th>
@@ -130,7 +130,7 @@
                         "mData": "name", 'sWidth': '100px', "render": function (data, type, row, id) {
                         if (row.name != null) {
                             var name = row.name.substr(0, 25);
-                            return name;
+                            return '<a href="/change_request_view?r_id='+row.id +'" title="View Request">'+name+'</a>';
                         }
                         return "";
                     }
@@ -205,7 +205,6 @@
                 return Math.round(difference_ms / ONE_DAY);
             }
 
-            $("#approval_details_notification").hide();
         });
 
     </script>

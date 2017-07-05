@@ -126,7 +126,7 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
         Map<String, Object> objList = new HashMap<>();
         Category category = categoryDao.get(Long.parseLong(request.getParameter("categoryId")));
         String[] descriptionObj=request.getParameterValues("description[]");
-        List<String> descriptionList= Arrays.asList(descriptionObj);
+        List<String> descriptionList= setDescriptionList(descriptionObj);
         Set<String> descriptions=new HashSet<>(descriptionList);
         TeamAllocation teamAllocation = teamAllocationDao.findByProductAndCategory(category.getCompanyId(), category.getProductId(), category.getId());
         UserAllocation userAllocation = userAllocationDao.findByProductAndCategory(category.getCompanyId(), category.getProductId(), category.getId());
@@ -353,6 +353,14 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
         Session session = Session.getDefaultInstance(props, auth);
         EmailUtil.sendEmail(session, toEmail, header, body);
 
+    }
+
+    private List<String> setDescriptionList(String[] list){
+        List<String> obj=new ArrayList<>();
+        for(String desObj:list){
+            if(! "".equals(desObj)) obj.add(desObj);
+        }
+        return obj;
     }
 
 

@@ -98,11 +98,13 @@
                         class="material-icons">search</i></a></li>
                 <!-- #END# Call Search -->
                 <!-- Notifications -->
+                <c:if test="${user.userType != 'developer'}">
                 <li class="dropdown" id="approval_details_notification">
                     <a href="approval_details">
                         <i class="material-icons">notifications</i>
                         <span class="label-count" title="Waiting For Approve" id="notificationCount">${notificationCount}</span>
-                    </a>
+                    </a></li>
+                </c:if>
                 <!-- #END# Tasks -->
                 <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i
                         class="material-icons">more_vert</i></a></li>
