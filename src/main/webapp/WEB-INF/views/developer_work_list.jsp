@@ -65,6 +65,7 @@
                                         <th width="100px">Product</th>
                                         <th width="100px">Category</th>
                                         <th width="80px"> Status</th>
+                                        <th width="80px"> Decline Cause</th>
                                         <th width="30px"> Delivery</br> Date</th>
                                         <th width="80px">Attachment</th>
                                     </tr>
@@ -167,6 +168,12 @@
                         "mData": "wipStatus", 'sWidth': '80px',
                         "render": function (data, type, row, id) {
                             return "Waiting For Deployment";
+                        }
+                    },
+                    {
+                        "mData": "declineCause", 'sWidth': '80px',
+                        "render": function (data, type, row, id) {
+                            return row.declineCause;
                         }
                     },
                     {

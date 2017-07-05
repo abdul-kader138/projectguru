@@ -106,10 +106,10 @@ public class UserServiceImpl implements UserService {
         User existingUser = new User();
         User user = createObjForSave(request, "update");
         validationMsg = checkInput(user);
-        if ("".equals(validationMsg)) approvalStatuses= approvalStatusDao.findByApprovedById(user.getId());
-        if(approvalStatuses.size() !=0 && "".equals(validationMsg)) validationMsg=USER_ASSOCIATED_APPROVAL_UPDATE;
         if ("".equals(validationMsg)) existingUser = userDao.get(user.getId());
         if (existingUser.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_USER;
+        if ("".equals(validationMsg)) approvalStatuses= approvalStatusDao.findByApprovedById(user.getId());
+        if(approvalStatuses.size() !=0 && "".equals(validationMsg) && user.getCompanyId() !=existingUser.getCompanyId()) validationMsg=USER_ASSOCIATED_APPROVAL_UPDATE;
         if (user.getVersion() != existingUser.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg)) newUser = userDao.findByNewName(existingUser.getEmail(), user.getEmail());
         if (newUser.getName() != null && "".equals(validationMsg)) validationMsg = EMAIL_EXISTS;
