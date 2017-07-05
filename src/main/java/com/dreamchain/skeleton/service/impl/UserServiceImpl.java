@@ -297,7 +297,7 @@ public class UserServiceImpl implements UserService {
             File newFile = new File(realPathFetch + filePath);
             outputStream = new FileOutputStream(newFile);
             int read = 0;
-            byte[] bytes = new byte[1024];
+            byte[] bytes = new byte[2048];
             while ((read = inputStream.read(bytes)) != -1) {
                 outputStream.write(bytes, 0, read);
             }

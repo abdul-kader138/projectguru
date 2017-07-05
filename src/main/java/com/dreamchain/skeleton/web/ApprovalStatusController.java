@@ -71,6 +71,7 @@ public class ApprovalStatusController {
         return objList;
     }
 
+
     @RequestMapping(value = "approval_details/delete", method = RequestMethod.POST)
     public
     @ResponseBody

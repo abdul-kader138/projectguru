@@ -60,7 +60,8 @@
                             <table class="table table-hover dashboard-task-infos">
 
                                 <%--//--%>
-                                <table id="requestTable" class="display nowrap table table-bordered" cellspacing="0" width="100%">
+                                <table id="requestTable" class="display nowrap table table-bordered" cellspacing="0"
+                                       width="100%">
                                     <thead>
                                     <tr>
                                         <th width="100px">Name</th>
@@ -82,9 +83,9 @@
                     </div>
                 </div>
             </div>
-            <!-- #END# Task Info -->
-            <!-- Browser Usage -->
-
+        </div>
+        <!-- #END# Task Info -->
+        <!-- Browser Usage -->
 
 
         <!-- CPU Usage -->
@@ -139,7 +140,7 @@
                         "mData": "name", 'sWidth': '100px', "render": function (data, type, row, id) {
                         if (row.name != null) {
                             var name = row.name.substr(0, 20);
-                            return '<a href="/change_request_view?r_id='+row.id +'" title="View Request">'+name+'</a>';
+                            return '<a href="/change_request_view?r_id=' + row.id + '" title="View Request">' + name + '</a>';
                         }
                         return "";
                     }
@@ -172,7 +173,7 @@
                     }
                     },
                     {
-                        "mData": "wipStatus",'sWidth': '120px',
+                        "mData": "wipStatus", 'sWidth': '120px',
                         "render": function (data, type, row, id) {
                             if (row.wipStatus == messageResource.get('approval.status.approve.type.checkedBy', 'configMessageForUI')) return messageResource.get('request.status.wait.checkedBy.approval', 'configMessageForUI');
                             if (row.wipStatus == messageResource.get('approval.status.approve.type.itCoordinatorBy', 'configMessageForUI')) return messageResource.get('request.status.wait.IT.acknowledgement', 'configMessageForUI');
@@ -184,7 +185,7 @@
                         }
                     },
                     {
-                        "mData": "wipStatus",'sWidth': '50px',
+                        "mData": "wipStatus", 'sWidth': '50px',
                         "render": function (data, type, row, id) {
                             if (row.wipStatus == messageResource.get('approval.status.approve.done', 'configMessageForUI')) return messageResource.get('request.status.wait.done', 'configMessageForUI');
                             return " ";
@@ -197,15 +198,15 @@
                             else return "";
                         }
                     },
-                   {
-                        "mData": "deliverDate",'sWidth': '30px',
+                    {
+                        "mData": "deliverDate", 'sWidth': '30px',
                         "render": function (data, type, row, id) {
-                            if (row.deliverDate != null && row.status == messageResource.get('approval.status.approve.done', 'configMessageForUI')) return requiredDays(row.deliverDate, row.updatedOn,row);
+                            if (row.deliverDate != null && row.status == messageResource.get('approval.status.approve.done', 'configMessageForUI')) return requiredDays(row.deliverDate, row.updatedOn, row);
                             return "";
                         }
                     },
                     {
-                        "mData": "deliverDate",'sWidth': '30px',
+                        "mData": "deliverDate", 'sWidth': '30px',
                         "render": function (data, type, row, id) {
                             if (row.deliverDate != null) {
                                 var date = new Date(row.deliverDate);
@@ -216,7 +217,7 @@
                         }
                     },
                     {
-                        "mData": "docPath",'sWidth': '80px',
+                        "mData": "docPath", 'sWidth': '80px',
                         "render": function (data, type, row, id) {
                             var mainPath = document.origin + "/PG";
                             return '<a href="' + mainPath + row.docPath + '" download>' + 'Download</a>'
@@ -237,8 +238,8 @@
             });
 
 
-            function requiredDays(newDate, Enddate,obj) {
-                var startDate = new Date( newDate - (obj.requiredDay * 24 * 60 * 60 * 1000) );
+            function requiredDays(newDate, Enddate, obj) {
+                var startDate = new Date(newDate - (obj.requiredDay * 24 * 60 * 60 * 1000));
                 var ONE_DAY = 1000 * 60 * 60 * 24;
                 var difference_ms = Math.abs(Enddate - startDate);
                 return Math.round(difference_ms / ONE_DAY);
