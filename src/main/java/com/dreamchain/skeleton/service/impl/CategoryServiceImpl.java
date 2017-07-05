@@ -24,6 +24,8 @@ public class CategoryServiceImpl implements CategoryService{
     @Autowired
     DepartmentDao departmentDao;
     @Autowired
+    ChangeRequestDao changeRequestDao;
+    @Autowired
     CompanyDao companyDao;
     @Autowired
     ProductDao productDao ;
@@ -43,6 +45,7 @@ public class CategoryServiceImpl implements CategoryService{
     private static String ASSOCIATED_ALLOCATION = "Category is tagged with allocation.First remove tagging and try again";
     private static String INVALID_PRIVILEGE_UPDATE = "You have not enough privilege to update client category info.Please contact with System Admin!!!";
     private static String INVALID_PRIVILEGE_CREATE = "You have not enough privilege to create category for client.Please contact with System Admin!!!";
+    private static String CHANGE_REQUEST_ASSOCIATED = "This category already associated with request.So this operation can't happen";
 
 
 
@@ -78,6 +81,7 @@ public class CategoryServiceImpl implements CategoryService{
     @Transactional
     public Map<String, Object> update(Map<String, Object> categoryObj) throws ParseException {
         Map<String,Object> obj=new HashMap<>();
+        ChangeRequest changeRequest=new ChangeRequest();
         String validationMsg = "";
         Category newObj=new Category();
         Category existingCategory=new Category();
@@ -87,6 +91,12 @@ public class CategoryServiceImpl implements CategoryService{
         if ("".equals(validationMsg)) existingCategory = categoryDao.get(category.getId());
         if (existingCategory.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_CATEGORY;
         if (!getUserId().getClientId().equals(existingCategory.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_UPDATE;
+        long companyId=existingCategory.getCompanyId();
+        if("".equals(validationMsg)) changeRequest=changeRequestDao.findByCategoryId(existingCategory.getId());
+        if (getUserId().getClientId().equals(existingCategory.getClientId()) && "".equals(validationMsg)
+                && category.getCompanyId() != companyId  && changeRequest.getName() !=null) validationMsg = CHANGE_REQUEST_ASSOCIATED;
+        if (getUserId().getClientId().equals(existingCategory.getClientId()) && "".equals(validationMsg)
+                && category.getProductId() != existingCategory.getProductId()  && changeRequest.getName() !=null) validationMsg = CHANGE_REQUEST_ASSOCIATED;
         if (category.getVersion() != existingCategory.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg)) newObj = categoryDao.findByNewName(existingCategory.getName(),category.getName(),category.getCompanyId(),category.getDepartmentId(),category.getProductId());
         if (newObj.getName() != null && "".equals(validationMsg)) validationMsg = CATEGORY_EXISTS;

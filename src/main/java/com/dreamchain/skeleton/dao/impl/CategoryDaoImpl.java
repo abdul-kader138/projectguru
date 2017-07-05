@@ -5,6 +5,7 @@ import com.dreamchain.skeleton.dao.CategoryDao;
 import com.dreamchain.skeleton.model.Category;
 import com.dreamchain.skeleton.model.Product;
 import com.dreamchain.skeleton.model.User;
+import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -113,6 +114,7 @@ public class CategoryDaoImpl implements CategoryDao {
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         return createCategoryList(lst);
     }
+
 
     private List<Category> createCategoryList(List<Object> categoryList){
         List<Category> list = new ArrayList<>();

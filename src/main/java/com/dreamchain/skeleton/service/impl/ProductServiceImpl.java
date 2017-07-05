@@ -1,13 +1,7 @@
 package com.dreamchain.skeleton.service.impl;
 
-import com.dreamchain.skeleton.dao.CategoryDao;
-import com.dreamchain.skeleton.dao.CompanyDao;
-import com.dreamchain.skeleton.dao.DepartmentDao;
-import com.dreamchain.skeleton.dao.ProductDao;
-import com.dreamchain.skeleton.model.Company;
-import com.dreamchain.skeleton.model.Department;
-import com.dreamchain.skeleton.model.Product;
-import com.dreamchain.skeleton.model.User;
+import com.dreamchain.skeleton.dao.*;
+import com.dreamchain.skeleton.model.*;
 import com.dreamchain.skeleton.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
@@ -32,6 +26,8 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     CompanyDao companyDao;
     @Autowired
+    ChangeRequestDao changeRequestDao;
+    @Autowired
     ProductDao productDao ;
     @Autowired
     Environment environment;
@@ -43,6 +39,8 @@ public class ProductServiceImpl implements ProductService {
     private static String ASSOCIATED_PRODUCT = "Product is tagged with category.First remove tagging and try again";
     private static String INVALID_PRIVILEGE_UPDATE = "You have not enough privilege to update client product info.Please contact with System Admin!!!";
     private static String INVALID_PRIVILEGE_CREATE = "You have not enough privilege to create product for client.Please contact with System Admin!!!";
+    private static String CHANGE_REQUEST_ASSOCIATED = "This category already associated with request.So this operation can't happen";
+
 
 
     @Transactional(readOnly = true)
@@ -78,6 +76,7 @@ public class ProductServiceImpl implements ProductService {
     public Map<String, Object> update(Map<String, Object> productObj) throws ParseException {
         Map<String,Object> obj=new HashMap<>();
         String validationMsg = "";
+        ChangeRequest changeRequest=new ChangeRequest();
         Product newObj=new Product();
         Product existingProduct=new Product();
         Product product=createObjForSave(productObj);
@@ -86,6 +85,9 @@ public class ProductServiceImpl implements ProductService {
         if ("".equals(validationMsg)) existingProduct = productDao.get(product.getId());
         if (existingProduct.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_PRODUCT;
         if (!getUserId().getClientId().equals(existingProduct.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_UPDATE;
+        if("".equals(validationMsg)) changeRequest=changeRequestDao.findByProductId(existingProduct.getId());
+        if (getUserId().getClientId().equals(existingProduct.getClientId()) && "".equals(validationMsg)
+                && product.getCompanyId() != existingProduct.getCompanyId() && changeRequest.getName() !=null) validationMsg = CHANGE_REQUEST_ASSOCIATED;
         if (product.getVersion() != existingProduct.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg)) newObj = productDao.findByNewName(existingProduct.getName(),product.getName(),product.getCompanyId());
         if (newObj.getName() != null && "".equals(validationMsg)) validationMsg = PRODUCT_EXISTS;
