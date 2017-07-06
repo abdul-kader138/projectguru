@@ -147,8 +147,6 @@
                         {
                             "mData": "userType",
                             "render": function (data, type, row, id) {
-                                console.log(row.id);
-                                console.log(row);
                                 if (row.userType == messageResource.get('approve.user.type.request.by.acknowledgement', 'configMessageForUI') || row.userType == messageResource.get('approve.user.type.checked.by.acknowledgement', 'configMessageForUI')) return '<a class="decline btn bg-brown waves-war"  href="/decline?a_id='+row.id +'&r_id='+row.requestId+'&ver='+row.version +'" title="Decline Request"> Decline </a>';
                                 else return "";
                             }

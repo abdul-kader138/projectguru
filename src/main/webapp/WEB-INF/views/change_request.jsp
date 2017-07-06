@@ -294,8 +294,6 @@
                             $.each(data, function (i, d) {
                                 collaboration += "<option value=" + d.id + ">" + d.name + "</option>";
                             });
-                            console.log(collaboration);
-
                             $('#listOfCategory').append(collaboration);
                             $('#listOfCategory option:contains("' + obj + '")').prop('selected', 'selected');
                         },
@@ -317,13 +315,9 @@
                     for(i=0; i<descriptionList.length;i++){
                         descriptionListObj['Key'+i] =descriptionList[i].value;
                     }
-                    console.log(descriptionListObj);
-                    console.log(request);
-//                    request.append('descriptionListObj', descriptionListObj);
                     request.append('categoryId', categoryId);
                     request.append('companyId', companyId);
                     request.append('productId', productId);
-                    console.log(request);
                     return request;
                 }
 
@@ -422,7 +416,6 @@
                     for(i=0; i<descriptionList.length;i++){
                         descriptionListObj['Key'+i] =descriptionList[i].value;
                     }
-                    console.log(descriptionListObj);
                 })
             });
 

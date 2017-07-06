@@ -126,7 +126,6 @@
             /*  Ajax call for add operation */
 
             function callAjaxForAddOperation(part1, part2, icn, msg, obj) {
-                console.log(obj);
                 $.ajax({
                     headers: {
                         'Accept': 'application/json',
