@@ -28,6 +28,8 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     ChangeRequestDao changeRequestDao;
     @Autowired
+    TeamAllocationDao teamAllocationDao;
+    @Autowired
     ProductDao productDao ;
     @Autowired
     Environment environment;
@@ -36,10 +38,10 @@ public class ProductServiceImpl implements ProductService {
     private static String INVALID_INPUT = "Invalid input";
     private static String INVALID_PRODUCT = "Product not exists";
     private static String BACK_DATED_DATA = "Product data is old.Please try again with updated data";
-    private static String ASSOCIATED_PRODUCT = "Product is tagged with category.First remove tagging and try again";
+    private static String ASSOCIATED_CATEGORY = "Product is tagged with category.First remove tagging and try again";
+    private static String ASSOCIATED_ALLOCATION = "Product is tagged with allocation.First remove tagging and try again";
     private static String INVALID_PRIVILEGE_UPDATE = "You have not enough privilege to update client product info.Please contact with System Admin!!!";
     private static String INVALID_PRIVILEGE_CREATE = "You have not enough privilege to create product for client.Please contact with System Admin!!!";
-    private static String CHANGE_REQUEST_ASSOCIATED = "This category already associated with request.So this operation can't happen";
 
 
 
@@ -56,7 +58,7 @@ public class ProductServiceImpl implements ProductService {
         Product existingProduct=new Product();
         Product product=createObjForSave(productObj);
         validationMsg = checkInput(product);
-        if ("".equals(validationMsg)) existingProduct = productDao.findByProductName(product.getName(), product.getCompanyId());
+        if ("".equals(validationMsg)) existingProduct = productDao.findByProductName(product.getName(), product.getCompany().getId());
         if (existingProduct.getName() != null && "".equals(validationMsg)) validationMsg = PRODUCT_EXISTS;
         if (!getUserId().getClientId().equals(product.getCompany().getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_CREATE;
         if ("".equals(validationMsg)) {
@@ -76,7 +78,7 @@ public class ProductServiceImpl implements ProductService {
     public Map<String, Object> update(Map<String, Object> productObj) throws ParseException {
         Map<String,Object> obj=new HashMap<>();
         String validationMsg = "";
-        ChangeRequest changeRequest=new ChangeRequest();
+        List<Object> teamAllocationList=new ArrayList<>();
         Product newObj=new Product();
         Product existingProduct=new Product();
         Product product=createObjForSave(productObj);
@@ -85,11 +87,11 @@ public class ProductServiceImpl implements ProductService {
         if ("".equals(validationMsg)) existingProduct = productDao.get(product.getId());
         if (existingProduct.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_PRODUCT;
         if (!getUserId().getClientId().equals(existingProduct.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_UPDATE;
-        if("".equals(validationMsg)) changeRequest=changeRequestDao.findByProductId(existingProduct.getId());
+        if("".equals(validationMsg)) teamAllocationList=teamAllocationDao.countOfAllocationByProduct(existingProduct.getId());
         if (getUserId().getClientId().equals(existingProduct.getClientId()) && "".equals(validationMsg)
-                && product.getCompanyId() != existingProduct.getCompanyId() && changeRequest.getName() !=null) validationMsg = CHANGE_REQUEST_ASSOCIATED;
+                && product.getCompany().getId() != existingProduct.getCompany().getId() && teamAllocationList.size() !=0) validationMsg = ASSOCIATED_ALLOCATION;
         if (product.getVersion() != existingProduct.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
-        if ("".equals(validationMsg)) newObj = productDao.findByNewName(existingProduct.getName(),product.getName(),product.getCompanyId());
+        if ("".equals(validationMsg)) newObj = productDao.findByNewName(existingProduct.getName(),product.getName(),product.getCompany().getId());
         if (newObj.getName() != null && "".equals(validationMsg)) validationMsg = PRODUCT_EXISTS;
         if ("".equals(validationMsg)) {
             newObj=setUpdateProductValue(product, existingProduct);
@@ -107,7 +109,9 @@ public class ProductServiceImpl implements ProductService {
         Product product = productDao.get(productId);
         if (product == null && "".equals(validationMsg)) validationMsg = INVALID_PRODUCT;
         List<Object> obj=categoryDao.countOfProduct(productId);
-        if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_PRODUCT;
+        if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_CATEGORY;
+        if("".equals(validationMsg))obj=teamAllocationDao.countOfAllocationByProduct(productId);
+        if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_ALLOCATION;
         if ("".equals(validationMsg)) {
             productDao.delete(product);
         }
@@ -132,7 +136,6 @@ public class ProductServiceImpl implements ProductService {
         Company company=companyDao.get(Long.parseLong((String) productObj.get("companyId")));
         product.setId(Long.parseLong((String) productObj.get("id")));
         product.setVersion(Long.parseLong((String) productObj.get("version")));
-        product.setCompanyId(Long.parseLong((String) productObj.get("companyId")));
         product.setName(((String) productObj.get("name")).trim());
         product.setDescription(((String) productObj.get("description")).trim());
         product.setClientId(getUserId().getClientId());
@@ -156,12 +159,11 @@ public class ProductServiceImpl implements ProductService {
 
     private Product setUpdateProductValue(Product objFromUI,Product existingProduct) throws ParseException {
         Product productObj = new Product();
-        Company company = companyDao.get(objFromUI.getCompanyId());
+        Company company = companyDao.get(objFromUI.getCompany().getId());
         productObj.setId(objFromUI.getId());
         productObj.setVersion(objFromUI.getVersion());
         productObj.setName(objFromUI.getName().trim());
         productObj.setDescription(objFromUI.getDescription().trim());
-        productObj.setCompanyId(objFromUI.getCompanyId());
         productObj.setCompany(company);
         productObj.setClientId(getUserId().getClientId());
         productObj.setCreatedBy(existingProduct.getCreatedBy());

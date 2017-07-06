@@ -74,21 +74,6 @@ public class ChangeRequestDaoImpl implements ChangeRequestDao {
         return createChangeRequestList(lst);
     }
 
-    @Override
-    public ChangeRequest findByChangeRequestName(String changeRequestName) {
-        DetachedCriteria dcr= DetachedCriteria.forClass(ChangeRequest.class);
-        Criterion cr = Restrictions.eq("name", changeRequestName.trim()).ignoreCase();
-        dcr.add(cr);
-        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
-        if(lst.size()==0)return new ChangeRequest();
-        return (ChangeRequest)lst.get(0);
-    }
-
-
-    @Override
-    public List<Object> countOfCategory(long categoryId) {
-        return null;
-    }
 
     @Override
     public List<Object> findAllStatus() {
@@ -108,22 +93,11 @@ public class ChangeRequestDaoImpl implements ChangeRequestDao {
         return (ChangeRequest)lst.get(0);
     }
 
-    @Override
-    public ChangeRequest findByCompanyId(long companyId) {
-        DetachedCriteria dcr= DetachedCriteria.forClass(ChangeRequest.class);
-        Criterion cr =  Restrictions.eq("category.company.id", companyId);
-        dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
-        if(lst.size()==0)return new ChangeRequest();
-        return (ChangeRequest)lst.get(0);
-    }
-
-
 
     @Override
-    public ChangeRequest findByProductId(long productId) {
+    public ChangeRequest findByCategoryId(long categoryId) {
         DetachedCriteria dcr= DetachedCriteria.forClass(ChangeRequest.class);
-        Criterion cr =  Restrictions.eq("category.product.id", productId);
+        Criterion cr =  Restrictions.eq("category.id", categoryId);
         dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);;
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         if(lst.size()==0)return new ChangeRequest();
@@ -131,9 +105,9 @@ public class ChangeRequestDaoImpl implements ChangeRequestDao {
     }
 
     @Override
-    public ChangeRequest findByCategoryId(long categoryId) {
+    public ChangeRequest findByDepartmentId(long departmentId) {
         DetachedCriteria dcr= DetachedCriteria.forClass(ChangeRequest.class);
-        Criterion cr =  Restrictions.eq("category.id", categoryId);
+        Criterion cr =  Restrictions.eq("departmentId", departmentId);
         dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);;
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         if(lst.size()==0)return new ChangeRequest();

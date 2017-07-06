@@ -106,6 +106,17 @@ public class UserDaoImpl implements UserDao {
 	}
 
 
+	@Override
+	public User findByRoleRightId(Long roleRightsId) {
+		DetachedCriteria dcr= DetachedCriteria.forClass(User.class);
+		Criterion cr = Restrictions.eq("roleRightsId", roleRightsId);
+		dcr.add(cr);
+		List<Object> lst= hibernateTemplate.findByCriteria(dcr);
+		if(lst.size()==0)return new User();
+		return (User)lst.get(0);
+	}
+
+
 	private List<User> createProductList(List<Object> userList){
 		List<User> list = new ArrayList<>();
 		for(final Object o : userList) {

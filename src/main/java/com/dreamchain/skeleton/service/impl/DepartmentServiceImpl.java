@@ -1,7 +1,9 @@
 package com.dreamchain.skeleton.service.impl;
 
+import com.dreamchain.skeleton.dao.ChangeRequestDao;
 import com.dreamchain.skeleton.dao.CompanyDao;
 import com.dreamchain.skeleton.dao.DepartmentDao;
+import com.dreamchain.skeleton.model.ChangeRequest;
 import com.dreamchain.skeleton.model.Company;
 import com.dreamchain.skeleton.model.Department;
 import com.dreamchain.skeleton.model.User;
@@ -29,6 +31,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Autowired
     CompanyDao companyDao;
     @Autowired
+    ChangeRequestDao changeRequestDao;
+    @Autowired
     Environment environment;
 
     private static String DEPARTMENT_EXISTS = "This department name is already used.Please try again with new one!!!";
@@ -38,6 +42,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     private static String INVALID_PRIVILEGE_CREATE = "You have not enough privilege to create department for client.Please contact with System Admin!!!";
     private static String BACK_DATED_DATA = "Department data is old.Please try again with updated data";
     private static String ASSOCIATED_DEPARTMENT = "Department is tagged with product category.First remove tagging and try again";
+    private static String CHANGE_REQUEST_ASSOCIATED = "This department already associated with request.So this operation can't happen";
 
 
     @Transactional(readOnly = true)
@@ -53,7 +58,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         Department existingDepartment=new Department();
         Department department=createObjForSave(departmentObj);
         validationMsg = checkInput(department);
-        if ("".equals(validationMsg)) existingDepartment = departmentDao.findByDepartmentName(department.getName(),department.getCompanyId());
+        if ("".equals(validationMsg)) existingDepartment = departmentDao.findByDepartmentName(department.getName(),department.getCompany().getId());
         if (existingDepartment.getName() != null && "".equals(validationMsg)) validationMsg = DEPARTMENT_EXISTS;
         if (!getUserId().getClientId().equals(department.getCompany().getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_CREATE;
         if ("".equals(validationMsg)) {
@@ -75,14 +80,18 @@ public class DepartmentServiceImpl implements DepartmentService {
         String validationMsg = "";
         Department newObj=new Department();
         Department existingDepartment=new Department();
+        ChangeRequest changeRequest=new ChangeRequest();
         Department department=createObjForSave(departmentObj);
         validationMsg = checkInput(department);
         if (department.getId() == 0l && "".equals(validationMsg)) validationMsg = INVALID_INPUT;
         if ("".equals(validationMsg)) existingDepartment = departmentDao.get(department.getId());
         if (existingDepartment.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_DEPARTMENT;
         if (!getUserId().getClientId().equals(existingDepartment.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_UPDATE;
+        if("".equals(validationMsg)) changeRequest=changeRequestDao.findByDepartmentId(existingDepartment.getId());
+        if (getUserId().getClientId().equals(existingDepartment.getClientId()) && "".equals(validationMsg)
+                && existingDepartment.getCompany().getId() != department.getCompany().getId()  && changeRequest.getName() !=null) validationMsg = CHANGE_REQUEST_ASSOCIATED; // stop update department if it's already associated
         if (department.getVersion() != existingDepartment.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
-        if ("".equals(validationMsg)) newObj = departmentDao.findByNewName(existingDepartment.getName(),department.getName(),department.getCompanyId());
+        if ("".equals(validationMsg)) newObj = departmentDao.findByNewName(existingDepartment.getName(),department.getName(),department.getCompany().getId());
         if (newObj.getName() != null && "".equals(validationMsg)) validationMsg = DEPARTMENT_EXISTS;
         if ("".equals(validationMsg)) {
             newObj=setUpdateDepartmentValue(department, existingDepartment);
@@ -96,11 +105,14 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Transactional
     public String delete(Long departmentId) {
         String validationMsg = "";
+        ChangeRequest changeRequest=new ChangeRequest();
         if (departmentId == 0l) validationMsg = INVALID_INPUT;
         Department department = departmentDao.get(departmentId);
         if (department == null && "".equals(validationMsg)) validationMsg = INVALID_DEPARTMENT;
         List<Object> obj=departmentDao.countOfDepartment(departmentId);
         if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_DEPARTMENT;
+        if("".equals(validationMsg)) changeRequest=changeRequestDao.findByDepartmentId(departmentId);
+        if("".equals(validationMsg) && changeRequest.getName() !=null) validationMsg=CHANGE_REQUEST_ASSOCIATED;
         if ("".equals(validationMsg)) {
             departmentDao.delete(department);
         }
@@ -141,7 +153,6 @@ public class DepartmentServiceImpl implements DepartmentService {
         department.setCompany(company);
         department.setId(Long.parseLong((String) departmentObj.get("id")));
         department.setVersion(Long.parseLong((String) departmentObj.get("version")));
-        department.setCompanyId(Long.parseLong((String) departmentObj.get("companyId")));
         department.setClientId(getUserId().getClientId());
         return department;
 
@@ -155,7 +166,6 @@ public class DepartmentServiceImpl implements DepartmentService {
         departmentObj.setId(objFromUI.getId());
         departmentObj.setVersion(objFromUI.getVersion());
         departmentObj.setName(objFromUI.getName().trim());
-        departmentObj.setCompanyId(objFromUI.getCompanyId());
         departmentObj.setCompany(objFromUI.getCompany());
         departmentObj.setCreatedBy(existingDepartment.getCreatedBy());
         departmentObj.setCreatedOn(existingDepartment.getCreatedOn());

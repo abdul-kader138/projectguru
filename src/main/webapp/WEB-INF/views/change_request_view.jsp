@@ -1,9 +1,11 @@
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="header.jsp" %>
 <section class="content">
     <div id="viewTableData"></div>
     <div class="row clearfix">
         <div class="col-xs-8 col-xs-offset-2 card">
             <br/>
+
             <div><h4>Request Details</h4></div>
             <hr/>
             <br/>
@@ -27,12 +29,22 @@
                 </tr>
                 <tr class="label_color">
                     <td><b>Description</b></td>
-                    <td>${changeRequest.description}</td>
+                    <td>
+                        <c:forEach items="${changeRequest.description}" var="description">
+                            <c:set var="desVal" value="${fn:substring(description, 0, 40)}"/>
+                            <c:set var="desVal1" value="${fn:substring(description, 41, 80)}"/>
+                            <c:set var="desVal2" value="${fn:substring(description, 81, 120)}"/>
+                            ${desVal}</br>${desVal1}</br>${desVal2}
+                        </c:forEach>
+                    </td>
                 </tr>
                 <c:if test="${changeRequest.declineCause != null}">
+                    <c:set var="declineVal" value="${fn:substring(changeRequest.declineCause, 0, 40)}"/>
+                    <c:set var="declineVal1" value="${fn:substring(changeRequest.declineCause, 41, 80)}"/>
+                    <c:set var="declineVal2" value="${fn:substring(changeRequest.declineCause, 81, 120)}"/>
                     <tr class="label_color">
                         <td><b>Decline Cause</b></td>
-                        <td>${changeRequest.declineCause}</td>
+                        <td>${declineVal}</br>${declineVal1}</br>${declineVal2}</td>
                     </tr>
                 </c:if>
 

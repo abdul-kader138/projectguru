@@ -72,7 +72,7 @@ public class CompanyDaoImpl implements CompanyDao {
     @Override
     public List<Object> countOfCompany(long companyID) {
         DetachedCriteria dcr = DetachedCriteria.forClass(Department.class);
-        Criterion cr = Restrictions.eq("companyId", companyID);
+        Criterion cr = Restrictions.eq("company.id", companyID);
         dcr.add(cr);
         List<Object> lst = hibernateTemplate.findByCriteria(dcr);
         if (lst.size() == 0) return new ArrayList<Object>();
@@ -84,7 +84,7 @@ public class CompanyDaoImpl implements CompanyDao {
     @Override
     public List<Object> countOfCompanyForProduct(long companyID) {
         DetachedCriteria dcr = DetachedCriteria.forClass(Product.class);
-        Criterion cr = Restrictions.eq("companyId", companyID);
+        Criterion cr = Restrictions.eq("company.id", companyID);
         dcr.add(cr);
         List<Object> lst = hibernateTemplate.findByCriteria(dcr);
         if (lst.size() == 0) return new ArrayList<Object>();

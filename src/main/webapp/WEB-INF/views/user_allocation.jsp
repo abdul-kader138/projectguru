@@ -664,6 +664,7 @@
                 /* Load Product data to select box data using ajax */
 
                 function getSelectedProduct(companyId, obj) {
+                    console.log(companyId);
                     $('#listOfProduct').empty();
                     $.ajax({
                         headers: {
@@ -675,6 +676,7 @@
                         'data': JSON.stringify(companyId),
                         'dataType': 'json',
                         success: function (data) {
+                            console.log(data);
                             var collaboration;
                             collaboration += '<option id="defaultOptProduct" value="0">Select Product</option>';
                             $.each(data, function (i, d) {

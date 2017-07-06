@@ -15,5 +15,6 @@ public interface UserDao {
 	List<User> findAll();
 	User findByUserName(String username);
 	User findByNewName(String CurrentName,String newName);
+	User findByRoleRightId(Long roleRightsId);
 
 }

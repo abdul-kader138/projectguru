@@ -2,10 +2,8 @@ package com.dreamchain.skeleton.dao.impl;
 
 
 import com.dreamchain.skeleton.dao.ProductDao;
-import com.dreamchain.skeleton.model.Category;
 import com.dreamchain.skeleton.model.Product;
 import com.dreamchain.skeleton.model.User;
-import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -63,7 +61,7 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public List<Product> findByCompanyName(long companyId) {
         DetachedCriteria dcr= DetachedCriteria.forClass(Product.class);
-        Criterion cr = Restrictions.eq("companyId", companyId);
+        Criterion cr = Restrictions.eq("company.id", companyId);
         dcr.add(cr);
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         return createProductList(lst);
@@ -73,7 +71,7 @@ public class ProductDaoImpl implements ProductDao {
     public Product findByProductName(String productName, long companyId) {
         DetachedCriteria dcr= DetachedCriteria.forClass(Product.class);
         Criterion cr = Restrictions.eq("name", productName.trim()).ignoreCase();
-        Criterion cr1 = Restrictions.eq("companyId", companyId);
+        Criterion cr1 = Restrictions.eq("company.id", companyId);
         dcr.add(cr);
         dcr.add(cr1);
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
@@ -81,22 +79,13 @@ public class ProductDaoImpl implements ProductDao {
         return (Product)lst.get(0);
     }
 
-    @Override
-    public List<Object> countOfProduct(long productID) {
-        DetachedCriteria dcr= DetachedCriteria.forClass(Category.class);//Category
-        Criterion cr = Restrictions.eq("productId", productID);
-        dcr.add(cr);
-        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
-        if(lst.size()==0)return new ArrayList<Object>();
-        return lst;
-    }
 
     @Override
     public Product findByNewName(String CurrentName, String newName, Long companyId) {
         DetachedCriteria dcr= DetachedCriteria.forClass(Product.class);
         Criterion cr = Restrictions.eq("name", newName.trim()).ignoreCase();
         Criterion cr1 = Restrictions.ne("name", CurrentName.trim()).ignoreCase();
-        Criterion cr2 = Restrictions.eq("companyId", companyId);
+        Criterion cr2 = Restrictions.eq("company.id", companyId);
         dcr.add(cr);
         dcr.add(cr1);
         dcr.add(cr2);

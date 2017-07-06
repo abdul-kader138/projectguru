@@ -13,6 +13,5 @@ public interface ProductDao {
     List<Product> findAll();
     List<Product> findByCompanyName(long companyId);
     Product findByProductName(String productName, long companyId);
-    List<Object> countOfProduct(long productID);
     Product findByNewName(String CurrentName, String newName, Long companyId);
 }

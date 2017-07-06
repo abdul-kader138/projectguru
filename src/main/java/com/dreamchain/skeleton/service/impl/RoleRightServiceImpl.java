@@ -2,6 +2,7 @@ package com.dreamchain.skeleton.service.impl;
 
 import com.dreamchain.skeleton.dao.RoleRightDao;
 import com.dreamchain.skeleton.dao.RolesDao;
+import com.dreamchain.skeleton.dao.UserDao;
 import com.dreamchain.skeleton.model.RoleRight;
 import com.dreamchain.skeleton.model.Roles;
 import com.dreamchain.skeleton.model.User;
@@ -30,11 +31,12 @@ public class RoleRightServiceImpl implements RoleRightService {
     @Autowired
     RolesDao rolesDao;
     @Autowired
+    UserDao userDao;
+    @Autowired
     Environment environment;
 
 
     private static String ROLE_EXISTS = "This role name is already used.Please try again with new one!!!";
-
     private static String INVALID_INPUT = "Invalid input";
     private static String INVALID_ROLE = "Role not exists";
     private static String BACK_DATED_DATA = "Role data is old.Please try again with updated data";
@@ -94,8 +96,8 @@ public class RoleRightServiceImpl implements RoleRightService {
         if (roleId == 0l) validationMsg = INVALID_INPUT;
         RoleRight roleRight = roleRightDao.get(roleId);
         if (roleRight == null && "".equals(validationMsg)) validationMsg = INVALID_ROLE;
-        List<Object> obj = roleRightDao.countOfRights(roleId);
-        if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_RIGHTS;
+        User obj = userDao.findByRoleRightId(roleRight.getId());
+        if (obj.getEmail() !=null && "".equals(validationMsg)) validationMsg = ASSOCIATED_RIGHTS;
 
         if ("".equals(validationMsg)) {
             roleRightDao.delete(roleRight);
@@ -141,19 +143,19 @@ public class RoleRightServiceImpl implements RoleRightService {
         roleRight.setVersion(Long.parseLong((String) roleObj.get("version")));
         roleRight.setRoleId(roles.getId());
         roleRight.setRoleName(roles.getName());
-        if ("".equals((String) roleObj.get("VIEW_PRIVILEGE"))) {
+        if (!"".equals((String) roleObj.get("VIEW_PRIVILEGE"))) {
             rights.add((String) roleObj.get("VIEW_PRIVILEGE"));
         }
 
-        if ("".equals((String) roleObj.get("WRITE_PRIVILEGE"))) {
+        if (!"".equals((String) roleObj.get("WRITE_PRIVILEGE"))) {
             rights.add((String) roleObj.get("WRITE_PRIVILEGE"));
         }
 
-        if ("".equals((String) roleObj.get("EDIT_PRIVILEGE"))) {
+        if (!"".equals((String) roleObj.get("EDIT_PRIVILEGE"))) {
             rights.add((String) roleObj.get("EDIT_PRIVILEGE"));
         }
 
-        if ("".equals((String) roleObj.get("DELETE_PRIVILEGE") )) {
+        if (!"".equals((String) roleObj.get("DELETE_PRIVILEGE") )) {
             rights.add((String) roleObj.get("DELETE_PRIVILEGE"));
         }
         SimpleDateFormat dateFormat = new SimpleDateFormat();

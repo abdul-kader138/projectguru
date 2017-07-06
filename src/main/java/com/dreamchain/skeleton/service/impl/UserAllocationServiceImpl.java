@@ -57,7 +57,7 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         if ("".equals(validationMsg)) existingUserAllocation = userAllocationDao.findByProductAndCategory(userAllocation.getCompanyId(),
                 userAllocation.getProductId(),userAllocation.getCategoryId());
         if (existingUserAllocation.getApprovedBy() != null && "".equals(validationMsg)) validationMsg = USER_ALLOCATION_EXISTS;
-        if(userAllocation.getApprovedById() == userAllocation.getItCoordinatorId() ) validationMsg=SAME_ALLOCATED_USER;
+        if(userAllocation.getApprovedBy().getId() == userAllocation.getItCoordinator().getId() ) validationMsg=SAME_ALLOCATED_USER;
         if ("".equals(validationMsg)) {
             SimpleDateFormat dateFormat = new SimpleDateFormat();
             Date date = dateFormat.parse(dateFormat.format(new Date()));
@@ -81,7 +81,7 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         UserAllocation userAllocation=createObjForSave(userAllocationObj);
         validationMsg = checkInput(userAllocation);
         if (userAllocation.getId() == 0l && "".equals(validationMsg)) validationMsg = INVALID_INPUT;
-        if(userAllocation.getApprovedById() == userAllocation.getItCoordinatorId() ) validationMsg=SAME_ALLOCATED_USER;
+        if(userAllocation.getApprovedBy().getId() == userAllocation.getItCoordinator().getId() ) validationMsg=SAME_ALLOCATED_USER;
         if ("".equals(validationMsg)) existingUserAllocation = userAllocationDao.get(userAllocation.getId());
         if (existingUserAllocation == null && "".equals(validationMsg)) validationMsg = INVALID_USER_ALLOCATION;
         if("".equals(validationMsg)) changeRequest=changeRequestDao.findByTeamAllocationId(existingUserAllocation.getId());
@@ -99,14 +99,12 @@ public class UserAllocationServiceImpl implements UserAllocationService {
     @Transactional
     public String delete(Long userAllocationId) {
         String validationMsg = "";
+        ChangeRequest changeRequest=new ChangeRequest();
         if (userAllocationId == 0l) validationMsg = INVALID_INPUT;
         UserAllocation userAllocation = userAllocationDao.get(userAllocationId);
         if (userAllocation == null && "".equals(validationMsg)) validationMsg = INVALID_USER_ALLOCATION;
-
-        //@todo need implement after Request implementation
-//        List<Object> obj=departmentDao.countOfDepartment(departmentId);
-//        if (obj.size() > 0 && validationMsg == "") validationMsg = ASSOCIATED_COMPANY;
-
+        if("".equals(validationMsg)) changeRequest=changeRequestDao.findByTeamAllocationId(userAllocation.getId());
+        if("".equals(validationMsg) && changeRequest.getName() !=null) validationMsg=ASSOCIATED_REQUEST;
         if ("".equals(validationMsg)) {
             userAllocationDao.delete(userAllocation);
         }
@@ -136,9 +134,7 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User loggedUser=(User) auth.getPrincipal();
         userAllocation.setUserType(loggedUser.getUserType());
-        userAllocation.setItCoordinatorId(itCoordinator.getId());
         userAllocation.setItCoordinator(itCoordinator);
-        userAllocation.setApprovedById(approvedBy.getId());
         userAllocation.setApprovedBy(approvedBy);
         userAllocation.setClientId(getUserId().getClientId());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
@@ -169,9 +165,7 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         userAllocation.setProductId(objFromUI.getProductId());
         userAllocation.setCategoryId(objFromUI.getCategoryId());
         userAllocation.setCategory(objFromUI.getCategory());
-        userAllocation.setItCoordinatorId(objFromUI.getItCoordinatorId());
         userAllocation.setItCoordinator(objFromUI.getItCoordinator());
-        userAllocation.setApprovedById(objFromUI.getApprovedById());
         userAllocation.setApprovedBy(objFromUI.getApprovedBy());
         userAllocation.setClientId(getUserId().getClientId());
         userAllocation.setCreatedBy(existingUserAllocation.getCreatedBy());

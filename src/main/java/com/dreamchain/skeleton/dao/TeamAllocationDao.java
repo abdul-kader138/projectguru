@@ -14,5 +14,6 @@ public interface TeamAllocationDao {
     List<TeamAllocation> findAll();
     TeamAllocation findByProductAndCategory(long companyId, long productId,long categoryId);
     List<Object> countOfAllocation(long categoryId); // request class
+    List<Object> countOfAllocationByProduct(long productId); // request class
     TeamAllocation findByRequestById(long requestById);
 }

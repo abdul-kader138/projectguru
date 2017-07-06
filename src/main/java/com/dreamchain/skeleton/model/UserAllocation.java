@@ -1,7 +1,6 @@
 package com.dreamchain.skeleton.model;
 
 import com.sun.istack.NotNull;
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -11,7 +10,7 @@ import java.util.Date;
 @Entity
 @Table(name="user_allocation",
         uniqueConstraints=
-        @UniqueConstraint(columnNames={"companyId","productId","categoryId"}))
+        @UniqueConstraint(columnNames={"companyId","productId","category"}))
 public class UserAllocation implements Serializable {
 
     private static final long serialVersionUID = 8633415080370876715L;
@@ -23,11 +22,6 @@ public class UserAllocation implements Serializable {
     @Version
     private long version;
 
-
-//    @NotEmpty
-//    private String departmentName;
-
-
     @NotNull
     @OneToOne
     private Category category;
@@ -36,9 +30,6 @@ public class UserAllocation implements Serializable {
     @NotNull
     private long companyId;
 
-//    @NotNull
-//    private long departmentId;
-
     @NotNull
     private long productId;
 
@@ -46,12 +37,6 @@ public class UserAllocation implements Serializable {
     @NotNull
     private long categoryId;
 
-
-    @NotNull
-    private long itCoordinatorId;
-
-    @NotNull
-    private long approvedById;
 
     @NotNull
     @OneToOne
@@ -87,14 +72,6 @@ public class UserAllocation implements Serializable {
     public UserAllocation() {
     }
 
-    public String getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
-
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
@@ -115,6 +92,14 @@ public class UserAllocation implements Serializable {
         this.version = version;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     public long getCompanyId() {
         return companyId;
     }
@@ -122,14 +107,6 @@ public class UserAllocation implements Serializable {
     public void setCompanyId(long companyId) {
         this.companyId = companyId;
     }
-
-//    public long getDepartmentId() {
-//        return departmentId;
-//    }
-//
-//    public void setDepartmentId(long departmentId) {
-//        this.departmentId = departmentId;
-//    }
 
     public long getProductId() {
         return productId;
@@ -145,6 +122,38 @@ public class UserAllocation implements Serializable {
 
     public void setCategoryId(long categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public User getApprovedBy() {
+        return approvedBy;
+    }
+
+    public void setApprovedBy(User approvedBy) {
+        this.approvedBy = approvedBy;
+    }
+
+    public User getItCoordinator() {
+        return itCoordinator;
+    }
+
+    public void setItCoordinator(User itCoordinator) {
+        this.itCoordinator = itCoordinator;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 
     public String getCreatedBy() {
@@ -177,64 +186,5 @@ public class UserAllocation implements Serializable {
 
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
-    }
-
-    public String getUserType() {
-        return userType;
-    }
-
-    public void setUserType(String userType) {
-        this.userType = userType;
-    }
-
-
-
-//    public String getDepartmentName() {
-//        return departmentName;
-//    }
-//
-//    public void setDepartmentName(String departmentName) {
-//        this.departmentName = departmentName;
-//    }
-
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public long getItCoordinatorId() {
-        return itCoordinatorId;
-    }
-
-    public void setItCoordinatorId(long itCoordinatorId) {
-        this.itCoordinatorId = itCoordinatorId;
-    }
-
-    public long getApprovedById() {
-        return approvedById;
-    }
-
-    public void setApprovedById(long approvedById) {
-        this.approvedById = approvedById;
-    }
-
-    public User getApprovedBy() {
-        return approvedBy;
-    }
-
-    public void setApprovedBy(User approvedBy) {
-        this.approvedBy = approvedBy;
-    }
-
-    public User getItCoordinator() {
-        return itCoordinator;
-    }
-
-    public void setItCoordinator(User itCoordinator) {
-        this.itCoordinator = itCoordinator;
     }
 }

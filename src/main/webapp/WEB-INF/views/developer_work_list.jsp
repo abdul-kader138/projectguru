@@ -173,7 +173,13 @@
                     {
                         "mData": "declineCause", 'sWidth': '80px',
                         "render": function (data, type, row, id) {
-                            return row.declineCause;
+                            if (row.declineCause != null) {
+                                var declineCause = row.declineCause.substr(0, 40);
+                                var declineCause2 = row.declineCause.substr(41, 80);
+                                var declineCause3 = row.declineCause.substr(81, 120);
+                                return '<label>'+declineCause+'</br>'+declineCause2+'</br>'+declineCause3+'</label>';
+                        }
+                            return "";
                         }
                     },
                     {

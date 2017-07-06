@@ -88,18 +88,30 @@ public class CategoryServiceImpl implements CategoryService{
         Category category=createObjForSave(categoryObj);
         validationMsg = checkInput(category);
         if (category.getId() == 0l && "".equals(validationMsg)) validationMsg = INVALID_INPUT;
+
         if ("".equals(validationMsg)) existingCategory = categoryDao.get(category.getId());
-        if (existingCategory.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_CATEGORY;
-        if (!getUserId().getClientId().equals(existingCategory.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_UPDATE;
-        long companyId=existingCategory.getCompanyId();
+
+        if (existingCategory.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_CATEGORY; // Check for invalid input
+
+        if (!getUserId().getClientId().equals(existingCategory.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_UPDATE; // Stop other Company info update
+        long companyId=existingCategory.getCompany().getId();
         if("".equals(validationMsg)) changeRequest=changeRequestDao.findByCategoryId(existingCategory.getId());
+
         if (getUserId().getClientId().equals(existingCategory.getClientId()) && "".equals(validationMsg)
-                && category.getCompanyId() != companyId  && changeRequest.getName() !=null) validationMsg = CHANGE_REQUEST_ASSOCIATED;
+                && category.getCompany().getId() != companyId  && changeRequest.getName() !=null) validationMsg = CHANGE_REQUEST_ASSOCIATED; // stop update company if it's already associated
+
         if (getUserId().getClientId().equals(existingCategory.getClientId()) && "".equals(validationMsg)
-                && category.getProductId() != existingCategory.getProductId()  && changeRequest.getName() !=null) validationMsg = CHANGE_REQUEST_ASSOCIATED;
+                && category.getProductId() != existingCategory.getProductId()  && changeRequest.getName() !=null) validationMsg = CHANGE_REQUEST_ASSOCIATED; // stop update product if it's already associated
+
+        if (getUserId().getClientId().equals(existingCategory.getClientId()) && "".equals(validationMsg)
+                && category.getDepartment().getId() != existingCategory.getDepartment().getId()  && changeRequest.getName() !=null) validationMsg = CHANGE_REQUEST_ASSOCIATED; // stop update department if it's already associated
+
         if (category.getVersion() != existingCategory.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
-        if ("".equals(validationMsg)) newObj = categoryDao.findByNewName(existingCategory.getName(),category.getName(),category.getCompanyId(),category.getDepartmentId(),category.getProductId());
+
+        if ("".equals(validationMsg)) newObj = categoryDao.findByNewName(existingCategory.getName(),category.getName(),category.getCompanyId(),category.getDepartmentId(),category.getProductId()); // check for duplicate name
+
         if (newObj.getName() != null && "".equals(validationMsg)) validationMsg = CATEGORY_EXISTS;
+
         if ("".equals(validationMsg)) {
             newObj=setUpdateCategoryValue(category, existingCategory);
             categoryDao.update(newObj);
@@ -112,10 +124,14 @@ public class CategoryServiceImpl implements CategoryService{
     @Transactional
     public String delete(Long categoryId) {
         String validationMsg = "";
+        List<Object> obj=new ArrayList<>();
+        ChangeRequest changeRequest=new ChangeRequest();
         if (categoryId == 0l) validationMsg = INVALID_INPUT;
         Category category = categoryDao.get(categoryId);
         if (category == null && "".equals(validationMsg)) validationMsg = INVALID_CATEGORY;
-        List<Object> obj=teamAllocationDao.countOfAllocation(categoryId);
+        if("".equals(validationMsg)) changeRequest=changeRequestDao.findByCategoryId(categoryId);
+        if("".equals(validationMsg) && changeRequest.getName() !=null) validationMsg=CHANGE_REQUEST_ASSOCIATED;
+        if("".equals(validationMsg))obj=teamAllocationDao.countOfAllocation(categoryId);
         if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_ALLOCATION;
         if("".equals(validationMsg) && obj.size() == 0) obj=userAllocationDao.countOfAllocation(categoryId);
         if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_ALLOCATION;

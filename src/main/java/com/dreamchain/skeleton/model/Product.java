@@ -13,7 +13,7 @@ import java.util.Date;
 @Entity
 @Table(name="product",
         uniqueConstraints=
-        @UniqueConstraint(columnNames={"companyId","name","clientId"}))
+        @UniqueConstraint(columnNames={"company","name","clientId"}))
 public class Product implements Serializable{
 
     private static final long serialVersionUID = 8633415090380776715L;
@@ -37,9 +37,6 @@ public class Product implements Serializable{
     @NotNull
     @OneToOne
     private Company company;
-
-    @NotNull
-    private long companyId;
 
     @Column
     @NotEmpty
@@ -105,14 +102,6 @@ public class Product implements Serializable{
 
     public void setCompany(Company company) {
         this.company = company;
-    }
-
-    public long getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(long companyId) {
-        this.companyId = companyId;
     }
 
     public String getCreatedBy() {

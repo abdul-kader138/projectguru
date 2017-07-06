@@ -8,9 +8,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name="team_allocation",
-        uniqueConstraints=
-        @UniqueConstraint(columnNames={"companyId","productId","categoryId"}))
+@Table(name = "team_allocation",
+        uniqueConstraints =
+        @UniqueConstraint(columnNames = {"companyId", "productId", "category"}))
 public class TeamAllocation implements Serializable {
 
     private static final long serialVersionUID = 8633415080370876715L;
@@ -23,10 +23,6 @@ public class TeamAllocation implements Serializable {
     private long version;
 
 
-//    @NotEmpty
-//    private String departmentName;
-
-
     @NotNull
     @OneToOne
     private Category category;
@@ -35,21 +31,8 @@ public class TeamAllocation implements Serializable {
     @NotNull
     private long companyId;
 
-//    @NotNull
-//    private long departmentId;
-
     @NotNull
     private long productId;
-
-
-    @NotNull
-    private long categoryId;
-
-    @NotNull
-    private long requestById;
-
-    @NotNull
-    private long checkedById;
 
     @NotNull
     @OneToOne
@@ -84,24 +67,6 @@ public class TeamAllocation implements Serializable {
     public TeamAllocation() {
     }
 
-
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public String getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
-
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
@@ -122,7 +87,13 @@ public class TeamAllocation implements Serializable {
         this.version = version;
     }
 
+    public Category getCategory() {
+        return category;
+    }
 
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
     public long getCompanyId() {
         return companyId;
@@ -132,14 +103,6 @@ public class TeamAllocation implements Serializable {
         this.companyId = companyId;
     }
 
-//    public long getDepartmentId() {
-//        return departmentId;
-//    }
-//
-//    public void setDepartmentId(long departmentId) {
-//        this.departmentId = departmentId;
-//    }
-
     public long getProductId() {
         return productId;
     }
@@ -148,12 +111,36 @@ public class TeamAllocation implements Serializable {
         this.productId = productId;
     }
 
-    public long getCategoryId() {
-        return categoryId;
+    public User getRequestedBy() {
+        return requestedBy;
     }
 
-    public void setCategoryId(long categoryId) {
-        this.categoryId = categoryId;
+    public void setRequestedBy(User requestedBy) {
+        this.requestedBy = requestedBy;
+    }
+
+    public User getCheckedBy() {
+        return checkedBy;
+    }
+
+    public void setCheckedBy(User checkedBy) {
+        this.checkedBy = checkedBy;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 
     public String getCreatedBy() {
@@ -186,54 +173,5 @@ public class TeamAllocation implements Serializable {
 
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
-    }
-
-    public String getUserType() {
-        return userType;
-    }
-
-    public void setUserType(String userType) {
-        this.userType = userType;
-    }
-
-
-//    public String getDepartmentName() {
-//        return departmentName;
-//    }
-//
-//    public void setDepartmentName(String departmentName) {
-//        this.departmentName = departmentName;
-//    }
-
-    public long getRequestById() {
-        return requestById;
-    }
-
-    public void setRequestById(long requestById) {
-        this.requestById = requestById;
-    }
-
-    public long getCheckedById() {
-        return checkedById;
-    }
-
-    public void setCheckedById(long checkedById) {
-        this.checkedById = checkedById;
-    }
-
-    public User getRequestedBy() {
-        return requestedBy;
-    }
-
-    public void setRequestedBy(User requestedBy) {
-        this.requestedBy = requestedBy;
-    }
-
-    public User getCheckedBy() {
-        return checkedBy;
-    }
-
-    public void setCheckedBy(User checkedBy) {
-        this.checkedBy = checkedBy;
     }
 }

@@ -46,7 +46,7 @@ public class TeamMemberServiceImpl implements TeamMemberService {
     private static String BACK_DATED_DATA = "This data is old.Please try again with updated data";
     private static String PHOTO_TEAM_PATH = "/resources/images/team_member_photo/";
     private static String USER_ASSOCIATED_APPROVAL_UPDATE = "Team member can't update due to association with request";
-    private static String USER_ASSOCIATED_APPROVAL_DELETE = "Team member can't update due to association with request";
+    private static String USER_ASSOCIATED_APPROVAL_DELETE = "Team member can't delete due to association with request";
 
     @Transactional(readOnly = true)
     public User get(Long id) {
@@ -100,7 +100,7 @@ public class TeamMemberServiceImpl implements TeamMemberService {
         validationMsg = checkInput(user);
         if ("".equals(validationMsg)) existingUser = teamMemberDao.get(user.getId());
         if (existingUser.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_USER;
-        if ("".equals(validationMsg)) approvalStatuses= approvalStatusDao.findByApprovedById(user.getId());
+        if ("".equals(validationMsg)) approvalStatuses= approvalStatusDao.findByApprovedById(existingUser.getId());
         if(approvalStatuses.size() !=0 && "".equals(validationMsg) && user.getCompanyId() !=existingUser.getCompanyId()) validationMsg=USER_ASSOCIATED_APPROVAL_UPDATE;
         if (user.getVersion() != existingUser.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg)) newUser = teamMemberDao.findByNewName(existingUser.getEmail(), user.getEmail());
@@ -132,10 +132,6 @@ public class TeamMemberServiceImpl implements TeamMemberService {
         if (userId == 0l) validationMsg = INVALID_INPUT;
         User user = teamMemberDao.get(userId);
         if (user == null && "".equals(validationMsg)) validationMsg = INVALID_USER;
-
-        // later implementation
-//        List<Object> obj = userDao.countOfCompany(companyId);
-//        if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_COMPANY;
         if ("".equals(validationMsg)) approvalStatuses= approvalStatusDao.findByApprovedById(user.getId());
         if(approvalStatuses.size() !=0 && "".equals(validationMsg)) validationMsg=USER_ASSOCIATED_APPROVAL_DELETE;
         if (user != null) fileName = user.getImagePath();
