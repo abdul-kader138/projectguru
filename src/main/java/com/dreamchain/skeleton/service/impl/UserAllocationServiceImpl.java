@@ -40,6 +40,7 @@ public class UserAllocationServiceImpl implements UserAllocationService {
     private static String ASSOCIATED_REQUEST = "This allocation is associated with request.First remove tagging and try again";
     private static String SAME_ALLOCATED_USER = "Approved By and Coordinator name can't be same";
 
+
     @Transactional(readOnly = true)
     public UserAllocation get(Long id) {
         return userAllocationDao.get(id);
