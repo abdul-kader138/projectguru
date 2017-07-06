@@ -19,6 +19,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+//import javax.mail.Authenticator;
+
+
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -44,7 +47,7 @@ public class DeclineRequestServiceImpl implements DeclineRequestService {
     private static String INVALID_INPUT = "Invalid input";
     private static String INVALID_REQUEST = "Request not exists";
     private static String BACK_DATED_DATA = "Request data is old.Please try again with updated data";
-    private static String EMAIL_BODY_SAVE = "Your acknowledged by request is decline.Request Name ##";
+    private static String EMAIL_BODY_SAVE = "Request is declined by the user.Request Name ##";
     private static String EMAIL_HEADER_SAVE= "Request is declined.Request Name ##";
 
 
@@ -85,7 +88,7 @@ public class DeclineRequestServiceImpl implements DeclineRequestService {
             long requestId= changeRequestDao.save(changeRequest);
             long declineId= declineRequestDao.save(declineRequest);
             long approvalId=approvalStatusDao.save(itCoordinatorObj);
-//            sendEmail(changeRequest.getAcknowledgedItCoordinator().getEmail(), EMAIL_HEADER_SAVE, EMAIL_BODY_SAVE + changeRequest.getName());
+            sendEmail(changeRequest.getAcknowledgedItCoordinator().getEmail(), EMAIL_HEADER_SAVE+ changeRequest.getName(), EMAIL_BODY_SAVE + changeRequest.getName());
         }
         obj.put("validationError",validationMsg);
         return obj;
@@ -129,20 +132,26 @@ public class DeclineRequestServiceImpl implements DeclineRequestService {
 
     private void sendEmail(String toEmail, String header, String body) {
         Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.host", "mail.paragon.com.bd");
+        props.put("mail.smtp.socketFactory.port", "25");
         props.put("mail.smtp.socketFactory.class",
                 "javax.net.ssl.SSLSocketFactory");
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
-
+        props.put("mail.smtp.port", "25");
         Authenticator auth = new Authenticator() {
             //override the getPasswordAuthentication method
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(environment.getProperty("approval.send.email.from.id"), environment.getProperty("approval.send.email.from.password"));
             }
         };
-        Session session = Session.getDefaultInstance(props, auth);
+
+        Session session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(environment.getProperty("approval.send.email.from.id"), environment.getProperty("approval.send.email.from.password"));
+                    }
+                });
+
         EmailUtil.sendEmail(session, toEmail, header, body);
 
     }

@@ -95,6 +95,7 @@
 
     <script>
         $(document).ready(function () {
+            var loading = $.loading();
             $("#cause").val("");
             $("#causeValidation").text("");
 

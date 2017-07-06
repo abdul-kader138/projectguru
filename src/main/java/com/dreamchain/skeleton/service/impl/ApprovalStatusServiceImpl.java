@@ -43,9 +43,9 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
     private static String INVALID_APPROVAL_DATA = "Data not exists";
     private static String INVALID_REQUEST_DATA = "Data not exists";
     private static String BACK_DATED_DATA = "Approval data is old.Please try again with updated data";
-    private static String EMAIL_HEADER_SAVE = "Request is waiting for approval!!!!";
-    private static String EMAIL_HEADER_DELETE = "Request Delete !!!!";
-    private static String EMAIL_BODY_DELETE = "your asking request is delete.Request Name ##";
+    private static String EMAIL_HEADER_SAVE = "Request is waiting for approval.Request Name ##";
+    private static String EMAIL_HEADER_DELETE = "Request is Deleted.Request Name ##";
+    private static String EMAIL_BODY_DELETE = "Your asking request is deleted.Request Name ##";
     private static String EMAIL_BODY_SAVE= "Request is waiting at your Approval Explorer for approve.Request Name ##";
 
 
@@ -108,15 +108,12 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
         ChangeRequest changeRequest = changeRequestDao.get(requestId);
         if ("".equals(approvalStatus.getStatus()) && "".equals(validationMsg)) validationMsg = INVALID_APPROVAL_DATA;
         if ("".equals(changeRequest.getStatus()) && "".equals(validationMsg)) validationMsg = INVALID_REQUEST_DATA;
-        //@todo
-//        List<Object> obj=departmentDao.countOfDepartment(departmentId);
-//        if (obj.size() > 0 && validationMsg == "") validationMsg = ASSOCIATED_DEPARTMENT;
         if ("".equals(validationMsg)) {
             String filePath = changeRequest.getDocPath();
             deleteDoc(filePath, request);
             changeRequestDao.delete(changeRequest);
             approvalStatusDao.delete(requestId);
-//            sendEmail(changeRequest.getRequestBy().getEmail(), EMAIL_HEADER_DELETE, EMAIL_BODY_DELETE + changeRequest.getName());
+            sendEmail(changeRequest.getRequestBy().getEmail(), EMAIL_HEADER_DELETE+ changeRequest.getName(), EMAIL_BODY_DELETE + changeRequest.getName());
         }
         return validationMsg;
     }
@@ -208,7 +205,7 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
                 changeRequest.setUpdatedBy(getUserId().getEmail());
                 approvalStatusDao.save(approvalStatus);
                 changeRequestDao.save(changeRequest);
-//                sendEmail(changeRequest.getItCoordinator().getEmail(), EMAIL_HEADER_SAVE, EMAIL_BODY_SAVE + changeRequest.getName());
+                sendEmail(changeRequest.getItCoordinator().getEmail(), EMAIL_HEADER_SAVE + changeRequest.getName(), EMAIL_BODY_SAVE + changeRequest.getName());
             } else if (environment.getProperty("approval.user.itCoordinator").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.done").equals(approvalStatus.getStatus())) {
                 ChangeRequest changeRequest = changeRequestDao.get(approvalStatus.getRequestId());
                 changeRequest.setWipStatus(environment.getProperty("approval.status.approve.type.approvedBy"));
@@ -217,7 +214,7 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
                 changeRequest.setUpdatedBy(getUserId().getEmail());
                 approvalStatusDao.save(approvalStatus);
                 changeRequestDao.save(changeRequest);
-//                sendEmail(changeRequest.getApprovedBy().getEmail(), EMAIL_HEADER_SAVE, EMAIL_BODY_SAVE + changeRequest.getName());
+                sendEmail(changeRequest.getApprovedBy().getEmail(), EMAIL_HEADER_SAVE + changeRequest.getName(), EMAIL_BODY_SAVE + changeRequest.getName());
             } else if (environment.getProperty("approval.user.approvedBy").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.done").equals(approvalStatus.getStatus())) {
                 ChangeRequest changeRequest = changeRequestDao.get(approvalStatus.getRequestId());
                 changeRequest.setWipStatus(environment.getProperty("approval.status.approve.type.acknowledgeBy.itCoordinator"));
@@ -226,7 +223,7 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
                 changeRequest.setUpdatedBy(getUserId().getEmail());
                 approvalStatusDao.save(approvalStatus);
                 changeRequestDao.save(changeRequest);
-//                sendEmail(changeRequest.getAcknowledgedItCoordinator().getEmail(), EMAIL_HEADER_SAVE, EMAIL_BODY_SAVE + changeRequest.getName());
+                sendEmail(changeRequest.getAcknowledgedItCoordinator().getEmail(), EMAIL_HEADER_SAVE + changeRequest.getName(), EMAIL_BODY_SAVE + changeRequest.getName());
             } else if (environment.getProperty("approval.user.acknowledgementIT").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.done").equals(approvalStatus.getStatus())) {
                 ChangeRequest changeRequest = changeRequestDao.get(approvalStatus.getRequestId());
                 changeRequest.setWipStatus(environment.getProperty("approval.status.approve.type.acknowledgeBy.checkedBy"));
@@ -236,7 +233,7 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
                 changeRequest.setUpdatedBy(getUserId().getEmail());
                 approvalStatusDao.save(approvalStatus);
                 changeRequestDao.save(changeRequest);
-//                sendEmail(changeRequest.getAcknowledgeChecked().getEmail(), EMAIL_HEADER_SAVE, EMAIL_BODY_SAVE + changeRequest.getName());
+                sendEmail(changeRequest.getAcknowledgeChecked().getEmail(), EMAIL_HEADER_SAVE + changeRequest.getName(), EMAIL_BODY_SAVE + changeRequest.getName());
             } else if (environment.getProperty("approval.user.acknowledgeCheckedBy").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.done").equals(approvalStatus.getStatus())) {
                 ChangeRequest changeRequest = changeRequestDao.get(approvalStatus.getRequestId());
                 changeRequest.setWipStatus(environment.getProperty("approval.status.approve.type.acknowledgeBy.requestBy"));
@@ -246,7 +243,7 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
                 changeRequest.setUpdatedBy(getUserId().getEmail());
                 changeRequestDao.save(changeRequest);
                 approvalStatusDao.save(approvalStatus);
-//                sendEmail(changeRequest.getAcknowledgement().getEmail(), EMAIL_HEADER_SAVE, EMAIL_BODY_SAVE + changeRequest.getName());
+                sendEmail(changeRequest.getAcknowledgement().getEmail(), EMAIL_HEADER_SAVE + changeRequest.getName(), EMAIL_BODY_SAVE + changeRequest.getName());
             }
         }
     }
@@ -277,20 +274,24 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
 
     private void sendEmail(String toEmail, String header, String body) {
         Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.host", "mail.paragon.com.bd");
+        props.put("mail.smtp.socketFactory.port", "25");
         props.put("mail.smtp.socketFactory.class",
                 "javax.net.ssl.SSLSocketFactory");
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
-
+        props.put("mail.smtp.port", "25");
         Authenticator auth = new Authenticator() {
             //override the getPasswordAuthentication method
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(environment.getProperty("approval.send.email.from.id"), environment.getProperty("approval.send.email.from.password"));
             }
         };
-        Session session = Session.getDefaultInstance(props, auth);
+        Session session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(environment.getProperty("approval.send.email.from.id"), environment.getProperty("approval.send.email.from.password"));
+                    }
+                });
         EmailUtil.sendEmail(session, toEmail, header, body);
 
     }

@@ -90,7 +90,6 @@
 
         <script type="text/javascript">
             $(document).ready(function () {
-
                 var loading = $.loading();
                 initFormValidationMsg();
                 initializePasswordForm();
