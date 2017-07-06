@@ -42,8 +42,8 @@
         <div class="body">
             <form id="sign_in" method="POST" action="<c:url value='j_spring_security_check'/>">
                 <div class="msg">Sign in to start your session</div>
-                <c:if test="${isPasswordChanged == 'Yes'}">
-                    <div class="msg">${passwordMsg}</div>
+                <c:if test="${error !=null}">
+                    <div class="msg"><label class="error" style="color: red; font-size: 12px">${error}</label></div>
                 </c:if>
                 <div class="input-group">
     <span class="input-group-addon">

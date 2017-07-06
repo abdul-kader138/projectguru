@@ -8,7 +8,6 @@ import com.dreamchain.skeleton.model.ApprovalStatus;
 import com.dreamchain.skeleton.model.ChangeRequest;
 import com.dreamchain.skeleton.model.DeclineRequest;
 import com.dreamchain.skeleton.model.User;
-import com.dreamchain.skeleton.service.ChangeRequestService;
 import com.dreamchain.skeleton.service.DeclineRequestService;
 import com.dreamchain.skeleton.utility.EmailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
