@@ -114,6 +114,7 @@ public class ChangeRequestDaoImpl implements ChangeRequestDao {
         return (ChangeRequest)lst.get(0);
     }
 
+
     @Override
     public ChangeRequest findByTeamAllocationId(long teamAllocationId) {
         DetachedCriteria dcr= DetachedCriteria.forClass(ChangeRequest.class);
