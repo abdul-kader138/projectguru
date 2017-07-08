@@ -130,7 +130,18 @@
     </div>
     <script>
         $(document).ready(function () {
+
+            /* set nav bar color */
+            changeNavColor();
+            var colorName = localStorage.colorName;
+            setNavColor(colorName);
+
+
+            /* Enable page loader */
             var loading = $.loading();
+
+
+            /* Load datatable Value */
             $('#requestTable').DataTable({
                 "sAjaxSource": "http://localhost:8080/change_request/change_requestList",
                 "sAjaxDataProp": "",
@@ -173,7 +184,7 @@
                     }
                     },
                     {
-                        "mData": "wipStatus", 'sWidth': '120px',
+                        "mData": "wipStatus", 'sWidth': '120px', "orderable": false,
                         "render": function (data, type, row, id) {
                             if (row.wipStatus == messageResource.get('approval.status.approve.type.checkedBy', 'configMessageForUI')) return messageResource.get('request.status.wait.checkedBy.approval', 'configMessageForUI');
                             if (row.wipStatus == messageResource.get('approval.status.approve.type.itCoordinatorBy', 'configMessageForUI')) return messageResource.get('request.status.wait.IT.acknowledgement', 'configMessageForUI');
@@ -185,21 +196,21 @@
                         }
                     },
                     {
-                        "mData": "wipStatus", 'sWidth': '50px',
+                        "mData": "wipStatus", 'sWidth': '50px', "orderable": false,
                         "render": function (data, type, row, id) {
                             if (row.wipStatus == messageResource.get('approval.status.approve.done', 'configMessageForUI')) return messageResource.get('request.status.wait.done', 'configMessageForUI');
                             return " ";
                         }
                     },
                     {
-                        "mData": "requiredDay", 'sWidth': '30px',
+                        "mData": "requiredDay", 'sWidth': '30px', "orderable": false,
                         "render": function (data, type, row, id) {
                             if (row.requiredDay != null) return row.requiredDay;
                             else return "";
                         }
                     },
                     {
-                        "mData": "deliverDate", 'sWidth': '30px',
+                        "mData": "deliverDate", 'sWidth': '30px', "orderable": false,
                         "render": function (data, type, row, id) {
                             if (row.deliverDate != null && row.status == messageResource.get('approval.status.approve.done', 'configMessageForUI')) return requiredDays(row.deliverDate, row.updatedOn, row);
                             return "";
@@ -217,7 +228,7 @@
                         }
                     },
                     {
-                        "mData": "docPath", 'sWidth': '80px',
+                        "mData": "docPath", 'sWidth': '80px', "orderable": false,
                         "render": function (data, type, row, id) {
                             var mainPath = document.origin + "/PG";
                             return '<a href="' + mainPath + row.docPath + '" download>' + 'Download</a>'
@@ -238,6 +249,7 @@
             });
 
 
+            /* Calculate required Days */
             function requiredDays(newDate, Enddate, obj) {
                 var startDate = new Date(newDate - (obj.requiredDay * 24 * 60 * 60 * 1000));
                 var ONE_DAY = 1000 * 60 * 60 * 24;

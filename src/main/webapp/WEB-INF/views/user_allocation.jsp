@@ -143,7 +143,6 @@
                                 </div>
 
 
-
                                 <!-- Button -->
                                 <div class="form-group">
                                     <label class="col-md-4 control-label" for="saveAllocation"></label>
@@ -175,7 +174,15 @@
         <script type="text/javascript">
             $(document).ready(function () {
 
+                /* set nav bar color */
+                changeNavColor();
+                var colorName = localStorage.colorName;
+                setNavColor(colorName);
+
+                /* Enable page loader */
                 var loading = $.loading();
+
+                /*Initialize Page Value*/
                 initFormValidationMsg();
                 initializeAllocationForm();
                 $("saveAllocation").show();
@@ -221,25 +228,29 @@
                                 return '<input class="getVal" style="position: static;"  type="checkbox" name="' + id + '" id="' + id + '">';
                             },
                             'sWidth': '15px',
-                            'bSortable': false
+                            "orderable": false
                         },
                         {
-                            "mData": "category.company.name", 'sWidth': '100px', "render": function (data, type, row, id) {
-                            if (row.category.company.name != null) {
-                                var companyName = row.category.company.name.substr(0, 20);
-                                return companyName;
+                            "mData": "category.company.name",
+                            'sWidth': '100px',
+                            "render": function (data, type, row, id) {
+                                if (row.category.company.name != null) {
+                                    var companyName = row.category.company.name.substr(0, 20);
+                                    return companyName;
+                                }
+                                return "";
                             }
-                            return "";
-                        }
                         },
                         {
-                            "mData": "category.product.name", 'sWidth': '100px', "render": function (data, type, row, id) {
-                            if (row.category.product.name != null) {
-                                var productName = row.category.product.name.substr(0, 20);
-                                return productName;
+                            "mData": "category.product.name",
+                            'sWidth': '100px',
+                            "render": function (data, type, row, id) {
+                                if (row.category.product.name != null) {
+                                    var productName = row.category.product.name.substr(0, 20);
+                                    return productName;
+                                }
+                                return "";
                             }
-                            return "";
-                        }
                         },
                         {
                             "mData": "category.name", 'sWidth': '100px', "render": function (data, type, row, id) {
@@ -728,7 +739,7 @@
                     $("#id").val(newAllocation.id);
                     $("#version").val(newAllocation.version);
                     $('#listOfCompany option:contains("' + newAllocation.category.company.name + '")').prop('selected', 'selected');
-                    $('#listOfCoordinator option:contains("' + newAllocation.itCoordinator.name+ '")').prop('selected', 'selected');
+                    $('#listOfCoordinator option:contains("' + newAllocation.itCoordinator.name + '")').prop('selected', 'selected');
                     $('#listOfApprovedBy option:contains("' + newAllocation.approvedBy.name + '")').prop('selected', 'selected');
                     var company = new Object();
                     var id = newAllocation.companyId;
@@ -736,7 +747,7 @@
                     id = parseInt(id);
                     productId = parseInt(productId);
                     getSelectedProduct(id, newAllocation.category.product.name);
-                    getSelectedCategory(productId,newAllocation.category.name);
+                    getSelectedCategory(productId, newAllocation.category.name);
                     window.location.href = "#allocationForm";
                 }
 

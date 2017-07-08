@@ -173,7 +173,16 @@
         <script type="text/javascript">
             $(document).ready(function () {
 
+
+                /* set nav bar color */
+                changeNavColor();
+                var colorName = localStorage.colorName;
+                setNavColor(colorName);
+
+                /* Enable page loader */
                 var loading = $.loading();
+
+                /*Initialize Page Value*/
                 initFormValidationMsg();
                 initializeAllocationForm();
                 $("saveAllocation").show();
@@ -219,7 +228,7 @@
                                 return '<input class="getVal" style="position: static;"  type="checkbox" name="' + id + '" id="' + id + '">';
                             },
                             'sWidth': '15px',
-                            'bSortable': false
+                            "orderable": false
                         },
                         {
                             "mData": "category.company.name", 'sWidth': '100px', "render": function (data, type, row, id) {

@@ -28,10 +28,26 @@
 <body class="login-page" ng-app="loginApp">
 
 
+<noscript>
+
+    <div class="col-sm-10 col-sm-offset-1">
+        <div class="panel panel-danger">
+            <div class="panel-body">
+                <b> For full functionality of this site it is necessary to enable JavaScript.<br/>
+                    Here are the instructions -></b> <a href="http://www.enable-javascript.com/" target="_blank">
+                How to enable JavaScript in your web browser</a>.
+            </div>
+        </div>
+    </div>
+    <style>
+        .mainContent {
+            display: none;
+        }
+    </style>
 </noscript>
 
 
-<div class="login-box">
+<div class="login-box mainContent">
     <div class="logo">
         <div class="image">
             <a href="javascript:void(0);"><img src="resources/images/logo-pergon.gif" width="80" height="80"
@@ -81,11 +97,7 @@
 
 <script src="resources/node_modules/jquery/dist/jquery.min.js"></script>
 <script src="resources/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="resources/node_modules/angular/angular.min.js"></script>
-<script src="resources/node_modules/angular-route/angular-route.min.js"></script>
-<script src="resources/node_modules/ngstorage/ngStorage.min.js"></script>
-<script src="resources/node_modules/custom-js/app.js"></script>
-<script src="resources/node_modules/custom-js/controller.js"></script>
+<script src="resources/node_modules/custom-js/custom.js"></script>
 
 <script src="resources/node_modules/adminbsb/node-waves/waves.js"></script>
 
@@ -96,30 +108,6 @@
 <script src="resources/node_modules/adminbsb/js/admin.js"></script>
 <script src="resources/node_modules/adminbsb/js/pages/examples/sign-in.js"></script>
 
-
-<noscript>
-    <div class="container">
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-
-        <div class="col-sm-6 col-sm-offset-3">
-            <div class="panel panel-danger">
-                <div class="panel-body">
-                    For full functionality of this site it is necessary to enable JavaScript.<br/>
-                    Here are the <a href="http://www.enable-javascript.com/" target="_blank">
-                    instructions how to enable JavaScript in your web browser</a>.
-                </div>
-            </div>
-        </div>
-    </div>
-    <style>
-        #mainContent {
-            display: none;
-        }
-    </style>
-</noscript>
 
 </body>
 </html>

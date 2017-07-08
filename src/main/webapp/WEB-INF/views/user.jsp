@@ -128,7 +128,8 @@
 
                                     <div class="col-md-6">
 
-                                        <input id="confirmPassword" name="confirmPassword" type="password" placeholder=""
+                                        <input id="confirmPassword" name="confirmPassword" type="password"
+                                               placeholder=""
                                                class="form-control input-md"
                                                style="border-color:#808080; border-width:1px; border-style:solid;"
                                                required="">
@@ -249,7 +250,15 @@
         <script type="text/javascript">
             $(document).ready(function () {
 
+                /* set nav bar color */
+                changeNavColor();
+                var colorName = localStorage.colorName;
+                setNavColor(colorName);
+
+                /* Enable page loader */
                 var loading = $.loading();
+
+                /*Initialize Page Value*/
                 initFormValidationMsg();
                 initializeUserForm();
                 $("saveUser").show();
@@ -276,7 +285,7 @@
                                 return '<input class="getVal" style="position: static;"  type="checkbox" name="' + id + '" id="' + id + '">';
                             },
                             'sWidth': '15px',
-                            'bSortable': false
+                            "orderable": false
                         },
                         {
                             "mData": "name", 'sWidth': '100px', "render": function (data, type, row, id) {
@@ -315,7 +324,7 @@
                         }
                         },
                         {
-                            "mData": "path",'sWidth': '50px',
+                            "mData": "path", 'sWidth': '50px', "orderable": false,
                             "render": function (url, type, full) {
                                 return '<img src="' + mainPath + full.imagePath + '" width="30" height="30" />';
                             }
@@ -352,10 +361,9 @@
                     var part2 = "";
                     var icn = 0;
                     var msg = "";
-                    var user=setRoleName();
+                    var user = setRoleName();
                     if (formValidation()) callAjaxForAddOperation(part1, part2, icn, msg, user);
                 });
-
 
 
                 /* Update User data using ajax */
@@ -364,7 +372,7 @@
                     document.getElementById('userForm').style.display = "none";
                     initializeUserForm();
                     initFormValidationMsg();
-                    var newUser =setRoleName();
+                    var newUser = setRoleName();
                     newUser = companyGb;
                     companyGb = null;
                     var data = messageResource.get('user.edit.validation.msg', 'configMessageForUI');
@@ -381,7 +389,7 @@
                     var part2 = "";
                     var icn = 0;
                     var msg = "Message";
-                    var user=setRoleName();
+                    var user = setRoleName();
                     if (formValidationForUpdate()) callAjaxForEditOperation(part1, part2, icn, msg, user);
 
                 });
@@ -554,7 +562,7 @@
                     $.ajax({
                         url: messageResource.get('user.save.url', 'configMessageForUI'),
                         type: "POST",
-                        data:user,
+                        data: user,
                         enctype: 'multipart/form-data',
                         processData: false,
                         contentType: false
@@ -618,41 +626,40 @@
                     var roleId = $("#listOfRole option:selected").val();
                     var companyId = $("#listOfCompany option:selected").val();
 
-                    isValid=blankCheck(name,"name",isValid);
+                    isValid = blankCheck(name, "name", isValid);
 
-                    if ((companyId == null) || (companyId == "0") && isValid==true) {
+                    if ((companyId == null) || (companyId == "0") && isValid == true) {
                         $("#companyNameValidation").text("Company name is required");
                         isValid = false;
                     }
 
                     //password check
-                    if(isValid == true) isValid=passwordCheck(password,confirmPassword,"password", "confirmPassword");
+                    if (isValid == true) isValid = passwordCheck(password, confirmPassword, "password", "confirmPassword");
 
                     // email check
-                    if(isValid == true) isValid=blankCheck(email,"email",isValid);
-                    if ((!/^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/g.test(email)) && isValid == true){
+                    if (isValid == true) isValid = blankCheck(email, "email", isValid);
+                    if ((!/^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/g.test(email)) && isValid == true) {
                         $("#emailValidation").text('Only valid email is allowed!');
                         isValid = false;
                     }
 
                     // Phone Check
-                    if(isValid == true) isValid=blankCheck(phone,"phone",isValid);
-                    if ((!/^\d{11}$/g.test(phone)) && isValid == true){
+                    if (isValid == true) isValid = blankCheck(phone, "phone", isValid);
+                    if ((!/^\d{11}$/g.test(phone)) && isValid == true) {
                         $("#phoneValidation").text('Only 11 digit phone no is allowed!');
                         isValid = false;
                     }
-                    if(isValid == true) isValid=blankCheck(designation,"designation",isValid);
-                    if ((roleId == null) || (roleId == "0") && isValid==true) {
+                    if (isValid == true) isValid = blankCheck(designation, "designation", isValid);
+                    if ((roleId == null) || (roleId == "0") && isValid == true) {
                         $("#roleNameValidation").text("Role name is required");
                         isValid = false;
                     }
-                    if (!(isJpg(filename) || isPng(filename) || isGif(filename)) && isValid==true) {
+                    if (!(isJpg(filename) || isPng(filename) || isGif(filename)) && isValid == true) {
                         $("#photoValidation").text('Please browse a JPG/PNG/GIF file to upload ...');
                         isValid = false;
                     }
                     return isValid;
                 }
-
 
 
                 /* html form Validation for update */
@@ -666,28 +673,27 @@
                     var roleId = $("#listOfRole option:selected").val();
                     var companyId = $("#listOfCompany option:selected").val();
 
-                    isValid=blankCheck(name,"name",isValid);
+                    isValid = blankCheck(name, "name", isValid);
 
-                    if ((companyId == null) || (companyId == "0") && isValid==true) {
+                    if ((companyId == null) || (companyId == "0") && isValid == true) {
                         $("#companyNameValidation").text("Company name is required");
                         isValid = false;
                     }
 
 
                     // Phone Check
-                    if(isValid == true) isValid=blankCheck(phone,"phone",isValid);
-                    if ((!/^\d{11}$/g.test(phone)) && isValid == true){
+                    if (isValid == true) isValid = blankCheck(phone, "phone", isValid);
+                    if ((!/^\d{11}$/g.test(phone)) && isValid == true) {
                         $("#phoneValidation").text('Only 11 digit phone no is allowed!');
                         isValid = false;
                     }
-                    if(isValid == true) isValid=blankCheck(designation,"designation",isValid);
-                    if ((roleId == null) || (roleId == "0") && isValid==true) {
+                    if (isValid == true) isValid = blankCheck(designation, "designation", isValid);
+                    if ((roleId == null) || (roleId == "0") && isValid == true) {
                         $("#roleNameValidation").text("Role name is required");
                         isValid = false;
                     }
                     return isValid;
                 }
-
 
 
                 /* Initialize html form validation error field*/
@@ -712,8 +718,6 @@
                 });
 
 
-
-
                 /* move to add new user div*/
 
                 $('#moveToAdd').on('click', function () {
@@ -729,7 +733,6 @@
                     uncheckedAllCheckBox();
                     window.location.href = "#userForm";
                 });
-
 
 
                 /* set selected row data to user form for edit */
@@ -794,11 +797,11 @@
                 };
 
 
-                function setRoleName(){
-                    var roleId=$("#listOfRole option:selected").val();
-                    var roleName=$("#listOfRole option:selected").text();
-                    var companyId=$("#listOfCompany option:selected").val();
-                    var user=new FormData(document.getElementById("userDetails"));
+                function setRoleName() {
+                    var roleId = $("#listOfRole option:selected").val();
+                    var roleName = $("#listOfRole option:selected").text();
+                    var companyId = $("#listOfCompany option:selected").val();
+                    var user = new FormData(document.getElementById("userDetails"));
                     user.append('roleId', roleId);
                     user.append('companyId', companyId);
                     user.append('roleName', roleName);

@@ -95,7 +95,15 @@
 
     <script>
         $(document).ready(function () {
+            /* set nav bar color */
+            changeNavColor();
+            var colorName = localStorage.colorName;
+            setNavColor(colorName);
+
+            /* Enable page loader */
             var loading = $.loading();
+
+            /*Initialize Page Value*/
             $("#cause").val("");
             $("#causeValidation").text("");
 

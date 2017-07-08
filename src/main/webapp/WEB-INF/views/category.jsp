@@ -174,7 +174,15 @@
         <script type="text/javascript">
             $(document).ready(function () {
 
+                /* set nav bar color */
+                changeNavColor();
+                var colorName = localStorage.colorName;
+                setNavColor(colorName);
+
+                /* Enable page loader */
                 var loading = $.loading();
+
+                /*Initialize Page Value*/
                 initFormValidationMsg();
                 initializeCategoryForm();
                 $("saveCategory").show();
@@ -210,7 +218,7 @@
                                 return '<input class="getVal" style="position: static;"  type="checkbox" name="' + id + '" id="' + id + '">';
                             },
                             'sWidth': '15px',
-                            'bSortable': false
+                            "orderable": false
                         },
                         {
                             "mData": "name", 'sWidth': '200px', "render": function (data, type, row, id) {
@@ -222,7 +230,7 @@
                         }
                         },
                         {
-                            "mData": "description", 'sWidth': '300px', "render": function (data, type, row, id) {
+                            "mData": "description", 'sWidth': '300px',"orderable": false, "render": function (data, type, row, id) {
                             if (row.description != null) {
                                 var description = row.description.substr(0, 30);
                                 return description;

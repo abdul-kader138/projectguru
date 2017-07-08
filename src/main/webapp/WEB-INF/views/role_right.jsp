@@ -5,10 +5,11 @@
 
         <%--start of table div--%>
 
-        <div id="viewTableData"> </div>
+        <div id="viewTableData"></div>
         <div class="row clearfix">
             <div class="col-xs-10 col-xs-offset-1 card">
                 <br/>
+
                 <div><h4>Role-Rights List</h4></div>
                 <hr/>
                 <br/><br/>
@@ -148,14 +149,24 @@
 
         <script type="text/javascript">
             $(document).ready(function () {
+
+                /* set nav bar color */
+                changeNavColor();
+                var colorName = localStorage.colorName;
+                setNavColor(colorName);
+
+                /* Enable page loader */
                 var loading = $.loading();
+
+                /*Initialize Page Value*/
                 initFormValidationMsg();
                 initializeRoleForm();
                 $("saveRole").show();
                 $("#updateRole").hide();
                 var companyGb;
-
                 getAllRole();
+
+
                 /* Load role data to select box data using ajax */
 
                 $('#roleTable').DataTable({
@@ -171,7 +182,7 @@
                                 return '<input class="getVal" style="position: static;"  type="checkbox" name="' + id + '" id="' + id + '">';
                             },
                             'sWidth': '15px',
-                            'bSortable': false
+                            "orderable": false
                         },
                         {
                             "mData": "roleName", 'sWidth': '200px', "render": function (data, type, row, id) {
@@ -209,7 +220,6 @@
 
 
                 /* Save role data using ajax */
-
                 $("#saveRole").click(function () {
                     initFormValidationMsg();
                     var part1 = "";
@@ -223,7 +233,6 @@
 
 
                 /* Update role data using ajax */
-//
                 $('#editRole').click(function () {
                     document.getElementById('roleForm').style.display = "none";
                     initializeRoleForm();
@@ -559,7 +568,8 @@
                     $("#saveRole").hide();
                     $("#id").val(role.id);
                     $("#version").val(role.version);
-                    $('#listOfRole option:contains("' + role.roleName + '")').prop('selected', 'selected');;
+                    $('#listOfRole option:contains("' + role.roleName + '")').prop('selected', 'selected');
+                    ;
                 }
 
 

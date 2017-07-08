@@ -91,6 +91,10 @@
     </div>
     <script>
         $(document).ready(function () {
+            /* set nav bar color */
+            changeNavColor();
+            var colorName = localStorage.colorName;
+            setNavColor(colorName);
         });
 
     </script>

@@ -159,7 +159,17 @@
 
         <script type="text/javascript">
             $(document).ready(function () {
+
+                /* set nav bar color */
+                changeNavColor();
+                var colorName = localStorage.colorName;
+                setNavColor(colorName);
+
+
+                /* Enable page loader */
                 var loading = $.loading();
+
+                /*Initialize Page Value*/
                 initFormValidationMsg();
                 initializeCompanyForm();
                 $("saveCompany").show();
@@ -184,7 +194,7 @@
                                 return '<input class="getVal" style="position: static;"  type="checkbox" name="' + id + '" id="' + id + '">';
                             },
                             'sWidth': '15px',
-                            'bSortable': false
+                            "orderable": false
                         },
                         {
                             "mData": "name", 'sWidth': '200px', "render": function (data, type, row, id) {
@@ -196,7 +206,7 @@
                         }
                         },
                         {
-                            "mData": "address", 'sWidth': '400px', "render": function (data, type, row, id) {
+                            "mData": "address", 'sWidth': '400px', "orderable": false,"render": function (data, type, row, id) {
                             if (row.address != null) {
                                 var address = row.address.substr(0,50);
                                 return address;
@@ -205,7 +215,7 @@
                         }
                         },
                         {
-                            "mData": "path",
+                            "mData": "path","orderable": false,
                             "render": function (url, type, full) {
                                 return '<img src="' + mainPath + full.imagePath + '" width="30" height="30" />';
                             }

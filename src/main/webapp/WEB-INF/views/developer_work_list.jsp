@@ -121,7 +121,15 @@
     </div>
     <script>
         $(document).ready(function () {
+            /* set nav bar color */
+            changeNavColor();
+            var colorName = localStorage.colorName;
+            setNavColor(colorName);
+
+            /* Enable page loader */
             var loading = $.loading();
+
+            /* Load datatable Value */
             $('#requestTable').DataTable({
                 "sAjaxSource": "http://localhost:8080/developer_work_status/developer_work_statusList",
                 "sAjaxDataProp": "",
@@ -165,13 +173,13 @@
                     }
                     },
                     {
-                        "mData": "wipStatus", 'sWidth': '80px',
+                        "mData": "wipStatus", 'sWidth': '80px', "orderable": false,
                         "render": function (data, type, row, id) {
                             return "Waiting For Deployment";
                         }
                     },
                     {
-                        "mData": "declineCause", 'sWidth': '80px',
+                        "mData": "declineCause", 'sWidth': '80px', "orderable": false,
                         "render": function (data, type, row, id) {
                             if (row.declineCause != null) {
                                 var declineCause = row.declineCause.substr(0, 40);
@@ -191,7 +199,7 @@
                         }
                     },
                     {
-                        "mData": "docPath", 'sWidth': '80px',
+                        "mData": "docPath", 'sWidth': '80px', "orderable": false,
                         "render": function (data, type, row, id) {
                             var mainPath = document.origin + "/PG";
                             return '<a href="' + mainPath + row.docPath + '" download>' + 'Download</a>'
@@ -212,6 +220,7 @@
             });
 
 
+            /* Calculate required Days */
             function requiredDays(startDate, Enddate) {
                 var ONE_DAY = 1000 * 60 * 60 * 24;
                 var difference_ms = Math.abs(Enddate - startDate);

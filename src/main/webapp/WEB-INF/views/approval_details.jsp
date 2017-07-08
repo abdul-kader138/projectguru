@@ -36,7 +36,7 @@
         </div>
 
         <%--end of table div--%>
-
+            
 
         <br/><br/><br/>
 
@@ -45,7 +45,15 @@
     <script>
         $(document).ready(function () {
 
+            /* set nav bar color */
+            changeNavColor();
+            var colorName = localStorage.colorName;
+            setNavColor(colorName);
+
+            /* Enable page loader */
             var loading = $.loading();
+
+            /*Initialize Page Value*/
             var companyGb;
             loadApproveData();
 
@@ -67,7 +75,7 @@
                         }
                         },
                         {
-                            "mData": "category.company.name", 'sWidth': '100px', "render": function (data, type, row, id) {
+                            "mData": "category.company.name", 'sWidth': '100px', "orderable": false, "render": function (data, type, row, id) {
                             if (row.category.company.name != null) {
                                 var companyName = row.category.company.name.substr(0, 20);
                                 return companyName;
@@ -76,7 +84,7 @@
                         }
                         },
                         {
-                            "mData": "category.product.name", 'sWidth': '100px', "render": function (data, type, row, id) {
+                            "mData": "category.product.name", 'sWidth': '100px', "orderable": false, "render": function (data, type, row, id) {
                             if (row.category.product.name != null) {
                                 var productName = row.category.product.name.substr(0, 20);
                                 return productName;
@@ -85,7 +93,7 @@
                         }
                         },
                         {
-                            "mData": "category.name", 'sWidth': '100px', "render": function (data, type, row, id) {
+                            "mData": "category.name", 'sWidth': '100px', "orderable": false, "render": function (data, type, row, id) {
                             if (row.category.name != null) {
                                 var categoryName = row.category.name.substr(0, 20);
                                 return categoryName;
@@ -93,7 +101,7 @@
                             return "";
                         }
                         },
-                        {"mData": "approveType", 'sWidth': '30px'},
+                        {"mData": "approveType", 'sWidth': '30px', "orderable": false},
                         {
                             "mData": "createdOn",
                             "render": function (data, type, row) {
@@ -103,7 +111,7 @@
                             }
                         },
                         {
-                            "mData": "requiredDay",'sWidth': '30px',
+                            "mData": "requiredDay",'sWidth': '30px', "orderable": false,
                             "render": function (data, type, row, id) {
                                 if (row.userType == messageResource.get('approve.user.type.itCoordinator', 'configMessageForUI')) return '<input class="requiredDay" type="number" step="any"  id=requiredDay' + row.id + ' >';
                                 else {
@@ -124,28 +132,28 @@
                                 }
                         },
                         {
-                            "mData": "docPath",'sWidth': '80px',
+                            "mData": "docPath",'sWidth': '80px', "orderable": false,
                             "render": function (data, type, row, id) {
                                 var mainPath=document.origin+"/PG";
                                 return '<a href="'+mainPath+row.docPath+'" download>'+'Download</a>'
                             }
                         },
                         {
-                            "mData": "id",
+                            "mData": "id", "orderable": false,
                             "render": function (id, type) {
                                 return '<button type="button" class="approve btn bg-light-blue waves-war"  value="1" title="Approve request" >&nbsp;Approve</button>';
                             }
                         },
 
                         {
-                            "mData": "userType",
+                            "mData": "userType", "orderable": false,
                             "render": function (userType) {
                                 if (userType == messageResource.get('approve.user.type.checked', 'configMessageForUI') || userType == messageResource.get('approve.user.type.approve', 'configMessageForUI')) return '<button type="button" class="delete btn bg-red waves-war"  value="1" title="Delete Request" >&nbsp;Delete</button>';
                                 else return "";
                             }
                         },
                         {
-                            "mData": "userType",
+                            "mData": "userType", "orderable": false,
                             "render": function (data, type, row, id) {
                                 if (row.userType == messageResource.get('approve.user.type.request.by.acknowledgement', 'configMessageForUI') || row.userType == messageResource.get('approve.user.type.checked.by.acknowledgement', 'configMessageForUI')) return '<a class="decline btn bg-brown waves-war"  href="/decline?a_id='+row.id +'&r_id='+row.requestId+'&ver='+row.version +'" title="Decline Request"> Decline </a>';
                                 else return "";

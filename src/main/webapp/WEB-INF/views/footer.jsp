@@ -1,4 +1,3 @@
-
 <script type="text/javascript" src="resources/node_modules/message/messageResource.js"></script>
 <script type="text/ecmascript" src="resources/node_modules/datatable/jquery.dataTables.min.js"></script>
 <script src="resources/node_modules/adminbsb/dialog/js/dialogbox.js"></script>
@@ -8,25 +7,11 @@
 <!-- Bootstrap Core Js -->
 <script src="resources/node_modules/adminbsb/bootstrap/js/bootstrap.js"></script>
 
-<!-- Select Plugin Js -->
-<%--<script src="resources/node_modules/adminbsb/bootstrap-select/js/bootstrap-select.js"></script>--%>
-
 <!-- Slimscroll Plugin Js -->
 <script src="resources/node_modules/adminbsb/jquery-slimscroll/jquery.slimscroll.js"></script>
 
-
-<script src="resources/node_modules/adminbsb/bootstrap-notify/bootstrap-notify.js"></script>
-
 <!-- Waves Effect Plugin Js -->
 <script src="resources/node_modules/adminbsb/node-waves/waves.js"></script>
-
-
-<%--<script src="resources/node_modules/adminbsb/sweetalert/sweetalert.min.js"></script>--%>
-
-<script src="resources/node_modules/adminbsb/autosize/autosize.js"></script>
-
-<!-- Moment Plugin Js -->
-<script src="resources/node_modules/adminbsb/momentjs/moment.js"></script>
 
 <!-- Jquery CountTo Plugin Js -->
 <script src="resources/node_modules/adminbsb/jquery-countto/jquery.countTo.js"></script>
@@ -38,7 +23,6 @@
 <!-- ChartJs -->
 <script src="resources/node_modules/adminbsb/chartjs/Chart.bundle.js"></script>
 <script src="resources/node_modules/imageloader/loadimg.min.js"></script>
-
 
 
 <%--<!-- Flot Charts Plugin Js -->--%>
@@ -56,20 +40,25 @@
 <script src="resources/node_modules/adminbsb/js/pages/index.js"></script>
 
 
-<%--<script src="resources/node_modules/adminbsb/js/pages/ui/dialogs.js"></script>--%>
-<%--<script src="resources/node_modules/adminbsb/js/pages/ui/modals.js"></script>--%>
-
-
-
-<!-- Demo Js -->
-<%--<script src="resources/node_modules/adminbsb/js/demo.js"></script>--%>
 
 <script src="resources/node_modules/custom-js/custom.js"></script>
+<noscript>
 
-<%--<script type="text/javascript" src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>--%>
-
-
-
+    <div class="col-sm-10 col-sm-offset-1">
+        <div class="panel panel-danger">
+            <div class="panel-body">
+                <b> For full functionality of this site it is necessary to enable JavaScript.<br/>
+                    Here are the instructions -></b> <a href="http://www.enable-javascript.com/" target="_blank">
+                How to enable JavaScript in your web browser</a>.
+            </div>
+        </div>
+    </div>
+    <style>
+        .mainContent {
+            display: none;
+        }
+    </style>
+</noscript>
 </body>
 
 </html>

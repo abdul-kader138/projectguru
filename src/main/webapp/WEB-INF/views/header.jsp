@@ -29,9 +29,6 @@
     <!-- Morris Chart Css-->
     <link href="resources/node_modules/adminbsb/morrisjs/morris.css" rel="stylesheet"/>
 
-    <link href="resources/node_modules/adminbsb/waitme/waitMe.css" rel="stylesheet"/>
-
-
     <!-- Custom Css -->
     <link href="resources/node_modules/adminbsb/css/style.css" rel="stylesheet">
 
@@ -45,11 +42,11 @@
     <link href="resources/node_modules/custom-css/app.css" rel="stylesheet"/>
 
     <script src="resources/node_modules/datatable/jquery.js"></script>
-
-
 </head>
 
 <body class="theme-red">
+
+
 <!-- Page Loader -->
 <div class="page-loader-wrapper">
     <div class="loader">
@@ -99,11 +96,12 @@
                 <!-- #END# Call Search -->
                 <!-- Notifications -->
                 <c:if test="${user.userType != 'developer'}">
-                <li class="dropdown" id="approval_details_notification">
-                    <a href="approval_details">
-                        <i class="material-icons">notifications</i>
-                        <span class="label-count" title="Waiting For Approve" id="notificationCount">${notificationCount}</span>
-                    </a></li>
+                    <li class="dropdown" id="approval_details_notification">
+                        <a href="approval_details">
+                            <i class="material-icons">notifications</i>
+                            <span class="label-count" title="Waiting For Approve"
+                                  id="notificationCount">${notificationCount}</span>
+                        </a></li>
                 </c:if>
                 <!-- #END# Tasks -->
                 <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i
@@ -169,9 +167,9 @@
                                     <li>
                                         <a href="category">Category</a>
                                     </li>
-                                    <%--<li>--%>
+                                        <%--<li>--%>
                                         <%--<a href="subcategory">Sub-Category</a>--%>
-                                    <%--</li>--%>
+                                        <%--</li>--%>
                                 </ul>
                             </li>
                             <li>
@@ -222,13 +220,13 @@
                     <br/>
                 </c:if>
                 <c:if test="${user.userType == 'client' && hasChangeRequest=='Yes'}">
-                <li class="header">Request</li>
-                <li>
-                    <a href="change_request">
-                        <i class="material-icons col-red">donut_large</i>
-                        <span>Product Changes Request</span>
-                    </a>
-                </li>
+                    <li class="header">Request</li>
+                    <li>
+                        <a href="change_request">
+                            <i class="material-icons col-red">donut_large</i>
+                            <span>Product Changes Request</span>
+                        </a>
+                    </li>
                 </c:if>
                 <br/>
                 <br/>
@@ -255,84 +253,60 @@
         </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane fade in active in active" id="skins">
-                <ul class="demo-choose-skin">
-                    <li data-theme="red" class="active">
+                <ul class="demo-choose-skin list">
+                    <li data-theme="red" class="active colorName">
                         <div class="red"></div>
                         <span>Red</span>
                     </li>
-                    <li data-theme="pink">
+                    <li data-theme="pink" class="colorName">
                         <div class="pink"></div>
                         <span>Pink</span>
                     </li>
-                    <li data-theme="purple">
+                    <li data-theme="purple" class="colorName">
                         <div class="purple"></div>
                         <span>Purple</span>
                     </li>
-                    <li data-theme="deep-purple">
-                        <div class="deep-purple"></div>
-                        <span>Deep Purple</span>
-                    </li>
-                    <li data-theme="indigo">
+                    <li data-theme="indigo" class="colorName">
                         <div class="indigo"></div>
                         <span>Indigo</span>
                     </li>
-                    <li data-theme="blue">
+                    <li data-theme="blue" class="colorName">
                         <div class="blue"></div>
                         <span>Blue</span>
                     </li>
-                    <li data-theme="light-blue">
-                        <div class="light-blue"></div>
-                        <span>Light Blue</span>
-                    </li>
-                    <li data-theme="cyan">
+                    <li data-theme="cyan" class="colorName">
                         <div class="cyan"></div>
                         <span>Cyan</span>
                     </li>
-                    <li data-theme="teal">
+                    <li data-theme="teal" class="colorName">
                         <div class="teal"></div>
                         <span>Teal</span>
                     </li>
-                    <li data-theme="green">
+                    <li data-theme="green" class="colorName">
                         <div class="green"></div>
                         <span>Green</span>
                     </li>
-                    <li data-theme="light-green">
-                        <div class="light-green"></div>
-                        <span>Light Green</span>
-                    </li>
-                    <li data-theme="lime">
+                    <li data-theme="lime" class="colorName">
                         <div class="lime"></div>
                         <span>Lime</span>
                     </li>
-                    <li data-theme="yellow">
+                    <li data-theme="yellow" class="colorName">
                         <div class="yellow"></div>
                         <span>Yellow</span>
                     </li>
-                    <li data-theme="amber">
-                        <div class="amber"></div>
-                        <span>Amber</span>
-                    </li>
-                    <li data-theme="orange">
+                    <li data-theme="orange" class="colorName">
                         <div class="orange"></div>
                         <span>Orange</span>
                     </li>
-                    <li data-theme="deep-orange">
-                        <div class="deep-orange"></div>
-                        <span>Deep Orange</span>
-                    </li>
-                    <li data-theme="brown">
+                    <li data-theme="brown" class="colorName">
                         <div class="brown"></div>
                         <span>Brown</span>
                     </li>
-                    <li data-theme="grey">
+                    <li data-theme="grey" class="colorName">
                         <div class="grey"></div>
                         <span>Grey</span>
                     </li>
-                    <li data-theme="blue-grey">
-                        <div class="blue-grey"></div>
-                        <span>Blue Grey</span>
-                    </li>
-                    <li data-theme="black">
+                    <li data-theme="black" class="colorName">
                         <div class="black"></div>
                         <span>Black</span>
                     </li>
