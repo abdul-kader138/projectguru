@@ -141,12 +141,12 @@ public class CategoryServiceImpl implements CategoryService{
         return validationMsg;
     }
 
-    @Override
+    @Transactional(readOnly=true)
     public List<Category> findAll() {
         return categoryDao.findAll();
     }
 
-    @Override
+    @Transactional(readOnly=true)
     public List<Category> findByProductId(long productId) {
         return categoryDao.findByProductId(productId);
     }

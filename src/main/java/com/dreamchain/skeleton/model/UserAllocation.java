@@ -16,7 +16,7 @@ public class UserAllocation implements Serializable {
     private static final long serialVersionUID = 8633415080370876715L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
     @Version

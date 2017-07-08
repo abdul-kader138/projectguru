@@ -88,7 +88,7 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
     }
 
 
-    @Override
+    @Transactional(readOnly=true)
     public List<ApprovalStatus> findByUserId(HttpServletRequest request) {
         HttpSession httpSession = request.getSession();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

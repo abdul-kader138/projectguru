@@ -120,12 +120,12 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
 
-    @Override
+    @Transactional(readOnly=true)
     public List<Department> findAll() {
         return departmentDao.findAll();
     }
 
-    @Override
+    @Transactional(readOnly=true)
     public List<Department> findByCompanyName(long companyId) {
        return departmentDao.findByCompanyName(companyId);
     }

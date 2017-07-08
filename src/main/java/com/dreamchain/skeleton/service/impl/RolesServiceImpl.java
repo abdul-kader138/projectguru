@@ -102,7 +102,7 @@ public class RolesServiceImpl implements RolesService {
         return validationMsg;
     }
 
-    @Override
+    @Transactional(readOnly=true)
     public List<Roles> findAll() {
         return rolesDao.findAll();
     }

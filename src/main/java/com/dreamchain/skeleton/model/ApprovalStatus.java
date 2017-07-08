@@ -15,7 +15,7 @@ public class ApprovalStatus {
     private static final long serialVersionUID = 8633413235380776715L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
     @Version

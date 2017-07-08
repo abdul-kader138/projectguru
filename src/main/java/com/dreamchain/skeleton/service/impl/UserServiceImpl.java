@@ -177,12 +177,12 @@ public class UserServiceImpl implements UserService {
         return obj;
     }
 
-    @Override
+    @Transactional(readOnly=true)
     public User findByUserName(String username) {
         return userDao.findByUserName(username);
     }
 
-    @Override
+    @Transactional(readOnly=true)
     public List<User> findAll() {
         return userDao.findAll();
     }

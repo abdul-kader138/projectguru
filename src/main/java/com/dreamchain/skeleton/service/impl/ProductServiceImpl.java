@@ -118,12 +118,12 @@ public class ProductServiceImpl implements ProductService {
         return validationMsg;
     }
 
-    @Override
+    @Transactional(readOnly=true)
     public List<Product> findAll() {
         return productDao.findAll();
     }
 
-    @Override
+    @Transactional(readOnly=true)
     public List<Product> findByCompanyName(long companyId) {
         return productDao.findByCompanyName(companyId);
     }

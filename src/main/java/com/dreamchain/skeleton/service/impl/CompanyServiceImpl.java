@@ -124,7 +124,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
 
-    @Override
+    @Transactional(readOnly=true)
     public List<Company> findAll() {
         return companyDao.findAll();
     }

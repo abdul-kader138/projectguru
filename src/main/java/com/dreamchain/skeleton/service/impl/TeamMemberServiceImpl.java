@@ -142,12 +142,12 @@ public class TeamMemberServiceImpl implements TeamMemberService {
         return validationMsg;
     }
 
-
+    @Transactional(readOnly=true)
     public User findByUserName(String username) {
         return teamMemberDao.findByUserName(username);
     }
 
-    @Override
+    @Transactional(readOnly=true)
     public List<User> findAll() {
         return teamMemberDao.findAll();
     }

@@ -15,7 +15,7 @@ public class DeclineRequest implements Serializable {
     private static final long serialVersionUID = 8633345655380776715L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
     @Version

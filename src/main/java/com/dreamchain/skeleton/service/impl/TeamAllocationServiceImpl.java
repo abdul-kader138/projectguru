@@ -116,7 +116,7 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
         return validationMsg;
     }
 
-    @Override
+    @Transactional(readOnly=true)
     public List<TeamAllocation> findAll() {
         return teamAllocationDao.findAll();
     }

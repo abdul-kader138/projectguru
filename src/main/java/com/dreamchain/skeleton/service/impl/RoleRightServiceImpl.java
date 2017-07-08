@@ -106,7 +106,7 @@ public class RoleRightServiceImpl implements RoleRightService {
 
     }
 
-    @Override
+    @Transactional(readOnly=true)
     public List<RoleRight> findAll() {
         return roleRightDao.findAll();
     }

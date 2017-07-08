@@ -15,7 +15,7 @@ public class Roles implements Serializable
     private static final long serialVersionUID = 8633416060390876715L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
     @Version

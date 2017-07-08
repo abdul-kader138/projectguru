@@ -25,7 +25,7 @@ public class RoleRight implements Serializable
     private static final long serialVersionUID = 8633415090980966715L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
     @Version

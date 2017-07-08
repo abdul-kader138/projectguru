@@ -111,7 +111,7 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         return validationMsg;
     }
 
-    @Override
+    @Transactional(readOnly=true)
     public List<UserAllocation> findAll() {
         return userAllocationDao.findAll();
     }

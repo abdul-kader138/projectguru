@@ -96,17 +96,8 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
         return obj;
     }
 
-    @Override
-    public Map<String, Object> update(MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
-        return null;
-    }
 
-    @Override
-    public String delete(Long companyId, HttpServletRequest request) {
-        return null;
-    }
-
-    @Override
+    @Transactional(readOnly=true)
     public List<ChangeRequest> findAll() {
         User user=userDao.findByUserName(getUserId().getEmail());
         Set<ApprovalStatus> approvalStatuses =approvalStatusDao.findByApprovedId(user.getId());
@@ -115,7 +106,7 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
         return changeRequestDao.findAll(requestId);
     }
 
-    @Override
+    @Transactional(readOnly=true)
     public List<ChangeRequest> findAllForDeveloper() {
         return changeRequestDao.findAllForDeveloper();
     }

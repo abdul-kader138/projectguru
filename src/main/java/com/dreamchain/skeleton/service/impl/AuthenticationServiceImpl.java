@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -35,7 +36,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     Environment environment;
 
 
-    @Override
+    @Transactional(readOnly=true)
     public void setSessionValue(HttpServletRequest request, User user) {
         User existingUser = userDao.findByUserName(user.getEmail());
         String hasChangeRequest = "No";
