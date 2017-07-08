@@ -129,7 +129,7 @@
                         <li><a href="profile"><i class="material-icons">person</i>Profile</a></li>
                         <li role="seperator" class="divider"></li>
                         <li><a href="change_password"><i class="material-icons">build</i>Change Password &nbsp;</a></li>
-                        <li><a href="<c:url value="j_spring_security_logout" />"><i class="material-icons">input</i>Sign
+                        <li><a href="<c:url value="j_spring_security_logout" />" class="logout"><i class="material-icons">input</i>Sign
                             Out</a></li>
                     </ul>
                 </div>
@@ -371,3 +371,10 @@
     </aside>
     <!-- #END# Right Sidebar -->
 </section>
+<script>
+    $(document).ready(function(){
+        $('.logout').click(function () {
+            localStorage.colorName ="";
+        });
+    })
+</script>
