@@ -1,5 +1,6 @@
 package com.dreamchain.skeleton.model;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -8,6 +9,10 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
+@Table(name="company",
+        uniqueConstraints=
+        @UniqueConstraint(columnNames={"clientId","name"}))
+@DynamicUpdate
 public class Company implements Serializable {
 
 

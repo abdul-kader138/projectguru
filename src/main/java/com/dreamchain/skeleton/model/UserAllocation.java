@@ -1,6 +1,7 @@
 package com.dreamchain.skeleton.model;
 
 import com.sun.istack.NotNull;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.util.Date;
 @Table(name="user_allocation",
         uniqueConstraints=
         @UniqueConstraint(columnNames={"companyId","productId","category"}))
+@DynamicUpdate
 public class UserAllocation implements Serializable {
 
     private static final long serialVersionUID = 8633415080370876715L;

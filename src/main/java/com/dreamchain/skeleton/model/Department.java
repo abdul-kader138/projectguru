@@ -2,6 +2,7 @@ package com.dreamchain.skeleton.model;
 
 
 import com.sun.istack.NotNull;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -14,6 +15,7 @@ import java.util.Date;
 @Table(name="department",
         uniqueConstraints=
 @UniqueConstraint(columnNames={"company", "name"}))
+@DynamicUpdate
 public class Department implements Serializable {
 
     private static final long serialVersionUID = 8633415090390965715L;

@@ -1,5 +1,6 @@
 package com.dreamchain.skeleton.model;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -11,6 +12,7 @@ import java.util.Date;
 @Table(name="approve_status",
         uniqueConstraints=
         @UniqueConstraint(columnNames={"category","userType","requestName"}))
+@DynamicUpdate
 public class ApprovalStatus {
     private static final long serialVersionUID = 8633413235380776715L;
 

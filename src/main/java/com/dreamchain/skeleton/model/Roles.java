@@ -1,5 +1,6 @@
 package com.dreamchain.skeleton.model;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -8,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
+@DynamicUpdate
 public class Roles implements Serializable
 {
 

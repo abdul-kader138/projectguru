@@ -1,5 +1,6 @@
 package com.dreamchain.skeleton.model;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -12,6 +13,7 @@ import java.util.*;
 @Table(name="change_request",
         uniqueConstraints=
         @UniqueConstraint(columnNames={"category","name"}))
+@DynamicUpdate
 public class ChangeRequest implements Serializable {
 
     private static final long serialVersionUID = 8633416055380776715L;

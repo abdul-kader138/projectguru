@@ -2,6 +2,7 @@ package com.dreamchain.skeleton.model;
 
 
 import com.sun.istack.NotNull;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -17,6 +18,7 @@ import java.util.Set;
 @Table(name="role_right",
         uniqueConstraints=
         @UniqueConstraint(columnNames={"roleId","roleName"}))
+@DynamicUpdate
 public class RoleRight implements Serializable
 {
 

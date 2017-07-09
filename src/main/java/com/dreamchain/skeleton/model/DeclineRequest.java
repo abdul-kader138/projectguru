@@ -1,5 +1,6 @@
 package com.dreamchain.skeleton.model;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -9,7 +10,10 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table
+@Table(name="decline_request",
+        uniqueConstraints=
+        @UniqueConstraint(columnNames={"approvalStatusId","requestsId","declineCause"}))
+@DynamicUpdate
 public class DeclineRequest implements Serializable {
 
     private static final long serialVersionUID = 8633345655380776715L;
