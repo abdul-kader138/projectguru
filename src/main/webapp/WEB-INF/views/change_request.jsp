@@ -205,6 +205,7 @@
                     var isValid = true;
                     var name = $("#name").val();
                     var description = $("#description").val();
+                    var filename = $("#doc").val();
                     var companyId = $("#listOfCompany option:selected").val();
                     var categoryId = $("#listOfCategory option:selected").val();
                     var productId = $("#listOfProduct option:selected").val();
@@ -230,6 +231,10 @@
                         isValid = false;
                     }
 
+                    if (!(isJpg(filename) || isPng(filename) || isGif(filename))) {
+                        $("#docNameValidation").text('Please browse,for uploading attachment...');
+                        isValid = false;
+                    }
                     return isValid;
                 }
 
