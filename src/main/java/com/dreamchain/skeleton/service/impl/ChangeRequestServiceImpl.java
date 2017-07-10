@@ -218,6 +218,7 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
         ApprovalStatus approvalStatus = new ApprovalStatus();
         approvalStatus.setCategory(changeRequest.getCategory());
         approvalStatus.setApprovedBy(user);
+        approvalStatus.setApprovedById(user.getId());
         approvalStatus.setStatus(status);
         approvalStatus.setRequestName(changeRequest.getName());
         approvalStatus.setUserType(userType);

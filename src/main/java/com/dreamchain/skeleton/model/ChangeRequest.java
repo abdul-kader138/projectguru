@@ -12,7 +12,12 @@ import java.util.*;
 @Entity
 @Table(name="change_request",
         uniqueConstraints=
-        @UniqueConstraint(columnNames={"category","name"}))
+        @UniqueConstraint(columnNames={"category","name"}),
+        indexes = {
+                @Index(columnList = "status,deliverDate", name = "status_deliver_date"),
+                @Index(columnList = "id,checkedByStatus", name = "id_checked_by_status")}
+)
+
 @DynamicUpdate
 public class ChangeRequest implements Serializable {
 

@@ -9,9 +9,16 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
-@Table(name="approve_status",
-        uniqueConstraints=
-        @UniqueConstraint(columnNames={"category","userType","requestName"}))
+@Table(name = "approve_status",
+        uniqueConstraints =
+        @UniqueConstraint(columnNames = {"category", "userType", "requestName"}),
+        indexes = {
+                @Index(columnList = "approvedById,status", name = "approved_by_id_status"),
+                @Index(columnList = "approvedById,requestId", name = "approved_by_id_request_by_id"),
+                @Index(columnList = "userType,requestId", name = "user_type_request_by_id"),
+                @Index(columnList = "approvedById", name = "approved_by_id"),
+                @Index(columnList = "requestId", name = "request_by_id")}
+)
 @DynamicUpdate
 public class ApprovalStatus {
     private static final long serialVersionUID = 8633413235380776715L;
@@ -45,6 +52,9 @@ public class ApprovalStatus {
     @NotEmpty
     private String approveType;
 
+
+    @NotNull
+    private long approvedById;
 
     @NotNull
     private long requestId;
@@ -209,5 +219,13 @@ public class ApprovalStatus {
 
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
+    }
+
+    public long getApprovedById() {
+        return approvedById;
+    }
+
+    public void setApprovedById(long approvedById) {
+        this.approvedById = approvedById;
     }
 }
