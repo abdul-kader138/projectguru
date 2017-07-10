@@ -113,7 +113,8 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
             deleteDoc(filePath, request);
             changeRequestDao.delete(changeRequest);
             approvalStatusDao.delete(requestId);
-            sendEmail(changeRequest.getRequestBy().getEmail(), EMAIL_HEADER_DELETE+ changeRequest.getName(), EMAIL_BODY_DELETE + changeRequest.getName());
+            User requestByUser= userDao.get(changeRequest.getRequestById());
+            sendEmail(requestByUser.getEmail(), EMAIL_HEADER_DELETE+ changeRequest.getName(), EMAIL_BODY_DELETE + changeRequest.getName());
         }
         return validationMsg;
     }
@@ -131,7 +132,6 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
             approvalStatusList.add(setApprovalStatusValue(approvalStatus, environment.getProperty("approval.status.done")));
             ApprovalStatus approvedByStatus = approvalStatusDao.findByRequestIdAndUserType(approvalStatus.getRequestId(), environment.getProperty("approval.user.approvedBy"));
             approvalStatusList.add(setApprovalStatusValue(approvedByStatus, environment.getProperty("approval.status.waiting")));
-//            approvedByStatus.setDeliverDate(approvalStatus.getDeliverDate());
             approvedByStatus.setRequiredDay(approvalStatus.getRequiredDay()); // set required Days for developer
         }
         if (environment.getProperty("approval.user.approvedBy").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.waiting").equals(approvalStatus.getStatus())) {
@@ -189,61 +189,41 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
                 ChangeRequest changeRequest = changeRequestDao.get(approvalStatus.getRequestId());
                 changeRequest.setWipStatus(environment.getProperty("approval.wip.status.done"));
                 changeRequest.setStatus(environment.getProperty("approval.status.done"));
-                changeRequest.setUpdatedOn(date);
-                changeRequest.setUpdatedBy(getUserId().getEmail());
-                approvalStatus.setDeliverDate(changeRequest.getDeliverDate());
-                approvalStatus.setRequiredDay(changeRequest.getRequiredDay());
-                approvalStatusDao.save(approvalStatus);
-                changeRequestDao.save(changeRequest);
-
+                UpdateApprovalStatus(changeRequest,approvalStatus,"",date);
             } else if (environment.getProperty("approval.user.checkedBy").equals(approvalStatus.getUserType())
                     && environment.getProperty("approval.status.done").equals(approvalStatus.getStatus())) {
                 ChangeRequest changeRequest = changeRequestDao.get(approvalStatus.getRequestId());
                 changeRequest.setCheckedByStatus(environment.getProperty("approval.user.checkedBy"));
                 changeRequest.setWipStatus(environment.getProperty("approval.status.approve.type.itCoordinatorBy"));
-                changeRequest.setUpdatedOn(date);
-                changeRequest.setUpdatedBy(getUserId().getEmail());
-                approvalStatusDao.save(approvalStatus);
-                changeRequestDao.save(changeRequest);
-                sendEmail(changeRequest.getItCoordinator().getEmail(), EMAIL_HEADER_SAVE + changeRequest.getName(), EMAIL_BODY_SAVE + changeRequest.getName());
+                User itCoordinatorUser= userDao.get(changeRequest.getItCoordinatorId());
+                UpdateApprovalStatus(changeRequest,approvalStatus,itCoordinatorUser.getEmail(),date);
             } else if (environment.getProperty("approval.user.itCoordinator").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.done").equals(approvalStatus.getStatus())) {
                 ChangeRequest changeRequest = changeRequestDao.get(approvalStatus.getRequestId());
                 changeRequest.setWipStatus(environment.getProperty("approval.status.approve.type.approvedBy"));
                 changeRequest.setRequiredDay(approvalStatus.getRequiredDay());
-                changeRequest.setUpdatedOn(date);
-                changeRequest.setUpdatedBy(getUserId().getEmail());
-                approvalStatusDao.save(approvalStatus);
-                changeRequestDao.save(changeRequest);
-                sendEmail(changeRequest.getApprovedBy().getEmail(), EMAIL_HEADER_SAVE + changeRequest.getName(), EMAIL_BODY_SAVE + changeRequest.getName());
+                User approvedByUser= userDao.get(changeRequest.getApprovedById());
+                UpdateApprovalStatus(changeRequest,approvalStatus,approvedByUser.getEmail(),date);
             } else if (environment.getProperty("approval.user.approvedBy").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.done").equals(approvalStatus.getStatus())) {
                 ChangeRequest changeRequest = changeRequestDao.get(approvalStatus.getRequestId());
                 changeRequest.setWipStatus(environment.getProperty("approval.status.approve.type.acknowledgeBy.itCoordinator"));
                 changeRequest.setDeliverDate(approvalStatus.getDeliverDate());
-                changeRequest.setUpdatedOn(date);
-                changeRequest.setUpdatedBy(getUserId().getEmail());
-                approvalStatusDao.save(approvalStatus);
-                changeRequestDao.save(changeRequest);
-                sendEmail(changeRequest.getAcknowledgedItCoordinator().getEmail(), EMAIL_HEADER_SAVE + changeRequest.getName(), EMAIL_BODY_SAVE + changeRequest.getName());
+                User acknowledgedItCoordinatorUser= userDao.get(changeRequest.getAcknowledgedItCoordinatorId());
+                UpdateApprovalStatus(changeRequest,approvalStatus,acknowledgedItCoordinatorUser.getEmail(),date);
             } else if (environment.getProperty("approval.user.acknowledgementIT").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.done").equals(approvalStatus.getStatus())) {
                 ChangeRequest changeRequest = changeRequestDao.get(approvalStatus.getRequestId());
                 changeRequest.setWipStatus(environment.getProperty("approval.status.approve.type.acknowledgeBy.checkedBy"));
+                changeRequest.setDeployedOn(date);
                 approvalStatus.setDeliverDate(changeRequest.getDeliverDate());
                 approvalStatus.setRequiredDay(changeRequest.getRequiredDay());
-                changeRequest.setUpdatedOn(date);
-                changeRequest.setUpdatedBy(getUserId().getEmail());
-                approvalStatusDao.save(approvalStatus);
-                changeRequestDao.save(changeRequest);
-                sendEmail(changeRequest.getAcknowledgeChecked().getEmail(), EMAIL_HEADER_SAVE + changeRequest.getName(), EMAIL_BODY_SAVE + changeRequest.getName());
+                User acknowledgeCheckedUser= userDao.get(changeRequest.getAcknowledgeCheckedId());
+                UpdateApprovalStatus(changeRequest,approvalStatus,acknowledgeCheckedUser.getEmail(),date);
             } else if (environment.getProperty("approval.user.acknowledgeCheckedBy").equals(approvalStatus.getUserType()) && environment.getProperty("approval.status.done").equals(approvalStatus.getStatus())) {
                 ChangeRequest changeRequest = changeRequestDao.get(approvalStatus.getRequestId());
                 changeRequest.setWipStatus(environment.getProperty("approval.status.approve.type.acknowledgeBy.requestBy"));
                 approvalStatus.setDeliverDate(changeRequest.getDeliverDate());
                 approvalStatus.setRequiredDay(changeRequest.getRequiredDay());
-                changeRequest.setUpdatedOn(date);
-                changeRequest.setUpdatedBy(getUserId().getEmail());
-                changeRequestDao.save(changeRequest);
-                approvalStatusDao.save(approvalStatus);
-                sendEmail(changeRequest.getAcknowledgement().getEmail(), EMAIL_HEADER_SAVE + changeRequest.getName(), EMAIL_BODY_SAVE + changeRequest.getName());
+                User acknowledgementUser= userDao.get(changeRequest.getAcknowledgementId());
+                UpdateApprovalStatus(changeRequest,approvalStatus,acknowledgementUser.getEmail(),date);
             }
         }
     }
@@ -288,6 +268,14 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
                 });
         EmailUtil.sendEmail(session, toEmail, header, body);
 
+    }
+
+    private void UpdateApprovalStatus(ChangeRequest changeRequest,ApprovalStatus approvalStatus,String mail,Date date){
+        changeRequest.setUpdatedOn(date);
+        changeRequest.setUpdatedBy(getUserId().getEmail());
+        changeRequestDao.save(changeRequest);
+        approvalStatusDao.save(approvalStatus);
+        if(!"".equals(mail)) sendEmail(mail, EMAIL_HEADER_SAVE + changeRequest.getName(), EMAIL_BODY_SAVE + changeRequest.getName());
     }
 
 }

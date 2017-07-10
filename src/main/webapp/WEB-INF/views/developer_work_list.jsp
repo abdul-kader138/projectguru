@@ -65,8 +65,9 @@
                                         <th width="100px">Product</th>
                                         <th width="100px">Category</th>
                                         <th width="80px"> Status</th>
-                                        <th width="80px">Decline Cause</th>
-                                        <th width="30px">Delivery</br> Date</th>
+                                        <th width="60px">Delivery</br> Date</th>
+                                        <th width="60px">Deployed</br> On</th>
+                                        <th width="100px">Decline Cause</th>
                                         <th width="80px">Attachment</th>
                                     </tr>
                                     </thead>
@@ -179,23 +180,34 @@
                         }
                     },
                     {
-                        "mData": "declineCause", 'sWidth': '80px', "orderable": false,
+                        "mData": "deliverDate", 'sWidth': '60px',
+                        "render": function (data, type, row, id) {
+                            var date = new Date(row.deliverDate);
+                            var dateFormat = date.toISOString("mm").substr(0, 10);
+                            return dateFormat;
+                        }
+                    },
+                    {
+                        "mData": "deployedOn", 'sWidth': '60px',"orderable": false,
+                        "render": function (data, type, row, id) {
+                            if (row.deployedOn != null) {
+                                var date = new Date(row.deployedOn);
+                                var dateFormat = date.toISOString("mm").substr(0, 10);
+                                return dateFormat;
+                            }
+                            return "";
+                        }
+                    },
+                    {
+                        "mData": "declineCause", 'sWidth': '100px', "orderable": false,
                         "render": function (data, type, row, id) {
                             if (row.declineCause != null) {
                                 var declineCause = row.declineCause.substr(0, 40);
                                 var declineCause2 = row.declineCause.substr(41, 80);
                                 var declineCause3 = row.declineCause.substr(81, 120);
                                 return '<label>'+declineCause+'</br>'+declineCause2+'</br>'+declineCause3+'</label>';
-                        }
+                            }
                             return "";
-                        }
-                    },
-                    {
-                        "mData": "deliverDate", 'sWidth': '30px',
-                        "render": function (data, type, row, id) {
-                            var date = new Date(row.deliverDate);
-                            var dateFormat = date.toISOString("mm").substr(0, 10);
-                            return dateFormat;
                         }
                     },
                     {

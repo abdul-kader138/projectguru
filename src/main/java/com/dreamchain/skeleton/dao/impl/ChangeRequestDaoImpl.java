@@ -85,7 +85,7 @@ public class ChangeRequestDaoImpl implements ChangeRequestDao {
     public ChangeRequest findByName(String name,long categoryId) {
         DetachedCriteria dcr= DetachedCriteria.forClass(ChangeRequest.class);
         Criterion cr = Restrictions.eq("name", name.trim()).ignoreCase();
-        Criterion cr2 = Restrictions.eq("category.id", categoryId);
+        Criterion cr2 = Restrictions.eq("categoryId", categoryId);
         dcr.add(cr);
         dcr.add(cr2);
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
@@ -97,7 +97,7 @@ public class ChangeRequestDaoImpl implements ChangeRequestDao {
     @Override
     public ChangeRequest findByCategoryId(long categoryId) {
         DetachedCriteria dcr= DetachedCriteria.forClass(ChangeRequest.class);
-        Criterion cr =  Restrictions.eq("category.id", categoryId);
+        Criterion cr =  Restrictions.eq("categoryId", categoryId);
         dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);;
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         if(lst.size()==0)return new ChangeRequest();

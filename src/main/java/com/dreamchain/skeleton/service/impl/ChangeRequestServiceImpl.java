@@ -68,7 +68,7 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
     public Map<String, Object> save(MultipartHttpServletRequest request) throws Exception {
         Map<String, Object> obj = new HashMap<>();
         Map<String, Object> msg = new HashMap<>();
-        Map<String, User> userLst = new HashMap<>();
+        Map<String, Long> userLst = new HashMap<>();
         Map<String, Object> validationObj = new HashMap<>();
         ChangeRequest changeRequest = new ChangeRequest();
         String validationMsg = "";
@@ -80,7 +80,7 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
         if ("".equals(validationMsg)) validationMsg = checkInput(changeRequest);
         if ("".equals(validationMsg))
             existingChangeRequest = changeRequestDao.findByName(changeRequest.getName(), changeRequest.getCategory().getId());
-        if (existingChangeRequest.getCheckedBy() != null && "".equals(validationMsg))
+        if (existingChangeRequest.getName() != null && "".equals(validationMsg))
             validationMsg = CHANGED_REQUEST_EXISTS;
         if ("".equals(validationMsg)) msg = fileSave(request);
         if (msg.get("validationMsg") == "") changeRequest.setDocPath((String) msg.get("path"));
@@ -89,7 +89,8 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
             newChangeRequest = changeRequestDao.get(companyId);
             userLst = createApprovalList(newChangeRequest);
             saveApprovalObj(userLst, newChangeRequest);
-            sendEmail(newChangeRequest.getCheckedBy().getEmail(),EMAIL_HEADER_SAVE,EMAIL_BODY_SAVE+changeRequest.getName()); //mail sent to notify user for approving
+            User checkedByUser=userDao.get(newChangeRequest.getCheckedById());
+            sendEmail(checkedByUser.getEmail(),EMAIL_HEADER_SAVE,EMAIL_BODY_SAVE+changeRequest.getName()); //mail sent to notify user for approving
         }
         obj.put("changeRequest", newChangeRequest);
         obj.put("validationError", validationMsg);
@@ -199,14 +200,15 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
     private ChangeRequest setChangeRequestValue(Category category, TeamAllocation teamAllocation, UserAllocation userAllocation) {
         ChangeRequest changeRequest = new ChangeRequest();
         changeRequest.setCategory(category);
-        changeRequest.setRequestBy(teamAllocation.getRequestedBy());
-        changeRequest.setCheckedBy(teamAllocation.getCheckedBy());
-        changeRequest.setAcknowledgeChecked(teamAllocation.getCheckedBy());
-        changeRequest.setAcknowledgement(teamAllocation.getRequestedBy());
-        changeRequest.setItCoordinator(userAllocation.getItCoordinator());
-        changeRequest.setApprovedBy(userAllocation.getApprovedBy());
+        changeRequest.setCategoryId(category.getId());
+        changeRequest.setRequestById(teamAllocation.getRequestedBy().getId());
+        changeRequest.setCheckedById(teamAllocation.getCheckedBy().getId());
+        changeRequest.setAcknowledgeCheckedId(teamAllocation.getCheckedBy().getId());
+        changeRequest.setAcknowledgementId(teamAllocation.getRequestedBy().getId());
+        changeRequest.setItCoordinatorId(userAllocation.getItCoordinator().getId());
+        changeRequest.setApprovedById(userAllocation.getApprovedBy().getId());
         changeRequest.setDepartmentId(category.getDepartment().getId());
-        changeRequest.setAcknowledgedItCoordinator(userAllocation.getItCoordinator());
+        changeRequest.setAcknowledgedItCoordinatorId(userAllocation.getItCoordinator().getId());
         changeRequest.setCheckedByStatus(environment.getProperty("approval.wip.checkedBy.status.none"));
         changeRequest.setWipStatus(environment.getProperty("approval.status.approve.type.checkedBy"));
         changeRequest.setTeamAllocationId(teamAllocation.getId());
@@ -233,72 +235,79 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
     }
 
 
-    private Map<String, User> createApprovalList(ChangeRequest changeRequest) {
-        Map<String, User> userMap = new HashMap<>();
-        if (changeRequest.getRequestBy() != null)
-            userMap.put(environment.getProperty("approval.user.requestBy"), changeRequest.getRequestBy());
-        if (changeRequest.getCheckedBy() != null)
-            userMap.put(environment.getProperty("approval.user.checkedBy"), changeRequest.getCheckedBy());
-        if (changeRequest.getItCoordinator() != null)
-            userMap.put(environment.getProperty("approval.user.itCoordinator"), changeRequest.getItCoordinator());
-        if (changeRequest.getApprovedBy() != null)
-            userMap.put(environment.getProperty("approval.user.approvedBy"), changeRequest.getApprovedBy());
-        if (changeRequest.getAcknowledgeChecked() != null)
-            userMap.put(environment.getProperty("approval.user.acknowledgeCheckedBy"), changeRequest.getAcknowledgeChecked());
-        if (changeRequest.getAcknowledgement() != null)
-            userMap.put(environment.getProperty("approval.user.acknowledgement"), changeRequest.getAcknowledgement());
-        if (changeRequest.getAcknowledgedItCoordinator() != null)
-            userMap.put(environment.getProperty("approval.user.acknowledgementIT"), changeRequest.getAcknowledgedItCoordinator());
+    private Map<String, Long> createApprovalList(ChangeRequest changeRequest) {
+        Map<String, Long> userMap = new HashMap<>();
+        if (changeRequest.getRequestById() != 0l)
+            userMap.put(environment.getProperty("approval.user.requestBy"), changeRequest.getRequestById());
+        if (changeRequest.getCheckedById() != 0l)
+            userMap.put(environment.getProperty("approval.user.checkedBy"), changeRequest.getCheckedById());
+        if (changeRequest.getItCoordinatorId() != 0l)
+            userMap.put(environment.getProperty("approval.user.itCoordinator"), changeRequest.getItCoordinatorId());
+        if (changeRequest.getApprovedById() != 0l)
+            userMap.put(environment.getProperty("approval.user.approvedBy"), changeRequest.getApprovedById());
+        if (changeRequest.getAcknowledgeCheckedId() != 0l)
+            userMap.put(environment.getProperty("approval.user.acknowledgeCheckedBy"), changeRequest.getAcknowledgeCheckedId());
+        if (changeRequest.getAcknowledgementId() != 0l)
+            userMap.put(environment.getProperty("approval.user.acknowledgement"), changeRequest.getAcknowledgementId());
+        if (changeRequest.getAcknowledgedItCoordinatorId() != 0l)
+            userMap.put(environment.getProperty("approval.user.acknowledgementIT"), changeRequest.getAcknowledgedItCoordinatorId());
         return userMap;
     }
 
 
-    private void saveApprovalObj(Map<String, User> userLst, ChangeRequest changeRequest) throws ParseException {
+    private void saveApprovalObj(Map<String, Long> userLst, ChangeRequest changeRequest) throws ParseException {
         ApprovalStatus approvalStatus = null;
-        User user = null;
-        for (Map.Entry<String, User> entry : userLst.entrySet()) {
+        Long id = 0l;
+        for (Map.Entry<String, Long> entry : userLst.entrySet()) {
             if (environment.getProperty("approval.user.requestBy").equals(entry.getKey())) {
-                user = entry.getValue();
-                approvalStatus = setApprovalStatusValue(changeRequest, user, environment.getProperty("approval.status.done"),
+                id = entry.getValue();
+                User userObj=userDao.get(id);
+                approvalStatus = setApprovalStatusValue(changeRequest, userObj, environment.getProperty("approval.status.done"),
                         environment.getProperty("approval.user.requestBy"), environment.getProperty("approval.status.approve.type.requestBy"));
                 approvalStatusDao.save(approvalStatus);
             }
             if (environment.getProperty("approval.user.checkedBy").equals(entry.getKey())) {
-                user = entry.getValue();
-                approvalStatus = setApprovalStatusValue(changeRequest, user, environment.getProperty("approval.status.waiting"),
+                id = entry.getValue();
+                User userObj=userDao.get(id);
+                approvalStatus = setApprovalStatusValue(changeRequest, userObj, environment.getProperty("approval.status.waiting"),
                         environment.getProperty("approval.user.checkedBy"), environment.getProperty("approval.status.approve.type.checkedBy"));
                 approvalStatusDao.save(approvalStatus);
             }
                 if (environment.getProperty("approval.user.itCoordinator").equals(entry.getKey())) {
-                    user = entry.getValue();
-                    approvalStatus = setApprovalStatusValue(changeRequest, user, environment.getProperty("approval.status.none"),
+                    id = entry.getValue();
+                    User userObj=userDao.get(id);
+                    approvalStatus = setApprovalStatusValue(changeRequest, userObj, environment.getProperty("approval.status.none"),
                             environment.getProperty("approval.user.itCoordinator"), environment.getProperty("approval.status.approve.type.itCoordinatorBy"));
                     approvalStatusDao.save(approvalStatus);
                 }
 
                 if (environment.getProperty("approval.user.approvedBy").equals(entry.getKey())) {
-                    user = entry.getValue();
-                    approvalStatus = setApprovalStatusValue(changeRequest, user, environment.getProperty("approval.status.none"),
+                    id = entry.getValue();
+                    User userObj=userDao.get(id);
+                    approvalStatus = setApprovalStatusValue(changeRequest, userObj, environment.getProperty("approval.status.none"),
                             environment.getProperty("approval.user.approvedBy"), environment.getProperty("approval.status.approve.type.approvedBy"));
                     approvalStatusDao.save(approvalStatus);
                 }
 
                 if (environment.getProperty("approval.user.acknowledgeCheckedBy").equals(entry.getKey())) {
-                    user = entry.getValue();
-                    approvalStatus = setApprovalStatusValue(changeRequest, user, environment.getProperty("approval.status.none"),
+                    id = entry.getValue();
+                    User userObj=userDao.get(id);
+                    approvalStatus = setApprovalStatusValue(changeRequest, userObj, environment.getProperty("approval.status.none"),
                             environment.getProperty("approval.user.acknowledgeCheckedBy"), environment.getProperty("approval.status.approve.type.acknowledgeBy.checkedBy"));
                     approvalStatusDao.save(approvalStatus);
                 }
 
                 if (environment.getProperty("approval.user.acknowledgement").equals(entry.getKey())) {
-                    user = entry.getValue();
-                    approvalStatus = setApprovalStatusValue(changeRequest, user, environment.getProperty("approval.status.none"),
+                    id = entry.getValue();
+                    User userObj=userDao.get(id);
+                    approvalStatus = setApprovalStatusValue(changeRequest, userObj, environment.getProperty("approval.status.none"),
                             environment.getProperty("approval.user.acknowledgement"), environment.getProperty("approval.status.approve.type.acknowledgeBy.requestBy"));
                     approvalStatusDao.save(approvalStatus);
                 }
                 if (environment.getProperty("approval.user.acknowledgementIT").equals(entry.getKey())) {
-                    user = entry.getValue();
-                    approvalStatus = setApprovalStatusValue(changeRequest, user, environment.getProperty("approval.status.none"),
+                    id = entry.getValue();
+                    User userObj=userDao.get(id);
+                    approvalStatus = setApprovalStatusValue(changeRequest, userObj, environment.getProperty("approval.status.none"),
                             environment.getProperty("approval.user.acknowledgementIT"), environment.getProperty("approval.status.approve.type.acknowledgeBy.itCoordinator"));
                     approvalStatusDao.save(approvalStatus);
                 }

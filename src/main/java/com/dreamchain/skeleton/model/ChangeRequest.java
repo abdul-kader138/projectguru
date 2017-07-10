@@ -12,10 +12,15 @@ import java.util.*;
 @Entity
 @Table(name="change_request",
         uniqueConstraints=
-        @UniqueConstraint(columnNames={"category","name"}),
+        @UniqueConstraint(columnNames={"categoryId","name"}),
         indexes = {
                 @Index(columnList = "status,deliverDate", name = "status_deliver_date"),
-                @Index(columnList = "id,checkedByStatus", name = "id_checked_by_status")}
+                @Index(columnList = "id,checkedByStatus", name = "id_checked_by_status"),
+                @Index(columnList = "name,categoryId", name = "name_category_id"),
+                @Index(columnList = "categoryId", name = "category_id"),
+                @Index(columnList = "departmentId", name = "department_id"),
+                @Index(columnList = "teamAllocationId", name = "team_allocation_id")
+        }
 )
 
 @DynamicUpdate
@@ -30,6 +35,9 @@ public class ChangeRequest implements Serializable {
     @Version
     private long version;
 
+    @Version
+    private long categoryId;
+
 
     @OneToOne
     private Category category;
@@ -38,37 +46,30 @@ public class ChangeRequest implements Serializable {
     private long departmentId;
 
     @NotNull
-    @OneToOne
-    private User requestBy;
+    private long requestById;
 
 
     @NotNull
-    @OneToOne
-    private User checkedBy;
+    private long checkedById;
 
 
     @NotNull
-    @OneToOne
-    private User itCoordinator;
+    private long itCoordinatorId;
 
 
     @NotNull
-    @OneToOne
-    private User approvedBy;
+    private long approvedById;
 
 
     @NotNull
-    @OneToOne
-    private User acknowledgedItCoordinator;
+    private long acknowledgedItCoordinatorId;
 
 
     @NotNull
-    @OneToOne
-    private User acknowledgeChecked;
+    private long acknowledgeCheckedId;
 
     @NotNull
-    @OneToOne
-    private User acknowledgement;
+    private long acknowledgementId;
 
     @NotNull
     private long teamAllocationId;
@@ -109,6 +110,9 @@ public class ChangeRequest implements Serializable {
 
     @Column
     private Date deliverDate;
+
+    @Column
+    private Date deployedOn;
 
     @Column
     private Integer requiredDay;
@@ -154,6 +158,14 @@ public class ChangeRequest implements Serializable {
         this.version = version;
     }
 
+    public long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
+    }
+
     public Category getCategory() {
         return category;
     }
@@ -170,60 +182,60 @@ public class ChangeRequest implements Serializable {
         this.departmentId = departmentId;
     }
 
-    public User getRequestBy() {
-        return requestBy;
+    public long getRequestById() {
+        return requestById;
     }
 
-    public void setRequestBy(User requestBy) {
-        this.requestBy = requestBy;
+    public void setRequestById(long requestById) {
+        this.requestById = requestById;
     }
 
-    public User getCheckedBy() {
-        return checkedBy;
+    public long getCheckedById() {
+        return checkedById;
     }
 
-    public void setCheckedBy(User checkedBy) {
-        this.checkedBy = checkedBy;
+    public void setCheckedById(long checkedById) {
+        this.checkedById = checkedById;
     }
 
-    public User getItCoordinator() {
-        return itCoordinator;
+    public long getItCoordinatorId() {
+        return itCoordinatorId;
     }
 
-    public void setItCoordinator(User itCoordinator) {
-        this.itCoordinator = itCoordinator;
+    public void setItCoordinatorId(long itCoordinatorId) {
+        this.itCoordinatorId = itCoordinatorId;
     }
 
-    public User getApprovedBy() {
-        return approvedBy;
+    public long getApprovedById() {
+        return approvedById;
     }
 
-    public void setApprovedBy(User approvedBy) {
-        this.approvedBy = approvedBy;
+    public void setApprovedById(long approvedById) {
+        this.approvedById = approvedById;
     }
 
-    public User getAcknowledgedItCoordinator() {
-        return acknowledgedItCoordinator;
+    public long getAcknowledgedItCoordinatorId() {
+        return acknowledgedItCoordinatorId;
     }
 
-    public void setAcknowledgedItCoordinator(User acknowledgedItCoordinator) {
-        this.acknowledgedItCoordinator = acknowledgedItCoordinator;
+    public void setAcknowledgedItCoordinatorId(long acknowledgedItCoordinatorId) {
+        this.acknowledgedItCoordinatorId = acknowledgedItCoordinatorId;
     }
 
-    public User getAcknowledgeChecked() {
-        return acknowledgeChecked;
+    public long getAcknowledgeCheckedId() {
+        return acknowledgeCheckedId;
     }
 
-    public void setAcknowledgeChecked(User acknowledgeChecked) {
-        this.acknowledgeChecked = acknowledgeChecked;
+    public void setAcknowledgeCheckedId(long acknowledgeCheckedId) {
+        this.acknowledgeCheckedId = acknowledgeCheckedId;
     }
 
-    public User getAcknowledgement() {
-        return acknowledgement;
+    public long getAcknowledgementId() {
+        return acknowledgementId;
     }
 
-    public void setAcknowledgement(User acknowledgement) {
-        this.acknowledgement = acknowledgement;
+    public void setAcknowledgementId(long acknowledgementId) {
+        this.acknowledgementId = acknowledgementId;
     }
 
     public long getTeamAllocationId() {
@@ -344,5 +356,13 @@ public class ChangeRequest implements Serializable {
 
     public void setDeclineCause(String declineCause) {
         this.declineCause = declineCause;
+    }
+
+    public Date getDeployedOn() {
+        return deployedOn;
+    }
+
+    public void setDeployedOn(Date deployedOn) {
+        this.deployedOn = deployedOn;
     }
 }

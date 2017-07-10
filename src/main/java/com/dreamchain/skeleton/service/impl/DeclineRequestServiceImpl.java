@@ -4,6 +4,7 @@ package com.dreamchain.skeleton.service.impl;
 import com.dreamchain.skeleton.dao.ApprovalStatusDao;
 import com.dreamchain.skeleton.dao.ChangeRequestDao;
 import com.dreamchain.skeleton.dao.DeclineRequestDao;
+import com.dreamchain.skeleton.dao.UserDao;
 import com.dreamchain.skeleton.model.ApprovalStatus;
 import com.dreamchain.skeleton.model.ChangeRequest;
 import com.dreamchain.skeleton.model.DeclineRequest;
@@ -40,6 +41,8 @@ public class DeclineRequestServiceImpl implements DeclineRequestService {
     ApprovalStatusDao approvalStatusDao;
     @Autowired
     DeclineRequestDao declineRequestDao;
+    @Autowired
+    UserDao userDao;
     @Autowired
     Environment environment;
 
@@ -80,14 +83,16 @@ public class DeclineRequestServiceImpl implements DeclineRequestService {
             changeRequest.setUpdatedBy(getUserId().getEmail());
             changeRequest.setCreatedOn(date);
             changeRequest.setDeclineCause(declineRequest.getDeclineCause());
+//            changeRequest.setDeployedOn(null); @todo - need to talk (For null value passing or previous value passing)
             changeRequest.setWipStatus(environment.getProperty("approval.status.approve.type.acknowledgeBy.itCoordinator"));
-            ApprovalStatus itCoordinatorObj=approvalStatusDao.findByRequestIdAndUserType(changeRequest.getId(),environment.getProperty("approval.user.acknowledgementIT"));
-            itCoordinatorObj.setStatus(environment.getProperty("approval.status.waiting"));
+            ApprovalStatus approvalStatusForItCod=approvalStatusDao.findByRequestIdAndUserType(changeRequest.getId(),environment.getProperty("approval.user.acknowledgementIT"));
+            approvalStatusForItCod.setStatus(environment.getProperty("approval.status.waiting"));
             approvalStatus.setStatus(environment.getProperty("approval.status.none"));
             long requestId= changeRequestDao.save(changeRequest);
             long declineId= declineRequestDao.save(declineRequest);
-            long approvalId=approvalStatusDao.save(itCoordinatorObj);
-            sendEmail(changeRequest.getAcknowledgedItCoordinator().getEmail(), EMAIL_HEADER_SAVE+ changeRequest.getName(), EMAIL_BODY_SAVE + changeRequest.getName());
+            long approvalId=approvalStatusDao.save(approvalStatusForItCod);
+            User acknowledgedItCoordinator=userDao.get(changeRequest.getItCoordinatorId());
+            sendEmail(acknowledgedItCoordinator.getEmail(), EMAIL_HEADER_SAVE+ changeRequest.getName(), EMAIL_BODY_SAVE + changeRequest.getName());
         }
         obj.put("validationError",validationMsg);
         return obj;

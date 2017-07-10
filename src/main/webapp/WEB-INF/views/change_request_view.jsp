@@ -73,6 +73,12 @@
                         <td>${changeRequest.deliverDate}</td>
                     </tr>
                 </c:if>
+                <c:if test="${changeRequest.deployedOn != null}">
+                    <tr class="label_color">
+                        <td><b>Deployed On</b></td>
+                        <td>${changeRequest.deployedOn}</td>
+                    </tr>
+                </c:if>
                 <c:if test="${changeRequest.createdBy != null}">
                     <tr class="label_color">
                         <td><b>Created By</b></td>

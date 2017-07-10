@@ -65,14 +65,15 @@
                                     <thead>
                                     <tr>
                                         <th width="100px">Name</th>
-                                        <th width="100px">Company</th>
                                         <th width="100px">Product</th>
                                         <th width="100px">Category</th>
                                         <th width="120px"> Status</br>(Waiting)</th>
                                         <th width="50px"> Status</br>(Done)</th>
                                         <th width="30px"> Days</br>(Asking)</th>
                                         <th width="30px"> Days</br>(Required)</th>
-                                        <th width="50px"> Delivery</br>Date</th>
+                                        <th width="60px"> Delivery</br>Date</th>
+                                        <th width="60px"> Deployed</br>On</th>
+                                        <th width="60px"> Declined</br>Occurred</th>
                                         <th width="80px">Attachment</th>
                                     </tr>
                                     </thead>
@@ -157,15 +158,6 @@
                     }
                     },
                     {
-                        "mData": "category.company.name", 'sWidth': '100px', "render": function (data, type, row, id) {
-                        if (row.category.company.name != null) {
-                            var companyName = row.category.company.name.substr(0, 20);
-                            return companyName;
-                        }
-                        return "";
-                    }
-                    },
-                    {
                         "mData": "category.product.name", 'sWidth': '100px', "render": function (data, type, row, id) {
                         if (row.category.product.name != null) {
                             var productName = row.category.product.name.substr(0, 20);
@@ -206,7 +198,7 @@
                         "mData": "requiredDay", 'sWidth': '30px', "orderable": false,
                         "render": function (data, type, row, id) {
                             if (row.requiredDay != null) return row.requiredDay;
-                            else return "";
+                            return "";
                         }
                     },
                     {
@@ -217,14 +209,32 @@
                         }
                     },
                     {
-                        "mData": "deliverDate", 'sWidth': '30px',
+                        "mData": "deliverDate", 'sWidth': '60px',
                         "render": function (data, type, row, id) {
                             if (row.deliverDate != null) {
                                 var date = new Date(row.deliverDate);
                                 var dateFormat = date.toISOString("mm").substr(0, 10);
                                 return dateFormat;
                             }
-                            else return messageResource.get('approve.delivery.day.column.msg', 'configMessageForUI');
+                            return messageResource.get('approve.delivery.day.column.msg', 'configMessageForUI');
+                        }
+                    },
+                    {
+                        "mData": "deployedOn", 'sWidth': '60px',"orderable": false,
+                        "render": function (data, type, row, id) {
+                            if (row.deployedOn != null) {
+                                var date = new Date(row.deployedOn);
+                                var dateFormat = date.toISOString("mm").substr(0, 10);
+                                return dateFormat;
+                            }
+                            return "";
+                        }
+                    },
+                    {
+                        "mData": "declineCause", 'sWidth': '60px',"orderable": false,
+                        "render": function (data, type, row, id) {
+                            if (row.declineCause != null) return messageResource.get('request.declined.occurred.yes', 'configMessageForUI');
+                            return "";
                         }
                     },
                     {
