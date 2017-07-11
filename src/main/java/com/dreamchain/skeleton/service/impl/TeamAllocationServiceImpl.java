@@ -39,12 +39,12 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
     Environment environment;
 
 
-    private static String TEAM_ALLOCATION_EXISTS = "This Product and Team members are already allocated.Please try again with new one!!!";
-    private static String INVALID_INPUT = "Invalid input";
-    private static String INVALID_TEAM_ALLOCATION = "Team allocation not exists";
-    private static String BACK_DATED_DATA = "Team allocation data is old.Please try again with updated data";
-    private static String SAME_ALLOCATED_USER = "Checked By and Requester name can't be same";
-    private static String ASSOCIATED_REQUEST = "This allocation is associated with request.First remove tagging and try again";
+    private static final String TEAM_ALLOCATION_EXISTS = "This Product and Team members are already allocated.Please try again with new one!!!";
+    private static final String INVALID_INPUT = "Invalid input";
+    private static final String INVALID_TEAM_ALLOCATION = "Team allocation not exists";
+    private static final String BACK_DATED_DATA = "Team allocation data is old.Please try again with updated data";
+    private static final String SAME_ALLOCATED_USER = "Checked By and Requester name can't be same";
+    private static final String ASSOCIATED_REQUEST = "This allocation is associated with request.First remove tagging and try again";
 
     @Transactional(readOnly = true)
     public TeamAllocation get(Long id) {

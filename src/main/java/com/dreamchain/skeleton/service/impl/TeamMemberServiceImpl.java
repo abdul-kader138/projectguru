@@ -40,13 +40,13 @@ public class TeamMemberServiceImpl implements TeamMemberService {
     @Autowired
     Environment environment;
 
-    private static String EMAIL_EXISTS = "This email address already used.Please try again with new one!!!";
-    private static String INVALID_INPUT = "Invalid input";
-    private static String INVALID_USER = "Team Member not exists";
-    private static String BACK_DATED_DATA = "This data is old.Please try again with updated data";
-    private static String PHOTO_TEAM_PATH = "/resources/images/team_member_photo/";
-    private static String USER_ASSOCIATED_APPROVAL_UPDATE = "Team member can't update due to association with request";
-    private static String USER_ASSOCIATED_APPROVAL_DELETE = "Team member can't delete due to association with request";
+    private static final String EMAIL_EXISTS = "This email address already used.Please try again with new one!!!";
+    private static final String INVALID_INPUT = "Invalid input";
+    private static final String INVALID_USER = "Team Member not exists";
+    private static final String BACK_DATED_DATA = "This data is old.Please try again with updated data";
+    private static final String PHOTO_TEAM_PATH = "/resources/images/team_member_photo/";
+    private static final String USER_ASSOCIATED_APPROVAL_UPDATE = "Team member can't update due to association with request";
+    private static final String USER_ASSOCIATED_APPROVAL_DELETE = "Team member can't delete due to association with request";
 
     @Transactional(readOnly = true)
     public User get(Long id) {

@@ -39,14 +39,14 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
     Environment environment;
 
 
-    private static String INVALID_INPUT = "Invalid input";
-    private static String INVALID_APPROVAL_DATA = "Data not exists";
-    private static String INVALID_REQUEST_DATA = "Data not exists";
-    private static String BACK_DATED_DATA = "Approval data is old.Please try again with updated data";
-    private static String EMAIL_HEADER_SAVE = "Request is waiting for approval.Request Name ##";
-    private static String EMAIL_HEADER_DELETE = "Request is Deleted.Request Name ##";
-    private static String EMAIL_BODY_DELETE = "Your asking request is deleted.Request Name ##";
-    private static String EMAIL_BODY_SAVE= "Request is waiting at your Approval Explorer for approve.Request Name ##";
+    private static final String INVALID_INPUT = "Invalid input";
+    private static final String INVALID_APPROVAL_DATA = "Data not exists";
+    private static final String INVALID_REQUEST_DATA = "Data not exists";
+    private static final String BACK_DATED_DATA = "Approval data is old.Please try again with updated data";
+    private static final String EMAIL_HEADER_SAVE = "Request is waiting for approval.Request Name ##";
+    private static final String EMAIL_HEADER_DELETE = "Request is Deleted.Request Name ##";
+    private static final String EMAIL_BODY_DELETE = "Your asking request is deleted.Request Name ##";
+    private static final String EMAIL_BODY_SAVE= "Request is waiting at your Approval Explorer for approve.Request Name ##";
 
 
 

@@ -29,11 +29,11 @@ public class RolesServiceImpl implements RolesService {
     Environment environment;
 
 
-    private static String ROLES_EXISTS = "This roles name is already used.Please try again with new one!!!";
-    private static String INVALID_INPUT = "Invalid input";
-    private static String INVALID_ROLES = "Roles not exists";
-    private static String BACK_DATED_DATA = "Roles data is old.Please try again with updated data";
-    private static String ASSOCIATED_ROLES = "Roles is tagged with rights.First remove tagging and try again";
+    private static final String ROLES_EXISTS = "This roles name is already used.Please try again with new one!!!";
+    private static final String INVALID_INPUT = "Invalid input";
+    private static final String INVALID_ROLES = "Roles not exists";
+    private static final String BACK_DATED_DATA = "Roles data is old.Please try again with updated data";
+    private static final String ASSOCIATED_ROLES = "Roles is tagged with rights.First remove tagging and try again";
 
 
     @Override

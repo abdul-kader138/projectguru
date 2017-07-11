@@ -28,28 +28,29 @@
                         <td>${user.phone}</td>
                     </tr>
 
-                    <tr class="label_color">
-                        <td><b>Designation</b></td>
-                        <td>${user.designation}</td>
-                    </tr>
+                        <tr class="label_color">
+                            <td><b>Designation</b></td>
+                            <td>${user.designation}</td>
+                        </tr>
 
-                    <tr class="label_color">
-                        <td><b>Role</b></td>
-                        <td>${user.role}</td>
-                    </tr>
-                    <tr class="label_color">
-                        <td><b>Photo</b></td>
-                        <td><img id="uploadedPhotoSrc"
-                                 src="${user.imagePath}" width="70" height="70" border="0"></td>
-                    </tr>
-                    </tbody>
-                </table>
+                        <tr class="label_color">
+                            <td><b>Role</b></td>
+                            <td>${user.role}</td>
+                        </tr>
+                        <tr class="label_color">
+                            <td><b>Photo</b></td>
+                            <td><img id="uploadedPhotoSrc"
+                                     src="${user.imagePath}" width="70" height="70" border="0"></td>
+                        </tr>
+                        </tbody>
+                    </table>
 
-                <a class="btn bg-grey waves-war" id="back" value="1" title="Back" href="/home"><img
-                        src="resources/images/back.png" width="16" height="16" border="0">&nbsp;Back to Home
-                </a>
-                <br/>
-                <br/>
+                    <a class="btn bg-grey waves-war" id="back" value="1" title="Back" href="/home"><img
+                            src="resources/images/back.png" width="16" height="16" border="0">&nbsp;Back to Home
+                    </a>
+                    <br/>
+                    <br/>
+                </div>
             </div>
         </div>
     </div>

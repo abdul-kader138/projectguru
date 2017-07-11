@@ -32,14 +32,14 @@ public class CompanyServiceImpl implements CompanyService {
     @Autowired
     Environment environment;
 
-    private static String COMPANY_EXISTS = "This company name is already used.Please try again with new one!!!";
-    private static String INVALID_INPUT = "Invalid input";
-    private static String INVALID_COMPANY = "Company not exists";
-    private static String BACK_DATED_DATA = "Company data is old.Please try again with updated data";
-    private static String INVALID_PRIVILEGE_UPDATE = "You have not enough privilege to update client company info.Please contact with System Admin!!!";
-    private static String ASSOCIATED_COMPANY = "Company is tagged with Department.First remove tagging and try again";
-    private static String ASSOCIATED_COMPANY_PRODUCT = "Company is tagged with Product.First remove tagging and try again";
-    private static String LOGO_PATH = "/resources/images/company_logo/";
+    private static final String COMPANY_EXISTS = "This company name is already used.Please try again with new one!!!";
+    private static final String INVALID_INPUT = "Invalid input";
+    private static final String INVALID_COMPANY = "Company not exists";
+    private static final String BACK_DATED_DATA = "Company data is old.Please try again with updated data";
+    private static final String INVALID_PRIVILEGE_UPDATE = "You have not enough privilege to update client company info.Please contact with System Admin!!!";
+    private static final String ASSOCIATED_COMPANY = "Company is tagged with Department.First remove tagging and try again";
+    private static final String ASSOCIATED_COMPANY_PRODUCT = "Company is tagged with Product.First remove tagging and try again";
+    private static final String LOGO_PATH = "/resources/images/company_logo/";
 
 
     @Transactional(readOnly = true)

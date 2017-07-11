@@ -38,14 +38,14 @@ public class CategoryServiceImpl implements CategoryService{
     @Autowired
     Environment environment;
 
-    private static String CATEGORY_EXISTS = "This category name is already used.Please try again with new one!!!";
-    private static String INVALID_INPUT = "Invalid input";
-    private static String INVALID_CATEGORY = "Category not exists";
-    private static String BACK_DATED_DATA = "Category data is old.Please try again with updated data";
-    private static String ASSOCIATED_ALLOCATION = "Category is tagged with allocation.First remove tagging and try again";
-    private static String INVALID_PRIVILEGE_UPDATE = "You have not enough privilege to update client category info.Please contact with System Admin!!!";
-    private static String INVALID_PRIVILEGE_CREATE = "You have not enough privilege to create category for client.Please contact with System Admin!!!";
-    private static String CHANGE_REQUEST_ASSOCIATED = "This category already associated with request.So this operation can't happen";
+    private static final String CATEGORY_EXISTS = "This category name is already used.Please try again with new one!!!";
+    private static final String INVALID_INPUT = "Invalid input";
+    private static final String INVALID_CATEGORY = "Category not exists";
+    private static final String BACK_DATED_DATA = "Category data is old.Please try again with updated data";
+    private static final String ASSOCIATED_ALLOCATION = "Category is tagged with allocation.First remove tagging and try again";
+    private static final String INVALID_PRIVILEGE_UPDATE = "You have not enough privilege to update client category info.Please contact with System Admin!!!";
+    private static final String INVALID_PRIVILEGE_CREATE = "You have not enough privilege to create category for client.Please contact with System Admin!!!";
+    private static final String CHANGE_REQUEST_ASSOCIATED = "This category already associated with request.So this operation can't happen";
 
 
 

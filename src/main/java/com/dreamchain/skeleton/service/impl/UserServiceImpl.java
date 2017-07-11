@@ -42,16 +42,16 @@ public class UserServiceImpl implements UserService {
     @Autowired
     Environment environment;
 
-    private static String EMAIL_EXISTS = "This email address already used.Please try again with new one!!!";
-    private static String PASSWORD_IS_SAME = "New password matched with previous one.Please try again with new one!!!";
-    private static String OLD_PASSWORD_NOT_MATCHED = "Your previous password not matched!!";
-    private static String INVALID_INPUT = "Invalid input";
-    private static String INVALID_USER = "User not exists";
-    private static String USER_ASSOCIATED_APPROVAL_UPDATE = "User can't update due to association with request";
-    private static String USER_ASSOCIATED_APPROVAL_DELETE = "User can't update due to association with request";
-    private static String BACK_DATED_DATA = "User data is old.Please try again with updated data";
-    private static String PHOTO_USER_PATH = "/resources/images/user_photo/";
-    private static String PHOTO_TEAM_PATH = "/resources/images/team_member_photo/";
+    private static final String EMAIL_EXISTS = "This email address already used.Please try again with new one!!!";
+    private static final String PASSWORD_IS_SAME = "New password matched with previous one.Please try again with new one!!!";
+    private static final String OLD_PASSWORD_NOT_MATCHED = "Your previous password not matched!!";
+    private static final String INVALID_INPUT = "Invalid input";
+    private static final String INVALID_USER = "User not exists";
+    private static final String USER_ASSOCIATED_APPROVAL_UPDATE = "User can't update due to association with request";
+    private static final String USER_ASSOCIATED_APPROVAL_DELETE = "User can't update due to association with request";
+    private static final String BACK_DATED_DATA = "User data is old.Please try again with updated data";
+    private static final String PHOTO_USER_PATH = "/resources/images/user_photo/";
+    private static final String PHOTO_TEAM_PATH = "/resources/images/team_member_photo/";
 
     @Transactional(readOnly = true)
     public User get(Long id) {

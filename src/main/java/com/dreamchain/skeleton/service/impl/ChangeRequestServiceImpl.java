@@ -46,16 +46,13 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
     @Autowired
     Environment environment;
 
-    private static String CHANGED_REQUEST_EXISTS = "This request name is already used.Please try again with new one!!!";
-    private static String TEAM_ALLOCATION = "Team member not allocated please contact with admin....";
-    private static String USER_ALLOCATION = "User not allocated please contact with admin....";
-    private static String INVALID_INPUT = "Invalid input";
-    private static String INVALID_COMPANY = "Company not exists";
-    private static String BACK_DATED_DATA = "Company data is old.Please try again with updated data";
-    private static String ASSOCIATED_COMPANY = "Company is tagged with Department.First remove tagging and try again";
-    private static String DOC_PATH = "/resources/images/doc/";
-    private static String EMAIL_HEADER_SAVE= "New Request is waiting for approval.Request Name ##";
-    private static String EMAIL_BODY_SAVE= "New request is generate and waiting for you approval.Request Name ##";
+    private static final String CHANGED_REQUEST_EXISTS = "This request name is already used.Please try again with new one!!!";
+    private static final String TEAM_ALLOCATION = "Team member not allocated please contact with admin....";
+    private static final String USER_ALLOCATION = "User not allocated please contact with admin....";
+    private static final String INVALID_INPUT = "Invalid input";
+    private static final String DOC_PATH = "/resources/images/doc/";
+    private static final String EMAIL_HEADER_SAVE= "New Request is waiting for approval.Request Name ##";
+    private static final String EMAIL_BODY_SAVE= "New request is generate and waiting for you approval.Request Name ##";
 
     @Override
 

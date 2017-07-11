@@ -35,14 +35,14 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Autowired
     Environment environment;
 
-    private static String DEPARTMENT_EXISTS = "This department name is already used.Please try again with new one!!!";
-    private static String INVALID_INPUT = "Invalid input";
-    private static String INVALID_DEPARTMENT = "Department not exists";
-    private static String INVALID_PRIVILEGE_UPDATE = "You have not enough privilege to update client department info.Please contact with System Admin!!!";
-    private static String INVALID_PRIVILEGE_CREATE = "You have not enough privilege to create department for client.Please contact with System Admin!!!";
-    private static String BACK_DATED_DATA = "Department data is old.Please try again with updated data";
-    private static String ASSOCIATED_DEPARTMENT = "Department is tagged with product category.First remove tagging and try again";
-    private static String CHANGE_REQUEST_ASSOCIATED = "This department already associated with request.So this operation can't happen";
+    private static final String DEPARTMENT_EXISTS = "This department name is already used.Please try again with new one!!!";
+    private static final String INVALID_INPUT = "Invalid input";
+    private static final String INVALID_DEPARTMENT = "Department not exists";
+    private static final String INVALID_PRIVILEGE_UPDATE = "You have not enough privilege to update client department info.Please contact with System Admin!!!";
+    private static final String INVALID_PRIVILEGE_CREATE = "You have not enough privilege to create department for client.Please contact with System Admin!!!";
+    private static final String BACK_DATED_DATA = "Department data is old.Please try again with updated data";
+    private static final String ASSOCIATED_DEPARTMENT = "Department is tagged with product category.First remove tagging and try again";
+    private static final String CHANGE_REQUEST_ASSOCIATED = "This department already associated with request.So this operation can't happen";
 
 
     @Transactional(readOnly = true)

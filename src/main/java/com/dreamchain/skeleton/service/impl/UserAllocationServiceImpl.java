@@ -33,12 +33,12 @@ public class UserAllocationServiceImpl implements UserAllocationService {
     Environment environment;
 
 
-    private static String USER_ALLOCATION_EXISTS = "This Product and users are already allocated.Please try again with new one!!!";
-    private static String INVALID_INPUT = "Invalid input";
-    private static String INVALID_USER_ALLOCATION = "User allocation not exists";
-    private static String BACK_DATED_DATA = "User allocation data is old.Please try again with updated data";
-    private static String ASSOCIATED_REQUEST = "This allocation is associated with request.First remove tagging and try again";
-    private static String SAME_ALLOCATED_USER = "Approved By and Coordinator name can't be same";
+    private static final String USER_ALLOCATION_EXISTS = "This Product and users are already allocated.Please try again with new one!!!";
+    private static final String INVALID_INPUT = "Invalid input";
+    private static final String INVALID_USER_ALLOCATION = "User allocation not exists";
+    private static final String BACK_DATED_DATA = "User allocation data is old.Please try again with updated data";
+    private static final String ASSOCIATED_REQUEST = "This allocation is associated with request.First remove tagging and try again";
+    private static final String SAME_ALLOCATED_USER = "Approved By and Coordinator name can't be same";
 
 
     @Transactional(readOnly = true)

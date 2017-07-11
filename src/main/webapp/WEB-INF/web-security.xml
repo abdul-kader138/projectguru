@@ -107,7 +107,7 @@
 
 		<!--multiple session invalid-->
 		<security:session-management session-fixation-protection="newSession">
-			<security:concurrency-control max-sessions="1"  expired-url="/login" error-if-maximum-exceeded="true" />
+			<security:concurrency-control max-sessions="3"  expired-url="/login" error-if-maximum-exceeded="true" />
 		</security:session-management>
 
 

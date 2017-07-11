@@ -46,11 +46,11 @@ public class DeclineRequestServiceImpl implements DeclineRequestService {
     @Autowired
     Environment environment;
 
-    private static String INVALID_INPUT = "Invalid input";
-    private static String INVALID_REQUEST = "Request not exists";
-    private static String BACK_DATED_DATA = "Request data is old.Please try again with updated data";
-    private static String EMAIL_BODY_SAVE = "Request is declined by the user.Request Name ##";
-    private static String EMAIL_HEADER_SAVE= "Request is declined.Request Name ##";
+    private static final String INVALID_INPUT = "Invalid input";
+    private static final String INVALID_REQUEST = "Request not exists";
+    private static final String BACK_DATED_DATA = "Request data is old.Please try again with updated data";
+    private static final String EMAIL_BODY_SAVE = "Request is declined by the user.Request Name ##";
+    private static final String EMAIL_HEADER_SAVE= "Request is declined.Request Name ##";
 
 
 
