@@ -114,16 +114,17 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
     private Map createObjForSave(MultipartHttpServletRequest request, String fileName) throws Exception {
         String validationMsg = "";
         Map<String, Object> objList = new HashMap<>();
+        ChangeRequest changeRequest=new ChangeRequest();
         Category category = categoryDao.get(Long.parseLong(request.getParameter("categoryId")));
         String[] descriptionObj=request.getParameterValues("description[]");
         List<String> descriptionList= setDescriptionList(descriptionObj);
         Set<String> descriptions=new HashSet<>(descriptionList);
         TeamAllocation teamAllocation = teamAllocationDao.findByProductAndCategory(category.getCompanyId(), category.getProductId(), category.getId());
         UserAllocation userAllocation = userAllocationDao.findByProductAndCategory(category.getCompanyId(), category.getProductId(), category.getId());
-        ChangeRequest changeRequest = setChangeRequestValue(category, teamAllocation, userAllocation);
         if (category.getCompany() == null) validationMsg = INVALID_INPUT;
-        if (teamAllocation.getCheckedBy() == null && "".equals(validationMsg)) validationMsg = TEAM_ALLOCATION;
-        if (userAllocation.getApprovedBy() == null && "".equals(validationMsg)) validationMsg = USER_ALLOCATION;
+        if (teamAllocation.getCompanyId() == 0l && "".equals(validationMsg)) validationMsg = TEAM_ALLOCATION;
+        if (userAllocation.getCompanyId() == 0l && "".equals(validationMsg)) validationMsg = USER_ALLOCATION;
+        if ("".equals(validationMsg)) changeRequest = setChangeRequestValue(category, teamAllocation, userAllocation);
         if ("".equals(validationMsg)) {
             changeRequest.setName(request.getParameter("name").trim());
             changeRequest.setDescription(descriptions);
