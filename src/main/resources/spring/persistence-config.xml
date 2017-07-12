@@ -17,7 +17,7 @@
  		<property name="url" value="jdbc:postgresql://localhost:5432/mis" />
 	</bean>
 	
-	<bean id="mySessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" depends-on="flyway">
+	<bean id="mySessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref="myDataSource" />
 		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
 		<property name="namingStrategy" ref="namingStrategy" />
@@ -44,10 +44,4 @@
 	<bean id="namingStrategy" class="org.hibernate.cfg.ImprovedNamingStrategy"/>
 
 
-	<bean id="flyway" class="org.flywaydb.core.Flyway" init-method="migrate">
-		<property name="dataSource" ref="myDataSource"/>
-		<property name="locations" value="classpath:/sql.txt" />
-
-	</bean>
-	
 </beans>

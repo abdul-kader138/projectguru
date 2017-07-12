@@ -231,7 +231,6 @@
                         isValid = false;
                     }
 
-//                    if (filename || isPng(filename) || isGif(filename))) {
                     if ((filename == null) || (filename == "0")) {
                         $("#docNameValidation").text('Please browse,for uploading attachment...');
                         isValid = false;

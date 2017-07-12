@@ -8,25 +8,27 @@
                 <div><h4>User Details</h4></div>
                 <hr/>
                 <br/>
-                <table class="display nowrap table table-bordered" cellspacing="0" width="100%">
-                    <tbody>
-                    <tr class="label_color">
-                        <td><b>Company Name</b></td>
-                        <td>${user.company.name}</td>
-                    </tr>
 
-                    <tr class="label_color">
-                        <td><b>Name</b></td>
-                        <td>${user.name}</td>
-                    </tr>
-                    <tr class="label_color">
-                        <td><b>Email</b></td>
-                        <td>${user.email}</td>
-                    </tr>
-                    <tr class="label_color">
-                        <td><b>Phone</b></td>
-                        <td>${user.phone}</td>
-                    </tr>
+                <div class="table-responsive">
+                    <table class="display nowrap table table-bordered" cellspacing="0" width="100%">
+                        <tbody>
+                        <tr class="label_color">
+                            <td><b>Company Name</b></td>
+                            <td>${user.company.name}</td>
+                        </tr>
+
+                        <tr class="label_color">
+                            <td><b>Name</b></td>
+                            <td>${user.name}</td>
+                        </tr>
+                        <tr class="label_color">
+                            <td><b>Email</b></td>
+                            <td>${user.email}</td>
+                        </tr>
+                        <tr class="label_color">
+                            <td><b>Phone</b></td>
+                            <td>${user.phone}</td>
+                        </tr>
 
                         <tr class="label_color">
                             <td><b>Designation</b></td>
@@ -44,15 +46,16 @@
                         </tr>
                         </tbody>
                     </table>
-
-                    <a class="btn bg-grey waves-war" id="back" value="1" title="Back" href="/home"><img
-                            src="resources/images/back.png" width="16" height="16" border="0">&nbsp;Back to Home
-                    </a>
-                    <br/>
-                    <br/>
                 </div>
+
+                <a class="btn bg-grey waves-war" id="back" value="1" title="Back" href="/home"><img
+                        src="resources/images/back.png" width="16" height="16" border="0">&nbsp;Back to Home
+                </a>
+                <br/>
+                <br/>
             </div>
         </div>
+    </div>
     </div>
 
     <script>
