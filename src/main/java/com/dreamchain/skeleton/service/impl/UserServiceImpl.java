@@ -122,8 +122,8 @@ public class UserServiceImpl implements UserService {
             if ("".equals(validationMsg)) existingUser.setImagePath((String) msg.get("path"));
         }
         if ("".equals(validationMsg)) {
-                user.setClientId(environment.getProperty("user.vendor.id"));
-                user.setUserType(environment.getProperty("user.type.vendor"));
+                user.setClientId(getUserId().getClientId());
+                user.setUserType(getUserId().getUserType());
             newUser = setUpdateUserValue(user, existingUser);
             userDao.update(newUser);
         }

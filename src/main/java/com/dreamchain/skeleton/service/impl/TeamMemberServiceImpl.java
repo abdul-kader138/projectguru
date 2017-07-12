@@ -113,8 +113,8 @@ public class TeamMemberServiceImpl implements TeamMemberService {
             if ("".equals(validationMsg)) existingUser.setImagePath((String) msg.get("path"));
         }
         if ("".equals(validationMsg)) {
-            user.setClientId(environment.getProperty("user.client.id"));
-            user.setUserType(environment.getProperty("user.type.client"));
+            user.setClientId(getUserId().getClientId());
+            user.setUserType(getUserId().getUserType());
             newUser = setUpdateUserValue(user, existingUser);
             teamMemberDao.update(newUser);
         }
