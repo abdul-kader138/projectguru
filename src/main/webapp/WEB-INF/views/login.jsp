@@ -51,7 +51,7 @@
     <div class="logo">
         <div class="image">
             <a href="javascript:void(0);"><img src="resources/images/logo-pergon.gif" width="80" height="80"
-                                               alt="User"/><b>Issue
+                                               alt="Company"/><b>Issue
                 Tracker</b></a></div>
     </div>
     <div class="card">
