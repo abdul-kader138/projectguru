@@ -134,6 +134,7 @@ public class RolesServiceImpl implements RolesService {
         roles.setDescription(((String) rolesObj.get("description")).trim());
         roles.setId(Long.parseLong((String) rolesObj.get("id")));
         roles.setVersion(Long.parseLong((String) rolesObj.get("version")));
+        roles.setClientId(getUserId().getClientId());
         return roles;
 
     }
@@ -153,6 +154,7 @@ public class RolesServiceImpl implements RolesService {
         Date date = dateFormat.parse(dateFormat.format(new Date()));
         rolesObj.setUpdatedBy(getUserId().getEmail());
         rolesObj.setUpdatedOn(date);
+        rolesObj.setClientId(getUserId().getClientId());
         return rolesObj;
     }
 

@@ -155,7 +155,19 @@
                             <span>All Settings</span>
                         </a>
                         <ul class="ml-menu">
-
+                            <li>
+                                <a href="javascript:void(0);" class="menu-toggle">
+                                    <span>Company Settings</span>
+                                </a>
+                                <ul class="ml-menu">
+                                    <li>
+                                        <a href="company">Company</a>
+                                    </li>
+                                    <li>
+                                        <a href="department">Department</a>
+                                    </li>
+                                </ul>
+                            </li>
                             <li>
                                 <a href="javascript:void(0);" class="menu-toggle">
                                     <span>Product Settings</span>
@@ -174,25 +186,12 @@
                             </li>
                             <li>
                                 <a href="javascript:void(0);" class="menu-toggle">
-                                    <span>Company Settings</span>
-                                </a>
-                                <ul class="ml-menu">
-                                    <li>
-                                        <a href="company">Company</a>
-                                    </li>
-                                    <li>
-                                        <a href="department">Department</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0);" class="menu-toggle">
                                     <span>Team Member Settings</span>
                                 </a>
                                 <ul class="ml-menu">
 
                                         <%--only visible for super admin user--%>
-                                    <c:if test="${user.role == 'ROLE_SUPER_ADMIN'}">
+                                    <c:if test="${user.role == 'ROLE_SUPER_ADMIN' && user.userType == 'vendor'}">
                                         <li>
                                             <a href="roles">Roles</a>
 
