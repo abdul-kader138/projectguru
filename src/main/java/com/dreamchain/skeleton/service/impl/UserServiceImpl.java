@@ -32,6 +32,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     CompanyDao companyDao;
     @Autowired
+    UserAllocationDao userAllocationDao;
+    @Autowired
     UserDao userDao;
     @Autowired
     RoleRightDao roleRightDao;
@@ -52,6 +54,7 @@ public class UserServiceImpl implements UserService {
     private static final String BACK_DATED_DATA = "User data is old.Please try again with updated data";
     private static final String PHOTO_USER_PATH = "/resources/images/user_photo/";
     private static final String PHOTO_TEAM_PATH = "/resources/images/team_member_photo/";
+    private static final String USER_ASSOCIATED_TEAM_ALLOCATION = "User can't delete due to association with allocation";
 
     @Transactional(readOnly = true)
     public User get(Long id) {
@@ -137,10 +140,16 @@ public class UserServiceImpl implements UserService {
     public String delete(Long userId, HttpServletRequest request) {
         String validationMsg = "";
         String fileName = "";
+        List<UserAllocation> objList=new ArrayList<>();
         List<ApprovalStatus> approvalStatuses=new ArrayList<>();
         if (userId == 0l) validationMsg = INVALID_INPUT;
         User user = userDao.get(userId);
         if (user == null && "".equals(validationMsg)) validationMsg = INVALID_USER;
+        if ("".equals(validationMsg)) objList=userAllocationDao.AllAllocationByApprovedBy(user.getId());
+        if (objList.size() > 0 && "".equals(validationMsg)) validationMsg = USER_ASSOCIATED_TEAM_ALLOCATION;
+        if ("".equals(validationMsg)) objList=userAllocationDao.AllAllocationByItCoordinator(user.getId());
+        if (objList.size() > 0 && "".equals(validationMsg)) validationMsg = USER_ASSOCIATED_TEAM_ALLOCATION;
+        if ("".equals(validationMsg)) approvalStatuses= approvalStatusDao.findByApprovedById(user.getId());
         if ("".equals(validationMsg)) approvalStatuses= approvalStatusDao.findByApprovedById(user.getId());
         if(approvalStatuses.size() !=0 && "".equals(validationMsg)) validationMsg=USER_ASSOCIATED_APPROVAL_DELETE;
         if (user != null) fileName = user.getImagePath();

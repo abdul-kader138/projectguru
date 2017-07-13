@@ -63,6 +63,24 @@ public class UserAllocationDaoImpl implements UserAllocationDao {
     }
 
     @Override
+    public List<UserAllocation> AllAllocationByItCoordinator(long itCoordinator) {
+        DetachedCriteria dcr= DetachedCriteria.forClass(UserAllocation.class);
+        Criterion cr = Restrictions.eq("itCoordinator.id", itCoordinator);
+        dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
+        return createUserAllocationList(lst);
+    }
+
+    @Override
+    public List<UserAllocation> AllAllocationByApprovedBy(long approvedBy) {
+        DetachedCriteria dcr= DetachedCriteria.forClass(UserAllocation.class);
+        Criterion cr = Restrictions.eq("approvedBy.id", approvedBy);
+        dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
+        return createUserAllocationList(lst);
+    }
+
+    @Override
     public UserAllocation findByProductAndCategory(long companyId, long productId, long categoryId) {
         DetachedCriteria dcr = DetachedCriteria.forClass(UserAllocation.class);
         Criterion cr = Restrictions.eq("companyId", companyId);

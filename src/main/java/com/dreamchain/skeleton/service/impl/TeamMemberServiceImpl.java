@@ -32,6 +32,8 @@ public class TeamMemberServiceImpl implements TeamMemberService {
     @Autowired
     TeamMemberDao teamMemberDao;
     @Autowired
+    TeamAllocationDao teamAllocationDao;
+    @Autowired
     RoleRightDao roleRightDao;
     @Autowired
     RolesDao rolesDao;
@@ -47,6 +49,7 @@ public class TeamMemberServiceImpl implements TeamMemberService {
     private static final String PHOTO_TEAM_PATH = "/resources/images/team_member_photo/";
     private static final String USER_ASSOCIATED_APPROVAL_UPDATE = "Team member can't update due to association with request";
     private static final String USER_ASSOCIATED_APPROVAL_DELETE = "Team member can't delete due to association with request";
+    private static final String USER_ASSOCIATED_TEAM_ALLOCATION = "Team member can't delete due to association with allocation";
 
     @Transactional(readOnly = true)
     public User get(Long id) {
@@ -128,13 +131,18 @@ public class TeamMemberServiceImpl implements TeamMemberService {
     public String delete(Long userId, HttpServletRequest request) {
         String validationMsg = "";
         String fileName = "";
+        List<TeamAllocation> objList=new ArrayList<>();
         List<ApprovalStatus> approvalStatuses=new ArrayList<>();
         if (userId == 0l) validationMsg = INVALID_INPUT;
         User user = teamMemberDao.get(userId);
         if (user == null && "".equals(validationMsg)) validationMsg = INVALID_USER;
+        if ("".equals(validationMsg)) objList=teamAllocationDao.AllAllocationByCheckedBy(user.getId());
+        if (objList.size() > 0 && "".equals(validationMsg)) validationMsg = USER_ASSOCIATED_TEAM_ALLOCATION;
+        if ("".equals(validationMsg)) objList=teamAllocationDao.AllAllocationByRequestedBy(user.getId());
+        if (objList.size() > 0 && "".equals(validationMsg)) validationMsg = USER_ASSOCIATED_TEAM_ALLOCATION;
         if ("".equals(validationMsg)) approvalStatuses= approvalStatusDao.findByApprovedById(user.getId());
         if(approvalStatuses.size() !=0 && "".equals(validationMsg)) validationMsg=USER_ASSOCIATED_APPROVAL_DELETE;
-        if (user != null) fileName = user.getImagePath();
+        if (! "".equals(user.getClientId())) fileName = user.getImagePath();
         if ("".equals(validationMsg)) validationMsg = deletePhoto(request.getRealPath("/"), fileName);
         if ("".equals(validationMsg)) {
             teamMemberDao.delete(user);

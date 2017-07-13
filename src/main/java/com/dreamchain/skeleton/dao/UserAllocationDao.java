@@ -11,6 +11,8 @@ public interface UserAllocationDao {
     void update(UserAllocation userAllocation);
     void delete(UserAllocation userAllocation);
     List<UserAllocation> findAll();
+    List<UserAllocation> AllAllocationByItCoordinator(long itCoordinator);
+    List<UserAllocation> AllAllocationByApprovedBy(long approvedBy);
     UserAllocation findByProductAndCategory(long companyId, long productId,long categoryId);
     List<Object> countOfAllocation(long allocationId); // request class
 

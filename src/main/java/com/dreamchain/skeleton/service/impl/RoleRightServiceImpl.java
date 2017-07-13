@@ -186,6 +186,7 @@ public class RoleRightServiceImpl implements RoleRightService {
         Date date = dateFormat.parse(dateFormat.format(new Date()));
         roleRightObj.setUpdatedBy(getUserId().getEmail());
         roleRightObj.setUpdatedOn(date);
+        roleRightObj.setClientId(getUserId().getClientId());
         return roleRightObj;
     }
 
