@@ -41,6 +41,7 @@ public class ProductServiceImpl implements ProductService {
     private static final String ASSOCIATED_CATEGORY = "Product is tagged with category.First remove tagging and try again";
     private static final String ASSOCIATED_ALLOCATION = "Product is tagged with allocation.First remove tagging and try again";
     private static final String INVALID_PRIVILEGE_UPDATE = "You have not enough privilege to update client product info.Please contact with System Admin!!!";
+    private static final String INVALID_PRIVILEGE_DELETE = "You have not enough privilege to delete client product info.Please contact with System Admin!!!";
     private static final String INVALID_PRIVILEGE_CREATE = "You have not enough privilege to create product for client.Please contact with System Admin!!!";
 
 
@@ -105,10 +106,12 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public String delete(Long productId) {
         String validationMsg = "";
+        List<Object> obj=new ArrayList<>();
         if (productId == 0l) validationMsg = INVALID_INPUT;
         Product product = productDao.get(productId);
-        if (product == null && "".equals(validationMsg)) validationMsg = INVALID_PRODUCT;
-        List<Object> obj=categoryDao.countOfProduct(productId);
+        if ("".equals(product.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRODUCT;
+        if (!getUserId().getClientId().equals(product.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_DELETE;
+        if("".equals(validationMsg)) obj=categoryDao.countOfProduct(productId);
         if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_CATEGORY;
         if("".equals(validationMsg))obj=teamAllocationDao.countOfAllocationByProduct(productId);
         if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_ALLOCATION;

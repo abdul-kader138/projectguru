@@ -19,6 +19,7 @@ import java.util.*;
                 @Index(columnList = "name,categoryId", name = "name_category_id"),
                 @Index(columnList = "categoryId", name = "category_id"),
                 @Index(columnList = "departmentId", name = "department_id"),
+                @Index(columnList = "clientId", name = "client_id"),
                 @Index(columnList = "teamAllocationId", name = "team_allocation_id")
         }
 )
@@ -77,6 +78,10 @@ public class ChangeRequest implements Serializable {
 
     @NotNull
     private long userAllocationId;
+
+    @Column
+    @NotEmpty
+    private String clientId;
 
 
     @NotEmpty
@@ -364,5 +369,13 @@ public class ChangeRequest implements Serializable {
 
     public void setDeployedOn(Date deployedOn) {
         this.deployedOn = deployedOn;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 }

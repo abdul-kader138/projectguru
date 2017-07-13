@@ -41,12 +41,12 @@ public class TeamMemberDaoImpl implements TeamMemberDao {
 
     @SuppressWarnings("unchecked")
     public List<User> findAll(String userName) {
-        List<User> userList=new ArrayList<>();
-        DetachedCriteria dcr= DetachedCriteria.forClass(User.class);
+        List<User> userList = new ArrayList<>();
+        DetachedCriteria dcr = DetachedCriteria.forClass(User.class);
         Criterion cr = Restrictions.ne("email", userName);
         dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
-        for(Object user:lst){
+        List<Object> lst = hibernateTemplate.findByCriteria(dcr);
+        for (Object user : lst) {
             userList.add((User) user);
         }
         return userList;
@@ -55,16 +55,17 @@ public class TeamMemberDaoImpl implements TeamMemberDao {
     @Override
     public List<User> findAll() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user=(User)auth.getPrincipal();
-        DetachedCriteria dcr= DetachedCriteria.forClass(User.class);
+        User user = (User) auth.getPrincipal();
+        DetachedCriteria dcr = DetachedCriteria.forClass(User.class);
         Criterion cr1 = Restrictions.eq("userType", user.getUserType());
         Criterion cr2 = Restrictions.eq("clientId", user.getClientId());
         Criterion cr3 = Restrictions.ne("email", user.getEmail());
-        if (environment.getProperty("company.client.id").equals(user.getClientId())) dcr.add(cr2);
+//        if (environment.getProperty("company.client.id").equals(user.getClientId()))
+        dcr.add(cr2);
         dcr.add(cr1).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         dcr.add(cr2);
         dcr.add(cr3);
-        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
+        List<Object> lst = hibernateTemplate.findByCriteria(dcr);
         return createProductList(lst);
     }
 
@@ -81,31 +82,31 @@ public class TeamMemberDaoImpl implements TeamMemberDao {
 
     @Override
     public User findByUserName(String username) {
-        User user=null;
-        DetachedCriteria dcr= DetachedCriteria.forClass(User.class);
+        User user = null;
+        DetachedCriteria dcr = DetachedCriteria.forClass(User.class);
         Criterion cr = Restrictions.eq("email", username);
         dcr.add(cr);
-        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
-        if(lst.size()==0)return user;
-        return (User)lst.get(0);
+        List<Object> lst = hibernateTemplate.findByCriteria(dcr);
+        if (lst.size() == 0) return user;
+        return (User) lst.get(0);
     }
 
     @Override
-    public User findByNewName(String CurrentName,String newName) {
-        DetachedCriteria dcr= DetachedCriteria.forClass(User.class);
+    public User findByNewName(String CurrentName, String newName) {
+        DetachedCriteria dcr = DetachedCriteria.forClass(User.class);
         Criterion cr = Restrictions.eq("name", newName.trim()).ignoreCase();
         Criterion cr1 = Restrictions.ne("name", CurrentName.trim()).ignoreCase();
         dcr.add(cr);
         dcr.add(cr1);
-        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
-        if(lst.size()==0)return new User();
-        return (User)lst.get(0);
+        List<Object> lst = hibernateTemplate.findByCriteria(dcr);
+        if (lst.size() == 0) return new User();
+        return (User) lst.get(0);
     }
 
-    private List<User> createProductList(List<Object> userList){
+    private List<User> createProductList(List<Object> userList) {
         List<User> list = new ArrayList<>();
-        for(final Object o : userList) {
-            list.add((User)o);
+        for (final Object o : userList) {
+            list.add((User) o);
         }
         return list;
     }

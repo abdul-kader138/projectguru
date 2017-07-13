@@ -53,7 +53,7 @@ public class ProductDaoImpl implements ProductDao {
         User user=(User)auth.getPrincipal();
         DetachedCriteria dcr= DetachedCriteria.forClass(Product.class);
         Criterion cr = Restrictions.eq("clientId", user.getClientId());
-        if (environment.getProperty("company.client.id").equals(user.getClientId())) dcr.add(cr);
+        if (! environment.getProperty("company.vendor.id").equals(user.getClientId())) dcr.add(cr);
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         return createProductList(lst);
     }

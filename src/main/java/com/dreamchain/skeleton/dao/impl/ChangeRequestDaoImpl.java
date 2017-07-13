@@ -76,8 +76,8 @@ public class ChangeRequestDaoImpl implements ChangeRequestDao {
 
 
     @Override
-    public List<Object> findAllStatus() {
-        List<Object> list=hibernateTemplate.find("select distinct(status), count(*) as number from ChangeRequest group by status order by status desc");
+    public List<Object> findAllStatus(String clientId) {
+        List<Object> list=hibernateTemplate.find("select distinct(status), count(*) as number from ChangeRequest where client_id =? group by status order by status desc",new Object[]{clientId});
         return list;
     }
 

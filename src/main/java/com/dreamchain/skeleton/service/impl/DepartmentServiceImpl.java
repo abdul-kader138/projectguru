@@ -39,6 +39,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     private static final String INVALID_INPUT = "Invalid input";
     private static final String INVALID_DEPARTMENT = "Department not exists";
     private static final String INVALID_PRIVILEGE_UPDATE = "You have not enough privilege to update client department info.Please contact with System Admin!!!";
+    private static final String INVALID_PRIVILEGE_DELETE = "You have not enough privilege to delete client department info.Please contact with System Admin!!!";
     private static final String INVALID_PRIVILEGE_CREATE = "You have not enough privilege to create department for client.Please contact with System Admin!!!";
     private static final String BACK_DATED_DATA = "Department data is old.Please try again with updated data";
     private static final String ASSOCIATED_DEPARTMENT = "Department is tagged with product category.First remove tagging and try again";
@@ -106,10 +107,12 @@ public class DepartmentServiceImpl implements DepartmentService {
     public String delete(Long departmentId) {
         String validationMsg = "";
         ChangeRequest changeRequest=new ChangeRequest();
+        List<Object> obj=new ArrayList<>();
         if (departmentId == 0l) validationMsg = INVALID_INPUT;
         Department department = departmentDao.get(departmentId);
-        if (department == null && "".equals(validationMsg)) validationMsg = INVALID_DEPARTMENT;
-        List<Object> obj=departmentDao.countOfDepartment(departmentId);
+        if ("".equals(department.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_DEPARTMENT;
+        if (!getUserId().getClientId().equals(department.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_DELETE;
+        if("".equals(validationMsg)) obj=departmentDao.countOfDepartment(departmentId);
         if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_DEPARTMENT;
         if("".equals(validationMsg)) changeRequest=changeRequestDao.findByDepartmentId(departmentId);
         if("".equals(validationMsg) && changeRequest.getName() !=null) validationMsg=CHANGE_REQUEST_ASSOCIATED;

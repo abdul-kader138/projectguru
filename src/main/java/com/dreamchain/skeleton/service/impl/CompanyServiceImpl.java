@@ -37,6 +37,7 @@ public class CompanyServiceImpl implements CompanyService {
     private static final String INVALID_COMPANY = "Company not exists";
     private static final String BACK_DATED_DATA = "Company data is old.Please try again with updated data";
     private static final String INVALID_PRIVILEGE_UPDATE = "You have not enough privilege to update client company info.Please contact with System Admin!!!";
+    private static final String INVALID_PRIVILEGE_DELETE = "You have not enough privilege to delete client company info.Please contact with System Admin!!!";
     private static final String ASSOCIATED_COMPANY = "Company is tagged with Department.First remove tagging and try again";
     private static final String ASSOCIATED_COMPANY_PRODUCT = "Company is tagged with Product.First remove tagging and try again";
     private static final String LOGO_PATH = "/resources/images/company_logo/";
@@ -108,12 +109,14 @@ public class CompanyServiceImpl implements CompanyService {
     public String delete(Long companyId,HttpServletRequest request) {
         String validationMsg = "";
         String fileName = "";
+        List<Object> obj=new ArrayList<>();
         if (companyId == 0l) validationMsg = INVALID_INPUT;
         Company company = companyDao.get(companyId);
-        if (company == null && "".equals(validationMsg)) validationMsg = INVALID_COMPANY;
-        List<Object> obj = companyDao.countOfCompany(companyId);
+        if ("".equals(company.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_COMPANY;
+        if (!getUserId().getClientId().equals(company.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_DELETE;
+        if("".equals(validationMsg)) obj = companyDao.countOfCompany(companyId);
         if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_COMPANY;
-        if (company != null) fileName = company.getImagePath();
+        if (! "".equals(company.getClientId())) fileName = company.getImagePath();
         if("".equals(validationMsg) && obj.size() == 0) obj=companyDao.countOfCompanyForProduct(companyId);
         if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_COMPANY_PRODUCT;
         if ("".equals(validationMsg)) validationMsg = deleteLogo(request.getRealPath("/"),fileName);

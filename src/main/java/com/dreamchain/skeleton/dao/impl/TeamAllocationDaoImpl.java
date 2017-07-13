@@ -56,7 +56,8 @@ public class TeamAllocationDaoImpl implements TeamAllocationDao {
         DetachedCriteria dcr= DetachedCriteria.forClass(TeamAllocation.class);
         Criterion cr1 = Restrictions.eq("userType", user.getUserType());
         Criterion cr = Restrictions.eq("clientId", user.getClientId());
-        if (environment.getProperty("company.client.id").equals(user.getClientId())) dcr.add(cr);
+//        if (environment.getProperty("company.client.id").equals(user.getClientId()))
+        dcr.add(cr);
         dcr.add(cr1).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List<Object> lst= hibernateTemplate.findByCriteria(dcr);
         return createTeamAllocationList(lst);

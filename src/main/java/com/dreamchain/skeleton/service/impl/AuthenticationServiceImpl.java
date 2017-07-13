@@ -42,7 +42,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String hasChangeRequest = "No";
         List<ApprovalStatus> list = approvalStatusDao.findByUserId(existingUser.getId());
         TeamAllocation obj = teamAllocationDao.findByRequestById(existingUser.getId());
-        List<Object> requestListCount = changeRequestDao.findAllStatus();
+        List<Object> requestListCount = changeRequestDao.findAllStatus(existingUser.getClientId());
         Map<String, Long> totalRequest = TotalRequest(requestListCount);
         if (obj.getId() != 0l) hasChangeRequest = "Yes";
         HttpSession httpSession = request.getSession();

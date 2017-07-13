@@ -30,7 +30,7 @@ public class UserAllocationDaoImpl implements UserAllocationDao {
 
     @Override
     public UserAllocation get(Long id) {
-        return hibernateTemplate.get(UserAllocation.class,id);
+        return hibernateTemplate.get(UserAllocation.class, id);
     }
 
     @Override
@@ -51,45 +51,46 @@ public class UserAllocationDaoImpl implements UserAllocationDao {
     @Override
     public List<UserAllocation> findAll() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user=(User)auth.getPrincipal();
-        DetachedCriteria dcr= DetachedCriteria.forClass(UserAllocation.class);
+        User user = (User) auth.getPrincipal();
+        DetachedCriteria dcr = DetachedCriteria.forClass(UserAllocation.class);
         Criterion cr = Restrictions.eq("clientId", user.getClientId());
-        if (environment.getProperty("company.client.id").equals(user.getClientId())) dcr.add(cr);
+//        if (environment.getProperty("company.client.id").equals(user.getClientId()))
+        dcr.add(cr);
         Criterion cr1 = Restrictions.eq("userType", user.getUserType());
         dcr.add(cr1).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
+        List<Object> lst = hibernateTemplate.findByCriteria(dcr);
         return createUserAllocationList(lst);
     }
 
     @Override
-    public UserAllocation findByProductAndCategory(long companyId, long productId,long categoryId) {
-        DetachedCriteria dcr= DetachedCriteria.forClass(UserAllocation.class);
+    public UserAllocation findByProductAndCategory(long companyId, long productId, long categoryId) {
+        DetachedCriteria dcr = DetachedCriteria.forClass(UserAllocation.class);
         Criterion cr = Restrictions.eq("companyId", companyId);
         Criterion cr1 = Restrictions.eq("productId", productId);
         Criterion cr2 = Restrictions.eq("categoryId", categoryId);
         dcr.add(cr);
         dcr.add(cr1);
         dcr.add(cr2);
-        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
-        if(lst.size()==0)return new UserAllocation();
-        return (UserAllocation)lst.get(0);
+        List<Object> lst = hibernateTemplate.findByCriteria(dcr);
+        if (lst.size() == 0) return new UserAllocation();
+        return (UserAllocation) lst.get(0);
     }
 
 
     @Override
     public List<Object> countOfAllocation(long categoryId) {
-        DetachedCriteria dcr= DetachedCriteria.forClass(UserAllocation.class);//Category
+        DetachedCriteria dcr = DetachedCriteria.forClass(UserAllocation.class);//Category
         Criterion cr = Restrictions.eq("categoryId", categoryId);
         dcr.add(cr);
-        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
-        if(lst.size()==0)return new ArrayList<Object>();
+        List<Object> lst = hibernateTemplate.findByCriteria(dcr);
+        if (lst.size() == 0) return new ArrayList<Object>();
         return lst;
     }
 
-    private List<UserAllocation> createUserAllocationList(List<Object> userAllocationList){
+    private List<UserAllocation> createUserAllocationList(List<Object> userAllocationList) {
         List<UserAllocation> list = new ArrayList<>();
-        for(final Object o : userAllocationList) {
-            list.add((UserAllocation)o);
+        for (final Object o : userAllocationList) {
+            list.add((UserAllocation) o);
         }
         return list;
     }

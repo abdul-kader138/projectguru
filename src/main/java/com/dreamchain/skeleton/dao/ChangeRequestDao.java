@@ -13,7 +13,7 @@ public interface ChangeRequestDao {
     void delete(ChangeRequest changeRequest);
     List<ChangeRequest> findAll(Set<Long> requestId);
     List<ChangeRequest> findAllForDeveloper();
-    List<Object> findAllStatus();
+    List<Object> findAllStatus(String clientId);
     ChangeRequest findByName(String name, long categoryId);
     ChangeRequest findByCategoryId(long categoryId);
     ChangeRequest findByDepartmentId(long departmentId);

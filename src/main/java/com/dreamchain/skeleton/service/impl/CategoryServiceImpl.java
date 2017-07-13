@@ -44,6 +44,7 @@ public class CategoryServiceImpl implements CategoryService{
     private static final String BACK_DATED_DATA = "Category data is old.Please try again with updated data";
     private static final String ASSOCIATED_ALLOCATION = "Category is tagged with allocation.First remove tagging and try again";
     private static final String INVALID_PRIVILEGE_UPDATE = "You have not enough privilege to update client category info.Please contact with System Admin!!!";
+    private static final String INVALID_PRIVILEGE_DELETE = "You have not enough privilege to delete client category info.Please contact with System Admin!!!";
     private static final String INVALID_PRIVILEGE_CREATE = "You have not enough privilege to create category for client.Please contact with System Admin!!!";
     private static final String CHANGE_REQUEST_ASSOCIATED = "This category already associated with request.So this operation can't happen";
 
@@ -128,7 +129,8 @@ public class CategoryServiceImpl implements CategoryService{
         ChangeRequest changeRequest=new ChangeRequest();
         if (categoryId == 0l) validationMsg = INVALID_INPUT;
         Category category = categoryDao.get(categoryId);
-        if (category == null && "".equals(validationMsg)) validationMsg = INVALID_CATEGORY;
+        if ("".equals(category.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_CATEGORY;
+        if (!getUserId().getClientId().equals(category.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_DELETE;
         if("".equals(validationMsg)) changeRequest=changeRequestDao.findByCategoryId(categoryId);
         if("".equals(validationMsg) && changeRequest.getName() !=null) validationMsg=CHANGE_REQUEST_ASSOCIATED;
         if("".equals(validationMsg))obj=teamAllocationDao.countOfAllocation(categoryId);
