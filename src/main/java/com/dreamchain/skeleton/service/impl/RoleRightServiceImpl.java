@@ -41,6 +41,9 @@ public class RoleRightServiceImpl implements RoleRightService {
     private static final String INVALID_ROLE = "Role not exists";
     private static final String BACK_DATED_DATA = "Role data is old.Please try again with updated data";
     private static final String ASSOCIATED_RIGHTS = "Rights is tagged with user.First remove tagging and try again";
+    private static final String INVALID_PRIVILEGE_UPDATE = "You have not enough privilege to update rights info.Please contact with System Admin!!!";
+    private static final String INVALID_PRIVILEGE_DELETE = "You have not enough privilege to delete rights info.Please contact with System Admin!!!";
+
 
     @Transactional(readOnly = true)
     public RoleRight get(Long id) {
@@ -76,6 +79,7 @@ public class RoleRightServiceImpl implements RoleRightService {
         RoleRight roleRight = createRoleObj(roleObj);
         RoleRight existingRoleRight = roleRightDao.get(roleRight.getId());
         if (roleRight.getId() == 0l && "".equals(validationMsg)) validationMsg = INVALID_INPUT;
+        if (!getUserId().getClientId().equals(existingRoleRight.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_UPDATE;
         if (roleRight.getVersion() != existingRoleRight.getVersion() && "".equals(validationMsg))
             validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg))
@@ -93,10 +97,12 @@ public class RoleRightServiceImpl implements RoleRightService {
     @Transactional
     public String delete(Long roleId) {
         String validationMsg = "";
+        User obj=new User();
         if (roleId == 0l) validationMsg = INVALID_INPUT;
         RoleRight roleRight = roleRightDao.get(roleId);
         if (roleRight == null && "".equals(validationMsg)) validationMsg = INVALID_ROLE;
-        User obj = userDao.findByRoleRightId(roleRight.getId());
+        if (!getUserId().getClientId().equals(roleRight.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_DELETE;
+        if ("".equals(validationMsg)) obj = userDao.findByRoleRightId(roleRight.getId());
         if (obj.getEmail() !=null && "".equals(validationMsg)) validationMsg = ASSOCIATED_RIGHTS;
 
         if ("".equals(validationMsg)) {
@@ -158,6 +164,7 @@ public class RoleRightServiceImpl implements RoleRightService {
         if (!"".equals((String) roleObj.get("DELETE_PRIVILEGE") )) {
             rights.add((String) roleObj.get("DELETE_PRIVILEGE"));
         }
+        roleRight.setClientId(getUserId().getClientId());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Date date = dateFormat.parse(dateFormat.format(new Date()));
         roleRight.setCreatedBy(getUserId().getEmail());

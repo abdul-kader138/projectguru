@@ -33,6 +33,9 @@ public class Roles implements Serializable
     @Length(max = 150)
     private String description;
 
+    @Column
+    @NotEmpty
+    private String clientId;
 
 
     @Column
@@ -119,5 +122,13 @@ public class Roles implements Serializable
 
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 }

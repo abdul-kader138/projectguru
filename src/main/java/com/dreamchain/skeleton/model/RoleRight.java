@@ -41,6 +41,10 @@ public class RoleRight implements Serializable
     @Column
     private String roleName;
 
+    @Column
+    @NotEmpty
+    private String clientId;
+
 
     @NotNull
     @ElementCollection(fetch = FetchType.EAGER)
@@ -144,5 +148,13 @@ public class RoleRight implements Serializable
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 }

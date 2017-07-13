@@ -34,6 +34,9 @@ public class RolesServiceImpl implements RolesService {
     private static final String INVALID_ROLES = "Roles not exists";
     private static final String BACK_DATED_DATA = "Roles data is old.Please try again with updated data";
     private static final String ASSOCIATED_ROLES = "Roles is tagged with rights.First remove tagging and try again";
+    private static final String INVALID_PRIVILEGE_UPDATE = "You have not enough privilege to update role info.Please contact with System Admin!!!";
+    private static final String INVALID_PRIVILEGE_DELETE = "You have not enough privilege to delete role info.Please contact with System Admin!!!";
+
 
 
     @Override
@@ -75,6 +78,7 @@ public class RolesServiceImpl implements RolesService {
         if (roles.getId() == 0l && "".equals(validationMsg)) validationMsg = INVALID_INPUT;
         if ("".equals(validationMsg)) existingRoles = rolesDao.get(roles.getId());
         if (existingRoles.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_ROLES;
+        if (!getUserId().getClientId().equals(existingRoles.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_UPDATE;
         if (roles.getVersion() != existingRoles.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg)) newObj = rolesDao.findByNewName(existingRoles.getName(),roles.getName());
         if (newObj.getName() != null && "".equals(validationMsg)) validationMsg = ROLES_EXISTS;
@@ -90,12 +94,13 @@ public class RolesServiceImpl implements RolesService {
     @Transactional
     public String delete(Long rolesId) {
         String validationMsg = "";
+        List<Object> obj=new ArrayList<>();
         if (rolesId == 0l) validationMsg = INVALID_INPUT;
         Roles roles = rolesDao.get(rolesId);
         if (roles == null && "".equals(validationMsg)) validationMsg = INVALID_ROLES;
-        List<Object> obj=rolesDao.countOfRoles(rolesId);
+        if (!getUserId().getClientId().equals(roles.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_DELETE;
+        if ("".equals(validationMsg)) obj=rolesDao.countOfRoles(rolesId);
         if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_ROLES;
-
         if ("".equals(validationMsg)) {
             rolesDao.delete(roles);
         }

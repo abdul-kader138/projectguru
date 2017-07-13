@@ -11,15 +11,15 @@ INSERT INTO company(
 2) Insert to roles table
 
 INSERT INTO roles(
-            id, created_by, description, name,version)
-    VALUES (9999999991, 'admin@domain.com', 'ROLE_SUPER_ADMIN', 'ROLE_SUPER_ADMIN',0);
+            id, created_by, description, name,version,client_id)
+    VALUES (9999999991, 'admin@domain.com', 'ROLE_SUPER_ADMIN', 'ROLE_SUPER_ADMIN',0,'PG');
+
 
 3) Insert to role_rights table
 
 INSERT INTO role_right(
-            id, created_by,role_id,version, role_name)
-    VALUES (9999999992, 'admin@domain.com', 9999999991,0, 'ROLE_SUPER_ADMIN');
-
+            id, created_by,role_id,version, role_name,client_id)
+    VALUES (9999999992, 'admin@domain.com', 9999999991,0, 'ROLE_SUPER_ADMIN','PG');
 
 4) Insert into rights table
 
@@ -56,14 +56,14 @@ password-12345678
 1) Insert to roles table
 
 INSERT INTO roles(
-            id, created_by, description, name,version)
-    VALUES (9999999994, 'admin@domain.com', 'ROLE_USER', 'ROLE_USER',0);
+            id, created_by, description, name,version,client_id)
+    VALUES (9999999994, 'admin@domain.com', 'ROLE_USER', 'ROLE_USER',0,'PG');
 
 2) Insert to role_rights table
 
 INSERT INTO role_right(
-            id, created_by,role_id,version, role_name)
-    VALUES (9999999995, 'admin@domain.com', 9999999994,0, 'ROLE_USER');
+            id, created_by,role_id,version, role_name,client_id)
+    VALUES (9999999995, 'admin@domain.com', 9999999994,0, 'ROLE_USER','PG');
 
 
 3) Insert into rights table
@@ -78,14 +78,14 @@ INSERT INTO role_right(
 1) Insert to roles table
 
 INSERT INTO roles(
-            id, created_by, description, name,version)
-    VALUES (9999999981, 'admin@domain.com', 'ROLE_ADMIN', 'ROLE_ADMIN',0);
+            id, created_by, description, name,version,client_id)
+    VALUES (9999999981, 'admin@domain.com', 'ROLE_ADMIN', 'ROLE_ADMIN',0,'PG');
 
 2) Insert to role_rights table
 
 INSERT INTO role_right(
-            id, created_by,role_id,version, role_name)
-    VALUES (9999999982, 'admin@domain.com', 9999999981,0, 'ROLE_ADMIN');
+            id, created_by,role_id,version, role_name,client_id)
+    VALUES (9999999982, 'admin@domain.com', 9999999981,0, 'ROLE_ADMIN','PG');
 
 
 3) Insert into rights table

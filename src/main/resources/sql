@@ -3,12 +3,12 @@ INSERT INTO company(
     VALUES (9999999993, 'Dhaka', 'admin@domain.com', '/resources/images/company_logo/default.jpg','Test Company', 0,'PG');
 
 INSERT INTO roles(
-            id, created_by, description, name,version)
-    VALUES (9999999991, 'admin@domain.com', 'ROLE_SUPER_ADMIN', 'ROLE_SUPER_ADMIN',0);
+            id, created_by, description, name,version,client_id)
+    VALUES (9999999991, 'admin@domain.com', 'ROLE_SUPER_ADMIN', 'ROLE_SUPER_ADMIN',0,'PG');
 
 INSERT INTO role_right(
-            id, created_by,role_id,version, role_name)
-    VALUES (9999999992, 'admin@domain.com', 9999999991,0, 'ROLE_SUPER_ADMIN');
+            id, created_by,role_id,version, role_name,client_id)
+    VALUES (9999999992, 'admin@domain.com', 9999999991,0, 'ROLE_SUPER_ADMIN','PG');
 
    INSERT INTO rights(id, rights) VALUES (9999999992, 'View');
    INSERT INTO rights(id, rights) VALUES (9999999992, 'Write');
@@ -22,23 +22,23 @@ INSERT INTO users(
 
 
 INSERT INTO roles(
-            id, created_by, description, name,version)
-    VALUES (9999999994, 'admin@domain.com', 'ROLE_USER', 'ROLE_USER',0);
+            id, created_by, description, name,version,client_id)
+    VALUES (9999999994, 'admin@domain.com', 'ROLE_USER', 'ROLE_USER',0,'PG');
 
 INSERT INTO role_right(
-            id, created_by,role_id,version, role_name)
-    VALUES (9999999995, 'admin@domain.com', 9999999994,0, 'ROLE_USER');
+            id, created_by,role_id,version, role_name,client_id)
+    VALUES (9999999995, 'admin@domain.com', 9999999994,0, 'ROLE_USER','PG');
 
    INSERT INTO rights(id, rights) VALUES (9999999995, 'View');
    INSERT INTO rights(id, rights) VALUES (9999999995, 'Write');
 
 INSERT INTO roles(
-            id, created_by, description, name,version)
-    VALUES (9999999981, 'admin@domain.com', 'ROLE_ADMIN', 'ROLE_ADMIN',0);
+            id, created_by, description, name,version,client_id)
+    VALUES (9999999981, 'admin@domain.com', 'ROLE_ADMIN', 'ROLE_ADMIN',0,'PG');
 
 INSERT INTO role_right(
-            id, created_by,role_id,version, role_name)
-    VALUES (9999999982, 'admin@domain.com', 9999999981,0, 'ROLE_ADMIN');
+            id, created_by,role_id,version, role_name,client_id)
+    VALUES (9999999982, 'admin@domain.com', 9999999981,0, 'ROLE_ADMIN','PG');
 
    INSERT INTO rights(id, rights) VALUES (9999999982, 'View');
    INSERT INTO rights(id, rights) VALUES (9999999982, 'Write');
