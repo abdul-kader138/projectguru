@@ -7,6 +7,8 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -14,11 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@PropertySource("classpath:config.properties")
 public class RolesDaoImpl implements RolesDao {
 
     @Autowired
     private HibernateTemplate hibernateTemplate;
 
+    @Autowired
+    Environment environment;
 
     @Override
     public Roles get(Long id) {
@@ -42,7 +47,11 @@ public class RolesDaoImpl implements RolesDao {
 
     @Override
     public List<Roles> findAll() {
-        return hibernateTemplate.loadAll(Roles.class);
+        DetachedCriteria dcr= DetachedCriteria.forClass(Roles.class);
+        Criterion cr = Restrictions.ne("name", environment.getProperty("role.super.admin.hide"));
+        dcr.add(cr);
+        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
+        return createRolesList(lst);
     }
 
     @Override
@@ -77,4 +86,11 @@ public class RolesDaoImpl implements RolesDao {
         return (Roles)lst.get(0);
     }
 
+    private List<Roles> createRolesList(List<Object> rolesList){
+        List<Roles> list = new ArrayList<>();
+        for(final Object o : rolesList) {
+            list.add((Roles)o);
+        }
+        return list;
+    }
 }
