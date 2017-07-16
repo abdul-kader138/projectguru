@@ -3,7 +3,7 @@
 <section class="content">
     <div id="viewTableData"></div>
     <div class="row clearfix">
-        <div class="col-xs-8 col-xs-offset-2 card">
+        <div class="col-xs-10 col-xs-offset-1 card">
             <br/>
 
             <div><h4>Request Details</h4></div>
@@ -13,33 +13,50 @@
             <div class="table-responsive">
                 <table class="display nowrap table table-bordered" cellspacing="0" width="100%">
                     <tbody>
-                    <tr class="label_color">
-                        <td><b>Company Name</b></td>
-                        <td>${changeRequest.category.company.name}</td>
-                    </tr>
-                    <tr class="label_color">
-                        <td><b>Product Name</b></td>
-                        <td>${changeRequest.category.product.name}</td>
-                    </tr>
-                    <tr class="label_color">
-                        <td><b>Category Name</b></td>
-                        <td>${changeRequest.category.name}</td>
-                    </tr>
-                    <tr class="label_color">
-                        <td><b>Name</b></td>
-                        <td>${changeRequest.name}</td>
-                    </tr>
-                    <tr class="label_color">
-                        <td><b>Description</b></td>
-                        <td>
-                            <c:forEach items="${changeRequest.description}" var="description">
-                                <c:set var="desVal" value="${fn:substring(description, 0, 40)}"/>
-                                <c:set var="desVal1" value="${fn:substring(description, 40, 80)}"/>
-                                <c:set var="desVal2" value="${fn:substring(description, 80, 120)}"/>
-                                ${desVal}</br>${desVal1}</br>${desVal2}
-                            </c:forEach>
-                        </td>
-                    </tr>
+                    <c:if test="${changeRequest.category.company.name != null}">
+                        <tr class="label_color">
+                            <td><b>Company Name</b></td>
+                            <td>${changeRequest.category.company.name}</td>
+                        </tr>
+                    </c:if>
+                    <c:if test="${changeRequest.category.product.name != null}">
+                        <tr class="label_color">
+                            <td><b>Product Name</b></td>
+                            <td>${changeRequest.category.product.name}</td>
+                        </tr>
+                    </c:if>
+                    <c:if test="${changeRequest.category.name != null}">
+                        <tr class="label_color">
+                            <td><b>Category Name</b></td>
+                            <td>${changeRequest.category.name}</td>
+                        </tr>
+                    </c:if>
+                    <c:if test="${changeRequest.name != null}">
+                        <tr class="label_color">
+                            <td><b>Name</b></td>
+                            <td>${changeRequest.name}</td>
+                        </tr>
+                    </c:if>
+                    <c:if test="${changeRequest.description != null}">
+                        <tr class="label_color">
+                            <td><b>Description</b></td>
+                            <td>
+                                <c:forEach items="${changeRequest.description}" var="description">
+                                    <c:set var="desVal" value="${fn:substring(description, 0, 40)}"/>
+                                    <c:set var="desVal1" value="${fn:substring(description, 40, 80)}"/>
+                                    <c:set var="desVal2" value="${fn:substring(description, 80, 120)}"/>
+                                    ${desVal}</br>${desVal1}</br>${desVal2}
+                                </c:forEach>
+                            </td>
+                        </tr>
+                    </c:if>
+                    <c:if test="${changeRequest.priority != null}">
+                        <tr class="label_color">
+                            <td><b>Request Priority</b></td>
+                            <td>${changeRequest.priority}</td>
+                        </tr>
+                    </c:if>
+
                     <c:if test="${changeRequest.declineCause != null}">
                         <c:set var="declineVal" value="${fn:substring(changeRequest.declineCause, 0, 40)}"/>
                         <c:set var="declineVal1" value="${fn:substring(changeRequest.declineCause, 40, 80)}"/>
@@ -50,12 +67,12 @@
                         </tr>
                     </c:if>
 
-                <c:if test="${changeRequest.wipStatus != null}">
-                    <tr class="label_color">
-                        <td><b>Status(Waiting For)</b></td>
-                        <td>${changeRequest.wipStatus}</td>
-                    </tr>
-                </c:if>
+                    <c:if test="${changeRequest.wipStatus != null}">
+                        <tr class="label_color">
+                            <td><b>Status(Waiting For)</b></td>
+                            <td>${changeRequest.wipStatus}</td>
+                        </tr>
+                    </c:if>
 
                     <c:if test="${changeRequest.status != null}">
                         <tr class="label_color">

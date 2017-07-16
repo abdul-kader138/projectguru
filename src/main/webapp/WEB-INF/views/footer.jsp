@@ -42,6 +42,16 @@
 
 
 <script src="resources/node_modules/custom-js/custom.js"></script>
+<script>
+    $(document).ajaxStart(function(){
+        $("head").addClass('ajaxLoading');
+        $("body").addClass('ajaxLoading');
+    });
+    $(document).ajaxStop(function(){
+        $("head").removeClass('ajaxLoading');
+        $("body").removeClass('ajaxLoading');
+    });
+</script>
 <noscript>
 
     <div class="col-sm-10 col-sm-offset-1">

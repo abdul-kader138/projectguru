@@ -14,6 +14,7 @@ public interface ChangeRequestDao {
     List<ChangeRequest> findAll(Set<Long> requestId);
     List<ChangeRequest> findAllForDeveloper();
     List<Object> findAllStatus(String clientId);
+    List<Object> findAllStatus();
     ChangeRequest findByName(String name, long categoryId);
     ChangeRequest findByCategoryId(long categoryId);
     ChangeRequest findByDepartmentId(long departmentId);

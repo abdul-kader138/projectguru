@@ -65,8 +65,7 @@
                                     <thead>
                                     <tr>
                                         <th width="100px">Name</th>
-                                        <th width="100px">Product</th>
-                                        <th width="100px">Category</th>
+                                        <th width="50px">Priority</th>
                                         <th width="120px"> Status</br>(Waiting)</th>
                                         <th width="50px"> Status</br>(Done)</th>
                                         <th width="30px"> Days</br>(Asking)</th>
@@ -158,20 +157,8 @@
                     }
                     },
                     {
-                        "mData": "category.product.name", 'sWidth': '100px', "render": function (data, type, row, id) {
-                        if (row.category.product.name != null) {
-                            var productName = row.category.product.name.substr(0, 20);
-                            return productName;
-                        }
-                        return "";
-                    }
-                    },
-                    {
-                        "mData": "category.name", 'sWidth': '100px', "render": function (data, type, row, id) {
-                        if (row.category.name != null) {
-                            var categoryName = row.category.name.substr(0, 20);
-                            return categoryName;
-                        }
+                        "mData": "priority", 'sWidth': '50px', "orderable": false,"render": function (data, type, row, id) {
+                        if (row.priority != null) return row.priority;
                         return "";
                     }
                     },

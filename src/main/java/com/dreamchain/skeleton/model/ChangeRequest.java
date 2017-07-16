@@ -97,7 +97,8 @@ public class ChangeRequest implements Serializable {
     @Column(name="description")
     private Set<String> description = new HashSet<>();
 
-
+    @NotEmpty
+    private String priority;
 
     @NotEmpty
     @Length(max = 150)
@@ -377,5 +378,13 @@ public class ChangeRequest implements Serializable {
 
     public void setClientId(String clientId) {
         this.clientId = clientId;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
     }
 }

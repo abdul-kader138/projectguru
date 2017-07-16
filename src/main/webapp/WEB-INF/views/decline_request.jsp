@@ -2,7 +2,7 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row clearfix" id="userForm">
-            <div class="col-xs-8 col-xs-offset-2">
+            <div class="col-xs-10 col-xs-offset-1">
                 <div class="card">
                     <div class="header" style="background-color:#a5a5a5">
                         <h2><strong>&nbsp;</strong></h2>
@@ -28,7 +28,7 @@
 
                                 <!-- Text Label-->
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label label_color" for="company"><b>Product Name:</b></label>
+                                    <label class="col-md-4 control-label label_color" for="productName"><b>Product Name:</b></label>
 
                                     <div class="col-md-4">
                                         <label id="productName" class="form-control">${productName}</label>
@@ -37,7 +37,7 @@
 
                                 <!-- Text Label-->
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label label_color" for="company"><b>Category Name:</b></label>
+                                    <label class="col-md-4 control-label label_color" for="categoryName"><b>Category Name:</b></label>
 
                                     <div class="col-md-4">
                                         <label id="categoryName" class="form-control">${categoryName}</label>
@@ -47,7 +47,7 @@
 
                                 <!-- Text Label-->
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label label_color" for="company"><b>Request Name:</b></label>
+                                    <label class="col-md-4 control-label label_color" for="name"><b>Request Name:</b></label>
 
                                     <div class="col-md-4">
                                         <label id="company" class="form-control">${name}</label>

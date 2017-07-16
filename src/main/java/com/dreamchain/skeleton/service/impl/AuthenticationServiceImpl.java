@@ -40,9 +40,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void setSessionValue(HttpServletRequest request, User user) {
         User existingUser = userDao.findByUserName(user.getEmail());
         String hasChangeRequest = "No";
+        List<Object> requestListCount =new ArrayList<>();
         List<ApprovalStatus> list = approvalStatusDao.findByUserId(existingUser.getId());
         TeamAllocation obj = teamAllocationDao.findByRequestById(existingUser.getId());
-        List<Object> requestListCount = changeRequestDao.findAllStatus(existingUser.getClientId());
+        if(environment.getProperty("user.type.vendor").equals(existingUser.getUserType())) requestListCount = changeRequestDao.findAllStatus();
+        if(! environment.getProperty("user.type.vendor").equals(existingUser.getUserType())) requestListCount = changeRequestDao.findAllStatus(existingUser.getClientId());
         Map<String, Long> totalRequest = TotalRequest(requestListCount);
         if (obj.getId() != 0l) hasChangeRequest = "Yes";
         HttpSession httpSession = request.getSession();

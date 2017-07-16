@@ -9,6 +9,7 @@
         <div class="row clearfix">
             <%--<div class="col-xs-10 col-xs-offset-1 card">--%>
             <div class="col-xs-12 card">
+                <br/>
                 <div><h4>Approval Waiting List</h4></div>
                 <hr/>
                 <br/><br/>
@@ -28,6 +29,7 @@
                         <th></th>
                         <th></th>
                         <th></th>
+                        <th></th>
                     </tr>
                     </thead>
                 </table>
@@ -44,6 +46,7 @@
 
     <script>
         $(document).ready(function () {
+
 
             /* set nav bar color */
             changeNavColor();
@@ -141,21 +144,28 @@
                         {
                             "mData": "id", "orderable": false,
                             "render": function (id, type) {
-                                return '<button type="button" class="approve btn bg-light-blue waves-war"  value="1" title="Approve request" >&nbsp;Approve</button>';
+                                return '<a type="button" href="#" class="approve"  value="1" title="Approve request" ><img src="resources/images/ok.gif" width="16" height="16" border="0"></button>';
                             }
                         },
 
                         {
                             "mData": "userType", "orderable": false,
                             "render": function (userType) {
-                                if (userType == messageResource.get('approve.user.type.checked', 'configMessageForUI') || userType == messageResource.get('approve.user.type.approve', 'configMessageForUI')) return '<button type="button" class="delete btn bg-red waves-war"  value="1" title="Delete Request" >&nbsp;Delete</button>';
+                                if (userType == messageResource.get('approve.user.type.checked', 'configMessageForUI') || userType == messageResource.get('approve.user.type.approve', 'configMessageForUI')) return '<a class="delete" href="#"  value="1" title="Delete Request" ><img src="resources/images/delete.gif" width="16" height="16" border="0"></a>';
                                 else return "";
                             }
                         },
                         {
                             "mData": "userType", "orderable": false,
                             "render": function (data, type, row, id) {
-                                if (row.userType == messageResource.get('approve.user.type.request.by.acknowledgement', 'configMessageForUI') || row.userType == messageResource.get('approve.user.type.checked.by.acknowledgement', 'configMessageForUI')) return '<a class="decline btn bg-brown waves-war"  href="/decline?a_id='+row.id +'&r_id='+row.requestId+'&ver='+row.version +'" title="Decline Request"> Decline </a>';
+                                if (row.userType == messageResource.get('approve.user.type.checked', 'configMessageForUI') || row.userType == messageResource.get('approve.user.type.approve', 'configMessageForUI')) return '<a class="edit"  href="/edit_request?a_id='+row.id +'&r_id='+row.requestId+'&ver='+row.version +'" title="Edit Request"> <img src="resources/images/edit.gif" width="16" height="16" border="0"></a>';
+                                else return "";
+                            }
+                        },
+                        {
+                            "mData": "userType", "orderable": false,
+                            "render": function (data, type, row, id) {
+                                if (row.userType == messageResource.get('approve.user.type.request.by.acknowledgement', 'configMessageForUI') || row.userType == messageResource.get('approve.user.type.checked.by.acknowledgement', 'configMessageForUI')) return '<a class="decline"  href="/decline?a_id='+row.id +'&r_id='+row.requestId+'&ver='+row.version +'" title="Decline Request"> <img src="resources/images/decline.gif" width="20" height="20" border="0"> </a>';
                                 else return "";
                             }
                         }
@@ -181,7 +191,7 @@
 
             /* Create object for update Approval */
 
-            $('#approveTable tbody').on('click', 'button', function () {
+            $('#approveTable tbody').on('click', 'a', function () {
                 var blankDeliveryDate="";
                 var obj = this;
                 var data = table.row($(this).parents('tr')).data();

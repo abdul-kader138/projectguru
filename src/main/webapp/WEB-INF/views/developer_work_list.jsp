@@ -61,7 +61,7 @@
                                     <thead>
                                     <tr>
                                         <th width="100px">Name</th>
-                                        <th width="100px">Company</th>
+                                        <th width="50px">Priority</th>
                                         <th width="100px">Product</th>
                                         <th width="100px">Category</th>
                                         <th width="80px"> Status</th>
@@ -146,15 +146,11 @@
                     }
                     },
                     {
-                        "mData": "category.company.name", 'sWidth': '100px', "render": function (data, type, row, id) {
-                        if (row.category.company.name != null) {
-                            var companyName = row.category.company.name.substr(0, 25);
-                            return companyName;
-                        }
+                        "mData": "priority", 'sWidth': '50px', "orderable": false,"render": function (data, type, row, id) {
+                        if (row.priority != null) return row.priority;
                         return "";
                     }
                     },
-
                     {
                         "mData": "category.product.name", 'sWidth': '100px', "render": function (data, type, row, id) {
                         if (row.category.product.name != null) {
@@ -202,9 +198,9 @@
                         "mData": "declineCause", 'sWidth': '100px', "orderable": false,
                         "render": function (data, type, row, id) {
                             if (row.declineCause != null) {
-                                var declineCause = row.declineCause.substr(0, 40);
-                                var declineCause2 = row.declineCause.substr(41, 80);
-                                var declineCause3 = row.declineCause.substr(81, 120);
+                                var declineCause = row.declineCause.substr(0, 40).trim();
+                                var declineCause2 = row.declineCause.substr(41, 80).trim();
+                                var declineCause3 = row.declineCause.substr(81, 120).trim();
                                 return '<label>'+declineCause+'</br>'+declineCause2+'</br>'+declineCause3+'</label>';
                             }
                             return "";
