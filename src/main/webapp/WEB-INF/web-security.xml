@@ -85,10 +85,13 @@
 		<security:intercept-url pattern="/approval_details" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
 		<security:intercept-url pattern="/approval_details/approval_detailsList" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
 		<security:intercept-url pattern="/approval_details/*" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
+		<security:intercept-url pattern="/approval_details/approval_detailsList_set_priority" access="hasAnyRole('ROLE_ADMIN','ROLE_SUPER_ADMIN')" />
+		<security:intercept-url pattern="/approval_details/priority_update" access="hasAnyRole('ROLE_ADMIN','ROLE_SUPER_ADMIN')" />
 
 
 		<!--change request-->
 		<security:intercept-url pattern="/change_request" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
+		<security:intercept-url pattern="/edit_request" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
 		<security:intercept-url pattern="/change_request/change_requestList" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
 		<security:intercept-url pattern="/change_request/*" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
 		<security:intercept-url pattern="/change_request_view" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
@@ -104,6 +107,7 @@
 		<security:intercept-url pattern="/profile" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
 		<security:intercept-url pattern="/change_password" access="hasAnyRole('ROLE_USER','ROLE_ADMIN','ROLE_OTHER','ROLE_SUPER_ADMIN')" />
 		<security:intercept-url pattern="/developer_work_status/developer_work_statusList" access="hasAnyRole('ROLE_USER')" />
+		<security:intercept-url pattern="/set_priority" access="hasAnyRole('ROLE_ADMIN','ROLE_SUPER_ADMIN')" />
 
 		<!--multiple session invalid-->
 		<security:session-management session-fixation-protection="newSession">

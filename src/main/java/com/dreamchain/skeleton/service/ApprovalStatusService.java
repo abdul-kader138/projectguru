@@ -12,5 +12,7 @@ public interface ApprovalStatusService {
     ApprovalStatus get(Long id);
     Map<String,Object> update(Map<String, Object> approvalObj,HttpServletRequest request) throws ParseException;
     List<ApprovalStatus> findByUserId(HttpServletRequest request);
+    List<ApprovalStatus> findByUserIdAndDeliveryDate();
     String delete(long requestId,long id,HttpServletRequest request);
+    Map<String, Object> updatePriority(String[] approvalIds);
 }

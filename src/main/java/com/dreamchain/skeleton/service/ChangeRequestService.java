@@ -10,6 +10,7 @@ import java.util.Map;
 public interface ChangeRequestService {
     ChangeRequest get(Long id);
     Map<String,Object> save(MultipartHttpServletRequest multipartHttpServletRequest) throws Exception;
+    Map<String,Object> update(MultipartHttpServletRequest multipartHttpServletRequest) throws Exception;
     List<ChangeRequest> findAll();
     List<ChangeRequest> findAllForDeveloper();
 }

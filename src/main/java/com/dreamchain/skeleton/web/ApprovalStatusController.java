@@ -1,12 +1,14 @@
 package com.dreamchain.skeleton.web;
 
 import com.dreamchain.skeleton.model.ApprovalStatus;
+import com.dreamchain.skeleton.model.User;
 import com.dreamchain.skeleton.service.ApprovalStatusService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +44,17 @@ public class ApprovalStatusController {
         return model;
     }
 
+
+    @RequestMapping("/set_priority")
+    public ModelAndView setPriority()  {
+        ModelAndView model = new ModelAndView();
+        String pageName="main";
+        User user= (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(user.getUserType().equals(environment.getProperty("user.type.vendor"))) pageName = "set_request_priority";
+        model.setViewName(pageName);
+        return model;
+    }
+
     @RequestMapping(value = "approval_details/approval_detailsList", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -52,6 +65,18 @@ public class ApprovalStatusController {
         logger.info("Loading all approval list info: << total " + approvalList.size());
         return approvalList;
     }
+
+    @RequestMapping(value = "approval_details/approval_detailsList_set_priority", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<ApprovalStatus> ApprovalList() {
+        List<ApprovalStatus> approvalList = new ArrayList();
+        logger.info("Loading all approval list info: >> ");
+        approvalList = approvalStatusService.findByUserIdAndDeliveryDate();
+        logger.info("Loading all approval list info: << total " + approvalList.size());
+        return approvalList;
+    }
+
 
     @RequestMapping(value = "approval_details/update", method = RequestMethod.POST)
     public
@@ -68,6 +93,24 @@ public class ApprovalStatusController {
             successMsg = environment.getProperty("approval.update.success.msg");
         }
         logger.info("Updating approval list:  << " + successMsg + validationError);
+        return objList;
+    }
+
+    @RequestMapping(value = "approval_details/priority_update", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    Map updateApprovalPriority(@RequestBody String[] approvalIds) throws ParseException {
+        Map<String, Object> objList = new HashMap<>();
+        String successMsg = "";
+        String validationError = "";
+        logger.info("Updating approval priority: >>");
+        objList = approvalStatusService.updatePriority(approvalIds);
+        validationError = (String) objList.get("validationError");
+        if (validationError.length() == 0) {
+            objList.put("successMsg", environment.getProperty("approval.priority.update.success.msg"));
+            successMsg = environment.getProperty("approval.priority.update.success.msg");
+        }
+        logger.info("Updating approval priority:  << " + successMsg + validationError);
         return objList;
     }
 

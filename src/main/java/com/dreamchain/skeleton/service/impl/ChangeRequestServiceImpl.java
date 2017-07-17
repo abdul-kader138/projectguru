@@ -49,6 +49,7 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
     private static final String CHANGED_REQUEST_EXISTS = "This request name is already used.Please try again with new one!!!";
     private static final String TEAM_ALLOCATION = "Team member not allocated please contact with admin....";
     private static final String USER_ALLOCATION = "User not allocated please contact with admin....";
+    private static final String BACK_DATED_DATA = "Approval data is old.Please try again with updated data";
     private static final String INVALID_INPUT = "Invalid input";
     private static final String DOC_PATH = "/resources/images/doc/";
     private static final String EMAIL_HEADER_SAVE= "New Request is waiting for approval.Request Name ##";
@@ -95,6 +96,37 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
     }
 
 
+    @Transactional
+    public Map<String, Object> update(MultipartHttpServletRequest request) throws Exception {
+        Map<String, Object> obj = new HashMap<>();
+        Map<String, Object> msg = new HashMap<>();
+        ChangeRequest changeRequest = new ChangeRequest();
+        String validationMsg = "";
+        ApprovalStatus approvalStatus = approvalStatusDao.get(Long.parseLong(request.getParameter("approvalStatusId")));
+        ChangeRequest existingChangeRequest = changeRequestDao.get(Long.parseLong(request.getParameter("changeRequestId")));
+        if (existingChangeRequest.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_INPUT;
+        if (approvalStatus.getVersion() != Long.parseLong(request.getParameter("version")) && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
+        changeRequest=createObjForUpdate(request,existingChangeRequest);
+        if ("".equals(validationMsg)) validationMsg = checkInput(changeRequest);
+        String fileName = request.getFile("doc").getOriginalFilename();
+        if (!("".equals(fileName))) {
+            validationMsg = deleteLogo(request.getRealPath(
+                    "/"), existingChangeRequest.getDocPath());
+            if ("".equals(validationMsg)) msg = fileSave(request);
+            if ("".equals(validationMsg)) changeRequest.setDocPath((String) msg.get("path"));
+        }
+        if ("".equals(validationMsg)) {
+            changeRequestDao.update(changeRequest);
+            User requestByUser=userDao.get(changeRequest.getRequestById());
+            sendEmail(requestByUser.getEmail(),EMAIL_HEADER_SAVE,EMAIL_BODY_SAVE+changeRequest.getName()); //mail sent to notify user for approving
+        }
+        obj.put("validationError", validationMsg);
+        return obj;
+    }
+
+
+
+
     @Transactional(readOnly=true)
     public List<ChangeRequest> findAll() {
         User user=userDao.findByUserName(getUserId().getEmail());
@@ -127,6 +159,7 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
         if ("".equals(validationMsg)) changeRequest = setChangeRequestValue(category, teamAllocation, userAllocation);
         if ("".equals(validationMsg)) {
             changeRequest.setName(request.getParameter("name").trim());
+            changeRequest.setPriority(request.getParameter("requestPriority").trim());
             changeRequest.setDescription(descriptions);
             changeRequest.setDocPath(DOC_PATH + fileName.trim());
             SimpleDateFormat dateFormat = new SimpleDateFormat();
@@ -139,6 +172,22 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
         objList.put("validationMsg", validationMsg);
         objList.put("changeRequest", changeRequest);
         return objList;
+
+    }
+
+    private ChangeRequest createObjForUpdate(MultipartHttpServletRequest request,ChangeRequest existingObj) throws Exception {
+        ChangeRequest changeRequest = existingObj;
+        changeRequest.setPriority(request.getParameter("requestPriority"));
+        String[] descriptionObj=request.getParameterValues("description[]");
+        List<String> descriptionList= setDescriptionList(descriptionObj);
+        Set<String> descriptions=new HashSet<>(descriptionList);
+        changeRequest.setDescription(descriptions);
+        changeRequest.setDocPath(existingObj.getDocPath());
+        SimpleDateFormat dateFormat = new SimpleDateFormat();
+        Date date = dateFormat.parse(dateFormat.format(new Date()));
+        changeRequest.setUpdatedBy(getUserId().getEmail());
+        changeRequest.setUpdatedOn(date);
+        return changeRequest;
 
     }
 
@@ -348,6 +397,19 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
         return obj;
     }
 
+
+    private String deleteLogo(String realPathFetch, String fileName) {
+        String msg = "";
+        try {
+            File file = new File(realPathFetch+fileName);
+            file.setWritable(true);
+            if (file.delete()) msg = "";
+            else msg = environment.getProperty("request.file.delete.success.msg");
+        } catch (Exception e) {
+            msg = e.getMessage();
+        }
+        return msg;
+    }
 
 
 }

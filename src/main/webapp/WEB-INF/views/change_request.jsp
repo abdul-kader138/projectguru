@@ -3,7 +3,7 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row clearfix" id="requestForm">
-            <div class="col-xs-8 col-xs-offset-2">
+            <div class="col-xs-12">
                 <div class="card">
                     <div class="header" style="background-color:#a5a5a5">
                         <h2><strong>&nbsp;</strong></h2>
@@ -17,7 +17,7 @@
 
                                 <!-- select Box for Company-->
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="listOfCompany">Company Name</label>
+                                    <label class="col-md-4 control-label" for="listOfCompany">Company Name :</label>
 
                                     <div class="col-md-4">
                                         <select id="listOfCompany" class="form-control"
@@ -29,7 +29,7 @@
 
                                 <!-- select Box for Product-->
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="listOfProduct">Product Name</label>
+                                    <label class="col-md-4 control-label" for="listOfProduct">Product Name :</label>
 
                                     <div class="col-md-4">
                                         <select id="listOfProduct" class="form-control"
@@ -41,7 +41,7 @@
 
                                 <!-- select Box for Product-->
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="listOfCategory">Category Name</label>
+                                    <label class="col-md-4 control-label" for="listOfCategory">Category Name :</label>
 
                                     <div class="col-md-4">
                                         <select id="listOfCategory" class="form-control"
@@ -54,7 +54,7 @@
 
                                 <!-- Text input-->
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="doc">Upload Document</label>
+                                    <label class="col-md-4 control-label" for="doc">Upload Document :</label>
 
                                     <div class="col-md-6">
 
@@ -62,6 +62,25 @@
                                                type="file" name="doc" id="doc"/>
                                         <button id="docClear" type="button">Clear</button>
                                         <label id="docNameValidation" style="color:red; font-size: 11px;"
+                                               class="form-control"></label>
+                                    </div>
+                                </div>
+
+
+                                <!-- select Box for Product-->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="requestPriority">Request Priority :</label>
+
+                                    <div class="col-md-4">
+                                        <select id="requestPriority" class="form-control"
+                                                style="border-color:#808080; border-width:1px; border-style:solid;">
+
+                                            <option value="0" selected>Select Priority</option>
+                                            <option value="Low">Low</option>
+                                            <option value="Medium">Medium</option>
+                                            <option value="High">High</option>
+                                        </select>
+                                        <label id="requestPriorityValidation" style="color:red; font-size: 11px;"
                                                class="form-control"></label>
                                     </div>
                                 </div>
@@ -92,7 +111,8 @@
 
 
                                     <div class="col-md-6 input_fields_wrap">
-                                        <textarea id="description" name="description[]" class="form-control input-md description"
+                                        <textarea id="description" name="description[]"
+                                                  class="form-control input-md description"
                                                   style="border-color:#808080; border-width:1px; border-style:solid;"
                                                   rows="6" cols="20"></textarea>
                                         <label id="descriptionValidation" style="color:red; font-size: 11px;"
@@ -209,6 +229,7 @@
                     var companyId = $("#listOfCompany option:selected").val();
                     var categoryId = $("#listOfCategory option:selected").val();
                     var productId = $("#listOfProduct option:selected").val();
+                    var requestPriority = $("#requestPriority option:selected").val();
                     if (name == null || name.trim().length == 0) {
                         $("#nameValidation").text("Name is required");
                         isValid = false;
@@ -231,7 +252,12 @@
                         isValid = false;
                     }
 
-                    if ((filename == null) || (filename == "0")) {
+                    if ((requestPriority == null) || (requestPriority == "0")) {
+                        $("#requestPriorityValidation").text("priority is required");
+                        isValid = false;
+                    }
+
+                    if ((filename == null) || (filename == "")) {
                         $("#docNameValidation").text('Please browse,for uploading attachment...');
                         isValid = false;
                     }
@@ -248,6 +274,7 @@
                     $("#categoryNameValidation").text("");
                     $("#productNameValidation").text("");
                     $("#docNameValidation").text("");
+                    $("#requestPriorityValidation").text("");
 
                 }
 
@@ -322,15 +349,17 @@
                     var categoryId = $("#listOfCategory option:selected").val();
                     var companyId = $("#listOfCompany option:selected").val();
                     var productId = $("#listOfProduct option:selected").val();
+                    var requestPriority = $("#requestPriority option:selected").val();
                     var request = new FormData(document.getElementById("requestDetails"));
-                    var descriptionListObj={};
-                    var descriptionList=$('.description');
-                    for(i=0; i<descriptionList.length;i++){
-                        descriptionListObj['Key'+i] =descriptionList[i].value;
+                    var descriptionListObj = {};
+                    var descriptionList = $('.description');
+                    for (var i = 0; i < descriptionList.length; i++) {
+                        descriptionListObj['Key' + i] = descriptionList[i].value;
                     }
                     request.append('categoryId', categoryId);
                     request.append('companyId', companyId);
                     request.append('productId', productId);
+                    request.append('requestPriority', requestPriority);
                     return request;
                 }
 
@@ -397,9 +426,9 @@
                     $('#defaultOpt').val('0').prop('selected', true);
                     $('#defaultOptProduct').val('0').prop('selected', true);
                     $('#defaultOptCategory').val('0').prop('selected', true);
-                    var descriptionList=$('.description');
-                    for(i=0; i<descriptionList.length;i++){
-                        descriptionList[i].value="";
+                    var descriptionList = $('.description');
+                    for (i = 0; i < descriptionList.length; i++) {
+                        descriptionList[i].value = "";
                     }
                 }
 
@@ -422,14 +451,6 @@
                     $(this).parent('div').remove();
                     x--;
                 });
-
-                $('#testButton').click(function(){
-                    var descriptionListObj={};
-                    var descriptionList=$('.description');
-                    for(i=0; i<descriptionList.length;i++){
-                        descriptionListObj['Key'+i] =descriptionList[i].value;
-                    }
-                })
             });
 
             //

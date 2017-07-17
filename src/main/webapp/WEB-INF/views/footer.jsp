@@ -42,6 +42,23 @@
 
 
 <script src="resources/node_modules/custom-js/custom.js"></script>
+<script>
+    $(document).ajaxStart(function(){
+        $("body").addClass('ajaxLoading');
+        $("#notification").addClass('ajaxLoading');
+        $("#settings").addClass('ajaxLoading');
+        $("#rightsidebar").addClass('ajaxLoading');
+        $("#menuList").addClass('ajaxLoading');
+    });
+    $(document).ajaxStop(function(){
+        $("body").removeClass('ajaxLoading');
+        $("#notification").removeClass('ajaxLoading');
+        $("#settings").removeClass('ajaxLoading');
+        $("#rightsidebar").removeClass('ajaxLoading');
+        $("#menuList").removeClass('ajaxLoading');
+    });
+
+</script>
 <noscript>
 
     <div class="col-sm-10 col-sm-offset-1">

@@ -26,7 +26,7 @@
                     </thead>
                 </table>
                 <br/>
-                <button type="button" class="btn bg-grey waves-war" id="moveToAdd" value="1" title="Edit"><img
+                <button type="button" class="btn bg-grey waves-war" id="moveToAdd" value="1" title="Add"><img
                         src="resources/images/add.png" width="16" height="16" border="0">&nbsp;Add New
                 </button>
                 &nbsp;

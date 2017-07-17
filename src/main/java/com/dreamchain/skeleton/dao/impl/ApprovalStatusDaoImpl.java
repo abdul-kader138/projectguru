@@ -56,12 +56,41 @@ public class ApprovalStatusDaoImpl implements ApprovalStatusDao {
     }
 
     @Override
-    public List<ApprovalStatus> findByUserIdAndRequestId(long userId, long requestId) {
+    public List<ApprovalStatus> findByUserIdAndDeliveryDate(long userId) {
         DetachedCriteria dcr = DetachedCriteria.forClass(ApprovalStatus.class);
-        Criterion cr = Restrictions.eq("requestId", requestId);
-        Criterion cr1 = Restrictions.eq("approvedById", userId);
+        Criterion cr = Restrictions.isNull("priorityUrgent");
+        Criterion cr1 = Restrictions.eq("status", environment.getProperty("approval.status.waiting"));
+        Criterion cr2 = Restrictions.eq("userType", environment.getProperty("approval.user.acknowledgementIT"));
+        dcr.add(cr1).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        dcr.add(cr2).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        dcr.add(cr);
+        List<Object> lst = hibernateTemplate.findByCriteria(dcr);
+        return createApprovalList(lst);
+    }
+
+    @Override
+    public List<ApprovalStatus> findByApprovedTypeAndUserId(long userId) {
+        DetachedCriteria dcr = DetachedCriteria.forClass(ApprovalStatus.class);
+        Criterion cr = Restrictions.eq("approvedById", userId);
+        Criterion cr1 = Restrictions.eq("status", environment.getProperty("approval.status.waiting"));
+        Criterion cr2 = Restrictions.eq("approveType", environment.getProperty("approval.status.approve.type.itCoordinatorBy"));
         dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         dcr.add(cr1).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        dcr.add(cr2).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        List<Object> lst = hibernateTemplate.findByCriteria(dcr);
+        return createApprovalList(lst);
+
+    }
+
+    @Override
+    public List<ApprovalStatus> findByUserIdAndPriority(long userId) {
+        DetachedCriteria dcr = DetachedCriteria.forClass(ApprovalStatus.class);
+        Criterion cr = Restrictions.isNotNull("priorityUrgent");
+        Criterion cr1 = Restrictions.eq("status", environment.getProperty("approval.status.waiting"));
+        Criterion cr2 = Restrictions.eq("approvedById", userId);
+        dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        dcr.add(cr1).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        dcr.add(cr2).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List<Object> lst = hibernateTemplate.findByCriteria(dcr);
         return createApprovalList(lst);
     }
@@ -107,6 +136,12 @@ public class ApprovalStatusDaoImpl implements ApprovalStatusDao {
         List<Object> lst = hibernateTemplate.findByCriteria(dcr);
         List<ApprovalStatus> approvalStatusList = createApprovalList(lst);
         hibernateTemplate.deleteAll(approvalStatusList);
+    }
+
+    @Override
+    public void updatePriority(Object[] ids,String userName) {
+        String query= "update ApprovalStatus set priority_urgent='Yes-"+userName+"' where id in (?)";
+        hibernateTemplate.bulkUpdate(query,ids);
     }
 
     @Override

@@ -2,7 +2,7 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row clearfix">
-            <div class="col-xs-8 col-xs-offset-2 card">
+            <div class="col-xs-12 card">
                 <br/>
 
                 <div><h4>User Details</h4></div>
@@ -12,38 +12,49 @@
                 <div class="table-responsive">
                     <table class="display nowrap table table-bordered" cellspacing="0" width="100%">
                         <tbody>
-                        <tr class="label_color">
-                            <td><b>Company Name</b></td>
-                            <td>${user.company.name}</td>
-                        </tr>
-
-                        <tr class="label_color">
-                            <td><b>Name</b></td>
-                            <td>${user.name}</td>
-                        </tr>
-                        <tr class="label_color">
-                            <td><b>Email</b></td>
-                            <td>${user.email}</td>
-                        </tr>
-                        <tr class="label_color">
-                            <td><b>Phone</b></td>
-                            <td>${user.phone}</td>
-                        </tr>
-
-                        <tr class="label_color">
-                            <td><b>Designation</b></td>
-                            <td>${user.designation}</td>
-                        </tr>
-
-                        <tr class="label_color">
-                            <td><b>Role</b></td>
-                            <td>${user.role}</td>
-                        </tr>
-                        <tr class="label_color">
-                            <td><b>Photo</b></td>
-                            <td><img id="uploadedPhotoSrc"
-                                     src="${user.imagePath}" width="70" height="70" border="0"></td>
-                        </tr>
+                        <c:if test="${user.company.name != null}">
+                            <tr class="label_color">
+                                <td><b>Company Name</b></td>
+                                <td>${user.company.name}</td>
+                            </tr>
+                        </c:if>
+                        <c:if test="${user.name != null}">
+                            <tr class="label_color">
+                                <td><b>Name</b></td>
+                                <td>${user.name}</td>
+                            </tr>
+                        </c:if>
+                        <c:if test="${user.email != null}">
+                            <tr class="label_color">
+                                <td><b>Email</b></td>
+                                <td>${user.email}</td>
+                            </tr>
+                        </c:if>
+                        <c:if test="${user.phone != null}">
+                            <tr class="label_color">
+                                <td><b>Phone</b></td>
+                                <td>${user.phone}</td>
+                            </tr>
+                        </c:if>
+                        <c:if test="${user.designation != null}">
+                            <tr class="label_color">
+                                <td><b>Designation</b></td>
+                                <td>${user.designation}</td>
+                            </tr>
+                        </c:if>
+                        <c:if test="${user.role != null}">
+                            <tr class="label_color">
+                                <td><b>Role</b></td>
+                                <td>${user.role}</td>
+                            </tr>
+                        </c:if>
+                        <c:if test="${user.imagePath != null}">
+                            <tr class="label_color">
+                                <td><b>Photo</b></td>
+                                <td><img id="uploadedPhotoSrc"
+                                         src="${user.imagePath}" width="70" height="70" border="0"></td>
+                            </tr>
+                        </c:if>
                         </tbody>
                     </table>
                 </div>
