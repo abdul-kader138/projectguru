@@ -78,7 +78,8 @@
 
                                     <div class="col-md-6">
                                         <img id="uploadedLogoSrc"
-                                         alt="Current Attachment" src="${changeRequest.docPath}" width="70" height="70" border="0">
+                                             alt="Current Attachment" src="${changeRequest.docPath}" width="70"
+                                             height="70" border="0">
                                     </div>
                                 </div>
 
@@ -106,10 +107,12 @@
                                         <input type="hidden" class="form-control" id="version" name="version"
                                                value="${version}"
                                                required>
-                                        <input type="hidden" class="form-control" id="changeRequestId" name="changeRequestId"
+                                        <input type="hidden" class="form-control" id="changeRequestId"
+                                               name="changeRequestId"
                                                value="${changeRequest.id}"
                                                required>
-                                        <input type="hidden" class="form-control" id="approvalStatusId" name="approvalStatusId"
+                                        <input type="hidden" class="form-control" id="approvalStatusId"
+                                               name="approvalStatusId"
                                                value="${approvalStatus.id}"
                                                required>
                                         <input id="name" name="name" type="text" placeholder="" readonly
@@ -165,6 +168,10 @@
                                         <button id="saveRequest" name="saveRequest" class="btn btn-primary"
                                                 type="button">Update
                                         </button>
+                                        <a class="btn bg-grey waves-war" id="back" value="1" title="Back"
+                                           href="/approval_details"><img
+                                                src="resources/images/back.png" width="16" height="16" border="0">&nbsp;Back
+                                        </a>
                                     </div>
                                 </div>
 
@@ -263,7 +270,7 @@
                                     msg = "";
                                     part1 = d.successMsg;
                                     localStorage.setItem('message_edit_request', part1);
-                                    window.location=messageResource.get('approval_details.load.url', 'configMessageForUI');
+                                    window.location = messageResource.get('approval_details.load.url', 'configMessageForUI');
                                 }
                                 if (d.validationError) {
                                     icn = 0;

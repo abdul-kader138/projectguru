@@ -30,7 +30,8 @@
                 </table>
                 <br/>
 
-                <button type="button" class="btn bg-grey waves-war" id="addPriority" value="1" title="Add To High Priority"><img
+                <button type="button" class="btn bg-grey waves-war" id="addPriority" value="1"
+                        title="Add To High Priority"><img
                         src="resources/images/add.png" width="16" height="16" border="0">&nbsp;Add To High Priority
                 </button>
                 &nbsp;
@@ -150,16 +151,17 @@
             /* add priority to approval status */
 
             $('#addPriority').on('click', function () {
-              if(checkForNonSelectedRow()) callAjaxForAddOperation("", "", 0, "Message", getSelectedValue());
-              else console.log("non-selected");
+                var data = messageResource.get('approval_details.priority.update.msg', 'configMessageForUI');
+                if (checkForNonSelectedRow()) callAjaxForAddOperation("", "", 0, "Message", getSelectedValue());
+                else showServerSideMessage(data, "", 0, "Message");
             });
 
 
-            function getSelectedValue(){
-                var approvalIds=[];
+            function getSelectedValue() {
+                var approvalIds = [];
                 $('input:checkbox.getVal').each(function () {
                     var sThisVal = (this.checked ? $(this).val() : "")
-                    if(sThisVal) approvalIds.push(sThisVal);
+                    if (sThisVal) approvalIds.push(sThisVal);
                 });
                 return approvalIds;
             }
@@ -167,7 +169,6 @@
             /*  Ajax call for add operation */
 
             function callAjaxForAddOperation(part1, part2, icn, msg, approvalIds) {
-                console.log(approvalIds);
                 $.ajax({
                     headers: {
                         'Accept': 'application/json',
@@ -202,7 +203,6 @@
                 });
 
             }
-
 
 
         });

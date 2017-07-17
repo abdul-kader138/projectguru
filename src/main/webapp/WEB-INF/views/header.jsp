@@ -232,7 +232,7 @@
                     <li class="header">Request</li>
                     <li>
                         <a href="set_priority">
-                            <i class="material-icons col-red">donut_large</i>
+                            <i class="material-icons col-amber">donut_large</i>
                             <span>Set Request Priority</span>
                         </a>
                     </li>
