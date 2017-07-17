@@ -39,9 +39,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Transactional(readOnly=true)
     public void setSessionValue(HttpServletRequest request, User user) {
         User existingUser = userDao.findByUserName(user.getEmail());
+        List<ApprovalStatus> list=new ArrayList<>();
         String hasChangeRequest = "No";
         List<Object> requestListCount =new ArrayList<>();
-        List<ApprovalStatus> list = approvalStatusDao.findByUserId(existingUser.getId());
+        List<ApprovalStatus> approvalLstItAchkno=approvalStatusDao.findByUserIdAndPriority(existingUser.getId()); // if user id IT Coordinator(Acknowledgement)
+        if (approvalLstItAchkno.size() != 0) {
+            List<ApprovalStatus> list1 = approvalStatusDao.findByApprovedTypeAndUserId(existingUser.getId());
+            list.addAll(approvalLstItAchkno);
+            list.addAll(list1);
+        }
+        if(approvalLstItAchkno.size() ==0)list= approvalStatusDao.findByUserId(existingUser.getId());
         TeamAllocation obj = teamAllocationDao.findByRequestById(existingUser.getId());
         if(environment.getProperty("user.type.vendor").equals(existingUser.getUserType())) requestListCount = changeRequestDao.findAllStatus();
         if(! environment.getProperty("user.type.vendor").equals(existingUser.getUserType())) requestListCount = changeRequestDao.findAllStatus(existingUser.getClientId());

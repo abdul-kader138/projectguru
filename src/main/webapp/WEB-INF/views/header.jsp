@@ -80,7 +80,7 @@
 </div>
 <!-- #END# Search Bar -->
 <!-- Top Bar -->
-<nav class="navbar">
+<nav class="navbar" id="menu">
     <div class="container-fluid">
         <div class="navbar-header">
             <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse"
@@ -97,7 +97,7 @@
                 <!-- Notifications -->
                 <c:if test="${user.userType != 'developer'}">
                     <li class="dropdown" id="approval_details_notification">
-                        <a href="approval_details">
+                        <a href="approval_details" id="notification">
                             <i class="material-icons">notifications</i>
                             <span class="label-count" title="Waiting For Approve"
                                   id="notificationCount">${notificationCount}</span>
@@ -123,7 +123,7 @@
             <div class="info-container">
                 <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${user.name}</div>
                 <div class="email">${user.email}</div>
-                <div class="btn-group user-helper-dropdown">
+                <div class="btn-group user-helper-dropdown" id="settings">
                     <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                     <ul class="dropdown-menu pull-right">
                         <li><a href="profile"><i class="material-icons">person</i>Profile</a></li>
@@ -138,7 +138,7 @@
         <!-- #User Info -->
         <!-- Menu -->
         <div class="menu">
-            <ul class="list">
+            <ul class="list" id="menuList">
                 <li class="header">&nbsp;</li>
                 <li class="active">
                     <a href="home">
@@ -224,6 +224,16 @@
                         <a href="change_request">
                             <i class="material-icons col-red">donut_large</i>
                             <span>Product Changes Request</span>
+                        </a>
+                    </li>
+                </c:if>
+                <br/>
+                <c:if test="${user.userType == 'vendor' && user.role == 'ROLE_ADMIN'}">
+                    <li class="header">Request</li>
+                    <li>
+                        <a href="set_priority">
+                            <i class="material-icons col-red">donut_large</i>
+                            <span>Set Request Priority</span>
                         </a>
                     </li>
                 </c:if>

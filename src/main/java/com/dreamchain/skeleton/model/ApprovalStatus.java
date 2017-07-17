@@ -52,6 +52,8 @@ public class ApprovalStatus {
     @NotEmpty
     private String approveType;
 
+    private String priorityUrgent;
+
 
     @NotNull
     private long approvedById;
@@ -91,6 +93,15 @@ public class ApprovalStatus {
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
+    }
+
+
+    public String getPriorityUrgent() {
+        return priorityUrgent;
+    }
+
+    public void setPriorityUrgent(String priorityUrgent) {
+        this.priorityUrgent = priorityUrgent;
     }
 
     public long getId() {

@@ -152,6 +152,7 @@
                             showServerSideMessage(part1, part2, icn, msg);
                             $("#cause").val("");
                             $("#causeValidation").text("");
+                            localStorage.setItem('message_decline', messageResource.get('decline.save.msg', 'configMessageForUI'));
                             window.location=messageResource.get('approval_details.load.url', 'configMessageForUI');
                         }
                         if (d.validationError) {

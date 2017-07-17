@@ -47,6 +47,23 @@
     <script>
         $(document).ready(function () {
 
+            /* view decline message from local storage */
+
+            var declineMessage=localStorage.getItem('message_decline');
+            if(declineMessage){
+                showServerSideMessage(declineMessage, '', 1, 'Message');
+                localStorage.setItem('message_decline','');
+            }
+
+
+            /* view edit request message from local storage */
+
+            var messageEditRequest=localStorage.getItem('message_edit_request');
+            if(messageEditRequest){
+                showServerSideMessage(messageEditRequest, '', 1, 'Message');
+                localStorage.setItem('message_edit_request','');
+            }
+
 
             /* set nav bar color */
             changeNavColor();
@@ -60,7 +77,7 @@
             var companyGb;
             loadApproveData();
 
-            /* populate Category list when page load */
+            /* populate Approval list when page load */
 
             function loadApproveData() {
                 $('#approveTable').DataTable({

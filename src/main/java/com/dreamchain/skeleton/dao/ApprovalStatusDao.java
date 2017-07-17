@@ -11,9 +11,12 @@ public interface ApprovalStatusDao {
     Long save(ApprovalStatus approvalStatus);
     void update(ApprovalStatus approvalStatus);
     List<ApprovalStatus> findByUserId(long userId);
-    List<ApprovalStatus> findByUserIdAndRequestId(long userId,long requestId);
+    List<ApprovalStatus> findByUserIdAndDeliveryDate(long userId);
+    List<ApprovalStatus> findByApprovedTypeAndUserId(long userId);
+    List<ApprovalStatus> findByUserIdAndPriority(long userId);
     ApprovalStatus findByRequestIdAndUserType(long requestId,String UserType);
     Set<ApprovalStatus> findByApprovedId(long userId);
     List<ApprovalStatus> findByApprovedById(long userId);
     void delete(Long id);
+    void updatePriority(Object[] ids,String userName);
 }

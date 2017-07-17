@@ -44,13 +44,20 @@
 <script src="resources/node_modules/custom-js/custom.js"></script>
 <script>
     $(document).ajaxStart(function(){
-        $("head").addClass('ajaxLoading');
         $("body").addClass('ajaxLoading');
+        $("#notification").addClass('ajaxLoading');
+        $("#settings").addClass('ajaxLoading');
+        $("#rightsidebar").addClass('ajaxLoading');
+        $("#menuList").addClass('ajaxLoading');
     });
     $(document).ajaxStop(function(){
-        $("head").removeClass('ajaxLoading');
         $("body").removeClass('ajaxLoading');
+        $("#notification").removeClass('ajaxLoading');
+        $("#settings").removeClass('ajaxLoading');
+        $("#rightsidebar").removeClass('ajaxLoading');
+        $("#menuList").removeClass('ajaxLoading');
     });
+
 </script>
 <noscript>
 

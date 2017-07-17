@@ -141,9 +141,9 @@
                                                 <c:if test="${loop.index != 0}">
                                                     <a href="#" class="remove_field" style="font-size:12px;color: red">Remove</a>
                                                 </c:if>
-                                                <br/>
-                                                <br/>
                                             </div>
+                                            &nbsp;
+                                            &nbsp;
                                         </c:forEach>
                                         <label id="descriptionValidation" style="color:red; font-size: 11px;"
                                                class="form-control"></label>
@@ -165,10 +165,6 @@
                                         <button id="saveRequest" name="saveRequest" class="btn btn-primary"
                                                 type="button">Update
                                         </button>
-                                        <a class="btn bg-grey waves-war" id="back" value="1" title="Back"
-                                           href="/approval_details"><img
-                                                src="resources/images/back.png" width="16" height="16" border="0">&nbsp;Back
-                                        </a>
                                     </div>
                                 </div>
 
@@ -266,7 +262,8 @@
                                     icn = 1;
                                     msg = "";
                                     part1 = d.successMsg;
-                                    showServerSideMessage(part1, part2, icn, msg);
+                                    localStorage.setItem('message_edit_request', part1);
+                                    window.location=messageResource.get('approval_details.load.url', 'configMessageForUI');
                                 }
                                 if (d.validationError) {
                                     icn = 0;
