@@ -12,7 +12,7 @@
                             <fieldset>
 
                                 <!-- Form Name -->
-                                <span class="glyphicon glyphicon-backward"></span> <b style="font-size: 20px">
+                                <span class="glyphicon glyphicon-tasks"></span> <b style="font-size: 20px">
                                 Decline Request</b>
                                 <hr/>
 

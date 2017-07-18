@@ -53,7 +53,9 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
     private static final String INVALID_INPUT = "Invalid input";
     private static final String DOC_PATH = "/resources/images/doc/";
     private static final String EMAIL_HEADER_SAVE= "New Request is waiting for approval.Request Name ##";
+    private static final String EMAIL_HEADER_EDIT_SAVE= "Request is edited.Request Name ##";
     private static final String EMAIL_BODY_SAVE= "New request is generate and waiting for you approval.Request Name ##";
+    private static final String EMAIL_BODY_EDIT_SAVE= "Request is edited by ##";
 
     @Override
 
@@ -118,7 +120,7 @@ public class ChangeRequestServiceImpl implements ChangeRequestService {
         if ("".equals(validationMsg)) {
             changeRequestDao.update(changeRequest);
             User requestByUser=userDao.get(changeRequest.getRequestById());
-            sendEmail(requestByUser.getEmail(),EMAIL_HEADER_SAVE,EMAIL_BODY_SAVE+changeRequest.getName()); //mail sent to notify user for approving
+            sendEmail(requestByUser.getEmail(),EMAIL_HEADER_EDIT_SAVE,EMAIL_BODY_EDIT_SAVE+changeRequest.getUpdatedBy()); //mail sent to notify user for approving
         }
         obj.put("validationError", validationMsg);
         return obj;
