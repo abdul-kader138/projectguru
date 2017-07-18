@@ -13,7 +13,9 @@
                             <fieldset>
 
                                 <!-- Form Name -->
-                                <legend><strong>Create Request</strong></legend>
+                                <span class="glyphicon glyphicon-pencil"></span> <b style="font-size: 20px">
+                                Edit Request</b>
+                                <hr/>
 
                                 <!-- select Box for Company-->
                                 <div class="form-group">

@@ -11,7 +11,8 @@
             <div class="col-xs-12 card">
                 <br/>
 
-                <div><h4>Approval Waiting List</h4></div>
+                <div><span class="glyphicon glyphicon-list"></span><b style="font-size: 20px"> &nbsp;Approval Waiting
+                    List</b></div>
                 <hr/>
                 <br/><br/>
                 <table id="setRequestPriorityTable" class="display nowrap table table-bordered" cellspacing="0"
@@ -30,9 +31,9 @@
                 </table>
                 <br/>
 
-                <button type="button" class="btn bg-grey waves-war" id="addPriority" value="1"
+                <button type="button" class="btn bg-red waves-war" id="addPriority" value="1"
                         title="Add To High Priority"><img
-                        src="resources/images/add.png" width="16" height="16" border="0">&nbsp;Add To High Priority
+                        src="resources/images/add.png" width="16" height="16" border="0">&nbsp;Add To Priority Queue
                 </button>
                 &nbsp;
                 &nbsp;
@@ -54,6 +55,12 @@
 
     <script>
         $(document).ready(function () {
+
+            /* set nav bar color */
+            changeNavColor();
+            var colorName = localStorage.colorName;
+            setNavColor(colorName);
+
 
             /* Enable page loader */
             var loading = $.loading();
@@ -132,7 +139,7 @@
                     "bFilter": true,
                     "bInfo": false,
                     "bAutoWidth": true,
-                    "scrollY": "400",
+                    "scrollY": "300",
                     "scrollX": true
 
                 });
@@ -148,14 +155,37 @@
             });
 
 
+
             /* add priority to approval status */
 
             $('#addPriority').on('click', function () {
                 var data = messageResource.get('approval_details.priority.update.msg', 'configMessageForUI');
-                if (checkForNonSelectedRow()) callAjaxForAddOperation("", "", 0, "Message", getSelectedValue());
+                if (checkForNonSelectedRow()) {
+                    $.dialogbox({
+                        type: 'msg',
+                        title: 'Confirm Title',
+                        content: messageResource.get('approval_details.priority.set.confirm.msg', 'configMessageForUI'),
+                        closeBtn: true,
+                        btn: ['Confirm', 'Cancel'],
+                        call: [
+                            function () {
+                                $.dialogbox.close();
+                                callAjaxForAddOperation("", "", 0, "Message", getSelectedValue());
+                            },
+                            function () {
+                                $.dialogbox.close();
+                                uncheckedAllCheckBox();
+                            }
+                        ]
+                    });
+                }
                 else showServerSideMessage(data, "", 0, "Message");
             });
 
+
+
+
+            /* get selected checked box value */
 
             function getSelectedValue() {
                 var approvalIds = [];
@@ -165,6 +195,8 @@
                 });
                 return approvalIds;
             }
+
+
 
             /*  Ajax call for add operation */
 

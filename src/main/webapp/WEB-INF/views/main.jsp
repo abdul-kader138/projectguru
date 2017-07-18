@@ -157,7 +157,7 @@
                     }
                     },
                     {
-                        "mData": "priority", 'sWidth': '50px', "orderable": false,"render": function (data, type, row, id) {
+                        "mData": "priority", 'sWidth': '50px', "render": function (data, type, row, id) {
                         if (row.priority != null) return row.priority;
                         return "";
                     }
@@ -240,7 +240,7 @@
                 "bFilter": true,
                 "bInfo": false,
                 "bAutoWidth": true,
-                "scrollY": "400",
+                "scrollY": "300",
                 "scrollX": true
 
             });

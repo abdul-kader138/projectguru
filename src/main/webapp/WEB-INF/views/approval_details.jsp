@@ -10,7 +10,7 @@
             <%--<div class="col-xs-10 col-xs-offset-1 card">--%>
             <div class="col-xs-12 card">
                 <br/>
-                <div><h4>Approval Waiting List</h4></div>
+                <div><span class="glyphicon glyphicon-list"></span><b style="font-size: 20px"> &nbsp;Approval Waiting List</b></div>
                 <hr/>
                 <br/><br/>
                 <input type="hidden" value="" id="date"/>
@@ -197,7 +197,7 @@
                     "bFilter": true,
                     "bInfo": false,
                     "bAutoWidth": true,
-                    "scrollY": "400",
+                    "scrollY": "300",
                     "scrollX": true
 
                 });

@@ -5,7 +5,7 @@
 
 
         <div class="row clearfix" id="userForm">
-            <div class="col-xs-8 col-xs-offset-2">
+            <div class="col-xs-10 col-xs-offset-1">
                 <div class="card">
                     <div class="header" style="background-color:#a5a5a5">
                         <h2><strong>&nbsp;</strong></h2>
@@ -15,7 +15,9 @@
                             <fieldset>
 
                                 <!-- Form Name -->
-                                <legend><strong>Change Password</strong></legend>
+                                <span class="glyphicon glyphicon-tasks"></span> <b style="font-size: 20px">
+                                Change Password</b>
+                                <hr/>
 
                                 <div class="form-group">
                                     <label class="col-md-4 control-label" for="oldPassword">Old Password :</label>
@@ -73,8 +75,12 @@
 
                                     <div class="col-md-4">
                                         <button id="savePassword" name="savePassword" class="btn btn-primary"
-                                                type="button">Save
+                                                type="button">Update
                                         </button>
+                                        <a class="btn bg-grey waves-war" id="back" value="1" title="Back"
+                                           href="/home"><img
+                                                src="resources/images/back.png" width="16" height="16" border="0">&nbsp;Back
+                                        </a>
                                     </div>
                                 </div>
 

@@ -7,10 +7,10 @@
 
         <div id="viewTableData"></div>
         <div class="row clearfix">
-            <div class="col-xs-10 col-xs-offset-1 card">
+            <div class="col-xs-12 card">
                 <br/>
 
-                <div><h4>Role List</h4></div>
+                <div><span class="glyphicon glyphicon-list"></span><b style="font-size: 20px"> &nbsp;Role List</b></div>
                 <hr/>
                 <br/><br/>
                 <table id="roleTable" class="display nowrap table table-bordered" cellspacing="0" width="100%">
@@ -59,7 +59,7 @@
 
 
         <div class="row clearfix" id="roleForm" style="display: none">
-            <div class="col-xs-8 col-xs-offset-2">
+            <div class="col-xs-10 col-xs-offset-1">
                 <div class="card">
                     <div class="header" style="background-color:#a5a5a5">
                         <h2><strong>&nbsp;</strong></h2>
@@ -67,7 +67,10 @@
                     <div class="body" style="border:solid; border-width: 1px; border-color:#a5a5a5;">
                         <form class="form-horizontal">
                             <fieldset>
-                                <legend><strong>Role Setting</strong></legend>
+                                <!-- Form Name -->
+                                <span class="glyphicon glyphicon-cog"></span> <b style="font-size: 20px">
+                                Role Setting</b>
+                                <hr/>
 
                                 <!-- Text input-->
                                 <div class="form-group">
@@ -197,7 +200,7 @@
                     "bFilter": true,
                     "bInfo": false,
                     "bAutoWidth": true,
-                    "scrollY": "400",
+                    "scrollY": "250",
                     "scrollX": true
 
                 });

@@ -6,12 +6,12 @@
         <div class="col-xs-10 col-xs-offset-1 card">
             <br/>
 
-            <div><h4>Request Details</h4></div>
+            <div><span class="glyphicon glyphicon-tasks"></span><b style="font-size: 20px"> &nbsp;Request Details</b></div>
             <hr/>
             <br/>
 
             <div class="table-responsive">
-                <table class="display nowrap table table-bordered" cellspacing="0" width="100%">
+                <table class="display nowrap table table-striped" cellspacing="0" width="100%">
                     <tbody>
                     <c:if test="${changeRequest.category.company.name != null}">
                         <tr class="label_color">
@@ -109,7 +109,7 @@
             </div>
 
             <a class="btn bg-grey waves-war" id="back" value="1" title="Back" href="/home"><img
-                    src="resources/images/back.png" width="16" height="16" border="0">&nbsp;Back to Home
+                    src="resources/images/back.png" width="16" height="16" border="0">&nbsp;Home
             </a>
             <br/>
             <br/>

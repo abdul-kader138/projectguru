@@ -40,22 +40,29 @@
 <script src="resources/node_modules/adminbsb/js/pages/index.js"></script>
 
 
-
 <script src="resources/node_modules/custom-js/custom.js"></script>
+
 <script>
-    $(document).ajaxStart(function(){
+
+    /* block UI when ajax call start */
+
+    $(document).ajaxStart(function () {
         $("body").addClass('ajaxLoading');
-        $("#notification").addClass('ajaxLoading');
-        $("#settings").addClass('ajaxLoading');
-        $("#rightsidebar").addClass('ajaxLoading');
-        $("#menuList").addClass('ajaxLoading');
+        $("div").addClass('ajaxLoading');
+        $("a").addClass('ajaxLoading');
+        $("ul li").addClass('ajaxLoading');
+        $("ul").addClass('ajaxLoading');
     });
-    $(document).ajaxStop(function(){
+
+
+    /* unblock UI after ajax call */
+
+    $(document).ajaxStop(function () {
         $("body").removeClass('ajaxLoading');
-        $("#notification").removeClass('ajaxLoading');
-        $("#settings").removeClass('ajaxLoading');
-        $("#rightsidebar").removeClass('ajaxLoading');
-        $("#menuList").removeClass('ajaxLoading');
+        $("div").removeClass('ajaxLoading');
+        $("a").removeClass('ajaxLoading');
+        $("ul li").removeClass('ajaxLoading');
+        $("ul").removeClass('ajaxLoading');
     });
 
 </script>

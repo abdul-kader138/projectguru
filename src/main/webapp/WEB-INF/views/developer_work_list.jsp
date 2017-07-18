@@ -222,7 +222,7 @@
                 "bFilter": true,
                 "bInfo": false,
                 "bAutoWidth": true,
-                "scrollY": "400",
+                "scrollY": "300",
                 "scrollX": true
 
             });

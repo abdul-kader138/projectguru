@@ -7,10 +7,11 @@
 
         <div id="viewTableData"></div>
         <div class="row clearfix">
-            <div class="col-xs-10 col-xs-offset-1 card">
+            <div class="col-xs-12 card">
                 <br/>
 
-                <div><h4>Category List</h4></div>
+                <div><span class="glyphicon glyphicon-list"></span><b style="font-size: 20px"> &nbsp;Category
+                    List</b></div>
                 <hr/>
                 <br/><br/>
                 <table id="categoryTable" class="display nowrap table table-bordered" cellspacing="0" width="100%">
@@ -62,7 +63,7 @@
 
 
         <div class="row clearfix" id="categoryForm" style="display: none">
-            <div class="col-xs-8 col-xs-offset-2">
+            <div class="col-xs-10 col-xs-offset-1">
                 <div class="card">
                     <div class="header" style="background-color:#a5a5a5">
                         <h2><strong>&nbsp;</strong></h2>
@@ -72,8 +73,9 @@
                             <fieldset>
 
                                 <!-- Form Name -->
-                                <legend><strong>Category Setting</strong></legend>
-
+                                <span class="glyphicon glyphicon-cog"></span> <b style="font-size: 20px">
+                                Category Setting</b>
+                                <hr/>
                                 <!-- select Box for Company-->
                                 <div class="form-group">
                                     <label class="col-md-4 control-label" for="listOfCompany">Company Name</label>
@@ -274,7 +276,7 @@
                     "bFilter": true,
                     "bInfo": false,
                     "bAutoWidth": true,
-                    "scrollY": "400",
+                    "scrollY": "250",
                     "scrollX": true
 
                 });

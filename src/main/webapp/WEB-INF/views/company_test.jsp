@@ -7,10 +7,11 @@
 
         <div id="viewTableData"></div>
         <div class="row clearfix">
-            <div class="col-xs-10 col-xs-offset-1 card">
+            <div class="col-xs-12 card">
                 <br/>
 
-                <div><h4>Company List</h4></div>
+                <div><span class="glyphicon glyphicon-list"></span><b style="font-size: 20px"> &nbsp;Company
+                    List</b></div>
                 <hr/>
                 <br/><br/>
                 <table id="companyTable" class="display nowrap table table-bordered" cellspacing="0" width="100%">
@@ -61,7 +62,7 @@
 
 
         <div class="row clearfix" id="companyForm" style="display: none">
-            <div class="col-xs-8 col-xs-offset-2">
+            <div class="col-xs-10 col-xs-offset-1">
                 <div class="card">
                     <div class="header" style="background-color:#a5a5a5">
                         <h2><strong>&nbsp;</strong></h2>
@@ -71,7 +72,9 @@
                             <fieldset>
 
                                 <!-- Form Name -->
-                                <legend><strong>Company Setting</strong></legend>
+                                <span class="glyphicon glyphicon-cog"></span> <b style="font-size: 20px">
+                                    Company Setting</b>
+                                <hr/>
 
                                 <!-- Text input-->
                                 <div class="form-group">
@@ -199,23 +202,26 @@
                         {
                             "mData": "name", 'sWidth': '200px', "render": function (data, type, row, id) {
                             if (row.name != null) {
-                                var name = row.name.substr(0,30);
+                                var name = row.name.substr(0, 30);
                                 return name;
                             }
                             return "";
                         }
                         },
                         {
-                            "mData": "address", 'sWidth': '400px', "orderable": false,"render": function (data, type, row, id) {
-                            if (row.address != null) {
-                                var address = row.address.substr(0,50);
-                                return address;
+                            "mData": "address",
+                            'sWidth': '400px',
+                            "orderable": false,
+                            "render": function (data, type, row, id) {
+                                if (row.address != null) {
+                                    var address = row.address.substr(0, 50);
+                                    return address;
+                                }
+                                return "";
                             }
-                            return "";
-                        }
                         },
                         {
-                            "mData": "path","orderable": false,
+                            "mData": "path", "orderable": false,
                             "render": function (url, type, full) {
                                 return '<img src="' + mainPath + full.imagePath + '" width="30" height="30" />';
                             }
@@ -230,7 +236,7 @@
                     "bFilter": true,
                     "bInfo": false,
                     "bAutoWidth": true,
-                    "scrollY": "400",
+                    "scrollY": "250",
                     "scrollX": true
 
                 });
