@@ -79,10 +79,10 @@
                                         <button id="decline" name="decline" class="btn btn-primary"
                                                 type="button">Decline
                                         </button>
-                                        <button style="position: static" id="reset" name="reset"
-                                                class="btn bg-grey"
-                                                type="button">Reset
-                                        </button>
+                                        <a class="btn bg-grey waves-war" id="back" value="1" title="Back"
+                                           href="/approval_details"><img
+                                                src="resources/images/back.png" width="16" height="16" border="0">&nbsp;Back
+                                        </a>
                                     </div>
                                 </div>
                             </fieldset>
@@ -122,16 +122,6 @@
 
 
             });
-
-
-
-            /*  Reset all value */
-
-            $("#reset").click(function () {
-                $('#cause').val("");
-                $('#causeValidation').text("");
-            });
-
 
 
             /*  Ajax call for add operation */

@@ -125,7 +125,7 @@
                         {
                             "mData": "docPath", 'sWidth': '80px', "orderable": false,
                             "render": function (data, type, row, id) {
-                                var mainPath = document.origin + "/PG";
+                                var mainPath = document.origin + "/pg";
                                 return '<a href="' + mainPath + row.docPath + '" download>' + 'Download</a>'
                             }
                         }

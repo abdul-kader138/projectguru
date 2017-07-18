@@ -178,7 +178,7 @@
                 $("saveCompany").show();
                 $("#updateCompany").hide();
                 var companyGb;
-                var mainPath = document.origin + "/PG";
+                var mainPath = document.origin + "/pg";
 
 
                 /* populate Company list when page load */
