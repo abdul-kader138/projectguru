@@ -139,9 +139,9 @@ public class ApprovalStatusDaoImpl implements ApprovalStatusDao {
     }
 
     @Override
-    public void updatePriority(Object[] ids,String userName) {
-        String query= "update ApprovalStatus set priority_urgent='Yes-"+userName+"' where id in (?)";
-        hibernateTemplate.bulkUpdate(query,ids);
+    public void updatePriority(StringBuilder approveId,String userName) {
+        String query= "update ApprovalStatus set priority_urgent='Yes-"+userName+"' where id in "+approveId.toString();
+        hibernateTemplate.bulkUpdate(query);
     }
 
     @Override

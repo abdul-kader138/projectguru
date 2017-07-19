@@ -77,7 +77,7 @@
 
                                     <div class="col-md-4">
                                         <button id="decline" name="decline" class="btn btn-primary"
-                                                type="button">Decline
+                                                type="button"><span class="glyphicon glyphicon-share"></span>&nbsp;Decline
                                         </button>
                                         <a class="btn bg-grey waves-war" id="back" value="1" title="Back"
                                            href="/approval_details"><img

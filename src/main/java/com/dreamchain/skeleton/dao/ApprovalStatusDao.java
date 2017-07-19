@@ -18,5 +18,5 @@ public interface ApprovalStatusDao {
     Set<ApprovalStatus> findByApprovedId(long userId);
     List<ApprovalStatus> findByApprovedById(long userId);
     void delete(Long id);
-    void updatePriority(Object[] ids,String userName);
+    void updatePriority(StringBuilder approveId,String userName);
 }

@@ -135,7 +135,7 @@
 
                                     <div class="col-md-4">
                                         <button id="saveRequest" name="saveRequest" class="btn btn-primary"
-                                                type="button">Save
+                                                type="button"><span class="glyphicon glyphicon-floppy-saved"></span>&nbsp;Save
                                         </button>
                                         <button style="position: static" id="resetRequest" name="resetRequest"
                                                 class="btn bg-grey"

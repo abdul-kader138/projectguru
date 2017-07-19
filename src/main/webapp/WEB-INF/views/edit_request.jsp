@@ -79,8 +79,8 @@
                                         :</label>
 
                                     <div class="col-md-6">
-                                        <img id="uploadedLogoSrc"
-                                             alt="Current Attachment" src="${changeRequest.docPath}" width="70"
+                                        <img id="uploadedDocSrc"
+                                             alt="Current Attachment" src="http://192.168.3.170:8080/pg/${changeRequest.docPath}" width="70"
                                              height="70" border="0">
                                     </div>
                                 </div>
@@ -168,7 +168,7 @@
 
                                     <div class="col-md-4">
                                         <button id="saveRequest" name="saveRequest" class="btn btn-primary"
-                                                type="button">Update
+                                                type="button"><span class="glyphicon glyphicon-edit"></span>&nbsp;Update
                                         </button>
                                         <a class="btn bg-grey waves-war" id="back" value="1" title="Back"
                                            href="/approval_details"><img

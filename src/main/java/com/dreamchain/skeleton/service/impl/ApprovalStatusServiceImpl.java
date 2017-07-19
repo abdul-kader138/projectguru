@@ -141,11 +141,15 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
         String validationMsg = "";
         if (approvalIds.length == 0) validationMsg = INVALID_INPUT;
         if ("".equals(validationMsg)) {
-            for (String id : approvalIds) {
-                ids.add(Long.parseLong(id));
+            StringBuilder approveId = new StringBuilder("(");
+            for (int i = 0; i < approvalIds.length; i++) {
+                approveId.append(""+approvalIds[i]);
+                if( i+1 == approvalIds.length)
+                    approveId.append(")");
+                else
+                    approveId.append(",");
             }
-            Object[] objects = ids.toArray();
-            approvalStatusDao.updatePriority(objects, getUserId().getEmail());
+            approvalStatusDao.updatePriority(approveId, getUserId().getEmail());
         }
         objList.put("validationError", validationMsg);
         return objList;

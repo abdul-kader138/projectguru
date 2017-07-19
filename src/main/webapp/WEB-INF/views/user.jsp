@@ -226,14 +226,14 @@
 
                                     <div class="col-md-4">
                                         <button id="saveUser" name="saveUser" class="btn btn-primary"
-                                                type="button">Save
+                                                type="button"><span class="glyphicon glyphicon-floppy-saved"></span>&nbsp;Save
                                         </button>
                                         <button id="updateUser" name="updateUser" class="btn btn-primary"
-                                                type="button">Update
+                                                type="button"><span class="glyphicon glyphicon-edit"></span>&nbsp;Update
                                         </button>
                                         <button style="position: static" id="resetUser" name="resetUser"
                                                 class="btn bg-grey"
-                                                type="button">Cancel
+                                                type="button"><span class="glyphicon glyphicon-floppy-remove"></span>&nbsp;Cancel
                                         </button>
                                     </div>
                                 </div>

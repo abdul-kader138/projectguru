@@ -75,7 +75,7 @@
 
                                     <div class="col-md-4">
                                         <button id="savePassword" name="savePassword" class="btn btn-primary"
-                                                type="button">Update
+                                                type="button"><span class="glyphicon glyphicon-edit"></span>&nbsp;Update
                                         </button>
                                         <a class="btn bg-grey waves-war" id="back" value="1" title="Back"
                                            href="/home"><img

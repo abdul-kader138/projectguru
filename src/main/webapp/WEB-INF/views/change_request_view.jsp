@@ -41,11 +41,12 @@
                         <tr class="label_color">
                             <td><b>Description</b></td>
                             <td>
-                                <c:forEach items="${changeRequest.description}" var="description">
+                                <c:forEach items="${changeRequest.description}" var="description" varStatus="loop">
+                                    <c:set var="num" value="${1+loop.index}"/>
                                     <c:set var="desVal" value="${fn:substring(description, 0, 40)}"/>
                                     <c:set var="desVal1" value="${fn:substring(description, 40, 80)}"/>
                                     <c:set var="desVal2" value="${fn:substring(description, 80, 120)}"/>
-                                    ${desVal}</br>${desVal1}</br>${desVal2}
+                                    ${num} ${desVal}</br>${desVal1}</br>${desVal2}
                                 </c:forEach>
                             </td>
                         </tr>
