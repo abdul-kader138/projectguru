@@ -80,7 +80,7 @@
 
                                     <div class="col-md-6">
                                         <img id="uploadedDocSrc"
-                                             alt="Current Attachment" src="http://192.168.3.170:8080/pg/${changeRequest.docPath}" width="70"
+                                             alt="Current Attachment" src="http://192.168.3.170:8080/pg${changeRequest.docPath}" width="70"
                                              height="70" border="0">
                                     </div>
                                 </div>
