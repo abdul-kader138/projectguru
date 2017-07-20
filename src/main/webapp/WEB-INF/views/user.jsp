@@ -264,7 +264,7 @@
                 initializeUserForm();
                 $("saveUser").show();
                 $("#updateUser").hide();
-                var mainPath = document.origin + "/pg";
+                var mainPath = window.location.origin + "/pg";
                 var companyGb;
                 getAllRole();
                 getAllCompany();

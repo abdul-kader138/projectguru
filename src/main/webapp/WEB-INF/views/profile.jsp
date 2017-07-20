@@ -80,7 +80,7 @@
 
             /* set user image path */
             var imageVal = $("#uploadedPhotoSrc").attr("src");
-            var mainPath = document.origin + "/pg";
+            var mainPath = window.location.origin + "/pg";
             $("#uploadedPhotoSrc").attr("src", mainPath + imageVal);
         });
 
