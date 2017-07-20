@@ -40,7 +40,6 @@
 		<property name="sessionFactory" ref="mySessionFactory" />
 	</bean>
 
-
 	<bean id="namingStrategy" class="org.hibernate.cfg.ImprovedNamingStrategy"/>
 
 </beans>
