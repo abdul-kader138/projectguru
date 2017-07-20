@@ -19,6 +19,7 @@ public interface ChangeRequestDao {
     ChangeRequest findByCategoryId(long categoryId);
     ChangeRequest findByDepartmentId(long departmentId);
     ChangeRequest findByTeamAllocationId(long teamAllocationId);
+    ChangeRequest findByUserAllocationId(long userAllocationId);
 
 
 }

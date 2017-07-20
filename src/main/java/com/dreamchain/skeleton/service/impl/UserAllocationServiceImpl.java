@@ -84,7 +84,7 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         if(userAllocation.getApprovedBy().getId() == userAllocation.getItCoordinator().getId() ) validationMsg=SAME_ALLOCATED_USER;
         if ("".equals(validationMsg)) existingUserAllocation = userAllocationDao.get(userAllocation.getId());
         if (existingUserAllocation == null && "".equals(validationMsg)) validationMsg = INVALID_USER_ALLOCATION;
-        if("".equals(validationMsg)) changeRequest=changeRequestDao.findByTeamAllocationId(existingUserAllocation.getId());
+        if("".equals(validationMsg)) changeRequest=changeRequestDao.findByUserAllocationId(existingUserAllocation.getId());
         if("".equals(validationMsg) && changeRequest.getName() !=null) validationMsg=ASSOCIATED_REQUEST;
         if (userAllocation.getVersion() != existingUserAllocation.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg)) {
@@ -103,10 +103,10 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         if (userAllocationId == 0l) validationMsg = INVALID_INPUT;
         UserAllocation userAllocation = userAllocationDao.get(userAllocationId);
         if (userAllocation == null && "".equals(validationMsg)) validationMsg = INVALID_USER_ALLOCATION;
-        if("".equals(validationMsg)) changeRequest=changeRequestDao.findByTeamAllocationId(userAllocation.getId());
+        if("".equals(validationMsg)) changeRequest=changeRequestDao.findByUserAllocationId(userAllocation.getId());
         if("".equals(validationMsg) && changeRequest.getName() !=null) validationMsg=ASSOCIATED_REQUEST;
         if ("".equals(validationMsg)) {
-            userAllocationDao.delete(userAllocation);
+//            userAllocationDao.delete(userAllocation);
         }
         return validationMsg;
     }

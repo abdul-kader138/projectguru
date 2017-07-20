@@ -132,6 +132,18 @@ public class ChangeRequestDaoImpl implements ChangeRequestDao {
     }
 
 
+
+    @Override
+    public ChangeRequest findByUserAllocationId(long userAllocationId) {
+        DetachedCriteria dcr= DetachedCriteria.forClass(ChangeRequest.class);
+        Criterion cr =  Restrictions.eq("userAllocationId", userAllocationId);
+        dcr.add(cr).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);;
+        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
+        if(lst.size()==0)return new ChangeRequest();
+        return (ChangeRequest)lst.get(0);
+    }
+
+
     private List<ChangeRequest> createChangeRequestList(List<Object> changeRequestList){
         List<ChangeRequest> list = new ArrayList<>();
         for(final Object o : changeRequestList) {
