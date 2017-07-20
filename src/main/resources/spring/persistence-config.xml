@@ -43,6 +43,4 @@
 
 	<bean id="namingStrategy" class="org.hibernate.cfg.ImprovedNamingStrategy"/>
 
-
-
 </beans>
