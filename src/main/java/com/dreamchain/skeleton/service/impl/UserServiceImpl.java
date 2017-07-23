@@ -159,7 +159,6 @@ public class UserServiceImpl implements UserService {
         if ("".equals(validationMsg)) objList=userAllocationDao.AllAllocationByItCoordinator(user.getId());
         if (objList.size() > 0 && "".equals(validationMsg)) validationMsg = USER_ASSOCIATED_TEAM_ALLOCATION;
         if ("".equals(validationMsg)) approvalStatuses= approvalStatusDao.findByApprovedById(user.getId());
-        if ("".equals(validationMsg)) approvalStatuses= approvalStatusDao.findByApprovedById(user.getId());
         if(approvalStatuses.size() !=0 && "".equals(validationMsg)) validationMsg=USER_ASSOCIATED_APPROVAL_DELETE;
         if (user != null) fileName = user.getImagePath();
         if ("".equals(validationMsg)) validationMsg = deletePhoto(request.getRealPath("/"), fileName);
