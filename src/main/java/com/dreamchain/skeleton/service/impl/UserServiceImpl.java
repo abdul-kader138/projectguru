@@ -115,9 +115,9 @@ public class UserServiceImpl implements UserService {
         if (existingUser.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_USER;
 
         if ("".equals(validationMsg)) objList=userAllocationDao.AllAllocationByApprovedBy(user.getId());
-        if (objList.size() > 0 && "".equals(validationMsg) && user.getCompany().getId() !=objList.get(0).getId()) validationMsg = UPDATE_USER_ASSOCIATED_TEAM_ALLOCATION;
+        if (objList.size() > 0 && "".equals(validationMsg) && user.getCompany().getId() !=objList.get(0).getCompanyId()) validationMsg = UPDATE_USER_ASSOCIATED_TEAM_ALLOCATION;
         if ("".equals(validationMsg)) objList=userAllocationDao.AllAllocationByItCoordinator(user.getId());
-        if (objList.size() > 0 && "".equals(validationMsg) && user.getCompany().getId() !=objList.get(0).getId()) validationMsg = UPDATE_USER_ASSOCIATED_TEAM_ALLOCATION;
+        if (objList.size() > 0 && "".equals(validationMsg) && user.getCompany().getId() !=objList.get(0).getCompanyId()) validationMsg = UPDATE_USER_ASSOCIATED_TEAM_ALLOCATION;
 
         if ("".equals(validationMsg)) approvalStatuses= approvalStatusDao.findByApprovedById(existingUser.getId());
         if(approvalStatuses.size() !=0 && "".equals(validationMsg) && user.getCompany().getId() !=existingUser.getCompany().getId()) validationMsg=USER_ASSOCIATED_APPROVAL_UPDATE;
