@@ -30,6 +30,8 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     TeamAllocationDao teamAllocationDao;
     @Autowired
+    UserAllocationDao userAllocationDao;
+    @Autowired
     ProductDao productDao ;
     @Autowired
     Environment environment;
@@ -78,6 +80,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public Map<String, Object> update(Map<String, Object> productObj) throws ParseException {
         Map<String,Object> obj=new HashMap<>();
+        List<Object> objList=new ArrayList<>();
         String validationMsg = "";
         List<Object> teamAllocationList=new ArrayList<>();
         Product newObj=new Product();
@@ -88,9 +91,12 @@ public class ProductServiceImpl implements ProductService {
         if ("".equals(validationMsg)) existingProduct = productDao.get(product.getId());
         if (existingProduct.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_PRODUCT;
         if (!getUserId().getClientId().equals(existingProduct.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_UPDATE;
+        if("".equals(validationMsg)) objList=categoryDao.countOfProduct(existingProduct.getId());
+        if (objList.size() > 0 && "".equals(validationMsg) && product.getCompany().getId() != existingProduct.getCompany().getId()) validationMsg = ASSOCIATED_CATEGORY;
         if("".equals(validationMsg)) teamAllocationList=teamAllocationDao.countOfAllocationByProduct(existingProduct.getId());
-        if (getUserId().getClientId().equals(existingProduct.getClientId()) && "".equals(validationMsg)
-                && product.getCompany().getId() != existingProduct.getCompany().getId() && teamAllocationList.size() !=0) validationMsg = ASSOCIATED_ALLOCATION;
+        if ("".equals(validationMsg) && product.getCompany().getId() != existingProduct.getCompany().getId() && teamAllocationList.size() !=0) validationMsg = ASSOCIATED_ALLOCATION;
+        if("".equals(validationMsg)) teamAllocationList=userAllocationDao.countOfAllocationByProduct(existingProduct.getId());
+        if ("".equals(validationMsg) && product.getCompany().getId() != existingProduct.getCompany().getId() && teamAllocationList.size() !=0) validationMsg = ASSOCIATED_ALLOCATION;
         if (product.getVersion() != existingProduct.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg)) newObj = productDao.findByNewName(existingProduct.getName(),product.getName(),product.getCompany().getId());
         if (newObj.getName() != null && "".equals(validationMsg)) validationMsg = PRODUCT_EXISTS;
@@ -114,6 +120,8 @@ public class ProductServiceImpl implements ProductService {
         if("".equals(validationMsg)) obj=categoryDao.countOfProduct(productId);
         if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_CATEGORY;
         if("".equals(validationMsg))obj=teamAllocationDao.countOfAllocationByProduct(productId);
+        if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_ALLOCATION;
+        if("".equals(validationMsg))obj=userAllocationDao.countOfAllocationByProduct(productId);
         if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_ALLOCATION;
         if ("".equals(validationMsg)) {
             productDao.delete(product);

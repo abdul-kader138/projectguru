@@ -42,7 +42,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     private static final String INVALID_PRIVILEGE_DELETE = "You have not enough privilege to delete client department info.Please contact with System Admin!!!";
     private static final String INVALID_PRIVILEGE_CREATE = "You have not enough privilege to create department for client.Please contact with System Admin!!!";
     private static final String BACK_DATED_DATA = "Department data is old.Please try again with updated data";
-    private static final String ASSOCIATED_DEPARTMENT = "Department is tagged with product category.First remove tagging and try again";
+    private static final String ASSOCIATED_CATEGORY = "Department is tagged with product category.First remove tagging and try again";
     private static final String CHANGE_REQUEST_ASSOCIATED = "This department already associated with request.So this operation can't happen";
 
 
@@ -78,6 +78,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Transactional
     public Map<String, Object> update(Map<String, Object> departmentObj) throws ParseException {
         Map<String,Object> obj=new HashMap<>();
+        List<Object> objList=new ArrayList<>();
         String validationMsg = "";
         Department newObj=new Department();
         Department existingDepartment=new Department();
@@ -88,9 +89,10 @@ public class DepartmentServiceImpl implements DepartmentService {
         if ("".equals(validationMsg)) existingDepartment = departmentDao.get(department.getId());
         if (existingDepartment.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_DEPARTMENT;
         if (!getUserId().getClientId().equals(existingDepartment.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_UPDATE;
+        if("".equals(validationMsg)) objList=departmentDao.countOfDepartment(existingDepartment.getId());
+        if (objList.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_CATEGORY;
         if("".equals(validationMsg)) changeRequest=changeRequestDao.findByDepartmentId(existingDepartment.getId());
-        if (getUserId().getClientId().equals(existingDepartment.getClientId()) && "".equals(validationMsg)
-                && existingDepartment.getCompany().getId() != department.getCompany().getId()  && changeRequest.getName() !=null) validationMsg = CHANGE_REQUEST_ASSOCIATED; // stop update department if it's already associated
+        if ("".equals(validationMsg) && existingDepartment.getCompany().getId() != department.getCompany().getId()  && changeRequest.getName() !=null) validationMsg = CHANGE_REQUEST_ASSOCIATED; // stop update department if it's already associated
         if (department.getVersion() != existingDepartment.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg)) newObj = departmentDao.findByNewName(existingDepartment.getName(),department.getName(),department.getCompany().getId());
         if (newObj.getName() != null && "".equals(validationMsg)) validationMsg = DEPARTMENT_EXISTS;
@@ -113,7 +115,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         if ("".equals(department.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_DEPARTMENT;
         if (!getUserId().getClientId().equals(department.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_DELETE;
         if("".equals(validationMsg)) obj=departmentDao.countOfDepartment(departmentId);
-        if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_DEPARTMENT;
+        if (obj.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_CATEGORY;
         if("".equals(validationMsg)) changeRequest=changeRequestDao.findByDepartmentId(departmentId);
         if("".equals(validationMsg) && changeRequest.getName() !=null) validationMsg=CHANGE_REQUEST_ASSOCIATED;
         if ("".equals(validationMsg)) {

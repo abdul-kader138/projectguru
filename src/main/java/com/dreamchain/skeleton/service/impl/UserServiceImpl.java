@@ -55,6 +55,7 @@ public class UserServiceImpl implements UserService {
     private static final String PHOTO_USER_PATH = "/resources/images/user_photo/";
     private static final String PHOTO_TEAM_PATH = "/resources/images/team_member_photo/";
     private static final String USER_ASSOCIATED_TEAM_ALLOCATION = "User can't delete due to association with allocation";
+    private static final String UPDATE_USER_ASSOCIATED_TEAM_ALLOCATION = "User can't update due to association with allocation";
 
     @Transactional(readOnly = true)
     public User get(Long id) {
@@ -103,6 +104,7 @@ public class UserServiceImpl implements UserService {
     public Map<String, Object> updateUser(MultipartHttpServletRequest request, String usersType) throws Exception {
         Map<String, Object> obj = new HashMap<>();
         Map<String, Object> msg = new HashMap<>();
+        List<UserAllocation> objList=new ArrayList<>();
         List<ApprovalStatus> approvalStatuses=new ArrayList<>();
         String validationMsg = "";
         User newUser = new User();
@@ -111,8 +113,15 @@ public class UserServiceImpl implements UserService {
         validationMsg = checkInput(user);
         if ("".equals(validationMsg)) existingUser = userDao.get(user.getId());
         if (existingUser.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_USER;
+
+        if ("".equals(validationMsg)) objList=userAllocationDao.AllAllocationByApprovedBy(user.getId());
+        if (objList.size() > 0 && "".equals(validationMsg) && user.getCompany().getId() !=objList.get(0).getId()) validationMsg = UPDATE_USER_ASSOCIATED_TEAM_ALLOCATION;
+        if ("".equals(validationMsg)) objList=userAllocationDao.AllAllocationByItCoordinator(user.getId());
+        if (objList.size() > 0 && "".equals(validationMsg) && user.getCompany().getId() !=objList.get(0).getId()) validationMsg = UPDATE_USER_ASSOCIATED_TEAM_ALLOCATION;
+
         if ("".equals(validationMsg)) approvalStatuses= approvalStatusDao.findByApprovedById(existingUser.getId());
         if(approvalStatuses.size() !=0 && "".equals(validationMsg) && user.getCompany().getId() !=existingUser.getCompany().getId()) validationMsg=USER_ASSOCIATED_APPROVAL_UPDATE;
+
         if (user.getVersion() != existingUser.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg)) newUser = userDao.findByNewName(existingUser.getEmail(), user.getEmail());
         if (newUser.getName() != null && "".equals(validationMsg)) validationMsg = EMAIL_EXISTS;

@@ -50,6 +50,7 @@ public class TeamMemberServiceImpl implements TeamMemberService {
     private static final String USER_ASSOCIATED_APPROVAL_UPDATE = "Team member can't update due to association with request";
     private static final String USER_ASSOCIATED_APPROVAL_DELETE = "Team member can't delete due to association with request";
     private static final String USER_ASSOCIATED_TEAM_ALLOCATION = "Team member can't delete due to association with allocation";
+    private static final String UPDATE_USER_ASSOCIATED_TEAM_ALLOCATION = "Team member can't update due to association with allocation";
 
     @Transactional(readOnly = true)
     public User get(Long id) {
@@ -95,6 +96,7 @@ public class TeamMemberServiceImpl implements TeamMemberService {
     public Map<String, Object> updateUser(MultipartHttpServletRequest request, String usersType) throws Exception {
         Map<String, Object> obj = new HashMap<>();
         Map<String, Object> msg = new HashMap<>();
+        List<TeamAllocation> objList=new ArrayList<>();
         List<ApprovalStatus> approvalStatuses=new ArrayList<>();
         String validationMsg = "";
         User newUser = new User();
@@ -103,10 +105,18 @@ public class TeamMemberServiceImpl implements TeamMemberService {
         validationMsg = checkInput(user);
         if ("".equals(validationMsg)) existingUser = teamMemberDao.get(user.getId());
         if (existingUser.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_USER;
+
+        if ("".equals(validationMsg)) objList=teamAllocationDao.AllAllocationByCheckedBy(user.getId());
+        if (objList.size() > 0 && "".equals(validationMsg) && user.getCompanyId() !=objList.get(0).getCompanyId()) validationMsg = UPDATE_USER_ASSOCIATED_TEAM_ALLOCATION;
+        if ("".equals(validationMsg)) objList=teamAllocationDao.AllAllocationByRequestedBy(user.getId());
+        if (objList.size() > 0 && "".equals(validationMsg) && user.getCompanyId() !=objList.get(0).getCompanyId()) validationMsg = UPDATE_USER_ASSOCIATED_TEAM_ALLOCATION;
+
         if ("".equals(validationMsg)) approvalStatuses= approvalStatusDao.findByApprovedById(existingUser.getId());
         if(approvalStatuses.size() !=0 && "".equals(validationMsg) && user.getCompanyId() !=existingUser.getCompanyId()) validationMsg=USER_ASSOCIATED_APPROVAL_UPDATE;
+
         if (user.getVersion() != existingUser.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
         if ("".equals(validationMsg)) newUser = teamMemberDao.findByNewName(existingUser.getEmail(), user.getEmail());
+
         if (newUser.getName() != null && "".equals(validationMsg)) validationMsg = EMAIL_EXISTS;
         String fileName = request.getFile("photo").getOriginalFilename();
         if (!("".equals(fileName))) {

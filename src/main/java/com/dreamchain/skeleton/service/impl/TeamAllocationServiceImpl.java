@@ -86,7 +86,7 @@ public class TeamAllocationServiceImpl implements TeamAllocationService {
         TeamAllocation teamAllocation=createObjForSave(teamAllocationObj);
         validationMsg = checkInput(teamAllocation);
         if (teamAllocation.getId() == 0l && "".equals(validationMsg)) validationMsg = INVALID_INPUT;
-        if(teamAllocation.getCheckedBy().getId() == teamAllocation.getRequestedBy().getId() ) validationMsg=SAME_ALLOCATED_USER;
+        if(teamAllocation.getCheckedBy().getId().equals(teamAllocation.getRequestedBy().getId())) validationMsg=SAME_ALLOCATED_USER;
         if ("".equals(validationMsg)) existingTeamAllocation = teamAllocationDao.get(teamAllocation.getId());
         if (existingTeamAllocation == null && "".equals(validationMsg)) validationMsg = INVALID_TEAM_ALLOCATION;
         if("".equals(validationMsg)) changeRequest=changeRequestDao.findByTeamAllocationId(existingTeamAllocation.getId());

@@ -82,6 +82,7 @@ public class CategoryServiceImpl implements CategoryService{
     @Transactional
     public Map<String, Object> update(Map<String, Object> categoryObj) throws ParseException {
         Map<String,Object> obj=new HashMap<>();
+        List<Object> objList=new ArrayList<>();
         ChangeRequest changeRequest=new ChangeRequest();
         String validationMsg = "";
         Category newObj=new Category();
@@ -95,17 +96,13 @@ public class CategoryServiceImpl implements CategoryService{
         if (existingCategory.getName() == null && "".equals(validationMsg)) validationMsg = INVALID_CATEGORY; // Check for invalid input
 
         if (!getUserId().getClientId().equals(existingCategory.getClientId()) && "".equals(validationMsg)) validationMsg = INVALID_PRIVILEGE_UPDATE; // Stop other Company info update
-        long companyId=existingCategory.getCompany().getId();
+        if("".equals(validationMsg))objList=teamAllocationDao.countOfAllocation(existingCategory.getId());
+        if (objList.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_ALLOCATION;
+        if("".equals(validationMsg) && obj.size() == 0) objList=userAllocationDao.countOfAllocation(existingCategory.getId());
+        if (objList.size() > 0 && "".equals(validationMsg)) validationMsg = ASSOCIATED_ALLOCATION;
         if("".equals(validationMsg)) changeRequest=changeRequestDao.findByCategoryId(existingCategory.getId());
+        if ("".equals(validationMsg) && changeRequest.getName() !=null) validationMsg = CHANGE_REQUEST_ASSOCIATED; // stop update company if it's already associated
 
-        if (getUserId().getClientId().equals(existingCategory.getClientId()) && "".equals(validationMsg)
-                && category.getCompany().getId() != companyId  && changeRequest.getName() !=null) validationMsg = CHANGE_REQUEST_ASSOCIATED; // stop update company if it's already associated
-
-        if (getUserId().getClientId().equals(existingCategory.getClientId()) && "".equals(validationMsg)
-                && category.getProductId() != existingCategory.getProductId()  && changeRequest.getName() !=null) validationMsg = CHANGE_REQUEST_ASSOCIATED; // stop update product if it's already associated
-
-        if (getUserId().getClientId().equals(existingCategory.getClientId()) && "".equals(validationMsg)
-                && category.getDepartment().getId() != existingCategory.getDepartment().getId()  && changeRequest.getName() !=null) validationMsg = CHANGE_REQUEST_ASSOCIATED; // stop update department if it's already associated
 
         if (category.getVersion() != existingCategory.getVersion() && "".equals(validationMsg)) validationMsg = BACK_DATED_DATA;
 

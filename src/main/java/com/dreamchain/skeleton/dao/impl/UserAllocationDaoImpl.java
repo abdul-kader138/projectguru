@@ -112,4 +112,14 @@ public class UserAllocationDaoImpl implements UserAllocationDao {
         }
         return list;
     }
+
+    @Override
+    public List<Object> countOfAllocationByProduct(long productId) {
+        DetachedCriteria dcr= DetachedCriteria.forClass(UserAllocation.class);//Category
+        Criterion cr = Restrictions.eq("productId", productId);
+        dcr.add(cr);
+        List<Object> lst= hibernateTemplate.findByCriteria(dcr);
+        if(lst.size()==0)return new ArrayList<Object>();
+        return lst;
+    }
 }

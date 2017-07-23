@@ -15,5 +15,6 @@ public interface UserAllocationDao {
     List<UserAllocation> AllAllocationByApprovedBy(long approvedBy);
     UserAllocation findByProductAndCategory(long companyId, long productId,long categoryId);
     List<Object> countOfAllocation(long allocationId); // request class
+    List<Object> countOfAllocationByProduct(long productId);
 
 }

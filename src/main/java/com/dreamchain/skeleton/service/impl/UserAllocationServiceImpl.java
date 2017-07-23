@@ -81,7 +81,7 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         UserAllocation userAllocation=createObjForSave(userAllocationObj);
         validationMsg = checkInput(userAllocation);
         if (userAllocation.getId() == 0l && "".equals(validationMsg)) validationMsg = INVALID_INPUT;
-        if(userAllocation.getApprovedBy().getId() == userAllocation.getItCoordinator().getId() ) validationMsg=SAME_ALLOCATED_USER;
+        if(userAllocation.getApprovedBy().getId().equals(userAllocation.getItCoordinator().getId())) validationMsg=SAME_ALLOCATED_USER;
         if ("".equals(validationMsg)) existingUserAllocation = userAllocationDao.get(userAllocation.getId());
         if (existingUserAllocation == null && "".equals(validationMsg)) validationMsg = INVALID_USER_ALLOCATION;
         if("".equals(validationMsg)) changeRequest=changeRequestDao.findByUserAllocationId(existingUserAllocation.getId());
@@ -106,7 +106,7 @@ public class UserAllocationServiceImpl implements UserAllocationService {
         if("".equals(validationMsg)) changeRequest=changeRequestDao.findByUserAllocationId(userAllocation.getId());
         if("".equals(validationMsg) && changeRequest.getName() !=null) validationMsg=ASSOCIATED_REQUEST;
         if ("".equals(validationMsg)) {
-//            userAllocationDao.delete(userAllocation);
+            userAllocationDao.delete(userAllocation);
         }
         return validationMsg;
     }
