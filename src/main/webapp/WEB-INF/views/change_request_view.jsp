@@ -113,6 +113,10 @@
             <a class="btn bg-grey waves-war" id="back" value="1" title="Back" href="/home"><img
                     src="resources/images/back.png" width="16" height="16" border="0">&nbsp;Home
             </a>
+
+            <a class="btn bg-grey waves-war" id="pdfView" value="1" title="Back" href="/change_request/pdf" target="_blank"><img
+                    src="" width="16" height="16" border="0">&nbsp;PDF Download
+            </a>
             <br/>
             <br/>
         </div>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20"
+              rightMargin="20" topMargin="20" bottomMargin="20">
+    <property name="ireport.zoom" value="1.0"/>
+    <property name="ireport.x" value="0"/>
+    <property name="ireport.y" value="0"/>
+    <import value="com.dreamchain.skeleton.utility.DataGetFomObject"/>
+    <queryString>
+        <![CDATA[select * from change_request]]>
+    </queryString>
+    <field name="id" class="java.lang.Long"/>
+    <field name="acknowledgeCheckedId" class="java.lang.Long"/>
+    <field name="acknowledgedItCoordinatorId" class="java.lang.Long"/>
+    <field name="acknowledgementId" class="java.lang.Long"/>
+    <field name="approvedById" class="java.lang.Long"/>
+    <field name="categoryId" class="java.lang.Long"/>
+    <field name="checkedById" class="java.lang.Long"/>
+    <field name="checkedByStatus" class="java.lang.String"/>
+    <field name="clientId" class="java.lang.String"/>
+    <field name="createdBy" class="java.lang.String"/>
+    <field name="createdOn" class="java.sql.Timestamp"/>
+    <field name="declineCause" class="java.lang.String"/>
+    <field name="deliverDate" class="java.sql.Timestamp"/>
+    <field name="departmentId" class="java.lang.Long"/>
+    <field name="deployedOn" class="java.sql.Timestamp"/>
+    <field name="docPath" class="java.lang.String"/>
+    <field name="itCoordinatorId" class="java.lang.Long"/>
+    <field name="name" class="java.lang.String"/>
+    <field name="priority" class="java.lang.String"/>
+    <field name="requestById" class="java.lang.Long"/>
+    <field name="requiredDay" class="java.lang.Integer"/>
+    <field name="status" class="java.lang.String"/>
+    <field name="teamAllocationId" class="java.lang.Long"/>
+    <field name="updatedBy" class="java.lang.String"/>
+    <field name="updatedOn" class="java.sql.Timestamp"/>
+    <field name="userAllocationId" class="java.lang.Long"/>
+    <field name="version" class="java.lang.Long"/>
+    <field name="wipStatus" class="java.lang.String"/>
+    <field name="category" class="com.dreamchain.skeleton.model.Category"/>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band height="49" splitType="Stretch">
+            <staticText>
+                <reportElement x="151" y="12" width="230" height="23" backcolor="#FFFFFF"/>
+                <textElement textAlignment="Center">
+                    <font fontName="Verdana" size="14" isBold="true" isStrikeThrough="false"/>
+                </textElement>
+                <text><![CDATA[Request Details]]></text>
+            </staticText>
+        </band>
+    </title>
+    <pageHeader>
+        <band height="18" splitType="Stretch"/>
+    </pageHeader>
+    <columnHeader>
+        <band height="34" splitType="Stretch">
+            <staticText>
+                <reportElement x="2" y="10" width="59" height="20"/>
+                <textElement textAlignment="Center">
+                    <font size="8"/>
+                </textElement>
+                <text><![CDATA[Comany Name]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="61" y="10" width="59" height="20"/>
+                <textElement textAlignment="Center">
+                    <font size="8"/>
+                </textElement>
+                <text><![CDATA[Prduct Name]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="121" y="10" width="59" height="20"/>
+                <textElement textAlignment="Center">
+                    <font size="8"/>
+                </textElement>
+                <text><![CDATA[Category Name]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="181" y="10" width="59" height="20"/>
+                <textElement textAlignment="Center">
+                    <font size="8"/>
+                </textElement>
+                <text><![CDATA[Name]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="241" y="10" width="59" height="20"/>
+                <textElement textAlignment="Center">
+                    <font size="8"/>
+                </textElement>
+                <text><![CDATA[Description]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="302" y="10" width="59" height="20"/>
+                <textElement textAlignment="Center">
+                    <font size="8"/>
+                </textElement>
+                <text><![CDATA[Priority]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="364" y="10" width="59" height="20"/>
+                <textElement textAlignment="Center">
+                    <font size="8"/>
+                </textElement>
+                <text><![CDATA[Decline cause]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="425" y="10" width="95" height="20"/>
+                <textElement textAlignment="Center">
+                    <font size="8"/>
+                </textElement>
+                <text><![CDATA[WIP Status]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="521" y="10" width="30" height="20"/>
+                <textElement textAlignment="Center">
+                    <font size="8"/>
+                </textElement>
+                <text><![CDATA[Status]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+    <detail>
+        <band height="30" splitType="Stretch">
+            <textField>
+                <reportElement x="5" y="9" width="59" height="20"/>
+                <textFieldExpression><![CDATA[$F{category}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="364" y="9" width="59" height="20" />
+                <textFieldExpression><![CDATA[$F{declineCause}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="425" y="9" width="95" height="20" />
+                <textFieldExpression><![CDATA[$F{wipStatus}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="520" y="9" width="30" height="20" />
+                <textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="303" y="9" width="58" height="20" />
+                <textFieldExpression><![CDATA[$F{priority}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="182" y="8" width="49" height="20" />
+                <textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="64" y="8" width="44" height="20" />
+                <textFieldExpression><![CDATA[DataGetFomObject.productName($F{category})]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="123" y="9" width="57" height="20" />
+                <textFieldExpression><![CDATA[DataGetFomObject.categoryName($F{category})]]></textFieldExpression>
+            </textField>
+
+        </band>
+    </detail>
+    <columnFooter>
+        <band height="45" splitType="Stretch"/>
+    </columnFooter>
+    <pageFooter>
+        <band height="54" splitType="Stretch"/>
+    </pageFooter>
+    <summary>
+        <band height="42" splitType="Stretch"/>
+    </summary>
+</jasperReport>

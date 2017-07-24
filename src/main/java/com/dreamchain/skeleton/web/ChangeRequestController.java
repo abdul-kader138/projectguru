@@ -4,6 +4,8 @@ import com.dreamchain.skeleton.model.ApprovalStatus;
 import com.dreamchain.skeleton.model.ChangeRequest;
 import com.dreamchain.skeleton.service.ApprovalStatusService;
 import com.dreamchain.skeleton.service.ChangeRequestService;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,6 +121,19 @@ public class ChangeRequestController {
         }
         logger.info("Updating change request:  << " + successMsg + validationError);
         return objList;
+    }
+
+    @RequestMapping(value = "/change_request/pdf", method = RequestMethod.GET)
+    public ModelAndView doSalesReportPDF(ModelAndView modelAndView)
+    {
+        logger.info("View pdf report for change request: >>");
+        List<ChangeRequest> changeRequestList = changeRequestService.findAll();
+        Map<String,Object> parameterMap = new HashMap<String,Object>();
+        JRDataSource dataSource = new JRBeanCollectionDataSource(changeRequestList);
+        parameterMap.put("datasource", dataSource);
+        modelAndView = new ModelAndView("pdfReport", parameterMap);
+        logger.info("View pdf report for change request: >>");
+        return modelAndView;
     }
 
 }
